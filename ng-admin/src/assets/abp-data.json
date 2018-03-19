@@ -1,0 +1,129 @@
+{
+    "app": {
+        "name": "达州到货确认平台",
+        "description": "达州到货确认平台"
+    },
+    "user": {
+        "name": "Admin",
+        "avatar": "./assets/img/zorro.svg",
+        "email": "cipchk@qq.com"
+    },
+    "menu": [{
+        "text": "主导航",
+        "translate": "main_navigation",
+        "group": true,
+        "children": [{
+            "text": "工作台",
+            "translate": "home",
+            "link": "/home/index",
+            "icon": "fa fa-home"
+        }]
+        }, 
+        {
+        "text": "到货确认",
+        "translate": "dhqr",
+        "group": true,
+        "children": [{
+            "text": "基础数据",
+            "translate": "base",
+            "link": "/dhqr/base",
+            "icon": "fa fa-database",
+            "children": [{
+                "text": "零售用户",
+                "link": "/dhqr/base/retailers",
+                "translate": "retailers"
+            }, {
+                "text": "配送车辆",
+                "link": "/dhqr/base/dist-cars",
+                "translate": "dist-cars"
+            },{
+                "text": "驾送人员",
+                "link": "/admin/driver",
+                "translate": "dist-dlvman-driver"
+            },{
+                "text": "送货线路",
+                "link": "/dhqr/base/dist-rut",
+                "translate": "dist-rut"
+            },{
+                "text": "终端用户",
+                "link": "/dhqr/base/dist-user",
+                "translate": "dist-user"
+            },{
+                "text": "信息设置",
+                "link": "/dhqr/base/dist-setting",
+                "translate": "dist-setting"
+            }]
+        },{
+            "text": "业务查询",
+            "translate": "business",
+            "link": "/dhqr/business",
+            "icon": "fa fa-list",
+            "children": [{
+                "text": "配送单信息",
+                "link": "/dhqr/business/dists",
+                "translate": "dists"
+            }, {
+                "text": "订单信息",
+                "link": "/dhqr/business/dist-orders",
+                "translate": "dist-orders"
+            },{
+                "text": "配送线路",
+                "link": "/dhqr/business/dist-lines",
+                "translate": "dist-lines"
+            }]
+        },{
+            "text": "微信平台",
+            "translate": "wechat",
+            "link": "/wechat",
+            "icon": "fa fa-wechat",
+            "children": [{
+                "text": "微信授权配置",
+                "link": "/wechat/wechat-configs",
+                "translate": "wechat-configs"
+            }, {
+                "text": "微信接口配置",
+                "link": "/wechat/api-configs",
+                "translate": "api-configs"
+            }]
+        }]
+    },{
+        "text": "系统",
+        "translate": "system",
+        "group": true,
+        "children": [{
+            "text": "权限管理",
+            "translate": "admin",
+            "link": "/admin",
+            "icon": "fa fa-users",
+            "children": [{
+                "text": "用户",
+                "link": "/admin/users",
+                "translate": "users"
+            }, {
+                "text": "角色",
+                "link": "/admin/roles",
+                "translate": "roles"
+            }]
+        },{
+            "text": "系统日志",
+            "translate": "sys-log",
+            "link": "/sys-log",
+            "icon": "fa fa-file-text-o",
+            "children": [{
+                "text": "数据同步日志",
+                "link": "/sys-log/data-sync-log",
+                "translate": "data-sync-log"
+            }, {
+                "text": "审计日志",
+                "link": "/sys-log/audit-log",
+                "translate": "audit-log"
+            }]
+        },{
+            "text": "系统配置",
+            "translate": "sys-config",
+            "link": "/system/sys-config",
+            "icon": "fa fa-gears" 
+        }]
+    }
+]
+}
