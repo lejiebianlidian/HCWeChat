@@ -14,6 +14,11 @@ using Abp.Extensions;
 using HC.WeChat.Authentication.JwtBearer;
 using HC.WeChat.Configuration;
 using HC.WeChat.Identity;
+using Senparc.Weixin.Entities;
+using HC.WeChat.Utilities;
+using HC.WeChat.Application;
+using Senparc.Weixin.Threads;
+using Microsoft.Extensions.Options;
 
 #if FEATURE_SIGNALR
 using Microsoft.AspNet.SignalR;
@@ -47,6 +52,9 @@ namespace HC.WeChat.Web.Host.Startup
 
             IdentityRegistrar.Register(services);
             AuthConfigurer.Configure(services, _appConfiguration);
+
+            //添加Senparc.Weixin配置文件（内容可以根据需要对应修改）
+            services.Configure<SenparcWeixinSetting>(_appConfiguration.GetSection("SenparcWeixinSetting"));
 
 #if FEATURE_SIGNALR_ASPNETCORE
             services.AddSignalR();
@@ -96,7 +104,7 @@ namespace HC.WeChat.Web.Host.Startup
             );
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<SenparcWeixinSetting> senparcWeixinSetting)
         {
             app.UseAbp(options => { options.UseAbpRequestLocalization = false; }); // Initializes ABP framework.
 
@@ -129,6 +137,42 @@ namespace HC.WeChat.Web.Host.Startup
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            #region 微信相关
+
+            ////注册微信
+            //AccessTokenContainer.Register(senparcWeixinSetting.Value.WeixinAppId, senparcWeixinSetting.Value.WeixinAppSecret);
+
+            //Senparc.Weixin SDK 配置
+            Senparc.Weixin.Config.IsDebug = true;
+            Senparc.Weixin.Config.DefaultSenparcWeixinSetting = senparcWeixinSetting.Value;
+
+            //提供网站根目录
+            if (env.ContentRootPath != null)
+            {
+                Senparc.Weixin.Config.RootDictionaryPath = env.ContentRootPath;
+                Server.AppDomainAppPath = env.ContentRootPath;// env.ContentRootPath;
+            }
+            Server.WebRootPath = env.WebRootPath;// env.ContentRootPath;
+
+
+
+            /* 微信配置开始
+             * 
+             * 建议按照以下顺序进行注册，尤其须将缓存放在第一位！
+             */
+
+            //RegisterWeixinCache(app);       //注册分布式缓存（按需，如果需要，必须放在第一个）
+            ConfigWeixinTraceLog();         //配置微信跟踪日志（按需）
+            RegisterWeixinThreads();        //激活微信缓存及队列线程（必须）
+            //RegisterSenparcWeixin();        //注册Demo所用微信公众号的账号信息（按需）
+            //RegisterSenparcWorkWeixin();    //注册Demo所用企业微信的账号信息（按需）
+            //RegisterWeixinPay();            //注册微信支付（按需）
+            //RegisterWeixinThirdParty();     //注册微信第三方平台（按需）
+
+            /* 微信配置结束 */
+
+            #endregion
+
             // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger();
             // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
@@ -158,5 +202,37 @@ namespace HC.WeChat.Web.Host.Startup
             });
         }
 #endif
+        /// 配置微信跟踪日志
+        /// </summary>
+        private void ConfigWeixinTraceLog()
+        {
+            //这里设为Debug状态时，/App_Data/WeixinTraceLog/目录下会生成日志文件记录所有的API请求日志，正式发布版本建议关闭
+            Senparc.Weixin.Config.IsDebug = true;
+            Senparc.Weixin.WeixinTrace.SendCustomLog("系统日志", "系统启动");//只在Senparc.Weixin.Config.IsDebug = true的情况下生效
+
+            //自定义日志记录回调
+            Senparc.Weixin.WeixinTrace.OnLogFunc = () =>
+            {
+                //加入每次触发Log后需要执行的代码
+            };
+
+            //当发生基于WeixinException的异常时触发
+            Senparc.Weixin.WeixinTrace.OnWeixinExceptionFunc = ex =>
+            {
+                //加入每次触发WeixinExceptionLog后需要执行的代码
+
+                //发送模板消息给管理员
+                var eventService = new EventService();
+                eventService.ConfigOnWeixinExceptionFunc(ex);
+            };
+        }
+
+        /// <summary>
+        /// 激活微信缓存
+        /// </summary>
+        private void RegisterWeixinThreads()
+        {
+            ThreadUtility.Register();//如果不注册此线程，则AccessToken、JsTicket等都无法使用SDK自动储存和管理。
+        }
     }
 }
