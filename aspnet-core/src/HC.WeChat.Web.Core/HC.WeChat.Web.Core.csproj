@@ -23,7 +23,6 @@
     <ProjectReference Include="..\HC.WeChat.EntityFrameworkCore\HC.WeChat.EntityFrameworkCore.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Senparc.Weixin.MP" Version="14.10.3" />
     <PackageReference Include="Senparc.Weixin.MP.MvcExtension" Version="4.1.1" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.1" />

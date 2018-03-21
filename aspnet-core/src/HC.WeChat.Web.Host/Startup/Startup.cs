@@ -15,10 +15,9 @@ using HC.WeChat.Authentication.JwtBearer;
 using HC.WeChat.Configuration;
 using HC.WeChat.Identity;
 using Senparc.Weixin.Entities;
-using HC.WeChat.Utilities;
-using HC.WeChat.Application;
 using Senparc.Weixin.Threads;
 using Microsoft.Extensions.Options;
+using Senparc.Weixin.MP.Containers;
 
 #if FEATURE_SIGNALR
 using Microsoft.AspNet.SignalR;
@@ -150,9 +149,7 @@ namespace HC.WeChat.Web.Host.Startup
             if (env.ContentRootPath != null)
             {
                 Senparc.Weixin.Config.RootDictionaryPath = env.ContentRootPath;
-                Server.AppDomainAppPath = env.ContentRootPath;// env.ContentRootPath;
             }
-            Server.WebRootPath = env.WebRootPath;// env.ContentRootPath;
 
 
 
@@ -164,7 +161,7 @@ namespace HC.WeChat.Web.Host.Startup
             //RegisterWeixinCache(app);       //注册分布式缓存（按需，如果需要，必须放在第一个）
             ConfigWeixinTraceLog();         //配置微信跟踪日志（按需）
             RegisterWeixinThreads();        //激活微信缓存及队列线程（必须）
-            //RegisterSenparcWeixin();        //注册Demo所用微信公众号的账号信息（按需）
+            RegisterSenparcWeixin();        //注册Demo所用微信公众号的账号信息（按需）
             //RegisterSenparcWorkWeixin();    //注册Demo所用企业微信的账号信息（按需）
             //RegisterWeixinPay();            //注册微信支付（按需）
             //RegisterWeixinThirdParty();     //注册微信第三方平台（按需）
@@ -222,8 +219,8 @@ namespace HC.WeChat.Web.Host.Startup
                 //加入每次触发WeixinExceptionLog后需要执行的代码
 
                 //发送模板消息给管理员
-                var eventService = new EventService();
-                eventService.ConfigOnWeixinExceptionFunc(ex);
+                //var eventService = new EventService();
+                //eventService.ConfigOnWeixinExceptionFunc(ex);
             };
         }
 
@@ -233,6 +230,26 @@ namespace HC.WeChat.Web.Host.Startup
         private void RegisterWeixinThreads()
         {
             ThreadUtility.Register();//如果不注册此线程，则AccessToken、JsTicket等都无法使用SDK自动储存和管理。
+        }
+
+        /// <summary>
+        /// 注册Demo所用微信公众号的账号信息
+        /// </summary>
+        private void RegisterSenparcWeixin()
+        {
+            var senparcWeixinSetting = Senparc.Weixin.Config.DefaultSenparcWeixinSetting;
+
+            //注册公众号
+            AccessTokenContainer.Register(
+                senparcWeixinSetting.WeixinAppId,
+                senparcWeixinSetting.WeixinAppSecret,
+                "公众号");
+
+            ////注册小程序（完美兼容）
+            //AccessTokenContainer.Register(
+            //    senparcWeixinSetting.WxOpenAppId,
+            //    senparcWeixinSetting.WxOpenAppSecret,
+            //    "【盛派互动】小程序");
         }
     }
 }

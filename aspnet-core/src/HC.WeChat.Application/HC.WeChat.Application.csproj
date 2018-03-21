@@ -14,9 +14,12 @@
     <DefineConstants>FEATURE_SIGNALR_ASPNETCORE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Senparc.Weixin.MP" Version="14.10.3" />
+    <Compile Remove="WeChat\**" />
+    <EmbeddedResource Remove="WeChat\**" />
+    <None Remove="WeChat\**" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Abp.WeChat.Senparc\Abp.WeChat.Senparc.csproj" />
     <ProjectReference Include="..\HC.WeChat.Core\HC.WeChat.Core.csproj" />
   </ItemGroup>
 </Project>
