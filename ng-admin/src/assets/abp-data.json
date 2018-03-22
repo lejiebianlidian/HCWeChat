@@ -30,7 +30,7 @@
             "icon": "fa fa-gear",
             "children":[{
                 "text":"微信授权配置",
-                "link":"/admin",
+                "link":"/admin/authsetting",
                 "translate":"wechat-configs"
              },{
                 "text":"自动回复",

@@ -2,6 +2,7 @@
 using Abp.Application.Services.Dto;
 using HC.WeChat.WechatAppConfigs.Dtos.LTMAutoMapper;
 using HC.WeChat.WechatAppConfigs;
+using static HC.WeChat.Enum;
 
 namespace HC.WeChat.WechatAppConfigs.Dtos
 {
@@ -13,7 +14,7 @@ namespace HC.WeChat.WechatAppConfigs.Dtos
         public DateTime? LastModificationTime { get; set; }
         public string Name { get; set; }
         public string AppOrgId { get; set; }
-        public int AppType { get; set; }
+        public AppTypeEnum AppType { get; set; }
         public string AppId { get; set; }
         public string AppSecret { get; set; }
         public string QRCodeUrl { get; set; }

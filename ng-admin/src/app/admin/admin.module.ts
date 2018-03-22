@@ -17,6 +17,7 @@ import { EditRoleComponent } from './roles/edit-role/edit-role.component';
 import { TenantComponent } from './tenant/tenant.component';
 import { CreateTenantComponent } from './tenant/create-tenant/create-tenant.component';
 import { EditTenantComponent } from './tenant/edit-tenant/edit-tenant.component';
+import { AuthSettingComponent } from './weichat-setting/auth-setting/auth-setting.component';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { EditTenantComponent } from './tenant/edit-tenant/edit-tenant.component'
     EditRoleComponent,
     TenantComponent,
     CreateTenantComponent,
-    EditTenantComponent
+    EditTenantComponent,
+    AuthSettingComponent
    ],
    providers: [ AppRouteGuard,DriverComponent ]
 })

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using static HC.WeChat.Enum;
 
 namespace HC.WeChat.WechatMessages
 {
@@ -26,13 +27,13 @@ namespace HC.WeChat.WechatMessages
         /// 匹配模式（枚举 精准匹配、模糊匹配）
         /// </summary>
         [Required]
-        public int MatchMode { get; set; }
+        public MatchModeEnum MatchMode { get; set; }
 
         /// <summary>
         /// 消息类型（枚举 文字消息、图文消息）
         /// </summary>
         [Required]
-        public int MsgType { get; set; }
+        public MsgTypeEnum MsgType { get; set; }
 
         /// <summary>
         /// 回复内容

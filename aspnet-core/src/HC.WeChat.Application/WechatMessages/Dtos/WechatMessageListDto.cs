@@ -2,6 +2,7 @@
 using Abp.Application.Services.Dto;
 using HC.WeChat.WechatMessages.Dtos.LTMAutoMapper;
 using HC.WeChat.WechatMessages;
+using static HC.WeChat.Enum;
 
 namespace HC.WeChat.WechatMessages.Dtos
 {
@@ -10,8 +11,8 @@ namespace HC.WeChat.WechatMessages.Dtos
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION
         public string KeyWord { get; set; }
-        public int MatchMode { get; set; }
-        public int MsgType { get; set; }
+        public MatchModeEnum MatchMode { get; set; }
+        public MsgTypeEnum MsgType { get; set; }
         public string Content { get; set; }
         public int TenantId { get; set; }
         public DateTime CreationTime { get; set; }

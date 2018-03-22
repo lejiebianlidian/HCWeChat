@@ -2,6 +2,7 @@
 using Abp.Application.Services.Dto;
 using HC.WeChat.WechatSubscribes.Dtos.LTMAutoMapper;
 using HC.WeChat.WechatSubscribes;
+using static HC.WeChat.Enum;
 
 namespace HC.WeChat.WechatSubscribes.Dtos
 {
@@ -9,7 +10,7 @@ namespace HC.WeChat.WechatSubscribes.Dtos
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION
-        public int MsgType { get; set; }
+        public MsgTypeEnum MsgType { get; set; }
         public string Content { get; set; }
         public int TenantId { get; set; }
         public DateTime CreationTime { get; set; }

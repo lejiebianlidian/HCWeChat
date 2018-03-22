@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using static HC.WeChat.Enum;
 
 namespace HC.WeChat.WechatAppConfigs
 {
@@ -35,7 +36,7 @@ namespace HC.WeChat.WechatAppConfigs
         /// 微信类型（枚举 订阅号、认证订阅号、服务号、认证服务号）
         /// </summary>
         [Required]
-        public int AppType { get; set; }
+        public AppTypeEnum AppType { get; set; }
 
         /// <summary>
         /// 微信AppID

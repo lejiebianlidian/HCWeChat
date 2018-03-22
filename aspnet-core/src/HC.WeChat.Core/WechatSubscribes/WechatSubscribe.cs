@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using static HC.WeChat.Enum;
 
 namespace HC.WeChat.WechatSubscribes
 {
@@ -19,7 +20,7 @@ namespace HC.WeChat.WechatSubscribes
         /// 消息类型（枚举 文字消息、图文消息）
         /// </summary>
         [Required]
-        public int MsgType { get; set; }
+        public MsgTypeEnum MsgType { get; set; }
 
         /// <summary>
         /// 回复内容

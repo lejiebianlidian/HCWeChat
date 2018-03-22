@@ -18,7 +18,8 @@ const routes: Routes = [
           { path: 'users', component: UsersComponent, data: { translate: 'users', permission: 'Pages.Users' }, canActivate: [AppRouteGuard] },
           { path: 'roles', component: RolesComponent, data: { translate: 'roles', permission: 'Pages.Roles' }, canActivate: [AppRouteGuard] },
           { path: 'driver', component: DriverComponent, data: { translate: 'driver', permission: 'Pages.DistDriver' }, canActivate: [AppRouteGuard] },
-          { path: 'tenant', component: TenantComponent, data: { translate: 'tenant', permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] }
+          { path: 'tenant', component: TenantComponent, data: { translate: 'tenant', permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
+          { path: 'authsetting', component: TenantComponent, data: { translate: 'authsetting', permission: 'Pages.WechatAppConfig' }, canActivate: [AppRouteGuard] },
       ]
   }
 ];

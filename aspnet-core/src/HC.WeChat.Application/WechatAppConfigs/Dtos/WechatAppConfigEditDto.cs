@@ -2,6 +2,7 @@
 using HC.WeChat.WechatAppConfigs.Dtos.LTMAutoMapper;
 using HC.WeChat.WechatAppConfigs;
 using System;
+using static HC.WeChat.Enum;
 
 namespace HC.WeChat.WechatAppConfigs.Dtos
 {
@@ -31,7 +32,7 @@ namespace HC.WeChat.WechatAppConfigs.Dtos
         /// 微信类型（枚举 订阅号、认证订阅号、服务号、认证服务号）
         /// </summary>
         [Required]
-        public int AppType { get; set; }
+        public AppTypeEnum AppType { get; set; }
 
 
         /// <summary>
