@@ -2,14 +2,19 @@
 using HC.WeChat.WechatMessages.Dtos.LTMAutoMapper;
 using HC.WeChat.WechatMessages;
 using System;
+using Abp.AutoMapper;
+using Abp.Application.Services.Dto;
+using Abp.Domain.Entities.Auditing;
+using Abp.Domain.Entities;
 
 namespace HC.WeChat.WechatMessages.Dtos
 {
-    public class WechatMessageEditDto
+    [AutoMapTo(typeof(WechatMessage))]
+    public class WechatMessageEditDto : AuditedEntityDto<Guid?>, IMustHaveTenant
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION
-        public Guid? Id { get; set; }
+        //public Guid? Id { get; set; }
 
         /// <summary>
         /// 关键字

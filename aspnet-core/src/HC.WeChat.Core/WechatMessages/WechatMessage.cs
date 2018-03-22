@@ -12,7 +12,7 @@ namespace HC.WeChat.WechatMessages
     /// 微信消息处理
     /// </summary>
     [Table("WechatMessages")]
-    public class WechatMessage : Entity<Guid>, IAudited, IMustHaveTenant
+    public class WechatMessage : AuditedEntity<Guid>, IMustHaveTenant
     {
 
         /// <summary>
@@ -44,27 +44,27 @@ namespace HC.WeChat.WechatMessages
         /// 租户ID
         /// </summary>
         [Required]
-        public int TenantId { get; set; }
+        public virtual int TenantId { get; set; }
 
         /// <summary>
         /// CreationTime
         /// </summary>
-        [Required]
-        public DateTime CreationTime { get; set; }
+        //[Required]
+        //public DateTime CreationTime { get; set; }
 
-        /// <summary>
-        /// CreatorUserId
-        /// </summary>
-        public long? CreatorUserId { get; set; }
+        ///// <summary>
+        ///// CreatorUserId
+        ///// </summary>
+        //public long? CreatorUserId { get; set; }
 
-        /// <summary>
-        /// LastModificationTime
-        /// </summary>
-        public DateTime? LastModificationTime { get; set; }
+        ///// <summary>
+        ///// LastModificationTime
+        ///// </summary>
+        //public DateTime? LastModificationTime { get; set; }
 
-        /// <summary>
-        /// LastModifierUserId
-        /// </summary>
-        public long? LastModifierUserId { get; set; }
+        ///// <summary>
+        ///// LastModifierUserId
+        ///// </summary>
+        //public long? LastModifierUserId { get; set; }
     }
 }
