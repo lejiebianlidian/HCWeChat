@@ -3,6 +3,9 @@ using Abp.Zero.EntityFrameworkCore;
 using HC.WeChat.Authorization.Roles;
 using HC.WeChat.Authorization.Users;
 using HC.WeChat.MultiTenancy;
+using HC.WeChat.WechatAppConfigs;
+using HC.WeChat.WechatMessages;
+using HC.WeChat.WechatSubscribes;
 
 namespace HC.WeChat.EntityFrameworkCore
 {
@@ -14,5 +17,13 @@ namespace HC.WeChat.EntityFrameworkCore
             : base(options)
         {
         }
+
+
+        public virtual DbSet<WechatAppConfig> WechatAppConfigs { get; set; }
+
+        public virtual DbSet<WechatMessage> WechatMessages { get; set; }
+
+        public virtual DbSet<WechatSubscribe> WechatSubscribes { get; set; }
+
     }
 }
