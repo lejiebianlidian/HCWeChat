@@ -13,13 +13,15 @@ using HC.WeChat.WechatMessages.Dtos;
 using HC.WeChat.WechatMessages.DomainServices;
 using HC.WeChat.WechatMessages;
 using System;
+using HC.WeChat.Authorization;
 
 namespace HC.WeChat.WechatMessages
 {
     /// <summary>
     /// WechatMessage应用层服务的接口实现方法
     /// </summary>
-    [AbpAuthorize(WechatMessageAppPermissions.WechatMessage)]
+    //[AbpAuthorize(WechatMessageAppPermissions.WechatMessage)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class WechatMessageAppService : WeChatAppServiceBase, IWechatMessageAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -134,7 +136,7 @@ namespace HC.WeChat.WechatMessages
         /// <summary>
         /// 新增WechatMessage
         /// </summary>
-        [AbpAuthorize(WechatMessageAppPermissions.WechatMessage_CreateWechatMessage)]
+        //[AbpAuthorize(WechatMessageAppPermissions.WechatMessage_CreateWechatMessage)]
         protected virtual async Task<WechatMessageEditDto> CreateWechatMessageAsync(WechatMessageEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -147,7 +149,7 @@ namespace HC.WeChat.WechatMessages
         /// <summary>
         /// 编辑WechatMessage
         /// </summary>
-        [AbpAuthorize(WechatMessageAppPermissions.WechatMessage_EditWechatMessage)]
+        //[AbpAuthorize(WechatMessageAppPermissions.WechatMessage_EditWechatMessage)]
         protected virtual async Task UpdateWechatMessageAsync(WechatMessageEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
@@ -163,7 +165,7 @@ namespace HC.WeChat.WechatMessages
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(WechatMessageAppPermissions.WechatMessage_DeleteWechatMessage)]
+        //[AbpAuthorize(WechatMessageAppPermissions.WechatMessage_DeleteWechatMessage)]
         public async Task DeleteWechatMessage(EntityDto<Guid> input)
         {
 
@@ -174,7 +176,7 @@ namespace HC.WeChat.WechatMessages
         /// <summary>
         /// 批量删除WechatMessage的方法
         /// </summary>
-        [AbpAuthorize(WechatMessageAppPermissions.WechatMessage_BatchDeleteWechatMessages)]
+        //[AbpAuthorize(WechatMessageAppPermissions.WechatMessage_BatchDeleteWechatMessages)]
         public async Task BatchDeleteWechatMessagesAsync(List<Guid> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除
