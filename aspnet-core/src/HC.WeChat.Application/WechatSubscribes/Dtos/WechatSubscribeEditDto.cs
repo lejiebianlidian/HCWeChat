@@ -2,6 +2,7 @@
 using HC.WeChat.WechatSubscribes.Dtos.LTMAutoMapper;
 using HC.WeChat.WechatSubscribes;
 using System;
+using HC.WeChat.WechatEnums;
 
 namespace HC.WeChat.WechatSubscribes.Dtos
 {
@@ -15,7 +16,7 @@ namespace HC.WeChat.WechatSubscribes.Dtos
         /// 消息类型（枚举 文字消息、图文消息）
         /// </summary>
         [Required]
-        public int MsgType { get; set; }
+        public MsgTypeEnum MsgType { get; set; }
 
 
         /// <summary>
