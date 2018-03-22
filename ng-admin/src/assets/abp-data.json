@@ -17,7 +17,13 @@
             "translate": "home",
             "link": "/home/index",
             "icon": "fa fa-home"
-        },{
+        }]
+        }, 
+        {
+        "text": "微信平台",
+        "translate": "wechat",
+        "group": true,
+        "children": [{
             "text":"微信设置",
             "translate":"weichat-setting" ,
             "link": "/admin",
@@ -101,7 +107,8 @@
                 "translate":"feedback"
             }]
         }]
-        }, {
+    },
+        {
         "text": "系统",
         "translate": "system",
         "group": true,
