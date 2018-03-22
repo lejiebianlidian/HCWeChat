@@ -17,76 +17,91 @@
             "translate": "home",
             "link": "/home/index",
             "icon": "fa fa-home"
-        }]
-        }, 
-        {
-        "text": "到货确认",
-        "translate": "dhqr",
-        "group": true,
-        "children": [{
-            "text": "基础数据",
-            "translate": "base",
-            "link": "/dhqr/base",
-            "icon": "fa fa-database",
-            "children": [{
-                "text": "零售用户",
-                "link": "/dhqr/base/retailers",
-                "translate": "retailers"
-            }, {
-                "text": "配送车辆",
-                "link": "/dhqr/base/dist-cars",
-                "translate": "dist-cars"
-            },{
-                "text": "驾送人员",
-                "link": "/admin/driver",
-                "translate": "dist-dlvman-driver"
-            },{
-                "text": "送货线路",
-                "link": "/dhqr/base/dist-rut",
-                "translate": "dist-rut"
-            },{
-                "text": "终端用户",
-                "link": "/dhqr/base/dist-user",
-                "translate": "dist-user"
-            },{
-                "text": "信息设置",
-                "link": "/dhqr/base/dist-setting",
-                "translate": "dist-setting"
-            }]
         },{
-            "text": "业务查询",
-            "translate": "business",
-            "link": "/dhqr/business",
-            "icon": "fa fa-list",
-            "children": [{
-                "text": "配送单信息",
-                "link": "/dhqr/business/dists",
-                "translate": "dists"
-            }, {
-                "text": "订单信息",
-                "link": "/dhqr/business/dist-orders",
-                "translate": "dist-orders"
-            },{
-                "text": "配送线路",
-                "link": "/dhqr/business/dist-lines",
-                "translate": "dist-lines"
-            }]
+            "text":"微信设置",
+            "translate":"weichat-setting" ,
+            "link": "/admin",
+            "icon": "fa fa-gear",
+            "children":[{
+                "text":"微信授权配置",
+                "link":"/admin",
+                "translate":"wechat-configs"
+             },{
+                "text":"自动回复",
+                "link":"/admin",
+                "translate":"aut-res"
+             },{
+                "text":"自定义菜单",
+                "link":"/admin",
+                "translate":"custom-menu"
+             }] 
         },{
-            "text": "微信平台",
-            "translate": "wechat",
-            "link": "/wechat",
-            "icon": "fa fa-wechat",
-            "children": [{
-                "text": "微信授权配置",
-                "link": "/wechat/wechat-configs",
-                "translate": "wechat-configs"
-            }, {
-                "text": "微信接口配置",
-                "link": "/wechat/api-configs",
-                "translate": "api-configs"
+            "text":"微信管理",
+            "translate":"weichat-manager",
+            "icon":"fa fa-wechat",
+            "children":[{
+                "text":"微信用户",
+                "link":"/admin",
+                "translate":"wechat-user"
+          }]
+        },{
+
+            "text":"营销服务",
+            "translate":"market-serve",
+            "icon":"fa fa-user",
+            "children":[{
+                "text":"营销人员",
+                "link":"/admin",
+                "translate":"market-user"
+          },{
+                "text":"营销活动",
+                "link":"/admin",
+                "translate":"market-active"
+          },{
+                "text":"活动配置",
+                "link":"/admin",
+                "translate":"active-setting"
+          },{
+                "text":"营销统计",
+                "link":"/admin",
+                "translate":"market-count"
+          },{
+                "text":"用户中心",
+                "link":"/admin",
+                "translate":"user-center"
+          },{
+                "text":"问卷调查",
+                "link":"/admin",
+                "translate":"questionnaire"
+          }]
+        },{
+            "text":"客户服务",
+            "translate":"client-serve",
+            "icon":"fa fa-phone",
+            "children":[{
+                "text":"零售客户",
+                "link":"/admin",
+                "translate":"retail-client"
+          },{
+                "text":"客户热线",
+                "link":"/admin",
+                "translate":"serve-hotline"
+          }]
+        },{
+            "text":"消费服务",
+            "translate":"consume-serve",
+            "icon":"fa fa-line-chart",
+            "children":[{
+                "text":"附近店铺",
+                "link":"/admin",
+                "translate":"near-store"
+            },{
+                "text":"意见反馈",
+                "link":"/admin",
+                "translate":"feedback"
             }]
         }]
-    },{
+        }, {
         "text": "系统",
         "translate": "system",
         "group": true,
