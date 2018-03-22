@@ -101,7 +101,7 @@
     "system": "系统",
     "admin": "权限管理",
     "roles": "角色管理",
-    "tenants": "租户",
+    "tenants": "租户管理",
     "homeindex": {
      "title":"达州烟草",
      "welcome":"欢迎您！达州烟草信息化平台"

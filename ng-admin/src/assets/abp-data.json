@@ -103,6 +103,10 @@
                 "text": "角色",
                 "link": "/admin/roles",
                 "translate": "roles"
+            }, {
+                "text": "租户",
+                "link": "/admin/tenant",
+                "translate": "tenants"
             }]
         },{
             "text": "系统日志",
