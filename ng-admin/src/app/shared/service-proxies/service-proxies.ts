@@ -2177,6 +2177,8 @@ export class TenantDto implements ITenantDto {
     name: string;
     isActive: boolean;
     id: number;
+    activeType: string;
+    activeText: string;
 
     constructor(data?: ITenantDto) {
         if (data) {
@@ -2224,6 +2226,8 @@ export interface ITenantDto {
     name: string;
     isActive: boolean;
     id: number;
+    activeType: string;
+    activeText: string;
 }
 
 export class PagedResultDtoOfTenantDto implements IPagedResultDtoOfTenantDto {

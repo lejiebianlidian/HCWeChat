@@ -13,6 +13,10 @@ import { DriverComponent } from './basic-info/driver/driver.component';
 
 //权限判断
 import { AppRouteGuard } from '../shared/auth/auth-route-guard';
+import { EditRoleComponent } from './roles/edit-role/edit-role.component';
+import { TenantComponent } from './tenant/tenant.component';
+import { CreateTenantComponent } from './tenant/create-tenant/create-tenant.component';
+import { EditTenantComponent } from './tenant/edit-tenant/edit-tenant.component';
 
 @NgModule({
   imports: [
@@ -27,7 +31,11 @@ import { AppRouteGuard } from '../shared/auth/auth-route-guard';
     CreateUserComponent,
     RolesComponent,
     CreateRoleComponent,
-    DriverComponent
+    DriverComponent,
+    EditRoleComponent,
+    TenantComponent,
+    CreateTenantComponent,
+    EditTenantComponent
    ],
    providers: [ AppRouteGuard,DriverComponent ]
 })

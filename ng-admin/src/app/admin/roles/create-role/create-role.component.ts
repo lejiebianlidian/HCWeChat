@@ -32,7 +32,9 @@ export class CreateRoleComponent extends AppComponentBase implements OnInit {
     ) {
         super(injector);
     }
-
+    /**
+     * 页面初始加载
+     */
     ngOnInit(): void {
         this._roleService.getAllPermissions()
             .subscribe((permissions: ListResultDtoOfPermissionDto) => {
@@ -49,13 +51,17 @@ export class CreateRoleComponent extends AppComponentBase implements OnInit {
             permissiongroup: [null]
         }, );
     }
-
+    /**
+     * 
+     */
     show(): void {
         this.role = new CreateRoleDto();
         this.role.init({ isStatic: false });
         this.modalVisible = true;
     }
-
+    /**
+     * 保存角色信息
+     */
     save(): void {
         for (const i in this.form.controls) {
             this.form.controls[i].markAsDirty();
@@ -75,18 +81,22 @@ export class CreateRoleComponent extends AppComponentBase implements OnInit {
             this._roleService.create(this.role)
                 .finally(() => { this.isConfirmLoading = false; })
                 .subscribe(() => {
-                    this.notify.info(this.l('SavedSuccessfully'));
+                    this.notify.info(this.l('保存成功！'));
                     this.close();
                     this.modalSave.emit(null);
                 });
         }
     }
-
+    /**
+     * 关闭模态框
+     */
     close(): void {
         this.modalVisible = false;
         //this.modal.hide();
     }
-
+    /**
+     * 取消按钮事件
+     */
     handleCancel = (e) => {
         this.modalVisible = false;
         this.isConfirmLoading = false;

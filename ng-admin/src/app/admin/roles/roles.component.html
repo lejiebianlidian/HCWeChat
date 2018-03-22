@@ -1,6 +1,9 @@
 <pro-header></pro-header>
 <nz-card [nzBordered]="false">
     <div nz-row [nzGutter]="24">
+        <ng-template #modelContent>
+            <h2>是否删除角色{{roleName}}?</h2>
+        </ng-template>
         <div nz-col [nzSpan]="8" class="mb-md" [class.text-right]="'true'">
             <button nz-button [nzType]="'primary'" (click)="createRole()" [nzSize]="'large'">
                 <i class="anticon anticon-plus"></i>
@@ -8,8 +11,8 @@
             </button>
         </div>
     </div>
-    <nz-table #nzTable [nzAjaxData]="roles" [nzTotal]="totalItems" [(nzPageIndex)]="totalPages" [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading"
-        [nzShowSizeChanger]="true" (nzPageIndexChange)="refresh()" (nzPageSizeChange)="refresh()">
+    <nz-table #nzTable [nzAjaxData]="roles" [nzTotal]="q.total" [(nzPageIndex)]="q.pi" [(nzPageSize)]="q.ps" [nzLoading]="loading"
+        [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
         <thead nz-thead>
             <tr>
                 <th nz-th>
@@ -28,12 +31,13 @@
                 <td nz-td>{{role.name}}</td>
                 <td nz-td>{{role.displayName}}</td>
                 <td nz-td>
-                    <a >编辑</a>
+                    <a (click)="editRole(role)">编辑</a>
                     <span nz-table-divider></span>
-                    <a (click)="msg.success('删除' + role.id)">删除</a>
+                    <a (click)="delete(role,modelContent)">删除</a>
                 </td>
             </tr>
         </tbody>
     </nz-table>
 </nz-card>
-<create-role-modal #createRoleModal (modalSave)="refresh()"></create-role-modal>
+<create-role-modal #createRoleModal (modalSave)="refreshData()"></create-role-modal>
+<edit-role-modal #editRoleModal (modalSave)="refreshData()"></edit-role-modal>
