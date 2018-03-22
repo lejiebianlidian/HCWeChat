@@ -27,7 +27,7 @@
             "text":"微信设置",
             "translate":"weichat-setting" ,
             "link": "/admin",
-            "icon": "fa fa-gear",
+            "icon": "anticon anticon-setting",
             "children":[{
                 "text":"微信授权配置",
                 "link":"/admin/authsetting",
@@ -54,7 +54,7 @@
 
             "text":"营销服务",
             "translate":"market-serve",
-            "icon":"fa fa-user",
+            "icon":"anticon anticon-shop",
             "children":[{
                 "text":"营销人员",
                 "link":"/admin",
@@ -83,7 +83,7 @@
         },{
             "text":"客户服务",
             "translate":"client-serve",
-            "icon":"fa fa-phone",
+            "icon":"anticon anticon-customer-service",
             "children":[{
                 "text":"零售客户",
                 "link":"/admin",
@@ -96,7 +96,7 @@
         },{
             "text":"消费服务",
             "translate":"consume-serve",
-            "icon":"fa fa-line-chart",
+            "icon":"fa fa-laptop",
             "children":[{
                 "text":"附近店铺",
                 "link":"/admin",
