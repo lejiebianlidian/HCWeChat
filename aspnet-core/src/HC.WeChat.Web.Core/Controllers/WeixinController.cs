@@ -11,6 +11,7 @@ using Senparc.Weixin.MP.MvcExtension;
 using Senparc.Weixin;
 using Newtonsoft.Json.Linq;
 using HC.WeChat.MessageHandler;
+using HC.WeChat.Web;
 
 namespace HC.WeChat.Controllers
 {
@@ -29,6 +30,9 @@ namespace HC.WeChat.Controllers
 
         public WeixinController(IOptions<SenparcWeixinSetting> senparcWeixinSetting, IMessageHandlerAppServer messageHandlerAppServer)
         {
+            var configuration = Configuration.AppConfigurations.Get(WebContentDirectoryFinder.CalculateContentRootFolder());
+            var tenantId = configuration.GetSection("Tenant").GetSection("YiBinTenantId").Value;
+            AbpSession.Use(int.Parse(tenantId), 2);
             _senparcWeixinSetting = senparcWeixinSetting.Value;
             appId = _senparcWeixinSetting.WeixinAppId;
             appSecret = _senparcWeixinSetting.WeixinAppSecret;
