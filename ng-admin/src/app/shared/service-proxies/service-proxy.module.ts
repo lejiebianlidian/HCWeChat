@@ -11,7 +11,8 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.TokenAuthServiceProxy,
         ApiServiceProxies.AccountServiceProxy,
         ApiServiceProxies.ConfigurationServiceProxy,
-        ApiServiceProxies.DriverServiceProxy
+        ApiServiceProxies.DriverServiceProxy,
+        ApiServiceProxies.AuthSettingServiceProxy
     ]
 })
 export class ServiceProxyModule { }

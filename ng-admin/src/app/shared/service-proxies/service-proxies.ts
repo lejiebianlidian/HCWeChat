@@ -3031,4 +3031,128 @@ export interface IPagedResultDtoOfDriver {
     totalCount: number;
     items: Driver[];
 }
-import 'rxjs/add/operator/finally';
+
+//#region  微信配置
+@Injectable()
+export class AuthSettingServiceProxy {
+    private http: Http;
+    private baseUrl: string;
+    protected jsonParseReviver: (key: string, value: any) => any = undefined;
+
+    constructor(@Inject(Http) http:Http,@Optional() @Inject(API_BASE_URL) baseUrl?:string) { 
+        this.http=http;
+        this.baseUrl=baseUrl?baseUrl:"";
+    }
+   
+    /**
+     * 获取微信配置信息
+     * @return Success
+     */
+    getAll(skipCount: number, maxResultCount: number): Observable<PagedResultDtoOfAuthSetting> {
+        let url_ = this.baseUrl + "/api/services/app/WechatAppConfig/GetPagedWechatAppConfigs?";
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetAll(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetAll(response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfAuthSetting>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfAuthSetting>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetAll(response: Response): Observable<PagedResultDtoOfAuthSetting> {
+        const status = response.status; 
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfAuthSetting.fromJS(resultData200) : new PagedResultDtoOfAuthSetting();
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<PagedResultDtoOfAuthSetting>(<any>null);
+    }
+}
+export class PagedResultDtoOfAuthSetting implements IPagedResultDtoOfAuthSetting {
+    totalCount: number;
+    items: AuthSetting[];
+
+    constructor(data?: IPagedResultDtoOfAuthSetting) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(AuthSetting.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfAuthSetting {
+        let result = new PagedResultDtoOfAuthSetting();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new PagedResultDtoOfAuthSetting();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedResultDtoOfAuthSetting {
+    totalCount: number;
+    items: AuthSetting[];
+}
+//#endregion
+import 'rxjs/add/operator/finally';import { AuthSetting } from '@shared/service-proxies/entity/auth-setting';

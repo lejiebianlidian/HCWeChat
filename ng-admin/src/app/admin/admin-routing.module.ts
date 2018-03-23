@@ -8,6 +8,7 @@ import { RolesComponent } from './roles/roles.component';
 import { AppRouteGuard } from '@shared/auth/auth-route-guard';
 import { DriverComponent } from './basic-info/driver/driver.component';
 import { TenantComponent } from './tenant/tenant.component';
+import { AuthSettingComponent } from './weichat-setting/auth-setting/auth-setting.component';
 
 const routes: Routes = [
   {
@@ -19,7 +20,7 @@ const routes: Routes = [
           { path: 'roles', component: RolesComponent, data: { translate: 'roles', permission: 'Pages.Roles' }, canActivate: [AppRouteGuard] },
           { path: 'driver', component: DriverComponent, data: { translate: 'driver', permission: 'Pages.DistDriver' }, canActivate: [AppRouteGuard] },
           { path: 'tenant', component: TenantComponent, data: { translate: 'tenant', permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
-          { path: 'authsetting', component: TenantComponent, data: { translate: 'authsetting', permission: 'Pages.WechatAppConfig' }, canActivate: [AppRouteGuard] },
+          { path: 'authsetting', component: AuthSettingComponent, data: { translate: 'authsetting', permission: 'Pages' }, canActivate: [AppRouteGuard] },
       ]
   }
 ];
