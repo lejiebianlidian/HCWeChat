@@ -24,7 +24,7 @@ namespace HC.WeChat.WechatEnums
     {
         订阅号 = 1,
         认证订阅号 = 2,
-        服务号,
-        认证服务号
+        服务号=3,
+        认证服务号=4
     }
 }

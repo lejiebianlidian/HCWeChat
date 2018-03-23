@@ -12,13 +12,15 @@ using HC.WeChat.WechatAppConfigs.Authorization;
 using HC.WeChat.WechatAppConfigs.Dtos;
 using HC.WeChat.WechatAppConfigs.DomainServices;
 using HC.WeChat.WechatAppConfigs;
+using HC.WeChat.Authorization;
 
 namespace HC.WeChat.WechatAppConfigs
 {
     /// <summary>
     /// WechatAppConfig应用层服务的接口实现方法
     /// </summary>
-    [AbpAuthorize(WechatAppConfigAppPermissions.WechatAppConfig)]
+    //[AbpAuthorize(WechatAppConfigAppPermissions.WechatAppConfig)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class WechatAppConfigAppService : WeChatAppServiceBase, IWechatAppConfigAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -133,7 +135,7 @@ namespace HC.WeChat.WechatAppConfigs
         /// <summary>
         /// 新增WechatAppConfig
         /// </summary>
-        [AbpAuthorize(WechatAppConfigAppPermissions.WechatAppConfig_CreateWechatAppConfig)]
+        //[AbpAuthorize(WechatAppConfigAppPermissions.WechatAppConfig_CreateWechatAppConfig)]
         protected virtual async Task<WechatAppConfigEditDto> CreateWechatAppConfigAsync(WechatAppConfigEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -146,7 +148,7 @@ namespace HC.WeChat.WechatAppConfigs
         /// <summary>
         /// 编辑WechatAppConfig
         /// </summary>
-        [AbpAuthorize(WechatAppConfigAppPermissions.WechatAppConfig_EditWechatAppConfig)]
+        //[AbpAuthorize(WechatAppConfigAppPermissions.WechatAppConfig_EditWechatAppConfig)]
         protected virtual async Task UpdateWechatAppConfigAsync(WechatAppConfigEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
@@ -162,7 +164,7 @@ namespace HC.WeChat.WechatAppConfigs
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(WechatAppConfigAppPermissions.WechatAppConfig_DeleteWechatAppConfig)]
+        //[AbpAuthorize(WechatAppConfigAppPermissions.WechatAppConfig_DeleteWechatAppConfig)]
         public async Task DeleteWechatAppConfig(EntityDto<int> input)
         {
 
@@ -173,7 +175,7 @@ namespace HC.WeChat.WechatAppConfigs
         /// <summary>
         /// 批量删除WechatAppConfig的方法
         /// </summary>
-        [AbpAuthorize(WechatAppConfigAppPermissions.WechatAppConfig_BatchDeleteWechatAppConfigs)]
+        //[AbpAuthorize(WechatAppConfigAppPermissions.WechatAppConfig_BatchDeleteWechatAppConfigs)]
         public async Task BatchDeleteWechatAppConfigsAsync(List<int> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除

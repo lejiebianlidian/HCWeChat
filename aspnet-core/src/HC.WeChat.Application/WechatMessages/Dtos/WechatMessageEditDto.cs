@@ -11,7 +11,7 @@ using HC.WeChat.WechatEnums;
 namespace HC.WeChat.WechatMessages.Dtos
 {
     [AutoMapTo(typeof(WechatMessage))]
-    public class WechatMessageEditDto : AuditedEntityDto<Guid?>, IMustHaveTenant
+    public class WechatMessageEditDto : AuditedEntityDto<Guid?>
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION
@@ -46,11 +46,11 @@ namespace HC.WeChat.WechatMessages.Dtos
         public string Content { get; set; }
 
 
-        /// <summary>
-        /// 租户ID
-        /// </summary>
-        [Required]
-        public int TenantId { get; set; }
+        ///// <summary>
+        ///// 租户ID
+        ///// </summary>
+        //[Required]
+        //public int TenantId { get; set; }
 
     }
 }

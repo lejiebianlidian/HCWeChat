@@ -13,7 +13,7 @@ namespace HC.WeChat.WechatSubscribes
     /// 微信关注回复
     /// </summary>
     [Table("WechatSubscribes")]
-    public class WechatSubscribe : Entity<Guid>, IAudited, IMustHaveTenant
+    public class WechatSubscribe : AuditedEntity<Guid>, IMustHaveTenant
     {
 
         /// <summary>
@@ -34,25 +34,25 @@ namespace HC.WeChat.WechatSubscribes
         [Required]
         public int TenantId { get; set; }
 
-        /// <summary>
-        /// CreationTime
-        /// </summary>
-        [Required]
-        public DateTime CreationTime { get; set; }
+        ///// <summary>
+        ///// CreationTime
+        ///// </summary>
+        //[Required]
+        //public DateTime CreationTime { get; set; }
 
-        /// <summary>
-        /// CreatorUserId
-        /// </summary>
-        public long? CreatorUserId { get; set; }
+        ///// <summary>
+        ///// CreatorUserId
+        ///// </summary>
+        //public long? CreatorUserId { get; set; }
 
-        /// <summary>
-        /// LastModificationTime
-        /// </summary>
-        public DateTime? LastModificationTime { get; set; }
+        ///// <summary>
+        ///// LastModificationTime
+        ///// </summary>
+        //public DateTime? LastModificationTime { get; set; }
 
-        /// <summary>
-        /// LastModifierUserId
-        /// </summary>
-        public long? LastModifierUserId { get; set; }
+        ///// <summary>
+        ///// LastModifierUserId
+        ///// </summary>
+        //public long? LastModifierUserId { get; set; }
     }
 }
