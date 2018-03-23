@@ -13,10 +13,10 @@ namespace HC.WeChat.WechatAppConfigs
     /// 微信授权配置
     /// </summary>
     [Table("WechatAppConfigs")]
-    public class WechatAppConfig : Entity, IAudited, IMustHaveTenant
+    public class WechatAppConfig : AuditedEntity, IMustHaveTenant
     {
-        public DateTime CreationTime { get; set; }
-        public DateTime? LastModificationTime { get; set; }
+        //public DateTime CreationTime { get; set; }
+        //public DateTime? LastModificationTime { get; set; }
 
         /// <summary>
         /// 微信号名
@@ -90,13 +90,13 @@ namespace HC.WeChat.WechatAppConfigs
 
         /// <summary>
         /// CreatorUserId
-        /// </summary>
-        public long? CreatorUserId { get; set; }
+        ///// </summary>
+        //public long? CreatorUserId { get; set; }
 
 
-        /// <summary>
-        /// LastModifierUserId
-        /// </summary>
-        public long? LastModifierUserId { get; set; }
+        ///// <summary>
+        ///// LastModifierUserId
+        ///// </summary>
+        //public long? LastModifierUserId { get; set; }
     }
 }

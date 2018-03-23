@@ -3,14 +3,18 @@ using HC.WeChat.WechatAppConfigs.Dtos.LTMAutoMapper;
 using HC.WeChat.WechatAppConfigs;
 using System;
 using HC.WeChat.WechatEnums;
+using Abp.Application.Services.Dto;
+using Abp.Domain.Entities;
+using Abp.AutoMapper;
 
 namespace HC.WeChat.WechatAppConfigs.Dtos
 {
-    public class WechatAppConfigEditDto
+    [AutoMapTo(typeof(WechatAppConfig))]
+    public class WechatAppConfigEditDto:AuditedEntityDto<int?>
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION
-        public int? Id { get; set; }
+        //public int? Id { get; set; }
 
         /// <summary>
         /// 微信号名
@@ -75,10 +79,10 @@ namespace HC.WeChat.WechatAppConfigs.Dtos
         public DateTime? NextGettime { get; set; }
 
 
-        /// <summary>
-        /// 租户ID
-        /// </summary>
-        [Required]
-        public int TenantId { get; set; }
+        ///// <summary>
+        ///// 租户ID
+        ///// </summary>
+        //[Required]
+        //public int TenantId { get; set; }
     }
 }

@@ -13,13 +13,15 @@ using HC.WeChat.WechatSubscribes.Dtos;
 using HC.WeChat.WechatSubscribes.DomainServices;
 using HC.WeChat.WechatSubscribes;
 using System;
+using HC.WeChat.Authorization;
 
 namespace HC.WeChat.WechatSubscribes
 {
     /// <summary>
     /// WechatSubscribe应用层服务的接口实现方法
     /// </summary>
-    [AbpAuthorize(WechatSubscribeAppPermissions.WechatSubscribe)]
+    //[AbpAuthorize(WechatSubscribeAppPermissions.WechatSubscribe)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class WechatSubscribeAppService : WeChatAppServiceBase, IWechatSubscribeAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -134,7 +136,7 @@ namespace HC.WeChat.WechatSubscribes
         /// <summary>
         /// 新增WechatSubscribe
         /// </summary>
-        [AbpAuthorize(WechatSubscribeAppPermissions.WechatSubscribe_CreateWechatSubscribe)]
+        //[AbpAuthorize(WechatSubscribeAppPermissions.WechatSubscribe_CreateWechatSubscribe)]
         protected virtual async Task<WechatSubscribeEditDto> CreateWechatSubscribeAsync(WechatSubscribeEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -147,7 +149,7 @@ namespace HC.WeChat.WechatSubscribes
         /// <summary>
         /// 编辑WechatSubscribe
         /// </summary>
-        [AbpAuthorize(WechatSubscribeAppPermissions.WechatSubscribe_EditWechatSubscribe)]
+        //[AbpAuthorize(WechatSubscribeAppPermissions.WechatSubscribe_EditWechatSubscribe)]
         protected virtual async Task UpdateWechatSubscribeAsync(WechatSubscribeEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
@@ -163,7 +165,7 @@ namespace HC.WeChat.WechatSubscribes
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(WechatSubscribeAppPermissions.WechatSubscribe_DeleteWechatSubscribe)]
+        //[AbpAuthorize(WechatSubscribeAppPermissions.WechatSubscribe_DeleteWechatSubscribe)]
         public async Task DeleteWechatSubscribe(EntityDto<Guid> input)
         {
 
@@ -174,7 +176,7 @@ namespace HC.WeChat.WechatSubscribes
         /// <summary>
         /// 批量删除WechatSubscribe的方法
         /// </summary>
-        [AbpAuthorize(WechatSubscribeAppPermissions.WechatSubscribe_BatchDeleteWechatSubscribes)]
+        //[AbpAuthorize(WechatSubscribeAppPermissions.WechatSubscribe_BatchDeleteWechatSubscribes)]
         public async Task BatchDeleteWechatSubscribesAsync(List<Guid> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除
