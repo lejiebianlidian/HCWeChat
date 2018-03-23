@@ -1,4 +1,7 @@
-﻿using Abp.WeChat.Senparc.MessageHandlers;
+﻿using Abp.Domain.Repositories;
+using Abp.WeChat.Senparc.MessageHandlers;
+using HC.WeChat.WechatMessages;
+using HC.WeChat.WechatSubscribes;
 using Senparc.Weixin.MP.Entities.Request;
 using System;
 using System.Collections.Generic;
@@ -10,6 +13,15 @@ namespace HC.WeChat.MessageHandler
 {
     public class MessageHandlerAppServer : WeChatAppServiceBase, IMessageHandlerAppServer
     {
+        private readonly IRepository<WechatMessage, Guid> _wechatmessageRepository;
+        private readonly IRepository<WechatSubscribe, Guid> _wechatsubscribeRepository;
+        public MessageHandlerAppServer(IRepository<WechatMessage, Guid> wechatmessageRepository, 
+            IRepository<WechatSubscribe, Guid> wechatsubscribeRepository)
+        {
+            _wechatmessageRepository = wechatmessageRepository;
+            _wechatsubscribeRepository = wechatsubscribeRepository;
+        }
+
         public async Task<string> MessageHandler(PostModel postModel, Stream msgStream)
         {
             //设置每个人上下文消息储存的最大数量
@@ -18,7 +30,7 @@ namespace HC.WeChat.MessageHandler
             byte[] requestData = Encoding.UTF8.GetBytes(body);
             Stream inputStream = new MemoryStream(requestData);
 
-            var messageHandler = new HCMessageHandler(inputStream, postModel, maxRecordCount);
+            var messageHandler = new HCMessageHandler(_wechatmessageRepository, _wechatsubscribeRepository, AbpSession.TenantId.Value, inputStream, postModel, maxRecordCount);
 
             /* 如果需要添加消息去重功能，只需打开OmitRepeatedMessage功能，SDK会自动处理。
              * 收到重复消息通常是因为微信服务器没有及时收到响应，会持续发送2-5条不等的相同内容的RequestMessage*/
