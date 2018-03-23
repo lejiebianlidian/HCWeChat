@@ -30,9 +30,6 @@ namespace HC.WeChat.Controllers
 
         public WeixinController(IOptions<SenparcWeixinSetting> senparcWeixinSetting, IMessageHandlerAppServer messageHandlerAppServer)
         {
-            var configuration = Configuration.AppConfigurations.Get(WebContentDirectoryFinder.CalculateContentRootFolder());
-            var tenantId = configuration.GetSection("Tenant").GetSection("YiBinTenantId").Value;
-            AbpSession.Use(int.Parse(tenantId), 2);
             _senparcWeixinSetting = senparcWeixinSetting.Value;
             appId = _senparcWeixinSetting.WeixinAppId;
             appSecret = _senparcWeixinSetting.WeixinAppSecret;
@@ -83,7 +80,9 @@ namespace HC.WeChat.Controllers
 
             #endregion
 
-            var returnMsg = _messageHandlerAppServer.MessageHandler(postModel, Request.Body).Result;
+            var tenantId = 2;
+
+            var returnMsg = _messageHandlerAppServer.MessageHandler(postModel, Request.Body, tenantId).Result;
             return Content(returnMsg);
         }
     }

@@ -10,6 +10,6 @@ namespace HC.WeChat.MessageHandler
 {
     public interface IMessageHandlerAppServer : IApplicationService
     {
-        Task<string> MessageHandler(PostModel postModel, Stream msgStream);
+        Task<string> MessageHandler(PostModel postModel, Stream msgStream, int tenantId);
     }
 }
