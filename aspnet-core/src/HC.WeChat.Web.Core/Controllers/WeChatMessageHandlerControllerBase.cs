@@ -1,8 +1,10 @@
 ﻿using HC.WeChat.Configuration;
 using HC.WeChat.MessageHandler;
 using HC.WeChat.Web;
+using HC.WeChat.WechatAppConfigs;
 using HC.WeChat.WechatAppConfigs.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using Senparc.Weixin.MP;
 using Senparc.Weixin.MP.Entities.Request;
 using System;
@@ -16,18 +18,24 @@ namespace HC.WeChat.Controllers
         readonly Func<string> _getRandomFileName = () => DateTime.Now.ToString("yyyyMMdd-HHmmss") + Guid.NewGuid().ToString("n").Substring(0, 6);
 
         protected abstract string TenantConfigName { get; }
-        public int TenantId { get; set; }
+        protected int TenantId { get; set; }
 
-        public WechatAppConfigInfo WechatAppConfig { get; set; }
+        protected WechatAppConfigInfo WechatAppConfig { get; set; }
 
         IMessageHandlerAppServer _messageHandlerAppServer;
+        IWechatAppConfigAppService _wechatAppConfigAppService;
 
-        protected abstract WechatAppConfigInfo WeChatAppConfigSetting();
+        public WeChatMessageHandlerControllerBase(IMessageHandlerAppServer messageHandlerAppServer, IWechatAppConfigAppService wechatAppConfigAppService) : base()
+        {
+            _messageHandlerAppServer = messageHandlerAppServer;
+            _wechatAppConfigAppService = wechatAppConfigAppService;
+            InitAppConfigSetting();
+        }
 
-        public WeChatMessageHandlerControllerBase(IMessageHandlerAppServer messageHandlerAppServer) : base()
+        private void InitAppConfigSetting()
         {
             TenantId = GetTenantId();
-            WechatAppConfig = WeChatAppConfigSetting();
+            WechatAppConfig = _wechatAppConfigAppService.GetWechatAppConfig(TenantId).Result;
         }
 
         /// <summary>
@@ -35,7 +43,7 @@ namespace HC.WeChat.Controllers
         /// </summary>
         [HttpGet]
         [ActionName("Index")]
-        public ActionResult Get(PostModel postModel, string echostr)
+        public virtual ActionResult Get(PostModel postModel, string echostr)
         {
             //Logger.Info("get:" + JObject.FromObject(postModel).ToString() + "token:" + token);
             if (CheckSignature.Check(postModel.Signature, postModel.Timestamp, postModel.Nonce, WechatAppConfig.Token))
@@ -56,9 +64,9 @@ namespace HC.WeChat.Controllers
         /// </summary>
         [HttpPost]
         [ActionName("Index")]
-        public ActionResult Post(PostModel postModel)
+        public virtual ActionResult Post(PostModel postModel)
         {
-            //Logger.Info("post:" + JObject.FromObject(postModel).ToString() + "token:" + token);
+            //Logger.Info("post:" + JObject.FromObject(postModel).ToString() + "TenantId:" + TenantId);
             if (!CheckSignature.Check(postModel.Signature, postModel.Timestamp, postModel.Nonce, WechatAppConfig.Token))
             {
                 return Content("参数错误！");
@@ -86,7 +94,8 @@ namespace HC.WeChat.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format("租户ID配置异常 Exception：{0}", ex.Message));
+                Logger.ErrorFormat("租户ID配置异常 Exception：{0}", ex.Message);
+                return 0;
             }
            
         }

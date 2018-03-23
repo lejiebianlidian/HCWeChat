@@ -25,5 +25,7 @@ namespace HC.WeChat.WechatAppConfigs.Dtos
         public int TenantId { get; set; }
         public long? CreatorUserId { get; set; }
         public long? LastModifierUserId { get; set; }
+
+        public string EncodingAESKey { get; set; }
     }
 }

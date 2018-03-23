@@ -13,6 +13,8 @@ using HC.WeChat.WechatAppConfigs.Dtos;
 using HC.WeChat.WechatAppConfigs.DomainServices;
 using HC.WeChat.WechatAppConfigs;
 using HC.WeChat.Authorization;
+using Abp.Auditing;
+using System.Linq;
 
 namespace HC.WeChat.WechatAppConfigs
 {
@@ -182,6 +184,20 @@ namespace HC.WeChat.WechatAppConfigs
             await _wechatappconfigRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        /// <summary>
+        /// 通过租户ID获取微信配置
+        /// </summary>
+        [AbpAllowAnonymous]
+        [DisableAuditing]
+        public Task<WechatAppConfigInfo> GetWechatAppConfig(int tenantId)
+        {
+            var info = _wechatappconfigRepository.GetAll().Where(w => w.TenantId == tenantId).FirstOrDefault();
+            if (info != null)
+            {
+                return Task.FromResult(info.MapTo<WechatAppConfigInfo>());
+            }
+            return Task.FromResult(new WechatAppConfigInfo());
+        }
     }
 }
 

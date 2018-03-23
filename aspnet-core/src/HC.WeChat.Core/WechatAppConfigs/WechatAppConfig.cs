@@ -53,6 +53,12 @@ namespace HC.WeChat.WechatAppConfigs
         public string AppSecret { get; set; }
 
         /// <summary>
+        /// 微信EncodingAESKey
+        /// </summary>
+        [StringLength(500)]
+        public string EncodingAESKey { get; set; }
+
+        /// <summary>
         /// 微信二维码图片URL
         /// </summary>
         [StringLength(250)]

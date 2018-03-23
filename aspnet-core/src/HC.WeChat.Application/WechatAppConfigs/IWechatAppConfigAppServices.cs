@@ -55,5 +55,10 @@ namespace HC.WeChat.WechatAppConfigs
         /// 批量删除WechatAppConfig
         /// </summary>
         Task BatchDeleteWechatAppConfigsAsync(List<int> input);
+
+        /// <summary>
+        /// 通过租户ID获取微信配置
+        /// </summary>
+        Task<WechatAppConfigInfo> GetWechatAppConfig(int tenantId);
     }
 }
