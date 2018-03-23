@@ -31,13 +31,13 @@ namespace HC.WeChat.MessageHandler
 
         private WechatSubscribe GetWechatSubscribe()
         {
-            return _wechatsubscribeRepository.GetAllIncluding(w => w.TenantId == _tenantId).FirstOrDefault();
+            return _wechatsubscribeRepository.GetAll().Where(w => w.TenantId == _tenantId).FirstOrDefault();
         }
 
         private List<WechatMessage> GetWechatMessageList()
         {
             //先处理文字消息
-            return _wechatmessageRepository.GetAllIncluding(w => w.TenantId == _tenantId && w.MsgType == WechatEnums.MsgTypeEnum.文字消息).ToList();
+            return _wechatmessageRepository.GetAll().Where(w => w.TenantId == _tenantId && w.MsgType == WechatEnums.MsgTypeEnum.文字消息).ToList();
         }
 
         public override void ConfigurationMessageInfo(RequestMessageText requestMessage)

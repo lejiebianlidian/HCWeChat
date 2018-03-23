@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Auditing;
+using HC.WeChat.Configuration;
 using HC.WeChat.Sessions.Dto;
 using HC.WeChat.SignalR;
+using HC.WeChat.Web;
 
 namespace HC.WeChat.Sessions
 {
-    public class SessionAppService : WeChatAppServiceBase, ISessionAppService
+    public class SessionAppService : WeChatAppServiceBase
     {
         [DisableAuditing]
         public async Task<GetCurrentLoginInformationsOutput> GetCurrentLoginInformations()

@@ -10,7 +10,7 @@ using Abp.AutoMapper;
 namespace HC.WeChat.WechatAppConfigs.Dtos
 {
     [AutoMapTo(typeof(WechatAppConfig))]
-    public class WechatAppConfigEditDto:AuditedEntityDto<int?>
+    public class WechatAppConfigEditDto : AuditedEntityDto<int?>
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION
@@ -77,6 +77,8 @@ namespace HC.WeChat.WechatAppConfigs.Dtos
         public string AccessToken { get; set; }
         public int? ExpiresIn { get; set; }
         public DateTime? NextGettime { get; set; }
+
+        public string EncodingAESKey { get; set; }
 
 
         ///// <summary>
