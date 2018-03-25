@@ -6,6 +6,15 @@ using HC.WeChat.MultiTenancy;
 using HC.WeChat.WechatAppConfigs;
 using HC.WeChat.WechatMessages;
 using HC.WeChat.WechatSubscribes;
+using HC.WeChat.Activities;
+using HC.WeChat.ActivityBanquets;
+using HC.WeChat.ActivityDeliveryInfos;
+using HC.WeChat.ActivityForms;
+using HC.WeChat.ActivityFormLogs;
+using HC.WeChat.ActivityGoodses;
+using HC.WeChat.Employees;
+using HC.WeChat.Retailers;
+using HC.WeChat.WeChatUsers;
 
 namespace HC.WeChat.EntityFrameworkCore
 {
@@ -24,6 +33,25 @@ namespace HC.WeChat.EntityFrameworkCore
         public virtual DbSet<WechatMessage> WechatMessages { get; set; }
 
         public virtual DbSet<WechatSubscribe> WechatSubscribes { get; set; }
+
+        public virtual DbSet<Activity> Activities { get; set; }
+
+        public virtual DbSet<ActivityBanquet> ActivityBanquets { get; set; }
+
+        public virtual DbSet<ActivityDeliveryInfo> ActivityDeliveryInfos { get; set; }
+
+        public virtual DbSet<ActivityForm> ActivityForms { get; set; }
+
+        public virtual DbSet<ActivityFormLog> ActivityFormLogs { get; set; }
+
+        public virtual DbSet<ActivityGoods> ActivityGoodses { get; set; }
+
+        public virtual DbSet<Employee> Employees { get; set; }
+
+        public virtual DbSet<Retailer> Retailers { get; set; }
+
+        public virtual DbSet<WeChatUser> WeChatUsers { get; set; }
+
 
     }
 }
