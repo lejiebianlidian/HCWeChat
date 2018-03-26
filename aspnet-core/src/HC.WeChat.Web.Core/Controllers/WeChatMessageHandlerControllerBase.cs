@@ -16,9 +16,8 @@ namespace HC.WeChat.Controllers
     public abstract class WeChatMessageHandlerControllerBase : WeChatControllerBase
     {
         readonly Func<string> _getRandomFileName = () => DateTime.Now.ToString("yyyyMMdd-HHmmss") + Guid.NewGuid().ToString("n").Substring(0, 6);
-
-        protected abstract string TenantConfigName { get; }
-        protected int TenantId { get; set; }
+        protected abstract int GetTenantId();
+        private int TenantId { get; set; }
 
         protected WechatAppConfigInfo WechatAppConfig { get; set; }
 
@@ -34,7 +33,7 @@ namespace HC.WeChat.Controllers
 
         private void InitAppConfigSetting()
         {
-            TenantId = GetTenantId();
+            this.TenantId = GetTenantId();
             WechatAppConfig = _wechatAppConfigAppService.GetWechatAppConfig(TenantId).Result;
         }
 
@@ -66,6 +65,10 @@ namespace HC.WeChat.Controllers
         [ActionName("Index")]
         public virtual ActionResult Post(PostModel postModel)
         {
+            if (TenantId == 0)
+            {
+                InitAppConfigSetting();
+            }
             //Logger.Info("post:" + JObject.FromObject(postModel).ToString() + "TenantId:" + TenantId);
             if (!CheckSignature.Check(postModel.Signature, postModel.Timestamp, postModel.Nonce, WechatAppConfig.Token))
             {
@@ -82,22 +85,6 @@ namespace HC.WeChat.Controllers
 
             var returnMsg = _messageHandlerAppServer.MessageHandler(postModel, Request.Body, TenantId).Result;
             return Content(returnMsg);
-        }
-
-        protected virtual int GetTenantId()
-        {
-            try
-            {
-                var configuration = AppConfigurations.Get(WebContentDirectoryFinder.CalculateContentRootFolder());
-                var tenantId = configuration.GetSection("Tenant").GetSection(TenantConfigName).Value;
-                return int.Parse(tenantId);
-            }
-            catch (Exception ex)
-            {
-                Logger.ErrorFormat("租户ID配置异常 Exception：{0}", ex.Message);
-                return 0;
-            }
-           
         }
     }
 }

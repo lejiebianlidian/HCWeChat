@@ -18,6 +18,7 @@ using Senparc.Weixin.Entities;
 using Senparc.Weixin.Threads;
 using Microsoft.Extensions.Options;
 using Senparc.Weixin.MP.Containers;
+using HC.WeChat.Models.WeChat;
 
 #if FEATURE_SIGNALR
 using Microsoft.AspNet.SignalR;
@@ -54,6 +55,7 @@ namespace HC.WeChat.Web.Host.Startup
 
             //添加Senparc.Weixin配置文件（内容可以根据需要对应修改）
             services.Configure<SenparcWeixinSetting>(_appConfiguration.GetSection("SenparcWeixinSetting"));
+            services.Configure<WeChatTenantSetting>(_appConfiguration.GetSection("WeChatTenantSetting"));
 
 #if FEATURE_SIGNALR_ASPNETCORE
             services.AddSignalR();
