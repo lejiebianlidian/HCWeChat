@@ -60,5 +60,11 @@ namespace HC.WeChat.WechatAppConfigs
         /// 通过租户ID获取微信配置
         /// </summary>
         Task<WechatAppConfigInfo> GetWechatAppConfig(int tenantId);
+
+        /// <summary>
+        /// 通过租户id获取微信配置
+        /// </summary>
+        /// <returns></returns>
+        Task<WechatAppConfigListDto> GetTenantWechatAppConfigAsync();
     }
 }

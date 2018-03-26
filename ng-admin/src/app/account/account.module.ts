@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 
 import { LoginService } from './login/login.service';
 import { AppSessionService } from '../shared/session/app-session.service';
+import { TenantComponent } from './tenant/tenant.component';
 
 @NgModule({
     imports: [
@@ -34,9 +35,10 @@ import { AppSessionService } from '../shared/session/app-session.service';
         AccountComponent,
         //TenantChangeComponent,
         //TenantChangeModalComponent,
-        LoginComponent//,
+        LoginComponent,
         //RegisterComponent,
         //AccountLanguagesComponent
+        TenantComponent
     ],
     providers: [
         LoginService,

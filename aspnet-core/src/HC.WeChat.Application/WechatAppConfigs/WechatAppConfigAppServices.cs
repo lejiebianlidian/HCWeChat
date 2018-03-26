@@ -198,6 +198,17 @@ namespace HC.WeChat.WechatAppConfigs
             }
             return Task.FromResult(new WechatAppConfigInfo());
         }
+
+        /// <summary>
+        /// 通过租户id获取微信配置
+        /// </summary>
+        /// <returns></returns>
+        public async Task<WechatAppConfigListDto> GetTenantWechatAppConfigAsync()
+        {
+            var tenantId = AbpSession.TenantId;
+            var entity = _wechatappconfigRepository.GetAll().Where(w => w.TenantId == tenantId).FirstOrDefault();
+            return await Task.FromResult( entity.MapTo<WechatAppConfigListDto>());
+        }
     }
 }
 

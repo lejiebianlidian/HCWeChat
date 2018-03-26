@@ -1,13 +1,24 @@
-<div class="wrapper" >
+<div class="wrapper">
     <div #cardBody class="abs-center mt-lg width-lg">
+        <span>
+            {{l("当前租户")}}:
+            <span *ngIf="tenancyName" title="{{name}}">
+                <strong>{{tenancyName}}</strong>
+            </span>
+            <span *ngIf="!tenancyName">{{l("不存在")}}</span> (
+            <a href="javascript:void();" (click)="showChangeModal()">{{l("切换租户")}}</a>)
+            <tenant-change-modal #tenantChangeModal></tenant-change-modal>
+        </span>
         <nz-card [nzTitle]="nzTitle" [nzBordered]="false" class="ant-card__primary ant-card__title-img">
             <ng-template #nzTitle>
-                <div class="text-center" style="color:white; font-weight:bold;"><img src="./assets/img/logo.svg" style="height:20px;"> 达州烟草信息化平台</div>
+                <div class="text-center" style="color:white; font-weight:bold;">
+                    <img src="./assets/img/logo.svg" style="height:20px;"> 达州烟草信息化平台</div>
             </ng-template>
             <form nz-form [formGroup]="valForm" #loginForm="ngForm" method="post" id="LoginForm" (ngSubmit)="login()" role="form">
                 <div nz-form-item>
                     <div nz-form-control [nzValidateStatus]="valForm.controls.userNameOrEmailAddress">
-                        <nz-input formControlName="userNameOrEmailAddress" [nzPlaceHolder]="'用户名或邮箱地址'" [(ngModel)]="loginService.authenticateModel.userNameOrEmailAddress" [nzSize]="'large'">
+                        <nz-input formControlName="userNameOrEmailAddress" [nzPlaceHolder]="'用户名或邮箱地址'" [(ngModel)]="loginService.authenticateModel.userNameOrEmailAddress"
+                            [nzSize]="'large'">
                             <ng-template #suffix>
                                 <i class="anticon anticon-user"></i>
                             </ng-template>
@@ -17,7 +28,8 @@
                 </div>
                 <div nz-form-item>
                     <div nz-form-control [nzValidateStatus]="valForm.controls.password">
-                        <nz-input formControlName="password" [(ngModel)]="loginService.authenticateModel.password" [nzPlaceHolder]="'密码'" [nzType]="'password'" [nzSize]="'large'">
+                        <nz-input formControlName="password" [(ngModel)]="loginService.authenticateModel.password" [nzPlaceHolder]="'密码'" [nzType]="'password'"
+                            [nzSize]="'large'">
                             <ng-template #suffix>
                                 <i class="anticon anticon-lock"></i>
                             </ng-template>
@@ -43,6 +55,6 @@
                     </div>
                 </div>
             </form>
-        </nz-card>    
+        </nz-card>
     </div>
 </div>

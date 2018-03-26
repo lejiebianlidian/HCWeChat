@@ -6,6 +6,7 @@ export class AuthSetting {
     appType: number;
     appId: string;
     appSecret: string;
+    encodingAESKey:string;
     qrCodeUrl: string;
     token: string;
     accessToken: string;
@@ -66,6 +67,7 @@ export class IAuthSetting {
     appType: number;
     appId: string;
     appSecret: string;
+    encodingAESKey:string;
     qrCodeUrl: string;
     token: string;
     accessToken: string;
@@ -73,4 +75,5 @@ export class IAuthSetting {
     nextGettime: Date;
     creatorUserId: number;
     lastModifierUserId: number;
+    
 }
