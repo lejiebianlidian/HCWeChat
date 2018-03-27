@@ -13,7 +13,7 @@ namespace HC.WeChat.WeChatUsers.Dtos
         public string NickName { get; set; }
         public string OpenId { get; set; }
         public UserTypeEnum UserType { get; set; }
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
         public string UserName { get; set; }
         public BindStatusEnum BindStatus { get; set; }
         public DateTime? BindTime { get; set; }

@@ -1234,12 +1234,12 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("QRCodeUrl ").HasMaxLength(250);
                 b.Property<string>("Token").IsRequired().HasMaxLength(250);
                 b.Property<string>("AccessToken").HasMaxLength(255);
-                b.Property<int>("ExpiresIn");
-                b.Property<DateTime>("NextGettime");
+                b.Property<int?>("ExpiresIn");
+                b.Property<DateTime?>("NextGettime");
                 b.Property<int>("TenantId").IsRequired();
                 b.Property<DateTime>("CreationTime").IsRequired();
-                b.Property<long>("CreatorUserId");
-                b.Property<DateTime>("LastModificationTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
                 b.Property<long>("LastModifierUserId"); b.HasKey("Id");
 
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
@@ -1256,8 +1256,8 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("Content").IsRequired();
                 b.Property<int>("TenantId").IsRequired();
                 b.Property<DateTime>("CreationTime").IsRequired();
-                b.Property<long>("CreatorUserId");
-                b.Property<DateTime>("LastModificationTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
                 b.Property<long>("LastModifierUserId"); b.HasKey("Id");
 
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
@@ -1272,8 +1272,8 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("Content").IsRequired();
                 b.Property<int>("TenantId").IsRequired();
                 b.Property<DateTime>("CreationTime").IsRequired();
-                b.Property<long>("CreatorUserId");
-                b.Property<DateTime>("LastModificationTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
                 b.Property<long>("LastModifierUserId"); b.HasKey("Id");
 
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
@@ -1288,17 +1288,17 @@ namespace HC.WeChat.Migrations
                 b.Property<DateTime>("EndTime").IsRequired();
                 b.Property<int>("ActivityType").IsRequired();
                 b.Property<string>("Content").IsRequired();
-                b.Property<int>("MUnfinished");
-                b.Property<int>("RUnfinished");
-                b.Property<int>("TenantId");
+                b.Property<int?>("MUnfinished");
+                b.Property<int?>("RUnfinished");
+                b.Property<int?>("TenantId");
                 b.Property<bool>("IsDeleted").IsRequired();
                 b.Property<DateTime>("CreationTime").IsRequired();
-                b.Property<long>("CreatorUserId");
-                b.Property<DateTime>("LastModificationTime");
-                b.Property<long>("LastModifierUserId");
-                b.Property<DateTime>("DeletionTime");
-                b.Property<long>("DeleterUserId");
-                b.Property<DateTime>("PublishTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
+                b.Property<long?>("LastModifierUserId");
+                b.Property<DateTime?>("DeletionTime");
+                b.Property<long?>("DeleterUserId");
+                b.Property<DateTime?>("PublishTime");
                 b.Property<int>("Status").IsRequired();
 
                 b.HasKey("Id");
@@ -1394,11 +1394,11 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("DiscountDesc");
                 b.Property<bool>("IsDeleted").IsRequired();
                 b.Property<DateTime>("CreationTime").IsRequired();
-                b.Property<long>("CreatorUserId");
-                b.Property<DateTime>("LastModificationTime");
-                b.Property<long>("LastModifierUserId");
-                b.Property<DateTime>("DeletionTime");
-                b.Property<long>("DeleterUserId");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
+                b.Property<long?>("LastModifierUserId");
+                b.Property<DateTime?>("DeletionTime");
+                b.Property<long?>("DeleterUserId");
 
                 b.HasKey("Id");
 
@@ -1417,14 +1417,14 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("Company").HasMaxLength(200);
                 b.Property<string>("Department").HasMaxLength(200);
                 b.Property<bool>("IsAction").IsRequired();
-                b.Property<int>("TenantId");
+                b.Property<int?>("TenantId");
                 b.Property<bool>("IsDeleted").IsRequired();
                 b.Property<DateTime>("CreationTime").IsRequired();
-                b.Property<long>("CreatorUserId");
-                b.Property<DateTime>("LastModificationTime");
-                b.Property<long>("LastModifierUserId");
-                b.Property<DateTime>("DeletionTime");
-                b.Property<long>("DeleterUserId");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
+                b.Property<long?>("LastModifierUserId");
+                b.Property<DateTime?>("DeletionTime");
+                b.Property<long?>("DeleterUserId");
 
                 b.HasKey("Id");
 
@@ -1446,22 +1446,22 @@ namespace HC.WeChat.Migrations
                 b.Property<bool>("IsAction").IsRequired();
                 b.Property<string>("BranchCompany").HasMaxLength(200);
                 b.Property<string>("Department").HasMaxLength(100);
-                b.Property<Guid>("EmployeeId");
+                b.Property<Guid?>("EmployeeId");
                 b.Property<string>("Manager").HasMaxLength(50);
-                b.Property<int>("OrderMode");
-                b.Property<int>("TerminalType");
+                b.Property<int?>("OrderMode");
+                b.Property<int?>("TerminalType");
                 b.Property<string>("BusinessType").HasMaxLength(100);
-                b.Property<int>("Scale");
-                b.Property<int>("MarketType");
+                b.Property<int?>("Scale");
+                b.Property<int?>("MarketType");
                 b.Property<string>("DeliveryLine").HasMaxLength(500);
-                b.Property<int>("TenantId");
+                b.Property<int?>("TenantId");
                 b.Property<bool>("IsDeleted").IsRequired();
                 b.Property<DateTime>("CreationTime").IsRequired();
-                b.Property<long>("CreatorUserId");
-                b.Property<DateTime>("LastModificationTime");
-                b.Property<long>("LastModifierUserId");
-                b.Property<DateTime>("DeletionTime");
-                b.Property<long>("DeleterUserId");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
+                b.Property<long?>("LastModifierUserId");
+                b.Property<DateTime?>("DeletionTime");
+                b.Property<long?>("DeleterUserId");
 
                 b.HasKey("Id");
 
@@ -1476,12 +1476,12 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("NickName").IsRequired().HasMaxLength(50);
                 b.Property<string>("OpenId").IsRequired().HasMaxLength(50);
                 b.Property<int>("UserType").IsRequired();
-                b.Property<Guid>("UserId").IsRequired();
+                b.Property<Guid?>("UserId");
                 b.Property<string>("UserName").IsRequired().HasMaxLength(50);
                 b.Property<int>("BindStatus").IsRequired();
-                b.Property<DateTime>("BindTime");
-                b.Property<int>("TenantId");
-                b.Property<DateTime>("UnBindTime");
+                b.Property<DateTime?>("BindTime");
+                b.Property<int?>("TenantId");
+                b.Property<DateTime?>("UnBindTime");
 
                 b.HasKey("Id");
 

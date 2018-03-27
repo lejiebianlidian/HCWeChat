@@ -14,5 +14,15 @@ namespace HC.WeChat.WeChatUsers.DomainServices
         /// </summary>
         void InitWeChatUser();
 
+        Task<WeChatUser> GetWeChatUser(string openId, int? tenantId);
+
+        Task BindWeChatUserAsync(WeChatUser user);
+
+        Task UnBindWeChatUserAsync(string openId, int? tenantId);
+
+        Task UnsubscribeAsync(string openId, int? tenantId);
+
+        Task SubscribeAsync(string openId, string nickName, int? tenantId);
+
     }
 }
