@@ -6,6 +6,7 @@ using HC.WeChat.WechatAppConfigs.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Senparc.Weixin.MP;
+using Senparc.Weixin.MP.Containers;
 using Senparc.Weixin.MP.Entities.Request;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace HC.WeChat.Controllers
     public abstract class WeChatMessageHandlerControllerBase : WeChatControllerBase
     {
         readonly Func<string> _getRandomFileName = () => DateTime.Now.ToString("yyyyMMdd-HHmmss") + Guid.NewGuid().ToString("n").Substring(0, 6);
-        protected abstract int GetTenantId();
+        protected abstract int? GetTenantId();
         private int? TenantId { get; set; }
 
         protected WechatAppConfigInfo WechatAppConfig { get; set; }
@@ -28,13 +29,14 @@ namespace HC.WeChat.Controllers
         {
             _messageHandlerAppServer = messageHandlerAppServer;
             _wechatAppConfigAppService = wechatAppConfigAppService;
-            InitAppConfigSetting();
+            //InitAppConfigSetting();
         }
 
-        private void InitAppConfigSetting()
+        protected virtual void InitAppConfigSetting()
         {
-            this.TenantId = GetTenantId();
+            TenantId = GetTenantId();
             WechatAppConfig = _wechatAppConfigAppService.GetWechatAppConfig(TenantId).Result;
+            WeChatRegister();
         }
 
         /// <summary>
@@ -65,7 +67,7 @@ namespace HC.WeChat.Controllers
         [ActionName("Index")]
         public virtual ActionResult Post(PostModel postModel)
         {
-            InitAppConfigSetting();
+            //InitAppConfigSetting();
             //Logger.Info("post:" + JObject.FromObject(postModel).ToString() + "TenantId:" + TenantId);
             if (!CheckSignature.Check(postModel.Signature, postModel.Timestamp, postModel.Nonce, WechatAppConfig.Token))
             {
@@ -82,6 +84,12 @@ namespace HC.WeChat.Controllers
 
             var returnMsg = _messageHandlerAppServer.MessageHandler(postModel, Request.Body, TenantId).Result;
             return Content(returnMsg);
+        }
+
+        protected virtual void WeChatRegister()
+        {
+            //注册公众号
+            AccessTokenContainer.Register(WechatAppConfig.AppId, WechatAppConfig.AppSecret);
         }
     }
 }

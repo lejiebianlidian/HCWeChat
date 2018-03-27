@@ -15,6 +15,7 @@ using HC.WeChat.WechatAppConfigs;
 using HC.WeChat.Authorization;
 using Abp.Auditing;
 using System.Linq;
+using Abp.Domain.Uow;
 
 namespace HC.WeChat.WechatAppConfigs
 {
@@ -29,16 +30,21 @@ namespace HC.WeChat.WechatAppConfigs
         ////ECC/ END CUSTOM CODE SECTION
         private readonly IRepository<WechatAppConfig, int> _wechatappconfigRepository;
         private readonly IWechatAppConfigManager _wechatappconfigManager;
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
+
 
         /// <summary>
         /// 构造函数
         /// </summary>
         public WechatAppConfigAppService(IRepository<WechatAppConfig, int> wechatappconfigRepository
-      , IWechatAppConfigManager wechatappconfigManager
+        , IWechatAppConfigManager wechatappconfigManager
+        , IUnitOfWorkManager unitOfWorkManager
         )
         {
             _wechatappconfigRepository = wechatappconfigRepository;
             _wechatappconfigManager = wechatappconfigManager;
+            _unitOfWorkManager = unitOfWorkManager;
+
         }
 
         /// <summary>
@@ -189,14 +195,19 @@ namespace HC.WeChat.WechatAppConfigs
         /// </summary>
         [AbpAllowAnonymous]
         [DisableAuditing]
+        [UnitOfWork]
         public Task<WechatAppConfigInfo> GetWechatAppConfig(int? tenantId)
         {
-            var info = _wechatappconfigRepository.GetAll().Where(w => w.TenantId == tenantId).FirstOrDefault();
-            if (info != null)
+            using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
-                return Task.FromResult(info.MapTo<WechatAppConfigInfo>());
+                var info = _wechatappconfigRepository.GetAll().Where(w => w.TenantId == tenantId).FirstOrDefault();
+                if (info != null)
+                {
+                    return Task.FromResult(info.MapTo<WechatAppConfigInfo>());
+                }
+                return Task.FromResult(new WechatAppConfigInfo());
             }
-            return Task.FromResult(new WechatAppConfigInfo());
+
         }
 
         /// <summary>
