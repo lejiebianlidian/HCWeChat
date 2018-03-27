@@ -49,6 +49,9 @@ namespace HC.WeChat.WechatMessages
         {
 
             var query = _wechatmessageRepository.GetAll();
+            if (!string.IsNullOrEmpty(input.Filter)) {
+                query = query.Where(input.Filter);
+            }
             //TODO:根据传入的参数添加过滤条件
             var wechatmessageCount = await query.CountAsync();
 

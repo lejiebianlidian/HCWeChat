@@ -1,11 +1,7 @@
-<form nz-form [formGroup]="form" *ngIf="modalVisible" id="frm_create_tenant" (ngSubmit)="save()">
-    <nz-modal [nzVisible]="modalVisible" [nzTitle]="'关键字回复编辑'" [nzConfirmLoading]="loading" [nzContent]="modalContent" [nzFooter]="modalFooter"
+<form nz-form [formGroup]="form" *ngIf="modalVisible" id="frm_create_message" (ngSubmit)="save()">
+    <nz-modal [nzVisible]="modalVisible" [nzTitle]="'创建关键字回复'" [nzConfirmLoading]="loading" [nzContent]="modalContent" [nzFooter]="modalFooter"
         (nzOnCancel)="handleCancel($event)">
         <ng-template #modalContent>
-
-            <ng-template #nzTabHeading>
-                关键字回复
-            </ng-template>
             <fieldset>
                 <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSm]="4">
@@ -22,19 +18,20 @@
                         <label for="matchMode" nz-form-item-required>匹配模式</label>
                     </div>
                     <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('matchMode')">
-                            <nz-radio-group formControlName="matchMode"  [(ngModel)]="messages.matchMode" class="mb-md">
-                                    <label nz-radio [nzValue]="1"><span>精准匹配</span></label>
-                                    <label nz-radio [nzValue]="2"><span>模糊匹配</span></label>
-                            </nz-radio-group>
-                        <!-- <nz-input formControlName="matchMode" [(ngModel)]="messages.matchMode" [nzId]="'matchMode'"></nz-input>
-                        <div nz-form-explain *ngIf="getFormControl('matchMode').dirty&&getFormControl('matchMode').hasError('maxlength')">字符长度小于等于128</div>
-                        <div nz-form-explain *ngIf="getFormControl('matchMode').dirty&&getFormControl('matchMode').hasError('required')">请输入名称</div> -->
+                        <nz-radio-group formControlName="matchMode" [(ngModel)]="messages.matchMode" class="mb-md">
+                            <label nz-radio [nzValue]="1">
+                                <span>精准匹配</span>
+                            </label>
+                            <label nz-radio [nzValue]="2">
+                                <span>模糊匹配</span>
+                            </label>
+                        </nz-radio-group>
                     </div>
                 </div>
                 <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('content')">
-                        <div nz-form-label nz-col [nzSm]="4">
-                                <label for="content" nz-form-item-required>回复内容</label>
-                            </div>
+                    <div nz-form-label nz-col [nzSm]="4">
+                        <label for="content" nz-form-item-required>回复内容</label>
+                    </div>
                     <nz-input nzType="textarea" nzRows="4" formControlName="content" [(ngModel)]="messages.content" [nzId]="'content'"></nz-input>
                     <div nz-form-explain *ngIf="getFormControl('content').dirty&&getFormControl('content').hasError('required')">内容不能为空</div>
                 </div>
@@ -42,7 +39,7 @@
         </ng-template>
         <ng-template #modalFooter>
             <button nz-button [nzType]="'default'" [nzSize]="'large'" type="button" (click)="handleCancel($event)">
-                取消
+                {{l("取消")}}
             </button>
             <button nz-button [nzType]="'primary'" [nzSize]="'large'" type="submit" [nzLoading]="isConfirmLoading">
                 {{l("保存")}}
