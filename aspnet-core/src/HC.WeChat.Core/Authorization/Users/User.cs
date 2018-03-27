@@ -28,5 +28,7 @@ namespace HC.WeChat.Authorization.Users
 
             return user;
         }
+
+        public virtual Guid? EmployeeId { get; set; }
     }
 }

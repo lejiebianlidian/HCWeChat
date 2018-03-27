@@ -1234,7 +1234,7 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("AccessToken").HasMaxLength(255);
                 b.Property<int>("ExpiresIn");
                 b.Property<DateTime>("NextGettime");
-                b.Property<int>("TenantId").IsRequired();
+                b.Property<int>("TenantId");
                 b.Property<DateTime>("CreationTime").IsRequired();
                 b.Property<long>("CreatorUserId");
                 b.Property<DateTime>("LastModificationTime");
@@ -1252,7 +1252,7 @@ namespace HC.WeChat.Migrations
                 b.Property<int>("MatchMode").IsRequired();
                 b.Property<int>("MsgType").IsRequired();
                 b.Property<string>("Content").IsRequired();
-                b.Property<int>("TenantId").IsRequired();
+                b.Property<int>("TenantId");
                 b.Property<DateTime>("CreationTime").IsRequired();
                 b.Property<long>("CreatorUserId");
                 b.Property<DateTime>("LastModificationTime");
@@ -1267,7 +1267,7 @@ namespace HC.WeChat.Migrations
                 b.Property<Guid>("Id").ValueGeneratedOnAdd();
                 b.Property<int>("MsgType").IsRequired();
                 b.Property<string>("Content").IsRequired();
-                b.Property<int>("TenantId").IsRequired();
+                b.Property<int>("TenantId");
                 b.Property<DateTime>("CreationTime").IsRequired();
                 b.Property<long>("CreatorUserId");
                 b.Property<DateTime>("LastModificationTime");

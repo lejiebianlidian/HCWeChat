@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using Abp.Auditing;
 using Abp.Authorization.Users;
@@ -43,5 +44,7 @@ namespace HC.WeChat.Users.Dto
                 RoleNames = new string[0];
             }
         }
+
+        public Guid? EmployeeId { get; set; }
     }
 }

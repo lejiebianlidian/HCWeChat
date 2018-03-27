@@ -13,7 +13,7 @@ namespace HC.WeChat.WechatAppConfigs
     /// 微信授权配置
     /// </summary>
     [Table("WechatAppConfigs")]
-    public class WechatAppConfig : AuditedEntity, IMustHaveTenant
+    public class WechatAppConfig : AuditedEntity, IMayHaveTenant
     {
         //public DateTime CreationTime { get; set; }
         //public DateTime? LastModificationTime { get; set; }
@@ -91,7 +91,7 @@ namespace HC.WeChat.WechatAppConfigs
         /// 租户ID
         /// </summary>
         [Required]
-        public int TenantId { get; set; }
+        public int? TenantId { get; set; }
 
 
         /// <summary>

@@ -13,7 +13,7 @@ namespace HC.WeChat.WechatSubscribes
     /// 微信关注回复
     /// </summary>
     [Table("WechatSubscribes")]
-    public class WechatSubscribe : AuditedEntity<Guid>, IMustHaveTenant
+    public class WechatSubscribe : AuditedEntity<Guid>, IMayHaveTenant
     {
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace HC.WeChat.WechatSubscribes
         /// 租户ID
         /// </summary>
         [Required]
-        public int TenantId { get; set; }
+        public int? TenantId { get; set; }
 
         ///// <summary>
         ///// CreationTime

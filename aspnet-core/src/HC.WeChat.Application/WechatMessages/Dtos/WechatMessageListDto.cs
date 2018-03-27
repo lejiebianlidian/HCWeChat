@@ -14,7 +14,7 @@ namespace HC.WeChat.WechatMessages.Dtos
         public MatchModeEnum MatchMode { get; set; }
         public MsgTypeEnum MsgType { get; set; }
         public string Content { get; set; }
-        public int TenantId { get; set; }
+        public int? TenantId { get; set; }
         public DateTime CreationTime { get; set; }
         public long? CreatorUserId { get; set; }
         public DateTime? LastModificationTime { get; set; }
