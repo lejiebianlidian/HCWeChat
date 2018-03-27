@@ -1,13 +1,13 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
-
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
-
+import { BrowserModule } from '@angular/platform-browser';
+import { Camera } from '@ionic-native/camera';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { KlCoreModule } from 'kl/core';
+import { MyApp } from './app.component';
+import { CoreModule } from './core';
+import { PagesModule } from '../pages/pages.module';
 
 @NgModule({
   declarations: [
@@ -19,18 +19,20 @@ import { KlCoreModule } from 'kl/core';
     IonicModule.forRoot(MyApp, {
       backButtonText: '',
       tabsHideOnSubPages: true,
-      model: 'ios'
+      mode: 'ios'
     }),
-    KlCoreModule
+    CoreModule,
+    PagesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp
   ],
   providers: [
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    Camera,
     StatusBar,
-    SplashScreen,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    SplashScreen
   ]
 })
 export class AppModule { }

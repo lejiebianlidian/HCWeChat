@@ -1,6 +1,8 @@
 {
-  "name": "ionic-seed3",
+  "name": "ykseed",
   "app_id": "",
   "type": "ionic-angular",
-  "integrations": {}
+  "integrations": {
+    "cordova": {}
+  }
 }

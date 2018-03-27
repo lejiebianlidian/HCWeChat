@@ -1,20 +1,18 @@
 import { Component, ViewChild } from '@angular/core';
-import { Tabs, IonicPage } from 'ionic-angular';
+import { Tabs } from 'ionic-angular';
+import { HomePage } from '../home/home';
+import { AboutPage } from '../about/about';
+import { ContactPage } from '../contact/contact';
 
-@IonicPage({
-  name: 'maintabs'
-})
 @Component({
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
-
-  tab1Root = 'home';
-  tab2Root = 'about';
-  tab3Root = 'contact';
-
+  tab1Root: any = HomePage;
+  tab2Root: any = AboutPage;
+  tab3Root: any = ContactPage;
   @ViewChild('mainTabs') tabs: Tabs;
-  constructor() {
 
+  constructor() {
   }
 }

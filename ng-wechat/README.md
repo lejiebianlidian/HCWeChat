@@ -32,11 +32,11 @@
 
 # Known Issues
 
-## cnpm install后，Lazy Loading的页面无法启动。
-* 原因：cnpm 镜像问题
-* 解决方法：
-    1. 目录下的node_modules; 
-    2. npm install
+## npm install时，node-sass rebuild 卡
+* 原因：node-sass依赖node-gyp，而安装node-gyp时需要从node下载头文件，非常慢。
+* 解决方法：使用[cnpm](https://cnpmjs.org/)
+    1. 删除目录下的node_modules; 
+    2. cnpm install
 	
 ## Chrome 调试跨域
 * windows: [解决chrome调试时不能跨域的问题](http://www.cnblogs.com/laden666666/p/5544572.html)
