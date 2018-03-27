@@ -13,7 +13,7 @@ namespace HC.WeChat.WechatMessages
     /// 微信消息处理
     /// </summary>
     [Table("WechatMessages")]
-    public class WechatMessage : AuditedEntity<Guid>, IMustHaveTenant
+    public class WechatMessage : AuditedEntity<Guid>, IMayHaveTenant
     {
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace HC.WeChat.WechatMessages
         /// 租户ID
         /// </summary>
         [Required]
-        public virtual int TenantId { get; set; }
+        public virtual int? TenantId { get; set; }
 
         /// <summary>
         /// CreationTime

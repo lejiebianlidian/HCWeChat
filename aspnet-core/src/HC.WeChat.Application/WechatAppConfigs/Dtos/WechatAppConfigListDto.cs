@@ -22,7 +22,7 @@ namespace HC.WeChat.WechatAppConfigs.Dtos
         public string AccessToken { get; set; }
         public int? ExpiresIn { get; set; }
         public DateTime? NextGettime { get; set; }
-        public int TenantId { get; set; }
+        public int? TenantId { get; set; }
         public long? CreatorUserId { get; set; }
         public long? LastModifierUserId { get; set; }
 

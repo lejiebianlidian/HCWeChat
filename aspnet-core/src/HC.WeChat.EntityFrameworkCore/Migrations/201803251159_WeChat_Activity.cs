@@ -249,6 +249,11 @@ namespace HC.WeChat.Migrations
                 {
                     table.PrimaryKey("PK_WeChatUsers", x => x.Id);
                 });
+
+            migrationBuilder.AddColumn<Guid>(
+               name: "EmployeeId",
+               table: "AbpUsers",
+               nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -271,6 +276,10 @@ namespace HC.WeChat.Migrations
                 name: "Retailers");
             migrationBuilder.DropTable(
                 name: "WeChatUsers");
+
+            migrationBuilder.DropColumn(
+                name: "EmployeeId",
+                table: "AbpUsers");
         }
     }
 }

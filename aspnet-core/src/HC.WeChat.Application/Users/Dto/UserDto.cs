@@ -36,5 +36,7 @@ namespace HC.WeChat.Users.Dto
         public DateTime CreationTime { get; set; }
 
         public string[] RoleNames { get; set; }
+
+        public Guid? EmployeeId { get; set; }
     }
 }
