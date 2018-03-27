@@ -1,4 +1,4 @@
-<form nz-form [formGroup]="form" *ngIf="modalVisible" id="frm_create_tenant" (ngSubmit)="save()">
+<form nz-form [formGroup]="forme" *ngIf="modalVisible" id="frm_edit_message" (ngSubmit)="save()">
     <nz-modal [nzVisible]="modalVisible" [nzTitle]="'关键字回复编辑'" [nzConfirmLoading]="loading" [nzContent]="modalContent" [nzFooter]="modalFooter"
         (nzOnCancel)="handleCancel($event)">
         <ng-template #modalContent>
@@ -11,38 +11,57 @@
                     <div nz-form-label nz-col [nzSm]="4">
                         <label for="keyWord" nz-form-item-required>关键字</label>
                     </div>
-                    <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('keyWord')">
-                        <nz-input formControlName="keyWord" [(ngModel)]="messages.keyWord"  [nzId]="'tenancyName'"></nz-input>
-                        <div nz-form-explain *ngIf="getFormControl('keyWord').dirty&&getFormControl('keyWord').hasError('maxlength')">字符长度小于等于50</div>
-                        <div nz-form-explain *ngIf="getFormControl('keyWord').dirty&&getFormControl('keyWord').hasError('required')">关键字不能为空</div>
+                    <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="geteFormControl('keyWord')">
+                        <nz-input formControlName="keyWord" [(ngModel)]="messages.keyWord" [nzId]="'tenancyName'"></nz-input>
+                        <div nz-form-explain *ngIf="geteFormControl('keyWord').dirty&&geteFormControl('keyWord').hasError('maxlength')">字符长度小于等于50</div>
+                        <div nz-form-explain *ngIf="geteFormControl('keyWord').dirty&&geteFormControl('keyWord').hasError('required')">关键字不能为空</div>
                     </div>
                 </div>
                 <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSm]="4">
                         <label for="matchMode" nz-form-item-required>匹配模式</label>
                     </div>
-                    <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('matchMode')">
-                            <nz-radio-group formControlName="matchMode"  [(ngModel)]="messages.matchMode" class="mb-md">
-                                    <label nz-radio [nzValue]="1"><span>精准匹配</span></label>
-                                    <label nz-radio [nzValue]="2"><span>模糊匹配</span></label>
-                            </nz-radio-group>
+                    <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="geteFormControl('matchMode')">
+                        <nz-radio-group formControlName="matchMode" [(ngModel)]="messages.matchMode" class="mb-md">
+                            <label nz-radio [nzValue]="1">
+                                <span>精准匹配</span>
+                            </label>
+                            <label nz-radio [nzValue]="2">
+                                <span>模糊匹配</span>
+                            </label>
+                        </nz-radio-group>
                         <!-- <nz-input formControlName="matchMode" [(ngModel)]="messages.matchMode" [nzId]="'matchMode'"></nz-input>
-                        <div nz-form-explain *ngIf="getFormControl('matchMode').dirty&&getFormControl('matchMode').hasError('maxlength')">字符长度小于等于128</div>
-                        <div nz-form-explain *ngIf="getFormControl('matchMode').dirty&&getFormControl('matchMode').hasError('required')">请输入名称</div> -->
+                        <div nz-form-explain *ngIf="geteFormControl('matchMode').dirty&&geteFormControl('matchMode').hasError('maxlength')">字符长度小于等于128</div>
+                        <div nz-form-explain *ngIf="geteFormControl('matchMode').dirty&&geteFormControl('matchMode').hasError('required')">请输入名称</div> -->
                     </div>
                 </div>
-                <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('content')">
-                        <div nz-form-label nz-col [nzSm]="4">
-                                <label for="content" nz-form-item-required>回复内容</label>
-                            </div>
+                <div nz-form-item nz-row>
+                    <div nz-form-label nz-col [nzSm]="4">
+                        <label for="msgType" nz-form-item-required>消息类型</label>
+                    </div>
+                    <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="geteFormControl('msgType')">
+                        <nz-radio-group formControlName="msgType" [(ngModel)]="messages.msgType" class="mb-md">
+                            <label nz-radio [nzValue]="1">
+                                <span>文字消息</span>
+                            </label>
+                            <label nz-radio [nzValue]="2">
+                                <span>图文消息</span>
+                            </label>
+                        </nz-radio-group>
+                    </div>
+                </div>
+                <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="geteFormControl('content')">
+                    <div nz-form-label nz-col [nzSm]="4">
+                        <label for="content" nz-form-item-required>回复内容</label>
+                    </div>
                     <nz-input nzType="textarea" nzRows="4" formControlName="content" [(ngModel)]="messages.content" [nzId]="'content'"></nz-input>
-                    <div nz-form-explain *ngIf="getFormControl('content').dirty&&getFormControl('content').hasError('required')">内容不能为空</div>
+                    <div nz-form-explain *ngIf="geteFormControl('content').dirty&&geteFormControl('content').hasError('required')">内容不能为空</div>
                 </div>
             </fieldset>
         </ng-template>
         <ng-template #modalFooter>
             <button nz-button [nzType]="'default'" [nzSize]="'large'" type="button" (click)="handleCancel($event)">
-                取消
+                {{l("取消")}}
             </button>
             <button nz-button [nzType]="'primary'" [nzSize]="'large'" type="submit" [nzLoading]="isConfirmLoading">
                 {{l("保存")}}

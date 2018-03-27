@@ -3154,14 +3154,14 @@ export class AuthSettingServiceProxy {
 
     //#region 更新或新增微信配置
     update(input: AuthSetting): Observable<AuthSetting> {
-        let url_ = this.baseUrl + "/api/services/app/WechatAppConfig/CreateOrUpdateWechatAppConfig";
+        let url_ = this.baseUrl + "/api/services/app/WechatAppConfig/CreateOrUpdateWechatAppConfigDto";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
         
         let options_ = {
             body: content_,
-            method: "put",
+            method: "post",
             headers: new Headers({
                 "Content-Type": "application/json", 
                 "Accept": "application/json"
@@ -3393,14 +3393,14 @@ export class MessageServiceProxy {
      * @param input 
      */
     update(input: Messagess): Observable<Messagess> {
-        let url_ = this.baseUrl + "/api/services/app/WechatMessage/CreateOrUpdateWechatMessage";
+        let url_ = this.baseUrl + "/api/services/app/WechatMessage/CreateOrUpdateWechatMessageDto";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
         
         let options_ = {
             body: content_,
-            method: "put",
+            method: "post",
             headers: new Headers({
                 "Content-Type": "application/json", 
                 "Accept": "application/json"
@@ -3616,7 +3616,7 @@ export class SubscribeServiceProxy {
     }
     //#region 新增或修改关注回复消息
     update(input: Subscribess): Observable<Subscribess> {
-        let url_ = this.baseUrl + "/api/services/app/WechatSubscribe/CreateOrUpdateWechatSubscribe";
+        let url_ = this.baseUrl + "/api/services/app/WechatSubscribe/CreateOrUpdateWechatSubscribeDto";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
@@ -3667,6 +3667,56 @@ export class SubscribeServiceProxy {
         return Observable.of<Subscribess>(<any>null);
     }
     //#endregion
+
+     /**
+     * @return Success
+     */
+    delete(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/WechatSubscribe/DeleteWechatSubscribe?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "delete",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processDelete(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processDelete(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processDelete(response: Response): Observable<void> {
+        const status = response.status; 
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<void>(<any>null);
+    }
 }
 
 //#endregion

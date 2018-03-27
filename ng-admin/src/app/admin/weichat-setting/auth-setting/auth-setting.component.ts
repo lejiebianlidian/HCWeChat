@@ -29,10 +29,10 @@ export class AuthSettingComponent extends AppComponentBase implements OnInit {
             appSecret: [null, [Validators.compose([Validators.required, Validators.maxLength(250)])]],
             encodingAESKey: [null, [Validators.compose([Validators.maxLength(500)])]],
             qrCodeUrl: [null, [Validators.maxLength(250)]],
-            token: [null, [Validators.compose([Validators.required, Validators.maxLength(250)])]],
-            accessToken: [null, [Validators.maxLength(255)]],
-            expiresIn: [null],
-            nextGettime: [null]
+            token: [null, [Validators.compose([Validators.required, Validators.maxLength(250)])]]
+            // accessToken: [null, [Validators.maxLength(255)]],
+            // expiresIn: [null],
+            // nextGettime: [null]
         });
         this.getAuthSetByTenantId();
     }

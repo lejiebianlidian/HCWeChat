@@ -56,5 +56,12 @@ namespace HC.WeChat.WechatMessages
         /// 批量删除WechatMessage
         /// </summary>
         Task BatchDeleteWechatMessagesAsync(List<Guid> input);
+
+        /// <summary>
+        /// 更新或删除关键字回复消息
+        /// </summary>
+        /// <param name="input">关键字回复实体</param>
+        /// <returns></returns>
+        Task CreateOrUpdateWechatMessageDto(WechatMessageEditDto input);
     }
 }

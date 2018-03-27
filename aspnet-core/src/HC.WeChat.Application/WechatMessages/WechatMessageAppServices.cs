@@ -5,6 +5,7 @@ using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
+using System.Linq;
 
 using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
@@ -49,13 +50,15 @@ namespace HC.WeChat.WechatMessages
         {
 
             var query = _wechatmessageRepository.GetAll();
-            if (!string.IsNullOrEmpty(input.Filter)) {
-                query = query.Where(input.Filter);
-            }
+            //if ((!string.IsNullOrEmpty(input.Filter)&& input.Filter != "null"))
+            //{
+            //    query = query.Where(q => q.KeyWord.Contains(input.Filter));
+            //}
             //TODO:根据传入的参数添加过滤条件
             var wechatmessageCount = await query.CountAsync();
 
             var wechatmessages = await query
+                .WhereIf((!string.IsNullOrEmpty(input.Filter)) && input.Filter != "null", m => m.KeyWord.Contains(input.Filter))
                 .OrderBy(input.Sorting)
                 .PageBy(input)
                 .ToListAsync();
@@ -144,7 +147,7 @@ namespace HC.WeChat.WechatMessages
         {
             //TODO:新增前的逻辑判断，是否允许新增
             var entity = ObjectMapper.Map<WechatMessage>(input);
-
+            entity.TenantId = AbpSession.TenantId;
             entity = await _wechatmessageRepository.InsertAsync(entity);
             return entity.MapTo<WechatMessageEditDto>();
         }
@@ -184,6 +187,23 @@ namespace HC.WeChat.WechatMessages
         {
             //TODO:批量删除前的逻辑判断，是否允许删除
             await _wechatmessageRepository.DeleteAsync(s => input.Contains(s.Id));
+        }
+
+        /// <summary>
+        /// 添加或者修改WechatMessage的方法
+        /// </summary>
+        /// <param name="input">关键字回复实体</param>
+        /// <returns></returns>
+        public async Task CreateOrUpdateWechatMessageDto(WechatMessageEditDto input)
+        {
+            if (input.Id.HasValue)
+            {
+                await UpdateWechatMessageAsync(input);
+            }
+            else
+            {
+                await CreateWechatMessageAsync(input);
+            }
         }
 
     }

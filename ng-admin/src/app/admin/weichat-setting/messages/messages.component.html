@@ -22,7 +22,7 @@
 
                     <div nz-col [nzSpan]="8" class="mb-md" [class.text-right]="'true'">
                         <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading" [nzSize]="'large'">查询</button>
-                        <button nz-button type="reset" (click)="getMessgeAll()" [nzSize]="'large'" class="mx-sm">重置</button>
+                        <button nz-button type="reset" (click)="ResetSearch()" [nzSize]="'large'" class="mx-sm">重置</button>
                         <button nz-button [nzType]="'primary'" (click)="createMessage()" [nzSize]="'large'">
                             <i class="anticon anticon-plus"></i>
                             <span>新建</span>
@@ -62,10 +62,13 @@
         <create-message-modal #createMessageModal (modalSave)="getMessgeAll()"></create-message-modal>
     </nz-tab>
     <nz-tab>
+        <ng-template #deletesContent>
+            <h2>是否删除被关注回复?</h2>
+        </ng-template>
         <ng-template #nzTabHeading>
             被关注回复
         </ng-template>
-        <form nz-form [formGroup]="form" id="frm_create_tenant" (ngSubmit)="save()">
+        <form nz-form [formGroup]="form" id="frm_create_subscrite"  (ngSubmit)="save()">
             <div nz-form-item nz-row>
                 <div nz-form-label nz-col [nzSm]="4">
                     <label for="msgType" nz-form-item-required>消息类型</label>
@@ -87,7 +90,6 @@
                 </div>
                 <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('content')">
                     <nz-input nzType="textarea" nzRows="6" formControlName="content" [(ngModel)]="subscribes.content" [nzId]="'content'"></nz-input>
-                    <div nz-form-explain *ngIf="getFormControl('content').dirty&&getFormControl('content').hasError('maxlength')">字符长度小于等于64</div>
                     <div nz-form-explain *ngIf="getFormControl('content').dirty&&getFormControl('content').hasError('required')">内容不能为空</div>
                 </div>
             </div>
@@ -97,7 +99,7 @@
                     <button nz-button [nzType]="'primary'" [nzSize]="'large'" type="submit" [nzLoading]="isConfirmLoading">
                         保存
                     </button>
-                    <button nz-button [nzType]="'default'" [nzSize]="'large'" type="button" (click)="delete($event)">
+                    <button nz-button [nzType]="'default'" [nzSize]="'large'" type="button" (click)="deletes(deletesContent)">
                         删除回复
                     </button>
                 </div>

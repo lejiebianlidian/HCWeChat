@@ -142,7 +142,7 @@ namespace HC.WeChat.WechatAppConfigs
         {
             //TODO:新增前的逻辑判断，是否允许新增
             var entity = ObjectMapper.Map<WechatAppConfig>(input);
-
+            entity.TenantId = AbpSession.TenantId;
             entity = await _wechatappconfigRepository.InsertAsync(entity);
             return entity.MapTo<WechatAppConfigEditDto>();
         }
@@ -207,6 +207,22 @@ namespace HC.WeChat.WechatAppConfigs
         {
             var entity = _wechatappconfigRepository.GetAll().Where(w => w.TenantId == AbpSession.TenantId).FirstOrDefault();
             return await Task.FromResult( entity.MapTo<WechatAppConfigListDto>());
+        }
+
+        /// <summary>
+        /// 添加或者修改WechatAppConfig的方法
+        /// </summary>
+        /// <param name="input">微信配置实体</param>
+        /// <returns></returns>
+        public async Task CreateOrUpdateWechatAppConfigDto(WechatAppConfigEditDto input)
+        {
+            if (input.Id.HasValue)
+            {
+                await UpdateWechatAppConfigAsync(input);
+            }
+            else {
+                await CreateWechatAppConfigAsync(input);
+            }
         }
     }
 }

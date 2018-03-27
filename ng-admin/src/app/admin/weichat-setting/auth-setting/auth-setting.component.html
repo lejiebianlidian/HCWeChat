@@ -310,7 +310,7 @@
                 <div nz-form-explain *ngIf="getFormControl('token').dirty&&getFormControl('token').hasError('required')">请输入角色显示名</div>
             </div>
         </div>
-        <div nz-form-item nz-row>
+        <!-- <div nz-form-item nz-row>
             <div nz-form-label nz-col [nzSm]="4">
                 <label for="accessToken">微信access_token</label>
             </div>
@@ -334,12 +334,12 @@
             <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('nextGettime')">
                 <nz-input formControlName="nextGettime" [(ngModel)]="authSet.nextGettime" [nzId]="'nextGettime'"></nz-input>
             </div>
-        </div>
+        </div> -->
         <div nz-form-item nz-row  class="mb0">
-            <div nz-form-label nz-col [nzSm]="7">
-                <button nz-button [nzType]="'default'" [nzSize]="'large'" type="button" (click)="handleCancel($event)">
+            <div nz-form-label nz-col [nzSm]="5">
+                <!-- <button nz-button [nzType]="'default'" [nzSize]="'large'" type="button" (click)="handleCancel($event)">
                     {{l("取消")}}
-                </button>
+                </button> -->
                 <button nz-button [nzType]="'primary'" [nzSize]="'large'" type="submit" [nzLoading]="isConfirmLoading">
                     {{l("保存")}}
                 </button>

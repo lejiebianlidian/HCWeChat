@@ -10,12 +10,12 @@ using Abp.AutoMapper;
 
 namespace HC.WeChat.WechatSubscribes.Dtos
 {
-    [AutoMapTo(typeof(WechatMessage))]
+    [AutoMapTo(typeof(WechatSubscribe))]
     public class WechatSubscribeEditDto : AuditedEntityDto<Guid?>
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION
-        //public Guid? Id { get; set; }
+        ///public Guid? Id { get; set; }
 
         /// <summary>
         /// 消息类型（枚举 文字消息、图文消息）

@@ -15,7 +15,7 @@ export class EditMessageComponent extends AppComponentBase implements OnInit {
     messages: Messagess = new Messagess();
     modalVisible=false;
     isConfirmLoading = false;
-    form:FormGroup;
+    forme:FormGroup;
     constructor(injector:Injector ,private messageService: MessageServiceProxy,private fb:FormBuilder) {
         super(injector);
     }
@@ -24,9 +24,10 @@ export class EditMessageComponent extends AppComponentBase implements OnInit {
      * 页面初始加载
      */
     ngOnInit(): void {
-        this.form = this.fb.group({
+        this.forme = this.fb.group({
             keyWord: [null, [Validators.compose([Validators.required, Validators.maxLength(50)])]],
-            matchMode: [null],
+            matchMode: [null,Validators.required],
+            msgType: [null,Validators.required],
             content: [null,[Validators.compose([Validators.required])]]
         });
     }
@@ -43,8 +44,8 @@ export class EditMessageComponent extends AppComponentBase implements OnInit {
      * 
      * @param name 
      */
-    getFormControl(name: string) {
-        return this.form.controls[name];
+    geteFormControl(name: string) {
+        return this.forme.controls[name];
     }
     /**
      * 取消按钮
@@ -58,9 +59,9 @@ export class EditMessageComponent extends AppComponentBase implements OnInit {
         if (e) {
             e.preventDefault();
         }
-        this.form.reset();
-        for (const key in this.form.controls) {
-            this.form.controls[key].markAsPristine();
+        this.forme.reset();
+        for (const key in this.forme.controls) {
+            this.forme.controls[key].markAsPristine();
         }
 
     }
@@ -80,10 +81,10 @@ export class EditMessageComponent extends AppComponentBase implements OnInit {
      */
     save():void{
         //将控件标记为已编辑过
-        for(const i in this.form.controls){
-            this.form.controls[i].markAsDirty();
+        for(const i in this.forme.controls){
+            this.forme.controls[i].markAsDirty();
         }
-        if(this.form.valid){
+        if(this.forme.valid){
             this.messageService.update(this.messages)
             .finally(()=>{this.isConfirmLoading=false;})
             .subscribe(()=>{
