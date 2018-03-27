@@ -16,11 +16,11 @@ namespace HC.WeChat.MessageHandler
     {
         private readonly IRepository<WechatMessage, Guid> _wechatmessageRepository;
         private readonly IRepository<WechatSubscribe, Guid> _wechatsubscribeRepository;
-        private int _tenantId = 0;
+        private int? _tenantId = 0;
 
         public HCMessageHandler(IRepository<WechatMessage, Guid> wechatmessageRepository, 
             IRepository<WechatSubscribe, Guid> wechatsubscribeRepository,
-            int tenantId, Stream inputStream, 
+            int? tenantId, Stream inputStream, 
             PostModel postModel, 
             int maxRecordCount = 0) : base(inputStream, postModel, maxRecordCount)
         {

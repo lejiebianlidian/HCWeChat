@@ -189,7 +189,7 @@ namespace HC.WeChat.WechatAppConfigs
         /// </summary>
         [AbpAllowAnonymous]
         [DisableAuditing]
-        public Task<WechatAppConfigInfo> GetWechatAppConfig(int tenantId)
+        public Task<WechatAppConfigInfo> GetWechatAppConfig(int? tenantId)
         {
             var info = _wechatappconfigRepository.GetAll().Where(w => w.TenantId == tenantId).FirstOrDefault();
             if (info != null)

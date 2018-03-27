@@ -24,7 +24,7 @@ namespace HC.WeChat.MessageHandler
             _wechatsubscribeRepository = wechatsubscribeRepository;
         }
 
-        public async Task<string> MessageHandler(PostModel postModel, Stream msgStream, int tenantId)
+        public async Task<string> MessageHandler(PostModel postModel, Stream msgStream, int? tenantId)
         {
             //设置每个人上下文消息储存的最大数量
             var maxRecordCount = 10;
