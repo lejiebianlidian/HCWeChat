@@ -56,5 +56,11 @@ namespace HC.WeChat.WechatSubscribes
         /// 批量删除WechatSubscribe
         /// </summary>
         Task BatchDeleteWechatSubscribesAsync(List<Guid> input);
+
+        /// <summary>
+        /// 通过租户id获取关注回复消息
+        /// </summary>
+        /// <returns></returns>
+        Task<WechatSubscribeListDto> GetSubscribeInfoByTenantId();
     }
 }

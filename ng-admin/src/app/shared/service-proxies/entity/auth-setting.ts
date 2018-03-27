@@ -1,4 +1,4 @@
-export class AuthSetting {
+export class AuthSetting implements IAuthSetting{
     creationTime: Date;
     lastModificationTime: Date;
     name: string;
@@ -49,6 +49,14 @@ export class AuthSetting {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["appOrgId"] = this.appOrgId;
+        data["appType"] = this.appType;
+        data["appId"] = this.appId;
+        data["appSecret"] = this.appSecret;
+        data["qrCodeUrl"] = this.qrCodeUrl;
+        data["token"] = this.token;
+        data["expiresIn"] = this.expiresIn;
+        data["accessToken"] = this.accessToken;
+        data["nextGettime"] = this.nextGettime;
         return data;
     }
 

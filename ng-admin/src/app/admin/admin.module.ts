@@ -18,6 +18,8 @@ import { TenantComponent } from './tenant/tenant.component';
 import { CreateTenantComponent } from './tenant/create-tenant/create-tenant.component';
 import { EditTenantComponent } from './tenant/edit-tenant/edit-tenant.component';
 import { AuthSettingComponent } from './weichat-setting/auth-setting/auth-setting.component';
+import { MessagesComponent } from './weichat-setting/messages/messages.component';
+import { EditMessageComponent } from './weichat-setting/messages/edit-message/edit-message.component';
 
 @NgModule({
   imports: [
@@ -37,7 +39,9 @@ import { AuthSettingComponent } from './weichat-setting/auth-setting/auth-settin
     TenantComponent,
     CreateTenantComponent,
     EditTenantComponent,
-    AuthSettingComponent
+    AuthSettingComponent,
+    MessagesComponent,
+    EditMessageComponent
    ],
    providers: [ AppRouteGuard,DriverComponent ]
 })
