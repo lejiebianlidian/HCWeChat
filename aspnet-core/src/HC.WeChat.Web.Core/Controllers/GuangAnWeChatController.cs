@@ -13,7 +13,7 @@ namespace HC.WeChat.Controllers
     public class GuangAnWeChatController : WeChatMessageHandlerControllerBase
     {
         private WeChatTenantSetting _settings;
-        private int tenantId;
+        private int? tenantId;
 
         public GuangAnWeChatController(IMessageHandlerAppServer messageHandlerAppServer,
            IWechatAppConfigAppService wechatAppConfigAppService,
@@ -21,9 +21,10 @@ namespace HC.WeChat.Controllers
         {
             _settings = settings.Value;
             tenantId = _settings.GuangAn;
+            InitAppConfigSetting();
         }
 
-        protected override int GetTenantId()
+        protected override int? GetTenantId()
         {
             return tenantId;
         }

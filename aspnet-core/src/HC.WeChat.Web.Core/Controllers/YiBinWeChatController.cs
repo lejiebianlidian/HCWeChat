@@ -17,7 +17,7 @@ namespace HC.WeChat.Controllers
     {
         private WeChatTenantSetting _settings;
 
-        private int tenantId;
+        private int? tenantId;
 
         public YiBinWeChatController(IMessageHandlerAppServer messageHandlerAppServer, 
             IWechatAppConfigAppService wechatAppConfigAppService,
@@ -25,9 +25,10 @@ namespace HC.WeChat.Controllers
         {
             _settings = settings.Value;
             tenantId = _settings.YiBin;
+            InitAppConfigSetting();
         }
 
-        protected override int GetTenantId()
+        protected override int? GetTenantId()
         {
             return tenantId;
         }
