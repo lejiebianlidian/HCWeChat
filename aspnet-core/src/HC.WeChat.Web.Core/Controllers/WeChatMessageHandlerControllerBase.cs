@@ -17,7 +17,7 @@ namespace HC.WeChat.Controllers
     {
         readonly Func<string> _getRandomFileName = () => DateTime.Now.ToString("yyyyMMdd-HHmmss") + Guid.NewGuid().ToString("n").Substring(0, 6);
         protected abstract int GetTenantId();
-        private int TenantId { get; set; }
+        private int? TenantId { get; set; }
 
         protected WechatAppConfigInfo WechatAppConfig { get; set; }
 
@@ -65,10 +65,7 @@ namespace HC.WeChat.Controllers
         [ActionName("Index")]
         public virtual ActionResult Post(PostModel postModel)
         {
-            if (TenantId == 0)
-            {
-                InitAppConfigSetting();
-            }
+            InitAppConfigSetting();
             //Logger.Info("post:" + JObject.FromObject(postModel).ToString() + "TenantId:" + TenantId);
             if (!CheckSignature.Check(postModel.Signature, postModel.Timestamp, postModel.Nonce, WechatAppConfig.Token))
             {

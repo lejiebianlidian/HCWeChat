@@ -1,8 +1,11 @@
 ﻿using Abp.Domain.Repositories;
 using Abp.WeChat.Senparc.MessageHandlers;
+using Castle.Core.Logging;
 using HC.WeChat.WechatAppConfigs;
 using HC.WeChat.WechatMessages;
 using HC.WeChat.WechatSubscribes;
+using HC.WeChat.WeChatUsers;
+using HC.WeChat.WeChatUsers.DomainServices;
 using Senparc.Weixin.MP.Entities;
 using Senparc.Weixin.MP.Entities.Request;
 using System;
@@ -16,16 +19,22 @@ namespace HC.WeChat.MessageHandler
     {
         private readonly IRepository<WechatMessage, Guid> _wechatmessageRepository;
         private readonly IRepository<WechatSubscribe, Guid> _wechatsubscribeRepository;
-        private int _tenantId = 0;
+        private readonly IWeChatUserManager _wechatUserManager;
+        public ILogger Logger { protected get; set; }
+
+        private int? _tenantId = 0;
 
         public HCMessageHandler(IRepository<WechatMessage, Guid> wechatmessageRepository, 
             IRepository<WechatSubscribe, Guid> wechatsubscribeRepository,
-            int tenantId, Stream inputStream, 
+            IWeChatUserManager wechatUserManager,
+            int? tenantId, Stream inputStream, 
             PostModel postModel, 
             int maxRecordCount = 0) : base(inputStream, postModel, maxRecordCount)
         {
             _wechatmessageRepository = wechatmessageRepository;
             _wechatsubscribeRepository = wechatsubscribeRepository;
+            _wechatUserManager = wechatUserManager;
+            Logger = NullLogger.Instance;
             _tenantId = tenantId;
         }
 
@@ -64,28 +73,25 @@ namespace HC.WeChat.MessageHandler
                         break;
                     default:
                         break;
-                }
-                
+                }    
             }
-
-            //if (requestMessage.ToUserName == "gh_d0a6ae751285")
-            //{
-            //    MessageInfo.SubscribeMsg = "欢迎关注订阅号";
-            //    MessageInfo.KeyWords = new Dictionary<string, string>();
-            //    MessageInfo.KeyWords.Add("默认", "来自订阅号");
-            //}
-            //else
-            //{
-            //    MessageInfo.SubscribeMsg = "欢迎测试号";
-            //    MessageInfo.KeyWords = new Dictionary<string, string>();
-            //    MessageInfo.KeyWords.Add("默认", "来自测试号");
-            //}
         }
 
         public override void Unsubscribe(RequestMessageEvent_Unsubscribe requestMessage)
         {
-            //throw new NotImplementedException();
+            Logger.InfoFormat("取消关注:{0}", requestMessage);
+            //取消关注
+            _wechatUserManager.UnsubscribeAsync(requestMessage.FromUserName, _tenantId);
         }
 
+        public override void Subscribe(RequestMessageEvent_Subscribe requestMessage)
+        {
+            Logger.InfoFormat("关注:{0}", requestMessage);
+            //获取微信用户信息
+            var wechatUser = Senparc.Weixin.MP.AdvancedAPIs.UserApi.Info(appId, requestMessage.FromUserName);
+            Logger.InfoFormat("关注用户:{0}", wechatUser);
+            //关注公众号
+            _wechatUserManager.SubscribeAsync(requestMessage.FromUserName, wechatUser.nickname, _tenantId);
+        }
     }
 }

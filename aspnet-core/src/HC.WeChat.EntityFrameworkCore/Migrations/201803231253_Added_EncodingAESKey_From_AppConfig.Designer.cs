@@ -1234,12 +1234,12 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("QRCodeUrl ").HasMaxLength(250);
                 b.Property<string>("Token").IsRequired().HasMaxLength(250);
                 b.Property<string>("AccessToken").HasMaxLength(255);
-                b.Property<int>("ExpiresIn");
-                b.Property<DateTime>("NextGettime");
+                b.Property<int?>("ExpiresIn");
+                b.Property<DateTime?>("NextGettime");
                 b.Property<int>("TenantId").IsRequired();
                 b.Property<DateTime>("CreationTime").IsRequired();
-                b.Property<long>("CreatorUserId");
-                b.Property<DateTime>("LastModificationTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
                 b.Property<long>("LastModifierUserId"); b.HasKey("Id");
 
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
@@ -1256,8 +1256,8 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("Content").IsRequired();
                 b.Property<int>("TenantId").IsRequired();
                 b.Property<DateTime>("CreationTime").IsRequired();
-                b.Property<long>("CreatorUserId");
-                b.Property<DateTime>("LastModificationTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
                 b.Property<long>("LastModifierUserId"); b.HasKey("Id");
 
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
@@ -1265,14 +1265,15 @@ namespace HC.WeChat.Migrations
                 b.ToTable("WechatMessages");
             });
 
-            modelBuilder.Entity("HC.WeChat.WechatSubscribes.WechatSubscribe", b => {
+            modelBuilder.Entity("HC.WeChat.WechatSubscribes.WechatSubscribe", b =>
+            {
                 b.Property<Guid>("Id").ValueGeneratedOnAdd();
                 b.Property<int>("MsgType").IsRequired();
                 b.Property<string>("Content").IsRequired();
                 b.Property<int>("TenantId").IsRequired();
                 b.Property<DateTime>("CreationTime").IsRequired();
-                b.Property<long>("CreatorUserId");
-                b.Property<DateTime>("LastModificationTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
                 b.Property<long>("LastModifierUserId"); b.HasKey("Id");
 
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");

@@ -38,8 +38,7 @@ namespace HC.WeChat.WeChatUsers.Dtos
         /// <summary>
         /// 零售用户 或 营销人员Id 外键
         /// </summary>
-        [Required]
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
 
 
         /// <summary>

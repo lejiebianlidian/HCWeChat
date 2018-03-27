@@ -1222,22 +1222,24 @@ namespace HC.WeChat.Migrations
             });
 #pragma warning restore 612, 618
 
-            modelBuilder.Entity("HC.WeChat.WechatAppConfigs.WechatAppConfig", b => 
+            modelBuilder.Entity("HC.WeChat.WechatAppConfigs.WechatAppConfig", b =>
             {
                 b.Property<int>("Id").ValueGeneratedOnAdd();
                 b.Property<string>("Name").IsRequired().HasMaxLength(50);
                 b.Property<string>("AppOrgId").IsRequired().HasMaxLength(250);
-                b.Property<int>("AppType").IsRequired(); b.Property<string>("AppId").IsRequired().HasMaxLength(250);
+                b.Property<int>("AppType").IsRequired();
+                b.Property<string>("AppId").IsRequired().HasMaxLength(250);
                 b.Property<string>("AppSecret").IsRequired().HasMaxLength(250);
+                b.Property<string>("EncodingAESKey").HasMaxLength(500);
                 b.Property<string>("QRCodeUrl ").HasMaxLength(250);
                 b.Property<string>("Token").IsRequired().HasMaxLength(250);
                 b.Property<string>("AccessToken").HasMaxLength(255);
-                b.Property<int>("ExpiresIn");
-                b.Property<DateTime>("NextGettime");
-                b.Property<int>("TenantId");
+                b.Property<int?>("ExpiresIn");
+                b.Property<DateTime?>("NextGettime");
+                b.Property<int>("TenantId").IsRequired();
                 b.Property<DateTime>("CreationTime").IsRequired();
-                b.Property<long>("CreatorUserId");
-                b.Property<DateTime>("LastModificationTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
                 b.Property<long>("LastModifierUserId"); b.HasKey("Id");
 
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
@@ -1245,17 +1247,17 @@ namespace HC.WeChat.Migrations
                 b.ToTable("WechatAppConfigs");
             });
 
-            modelBuilder.Entity("HC.WeChat.WechatMessages.WechatMessage", b => 
+            modelBuilder.Entity("HC.WeChat.WechatMessages.WechatMessage", b =>
             {
                 b.Property<Guid>("Id").ValueGeneratedOnAdd();
                 b.Property<string>("KeyWord").IsRequired().HasMaxLength(50);
                 b.Property<int>("MatchMode").IsRequired();
                 b.Property<int>("MsgType").IsRequired();
                 b.Property<string>("Content").IsRequired();
-                b.Property<int>("TenantId");
+                b.Property<int>("TenantId").IsRequired();
                 b.Property<DateTime>("CreationTime").IsRequired();
-                b.Property<long>("CreatorUserId");
-                b.Property<DateTime>("LastModificationTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
                 b.Property<long>("LastModifierUserId"); b.HasKey("Id");
 
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
@@ -1263,14 +1265,15 @@ namespace HC.WeChat.Migrations
                 b.ToTable("WechatMessages");
             });
 
-            modelBuilder.Entity("HC.WeChat.WechatSubscribes.WechatSubscribe", b => {
+            modelBuilder.Entity("HC.WeChat.WechatSubscribes.WechatSubscribe", b =>
+            {
                 b.Property<Guid>("Id").ValueGeneratedOnAdd();
                 b.Property<int>("MsgType").IsRequired();
                 b.Property<string>("Content").IsRequired();
-                b.Property<int>("TenantId");
+                b.Property<int>("TenantId").IsRequired();
                 b.Property<DateTime>("CreationTime").IsRequired();
-                b.Property<long>("CreatorUserId");
-                b.Property<DateTime>("LastModificationTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
                 b.Property<long>("LastModifierUserId"); b.HasKey("Id");
 
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");

@@ -32,11 +32,12 @@ namespace Abp.WeChat.Senparc.MessageHandlers
     /// </summary>
     public abstract class AbpMessageHandler : MessageHandler<AbpMessageContext>
     {
-        private string appId = "appId";
+        public string appId = "appId";
         //private string appSecret = "appSecret";
 
         public AbpMessageInfo MessageInfo { get; set; }
 
+        public abstract void Subscribe(RequestMessageEvent_Subscribe requestMessage);
         /// <summary>
         /// 取消关注
         /// </summary>
@@ -187,13 +188,15 @@ namespace Abp.WeChat.Senparc.MessageHandlers
             }
             var responseMessage = ResponseMessageBase.CreateFromRequestMessage<ResponseMessageText>(requestMessage);
             responseMessage.Content = MessageInfo.SubscribeMsg;
+            //关注消息
+            Subscribe(requestMessage);
             return responseMessage;
         }
 
         public override IResponseMessageBase OnEvent_UnsubscribeRequest(RequestMessageEvent_Unsubscribe requestMessage)
         {
+            //取消关注
             Unsubscribe(requestMessage);
-            //UnsubscribeEven?.Invoke(this, requestMessage);
             return base.OnEvent_UnsubscribeRequest(requestMessage);
         }
 

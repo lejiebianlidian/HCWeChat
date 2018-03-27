@@ -238,7 +238,7 @@ namespace HC.WeChat.Migrations
                     NickName = table.Column<string>(maxLength: 50, nullable: false),
                     OpenId = table.Column<string>(maxLength: 50, nullable: false),
                     UserType = table.Column<int>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: true),
                     UserName = table.Column<string>(maxLength: 50, nullable: false),
                     BindStatus = table.Column<int>(nullable: false),
                     BindTime = table.Column<DateTime>(nullable: true),
