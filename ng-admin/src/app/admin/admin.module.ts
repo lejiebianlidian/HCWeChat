@@ -10,9 +10,6 @@ import { CreateUserComponent } from "./users/create-user/create-user.component";
 import { RolesComponent } from './roles/roles.component';
 import { CreateRoleComponent } from "./roles/create-role/create-role.component";
 import { DriverComponent } from './basic-info/driver/driver.component';
-
-//权限判断
-import { AppRouteGuard } from '../shared/auth/auth-route-guard';
 import { EditRoleComponent } from './roles/edit-role/edit-role.component';
 import { TenantComponent } from './tenant/tenant.component';
 import { CreateTenantComponent } from './tenant/create-tenant/create-tenant.component';
@@ -20,6 +17,11 @@ import { EditTenantComponent } from './tenant/edit-tenant/edit-tenant.component'
 import { AuthSettingComponent } from './weichat-setting/auth-setting/auth-setting.component';
 import { MessagesComponent } from './weichat-setting/messages/messages.component';
 import { EditMessageComponent } from './weichat-setting/messages/edit-message/edit-message.component';
+import { CreateMessageComponent } from './weichat-setting/messages/create-message/create-message.component';
+
+//权限判断
+import { AppRouteGuard } from '../shared/auth/auth-route-guard';
+
 
 @NgModule({
   imports: [
@@ -41,7 +43,8 @@ import { EditMessageComponent } from './weichat-setting/messages/edit-message/ed
     EditTenantComponent,
     AuthSettingComponent,
     MessagesComponent,
-    EditMessageComponent
+    EditMessageComponent,
+    CreateMessageComponent
    ],
    providers: [ AppRouteGuard,DriverComponent ]
 })

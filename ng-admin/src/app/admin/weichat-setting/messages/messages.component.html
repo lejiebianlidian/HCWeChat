@@ -9,10 +9,13 @@
         <nz-card [nzBordered]="false">
             <form nz-form (ngSubmit)="getMessgeAll()" [nzLayout]="'inline'">
                 <div nz-row [nzGutter]="24">
+                    <ng-template #deleteContent>
+                        <h2>是否删除关键字{{mesT}}?</h2>
+                    </ng-template>
                     <div nz-col [nzSpan]="8" class="mb-md">
                         <div nz-form-item class="d-flex">
                             <div nz-form-control class="flex-1">
-                                <nz-input [(ngModel)]="mesText" name="no" [nzSize]="'large'" [nzPlaceHolder]="'请输入关键字/规则名'" nzId="no"></nz-input>
+                                <nz-input [(ngModel)]="mesText" name="no" [nzSize]="'large'" [nzPlaceHolder]="'请输入关键字'" nzId="no"></nz-input>
                             </div>
                         </div>
                     </div>
@@ -49,13 +52,14 @@
                         <td nz-td>
                             <a (click)="editMessage(message)">编辑</a>
                             <span nz-table-divider></span>
-                            <a (click)="delete(message)">删除</a>
+                            <a (click)="delete(message,deleteContent)">删除</a>
                         </td>
                     </tr>
                 </tbody>
             </nz-table>
         </nz-card>
         <edit-message-modal #editMessageModal (modalSave)="getMessgeAll()"></edit-message-modal>
+        <create-message-modal #createMessageModal (modalSave)="getMessgeAll()"></create-message-modal>
     </nz-tab>
     <nz-tab>
         <ng-template #nzTabHeading>
@@ -67,14 +71,18 @@
                     <label for="msgType" nz-form-item-required>消息类型</label>
                 </div>
                 <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('msgType')">
-                        <nz-radio-group formControlName="msgType"  [(ngModel)]="subscribes.msgType" class="mb-md">
-                                <label nz-radio [nzValue]="1" ><span>文字消息</span></label>
-                                <label nz-radio [nzValue]="2"><span>图文消息</span></label>
-                        </nz-radio-group>
+                    <nz-radio-group formControlName="msgType" [(ngModel)]="subscribes.msgType" class="mb-md">
+                        <label nz-radio [nzValue]="1">
+                            <span>文字消息</span>
+                        </label>
+                        <label nz-radio [nzValue]="2">
+                            <span>图文消息</span>
+                        </label>
+                    </nz-radio-group>
                 </div>
             </div>
             <div nz-form-item nz-row>
-                <div nz-form-label nz-col [nzSm]="3">
+                <div nz-form-label nz-col [nzSm]="4">
                     <label for="content" nz-form-item-required>回复内容</label>
                 </div>
                 <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('content')">

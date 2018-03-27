@@ -78,7 +78,7 @@ export class EditMessageComponent extends AppComponentBase implements OnInit {
     /**
      * 保存自动回复信息
      */
-    save(){
+    save():void{
         //将控件标记为已编辑过
         for(const i in this.form.controls){
             this.form.controls[i].markAsDirty();

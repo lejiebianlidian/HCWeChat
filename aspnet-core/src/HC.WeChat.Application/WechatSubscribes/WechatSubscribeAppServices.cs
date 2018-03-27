@@ -189,9 +189,7 @@ namespace HC.WeChat.WechatSubscribes
         /// <returns></returns>
         public async Task<WechatSubscribeListDto> GetSubscribeInfoByTenantId()
         {
-            var tenantId = AbpSession.TenantId;
-            var entity =await  _wechatsubscribeRepository.GetAll().FirstOrDefaultAsync(s => s.TenantId == tenantId);
-            //var aa = ;
+            var entity =await  _wechatsubscribeRepository.GetAll().FirstOrDefaultAsync(s => s.TenantId == AbpSession.TenantId);
             return entity.MapTo<WechatSubscribeListDto>();
 
         }

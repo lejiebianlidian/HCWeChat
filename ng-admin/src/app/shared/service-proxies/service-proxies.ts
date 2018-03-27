@@ -3278,12 +3278,14 @@ export class MessageServiceProxy {
      * 获取自动回复消息
      * @return Success
      */
-    getAll(skipCount: number, maxResultCount: number): Observable<PagedResultDtoOfMessage> {
+    getAll(skipCount: number, maxResultCount: number,Filter:string): Observable<PagedResultDtoOfMessage> {
         let url_ = this.baseUrl + "/api/services/app/WechatMessage/GetPagedWechatMessages?";
         if (skipCount !== undefined)
             url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
         if (maxResultCount !== undefined)
             url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (Filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + Filter) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
@@ -3442,6 +3444,55 @@ export class MessageServiceProxy {
         return Observable.of<Messagess>(<any>null);
     }
 
+     /**
+     * @return Success
+     */
+    delete(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/WechatMessage/DeleteWechatMessage?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "delete",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processDelete(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processDelete(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processDelete(response: Response): Observable<void> {
+        const status = response.status; 
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<void>(<any>null);
+    }
 }
 export class PagedResultDtoOfMessage implements IPagedResultDtoOfMessage {
     totalCount: number;
@@ -3572,7 +3623,7 @@ export class SubscribeServiceProxy {
         
         let options_ = {
             body: content_,
-            method: "put",
+            method: "post",
             headers: new Headers({
                 "Content-Type": "application/json", 
                 "Accept": "application/json"

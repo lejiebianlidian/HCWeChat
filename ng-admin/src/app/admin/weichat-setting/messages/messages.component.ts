@@ -5,6 +5,8 @@ import { Subscribess } from '@shared/service-proxies/entity/subscribe';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppComponentBase } from '@shared/app-component-base';
 import { EditMessageComponent } from './edit-message/edit-message.component';
+import { CreateMessageComponent } from './create-message/create-message.component';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
     moduleId: module.id,
@@ -13,6 +15,7 @@ import { EditMessageComponent } from './edit-message/edit-message.component';
 })
 export class MessagesComponent extends AppComponentBase implements OnInit {
     @ViewChild('editMessageModal') editMessageModal: EditMessageComponent;
+    @ViewChild('createMessageModal') createMessageModal: CreateMessageComponent;
 
     q: any = {
         pi: 1,
@@ -24,11 +27,16 @@ export class MessagesComponent extends AppComponentBase implements OnInit {
     };
     loading = false;
     mesText: string = '';
+    //用于显示删除框关键字
+    mesT: string = '';
     isConfirmLoading = false;
     messagess: Messagess[] = [];
     subscribes: Subscribess = new Subscribess();
     form: FormGroup;
-    constructor(injector: Injector, private messageService: MessageServiceProxy, private subscribeService: SubscribeServiceProxy, private fb: FormBuilder) {
+    constructor(injector: Injector, private messageService: MessageServiceProxy,
+        private subscribeService: SubscribeServiceProxy, private fb: FormBuilder,
+        private modal: NzModalService
+    ) {
         super(injector);
     }
     /**
@@ -53,7 +61,7 @@ export class MessagesComponent extends AppComponentBase implements OnInit {
             this.q.pi = 1;
         }
         this.loading = true;
-        this.messageService.getAll((this.q.pi - 1) * this.q.ps, this.q.ps).subscribe((result: PagedResultDtoOfMessage) => {
+        this.messageService.getAll((this.q.pi - 1) * this.q.ps, this.q.ps,this.mesText).subscribe((result: PagedResultDtoOfMessage) => {
             this.loading = false;
             let status = 0;
             this.messagess = result.items;
@@ -65,7 +73,7 @@ export class MessagesComponent extends AppComponentBase implements OnInit {
      * 新建自动回复消息
      */
     createMessage() {
-
+        this.createMessageModal.show();
     }
 
     /**
@@ -73,6 +81,29 @@ export class MessagesComponent extends AppComponentBase implements OnInit {
      */
     editMessage(message: Messagess) {
         this.editMessageModal.show(message.id);
+    }
+
+    /**
+     * 删除单条关键字回复
+     * @param messages 关键字回复信息
+     * @param contentTpl 删除框id
+     */
+    delete(messages: Messagess, contentTpl): void {
+        this.mesT = messages.keyWord;
+        this.modal.open({
+            content: contentTpl,
+            okText: '是',
+            cancelText: '否',
+            onOk: () => {
+                this.messageService.delete(messages.id)
+                    .subscribe(() => {
+                        this.notify.info(this.l('删除成功！'));
+                        this.getMessgeAll();
+                    });
+            },
+            onCancel: () => {
+            }
+        });
     }
 
     //#endregion
