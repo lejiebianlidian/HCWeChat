@@ -34,7 +34,7 @@
                 "translate":"wechat-configs"
              },{
                 "text":"自动回复",
-                "link":"/admin",
+                "link":"/admin/message",
                 "translate":"aut-res"
              },{
                 "text":"自定义菜单",

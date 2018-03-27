@@ -9,6 +9,7 @@ import { AppRouteGuard } from '@shared/auth/auth-route-guard';
 import { DriverComponent } from './basic-info/driver/driver.component';
 import { TenantComponent } from './tenant/tenant.component';
 import { AuthSettingComponent } from './weichat-setting/auth-setting/auth-setting.component';
+import { MessagesComponent } from './weichat-setting/messages/messages.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,8 @@ const routes: Routes = [
           { path: 'driver', component: DriverComponent, data: { translate: 'driver', permission: 'Pages.DistDriver' }, canActivate: [AppRouteGuard] },
           { path: 'tenant', component: TenantComponent, data: { translate: 'tenant', permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
           { path: 'authsetting', component: AuthSettingComponent, data: { translate: 'authsetting', permission: 'Pages' }, canActivate: [AppRouteGuard] },
+          { path: 'message', component: MessagesComponent, data: { translate: 'message', permission: 'Pages' }, canActivate: [AppRouteGuard] },
+          
       ]
   }
 ];

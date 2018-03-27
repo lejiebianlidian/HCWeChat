@@ -247,10 +247,10 @@
                     </label>
                 </nz-radio-group> -->
                 <nz-radio-group formControlName="appType"  [(ngModel)]="authSet.appType" class="mb-md">
-                        <label nz-radio-button [nzValue]="'1'"><span>订阅号</span></label>
-                        <label nz-radio-button [nzValue]="'2'"><span>认证订阅号</span></label>
-                        <label nz-radio-button [nzValue]="'3'"><span>服务号</span></label>
-                        <label nz-radio-button [nzValue]="'4'"><span>认证服务号</span></label>
+                        <label nz-radio [nzValue]="1"><span>订阅号</span></label>
+                        <label nz-radio [nzValue]="2"><span>认证订阅号</span></label>
+                        <label nz-radio [nzValue]="3"><span>服务号</span></label>
+                        <label nz-radio [nzValue]="4"><span>认证服务号</span></label>
                 </nz-radio-group>
                 <!-- <nz-input formControlName="appType" [(ngModel)]="authSet.appType" nzPlaceHolder="请输入小于等于32的字符" [nzId]="'appType'"></nz-input>
                     <div nz-form-explain *ngIf="getFormControl('appType').dirty&&getFormControl('appType').hasError('required')">请输入角色显示名</div> -->
@@ -291,7 +291,7 @@
             </div>
             <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('qrCodeUrl')">
                 <!-- <nz-input formControlName="qrCodeUrl" [(ngModel)]="authSet.qrCodeUrl" [nzId]="'qrCodeUrl'"></nz-input> -->
-                <label nz-upload
+                <label nz-upload nzAccept="image"
                 nzAction="https://jsonplaceholder.typicode.com/posts/">
                 <button nz-button>
                   <i class="anticon anticon-upload"></i><span>上传</span>

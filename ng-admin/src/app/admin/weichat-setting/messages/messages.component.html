@@ -1,0 +1,99 @@
+<!--component html goes here -->
+<pro-header>
+</pro-header>
+<nz-tabset>
+    <nz-tab>
+        <ng-template #nzTabHeading>
+            自动回复
+        </ng-template>
+        <nz-card [nzBordered]="false">
+            <form nz-form (ngSubmit)="getMessgeAll()" [nzLayout]="'inline'">
+                <div nz-row [nzGutter]="24">
+                    <div nz-col [nzSpan]="8" class="mb-md">
+                        <div nz-form-item class="d-flex">
+                            <div nz-form-control class="flex-1">
+                                <nz-input [(ngModel)]="mesText" name="no" [nzSize]="'large'" [nzPlaceHolder]="'请输入关键字/规则名'" nzId="no"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div nz-col [nzSpan]="8" class="mb-md" [class.text-right]="'true'">
+                        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading" [nzSize]="'large'">查询</button>
+                        <button nz-button type="reset" (click)="getMessgeAll()" [nzSize]="'large'" class="mx-sm">重置</button>
+                        <button nz-button [nzType]="'primary'" (click)="createMessage()" [nzSize]="'large'">
+                            <i class="anticon anticon-plus"></i>
+                            <span>新建</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <nz-table #nzTable [nzAjaxData]="messagess" [nzTotal]="q.total" [(nzPageIndex)]="q.pi" [(nzPageSize)]="q.ps" [nzLoading]="loading"
+                [nzShowSizeChanger]="true" (nzPageIndexChange)="getMessgeAll()" (nzPageSizeChange)="getMessgeAll()">
+                <thead nz-thead>
+                    <tr>
+                        <th nz-th>
+                            <span>关键字</span>
+                        </th>
+                        <th nz-th>
+                            <span>回复内容</span>
+                        </th>
+                        <th nz-th>
+                            <span>操作</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody nz-tbody>
+                    <tr nz-tbody-tr *ngFor="let message of nzTable.data">
+                        <td nz-td>{{message.keyWord}}</td>
+                        <td nz-td>{{message.content}}</td>
+                        <td nz-td>
+                            <a (click)="editMessage(message)">编辑</a>
+                            <span nz-table-divider></span>
+                            <a (click)="delete(message)">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </nz-card>
+        <edit-message-modal #editMessageModal (modalSave)="getMessgeAll()"></edit-message-modal>
+    </nz-tab>
+    <nz-tab>
+        <ng-template #nzTabHeading>
+            被关注回复
+        </ng-template>
+        <form nz-form [formGroup]="form" id="frm_create_tenant" (ngSubmit)="save()">
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4">
+                    <label for="msgType" nz-form-item-required>消息类型</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('msgType')">
+                        <nz-radio-group formControlName="msgType"  [(ngModel)]="subscribes.msgType" class="mb-md">
+                                <label nz-radio [nzValue]="1" ><span>文字消息</span></label>
+                                <label nz-radio [nzValue]="2"><span>图文消息</span></label>
+                        </nz-radio-group>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="3">
+                    <label for="content" nz-form-item-required>回复内容</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('content')">
+                    <nz-input nzType="textarea" nzRows="6" formControlName="content" [(ngModel)]="subscribes.content" [nzId]="'content'"></nz-input>
+                    <div nz-form-explain *ngIf="getFormControl('content').dirty&&getFormControl('content').hasError('maxlength')">字符长度小于等于64</div>
+                    <div nz-form-explain *ngIf="getFormControl('content').dirty&&getFormControl('content').hasError('required')">内容不能为空</div>
+                </div>
+            </div>
+
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="7">
+                    <button nz-button [nzType]="'primary'" [nzSize]="'large'" type="submit" [nzLoading]="isConfirmLoading">
+                        保存
+                    </button>
+                    <button nz-button [nzType]="'default'" [nzSize]="'large'" type="button" (click)="delete($event)">
+                        删除回复
+                    </button>
+                </div>
+            </div>
+        </form>
+    </nz-tab>
+</nz-tabset>

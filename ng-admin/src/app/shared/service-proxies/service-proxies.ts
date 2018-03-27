@@ -3261,4 +3261,366 @@ export interface IPagedResultDtoOfAuthSetting {
     items: AuthSetting[];
 }
 //#endregion
-import 'rxjs/add/operator/finally';import { AuthSetting } from '@shared/service-proxies/entity/auth-setting';
+
+//#region 自动回复
+@Injectable()
+export class MessageServiceProxy {
+    private http: Http;
+    private baseUrl: string;
+    protected jsonParseReviver: (key: string, value: any) => any = undefined;
+
+    constructor(@Inject(Http) http:Http,@Optional() @Inject(API_BASE_URL) baseUrl?:string) { 
+        this.http=http;
+        this.baseUrl=baseUrl?baseUrl:"";
+    }
+   
+    /**
+     * 获取自动回复消息
+     * @return Success
+     */
+    getAll(skipCount: number, maxResultCount: number): Observable<PagedResultDtoOfMessage> {
+        let url_ = this.baseUrl + "/api/services/app/WechatMessage/GetPagedWechatMessages?";
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetAll(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetAll(response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfMessage>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfMessage>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetAll(response: Response): Observable<PagedResultDtoOfMessage> {
+        const status = response.status; 
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfMessage.fromJS(resultData200) : new PagedResultDtoOfMessage();
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<PagedResultDtoOfMessage>(<any>null);
+    }
+
+    /**
+     * 通过消息id获取自动回复消息信息
+     * @param id 消息id
+     */
+    get(id: number): Observable<Messagess> {
+        let url_ = this.baseUrl + "/api/services/app/WechatMessage/GetWechatMessageByIdAsync?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGet(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGet(response_);
+                } catch (e) {
+                    return <Observable<Messagess>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Messagess>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGet(response: Response): Observable<Messagess> {
+        const status = response.status; 
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Messagess.fromJS(resultData200) : new Messagess();
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<Messagess>(<any>null);
+    }
+
+    /**
+     * 新增或修改自动回复消息信息
+     * @param input 
+     */
+    update(input: Messagess): Observable<Messagess> {
+        let url_ = this.baseUrl + "/api/services/app/WechatMessage/CreateOrUpdateWechatMessage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+        
+        let options_ = {
+            body: content_,
+            method: "put",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processUpdate(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processUpdate(response_);
+                } catch (e) {
+                    return <Observable<Messagess>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Messagess>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdate(response: Response): Observable<Messagess> {
+        const status = response.status; 
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Messagess.fromJS(resultData200) : new Messagess();
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<Messagess>(<any>null);
+    }
+
+}
+export class PagedResultDtoOfMessage implements IPagedResultDtoOfMessage {
+    totalCount: number;
+    items: Messagess[];
+
+    constructor(data?: IPagedResultDtoOfMessage) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(Messagess.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfMessage {
+        let result = new PagedResultDtoOfMessage();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new PagedResultDtoOfMessage();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedResultDtoOfMessage {
+    totalCount: number;
+    items: Messagess[];
+}
+
+//#endregion
+
+//#region 关注回复消息
+@Injectable()
+export class SubscribeServiceProxy {
+    private http: Http;
+    private baseUrl: string;
+    protected jsonParseReviver: (key: string, value: any) => any = undefined;
+
+    constructor(@Inject(Http) http:Http,@Optional() @Inject(API_BASE_URL) baseUrl?:string) { 
+        this.http=http;
+        this.baseUrl=baseUrl?baseUrl:"";
+    }
+   
+    /**
+     * 获取关注回复消息通过租户id
+     * @return Success
+     */
+    get(): Observable<Subscribess> {
+        let url_ = this.baseUrl + "/api/services/app/WechatSubscribe/GetSubscribeInfoByTenantId?";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGet(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGet(response_);
+                } catch (e) {
+                    return <Observable<Subscribess>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Subscribess>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGet(response: Response): Observable<Subscribess> {
+        const status = response.status; 
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Subscribess.fromJS(resultData200) : new Subscribess();
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<Subscribess>(<any>null);
+    }
+    //#region 新增或修改关注回复消息
+    update(input: Subscribess): Observable<Subscribess> {
+        let url_ = this.baseUrl + "/api/services/app/WechatSubscribe/CreateOrUpdateWechatSubscribe";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+        
+        let options_ = {
+            body: content_,
+            method: "put",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processUpdate(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processUpdate(response_);
+                } catch (e) {
+                    return <Observable<Subscribess>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<Subscribess>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdate(response: Response): Observable<Subscribess> {
+        const status = response.status; 
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Subscribess.fromJS(resultData200) : new Subscribess();
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<Subscribess>(<any>null);
+    }
+    //#endregion
+}
+
+//#endregion
+import 'rxjs/add/operator/finally';
+import { AuthSetting } from '@shared/service-proxies/entity/auth-setting';
+import { Messagess } from '@shared/service-proxies/entity/messages';
+import { Subscribess } from '@shared/service-proxies/entity/subscribe';
+

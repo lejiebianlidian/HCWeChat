@@ -12,7 +12,9 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.AccountServiceProxy,
         ApiServiceProxies.ConfigurationServiceProxy,
         ApiServiceProxies.DriverServiceProxy,
-        ApiServiceProxies.AuthSettingServiceProxy
+        ApiServiceProxies.AuthSettingServiceProxy,
+        ApiServiceProxies.MessageServiceProxy,
+        ApiServiceProxies.SubscribeServiceProxy,
     ]
 })
 export class ServiceProxyModule { }

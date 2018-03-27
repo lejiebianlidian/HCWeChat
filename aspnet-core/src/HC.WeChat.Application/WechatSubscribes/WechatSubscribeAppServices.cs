@@ -182,7 +182,19 @@ namespace HC.WeChat.WechatSubscribes
             //TODO:批量删除前的逻辑判断，是否允许删除
             await _wechatsubscribeRepository.DeleteAsync(s => input.Contains(s.Id));
         }
+        
+        /// <summary>
+        /// 通过租户id获取关注回复消息
+        /// </summary>
+        /// <returns></returns>
+        public async Task<WechatSubscribeListDto> GetSubscribeInfoByTenantId()
+        {
+            var tenantId = AbpSession.TenantId;
+            var entity =await  _wechatsubscribeRepository.GetAll().FirstOrDefaultAsync(s => s.TenantId == tenantId);
+            //var aa = ;
+            return entity.MapTo<WechatSubscribeListDto>();
 
+        }
     }
 }
 
