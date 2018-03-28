@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Ionic App</title>
+  <title>宜宾烟草</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
@@ -13,7 +13,7 @@
   <meta name="theme-color" content="#4e8ef7">
 
   <!-- cordova.js required for cordova apps -->
-  <script src="cordova.js"></script>
+  <!-- <script src="cordova.js"></script>  -->
 
   <!-- un-comment this code to enable service worker
   <script>
@@ -33,7 +33,7 @@
   <!-- Ionic's root component and where the app will load -->
   <ion-app></ion-app>
 
-  <script>
+  <script type="text/javascript">
     (function setWechat() {
       var ua = navigator.userAgent.toLowerCase();
       var isWechat = /micromessenger/.test(ua);
@@ -44,13 +44,13 @@
   </script>
 
   <!-- The polyfills js is generated during the build process -->
-  <script src="build/polyfills.js"></script>
+  <script type="text/javascript" src="build/polyfills.js"></script>
 
   <!-- all code from node_modules directory is here -->
-  <script src="build/vendor.js"></script>
+  <script type="text/javascript" src="build/vendor.js"></script>
 
   <!-- The bundle js is generated during the build process -->
-  <script src="build/main.js"></script>
+  <script type="text/javascript" src="build/main.js"></script>
 
 </body>
 

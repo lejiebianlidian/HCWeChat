@@ -1,0 +1,22 @@
+<ion-header hideWhen="wechat">
+    <ion-navbar>
+        <ion-title>宜宾烟草</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content text-center class="icons-basic-page">
+    <h2>欢迎使用宜宾烟草!</h2>
+    <ion-row>
+        <ion-col>
+            <ion-icon name="md-person" color="primary" title="'个人中心'"></ion-icon>
+            <br/>个人中心</ion-col>
+        <ion-col>
+            <ion-icon name="md-person-add" color="primary" (click)="goUserBind()" title="'用户绑定'"></ion-icon>
+            <br/>用户绑定</ion-col>
+        <ion-col>
+            <ion-icon name="heart" color="danger" title="'营销活动'"></ion-icon>
+            <br/>营销活动</ion-col>
+        <ion-col>
+            <ion-icon name="ionitron" color="primary" title="'活动申请'"></ion-icon>
+            <br/>活动申请</ion-col>
+    </ion-row>
+</ion-content>
