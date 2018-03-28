@@ -5,6 +5,8 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { FormGroup, FormBuilder, Validators, FormControl, AsyncValidatorFn, AbstractControl } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
+import { EmployeeModalComponent } from '../employee-modal/employee-modal.component';
+import { Employee } from '@shared/service-proxies/entity/employee';
 
 //import * as _ from "lodash";
 
@@ -16,6 +18,7 @@ export class CreateUserComponent extends AppComponentBase implements OnInit {
 
     //@ViewChild('createUserModal') modal: ModalDirective;
     //@ViewChild('modalContent') modalContent: ElementRef;
+    @ViewChild('selectEmployeeModal') selectEmployeeModal: EmployeeModalComponent;
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
@@ -71,7 +74,8 @@ export class CreateUserComponent extends AppComponentBase implements OnInit {
     //    $.AdminBSB.input.activate($(this.modalContent.nativeElement));
     //}
 
-    save(): void {
+    save(isSave = false): void {
+
         for (const i in this.form.controls) {
             this.form.controls[i].markAsDirty();
         }
@@ -92,11 +96,12 @@ export class CreateUserComponent extends AppComponentBase implements OnInit {
             this._userService.create(this.user)
                 .finally(() => { this.isConfirmLoading = false; })
                 .subscribe(() => {
-                    this.notify.info(this.l('SavedSuccessfully'));
+                    this.notify.info(this.l('保存成功！'));
                     this.close();
                     this.modalSave.emit(null);
                 });
         }
+
     }
 
     close(): void {
@@ -142,6 +147,27 @@ export class CreateUserComponent extends AppComponentBase implements OnInit {
         this.form.reset();
         for (const key in this.form.controls) {
             this.form.controls[key].markAsPristine();
+        }
+    }
+
+    /**
+     * 显示员工列表模态框
+     */
+    employee(): void {
+        this.selectEmployeeModal.show();
+    }
+    /**
+     * 模态框返回
+     */
+    getSelectData = (employee?: Employee) => {
+        if (employee) {
+            this.user.name = employee.name;
+            this.user.employeeId = employee.id;
+        }
+        for (const key in this.form.controls) {
+            if (!this.user[key]) {
+                this.form.controls[key].markAsPristine();
+            }
         }
     }
 

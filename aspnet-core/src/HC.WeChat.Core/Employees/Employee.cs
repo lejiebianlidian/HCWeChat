@@ -1,5 +1,6 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using HC.WeChat.WechatEnums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -33,7 +34,7 @@ namespace HC.WeChat.Employees
         /// 员工职位（枚举 客户经理、营销人员）
         /// </summary>
         [Required]
-        public int Position { get; set; }
+        public UserTypeEnum Position { get; set; }
 
         /// <summary>
         /// 员工电话

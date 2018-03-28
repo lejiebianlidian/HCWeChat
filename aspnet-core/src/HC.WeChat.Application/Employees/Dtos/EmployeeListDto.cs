@@ -2,6 +2,7 @@
 using Abp.Application.Services.Dto;
 using HC.WeChat.Employees.Dtos.LTMAutoMapper;
 using HC.WeChat.Employees;
+using HC.WeChat.WechatEnums;
 
 namespace HC.WeChat.Employees.Dtos
 {
@@ -11,7 +12,7 @@ namespace HC.WeChat.Employees.Dtos
         ////ECC/ END CUSTOM CODE SECTION
         public string Code { get; set; }
         public string Name { get; set; }
-        public int Position { get; set; }
+        public UserTypeEnum Position { get; set; }
         public string Phone { get; set; }
         public string Company { get; set; }
         public string Department { get; set; }

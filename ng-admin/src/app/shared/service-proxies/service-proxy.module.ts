@@ -1,6 +1,7 @@
 ﻿import { NgModule } from '@angular/core';
 
 import * as ApiServiceProxies from './service-proxies';
+import * as MarketingServiceProxies from './marketing-service/employee-service';
 
 @NgModule({
     providers: [
@@ -15,6 +16,8 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.AuthSettingServiceProxy,
         ApiServiceProxies.MessageServiceProxy,
         ApiServiceProxies.SubscribeServiceProxy,
+        MarketingServiceProxies.EmployeeServiceProxy,
+        ApiServiceProxies.EmployeesServiceProxy
     ]
 })
 export class ServiceProxyModule { }

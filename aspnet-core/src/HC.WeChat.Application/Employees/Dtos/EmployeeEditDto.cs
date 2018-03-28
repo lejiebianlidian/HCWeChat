@@ -2,6 +2,7 @@
 using HC.WeChat.Employees.Dtos.LTMAutoMapper;
 using HC.WeChat.Employees;
 using System;
+using HC.WeChat.WechatEnums;
 
 namespace HC.WeChat.Employees.Dtos
 {
@@ -31,7 +32,7 @@ namespace HC.WeChat.Employees.Dtos
         /// 员工职位（枚举 客户经理、营销人员）
         /// </summary>
         [Required]
-        public int Position { get; set; }
+        public UserTypeEnum Position { get; set; }
 
 
         /// <summary>

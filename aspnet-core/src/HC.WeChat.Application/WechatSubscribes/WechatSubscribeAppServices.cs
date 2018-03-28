@@ -21,7 +21,7 @@ namespace HC.WeChat.WechatSubscribes
     /// WechatSubscribe应用层服务的接口实现方法
     /// </summary>
     //[AbpAuthorize(WechatSubscribeAppPermissions.WechatSubscribe)]
-    //[AbpAuthorize(AppPermissions.Pages)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class WechatSubscribeAppService : WeChatAppServiceBase, IWechatSubscribeAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
