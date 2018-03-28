@@ -17,7 +17,7 @@ export class CreateMessageComponent extends AppComponentBase implements OnInit {
     //加载效果
     isConfirmLoading = false;
     messages: Messagess = new Messagess();
-    form: FormGroup;
+    formc: FormGroup;
     constructor(injector: Injector, private messageService: MessageServiceProxy, private fb: FormBuilder) {
         super(injector);
     }
@@ -25,9 +25,9 @@ export class CreateMessageComponent extends AppComponentBase implements OnInit {
      * 页面初始加载
      */
     ngOnInit(): void {
-        this.form = this.fb.group({
+        this.formc = this.fb.group({
             keyWord: [null, [Validators.compose([Validators.required, Validators.maxLength(50)])]],
-            matchMode: [null],
+            matchMode: [null,Validators.required],
             content: [null, [Validators.compose([Validators.required])]]
         });
     }
@@ -50,9 +50,9 @@ export class CreateMessageComponent extends AppComponentBase implements OnInit {
         if (e) {
             e.preventDefault();
         }
-        this.form.reset();
-        for (const key in this.form.controls) {
-            this.form.controls[key].markAsPristine();
+        this.formc.reset();
+        for (const key in this.formc.controls) {
+            this.formc.controls[key].markAsPristine();
         }
     }
 
@@ -60,14 +60,18 @@ export class CreateMessageComponent extends AppComponentBase implements OnInit {
      * 
      * @param name 
      */
-    getFormControl(name: string) {
-        return this.form.controls[name];
+    getcFormControl(name: string) {
+        return this.formc.controls[name];
     }
 
     /**
      * 保存关键字回复信息
      */
     save(): void {
+        for (const i in this.formc.controls) {
+            this.formc.controls[i].markAsDirty();
+        }
+        this.isConfirmLoading=true;
         this.messageService.update(this.messages)
             .finally(() => {
                 this.isConfirmLoading = false;

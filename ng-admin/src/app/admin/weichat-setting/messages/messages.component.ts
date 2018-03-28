@@ -61,12 +61,19 @@ export class MessagesComponent extends AppComponentBase implements OnInit {
             this.q.pi = 1;
         }
         this.loading = true;
-        this.messageService.getAll((this.q.pi - 1) * this.q.ps, this.q.ps,this.mesText).subscribe((result: PagedResultDtoOfMessage) => {
+        this.messageService.getAll((this.q.pi - 1) * this.q.ps, this.q.ps, this.mesText).subscribe((result: PagedResultDtoOfMessage) => {
             this.loading = false;
             let status = 0;
             this.messagess = result.items;
             this.q.total = result.totalCount;
         });
+    }
+    /**
+     * 重置
+     */
+    ResetSearch():void{
+        this.mesText='';
+        this.getMessgeAll(true);
     }
 
     /**
@@ -137,8 +144,26 @@ export class MessagesComponent extends AppComponentBase implements OnInit {
                 .finally(() => { this.isConfirmLoading = false; })
                 .subscribe(() => {
                     this.notify.info(this.l('保存成功'));
+                    this.getSubscribe();
                 });
         }
+    }
+    deletes(contentTpl) {
+        this.modal.open({
+            content: contentTpl,
+            okText: '是',
+            cancelText: '否',
+            onOk: () => {
+                this.subscribeService.delete(this.subscribes.id)
+                    .subscribe(() => {
+                        this.getSubscribe();
+                        this.form.reset();
+                        this.notify.info(this.l('删除成功！'));
+                    });
+            },
+            onCancel: () => {
+            }
+        });
     }
     //#endregion
 }

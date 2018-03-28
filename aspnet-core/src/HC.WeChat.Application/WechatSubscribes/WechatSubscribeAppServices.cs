@@ -21,7 +21,7 @@ namespace HC.WeChat.WechatSubscribes
     /// WechatSubscribe应用层服务的接口实现方法
     /// </summary>
     //[AbpAuthorize(WechatSubscribeAppPermissions.WechatSubscribe)]
-    [AbpAuthorize(AppPermissions.Pages)]
+    //[AbpAuthorize(AppPermissions.Pages)]
     public class WechatSubscribeAppService : WeChatAppServiceBase, IWechatSubscribeAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -141,7 +141,7 @@ namespace HC.WeChat.WechatSubscribes
         {
             //TODO:新增前的逻辑判断，是否允许新增
             var entity = ObjectMapper.Map<WechatSubscribe>(input);
-
+            entity.TenantId = AbpSession.TenantId;
             entity = await _wechatsubscribeRepository.InsertAsync(entity);
             return entity.MapTo<WechatSubscribeEditDto>();
         }
@@ -193,6 +193,24 @@ namespace HC.WeChat.WechatSubscribes
             return entity.MapTo<WechatSubscribeListDto>();
 
         }
+
+        /// <summary>
+        /// 添加或者修改WechatSubscribe的方法
+        /// </summary>
+        /// <param name="input">被关注回复实体</param>
+        /// <returns></returns>
+        public async Task CreateOrUpdateWechatSubscribeDto(WechatSubscribeEditDto input)
+        {
+            if (input.Id.HasValue)
+            {
+                await UpdateWechatSubscribeAsync(input);
+            }
+            else
+            {
+                await CreateWechatSubscribeAsync(input);
+            }
+        }
+
     }
 }
 

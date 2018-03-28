@@ -1,4 +1,5 @@
-export class Subscribess {
+export class Subscribess implements ISubscribe{
+    id:number;
     msgType: number;
     content: string;
     tenantId: number;
@@ -17,6 +18,7 @@ export class Subscribess {
 
     init(data?: any) {
         if (data) {
+            this.id = data["id"];
             this.msgType = data["msgType"];
             this.content = data["content"];
             this.tenantId = data["tenantId"];
@@ -39,6 +41,7 @@ export class Subscribess {
         data["msgType"] = this.msgType;
         data["content"] = this.content;
         data["tenantId"] = this.tenantId;
+        data["id"] = this.id;
         return data;
     }
 
@@ -50,6 +53,7 @@ export class Subscribess {
     }
 }
 export class ISubscribe {
+    id:number;
     msgType: number;
     content: string;
     tenantId: number;

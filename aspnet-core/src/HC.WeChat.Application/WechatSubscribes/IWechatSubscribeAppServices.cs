@@ -62,5 +62,12 @@ namespace HC.WeChat.WechatSubscribes
         /// </summary>
         /// <returns></returns>
         Task<WechatSubscribeListDto> GetSubscribeInfoByTenantId();
+
+        /// <summary>
+        /// 更新或修改被关注回复
+        /// </summary>
+        /// <param name="input">被关注回复实体</param>
+        /// <returns></returns>
+        Task CreateOrUpdateWechatSubscribeDto(WechatSubscribeEditDto input);
     }
 }
