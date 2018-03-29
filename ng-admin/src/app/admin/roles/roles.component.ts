@@ -27,7 +27,7 @@ export class RolesComponent extends AppComponentBase implements OnInit {
 	loading = false;
 	roles: RoleDto[] = [];
 	//用于显示删除文本角色名
-	roleName: string='';
+	roleName: string = '';
 	constructor(
 		private injector: Injector,
 		private rolesService: RoleServiceProxy,
@@ -76,14 +76,14 @@ export class RolesComponent extends AppComponentBase implements OnInit {
 	 */
 	delete(role: RoleDto, contentTpl): void {
 		this.roleName = role.displayName;
-		this.modal.open({
+		this.modal.confirm({
 			content: contentTpl,
 			okText: '是',
 			cancelText: '否',
 			onOk: () => {
 				this.rolesService.delete(role.id)
 					.subscribe(() => {
-						this.notify.info('删除成功！')
+						this.notify.info(this.l('删除成功！'));
 						this.refreshData();
 					})
 			},

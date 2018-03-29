@@ -87,14 +87,15 @@ export class TenantComponent extends AppComponentBase implements OnInit {
      * @param contenTpl 弹框
      */
     delete(tenant: TenantDto, contenTpl): void {
-        this.modal.open({
+        this.TenantName=tenant.name;
+        this.modal.confirm({
             content: contenTpl,
             okText: '是',
             cancelText: '否',
             onOk: () => {
                 this._tenantService.delete(tenant.id)
                     .subscribe(() => {
-                        this.notify.info('删除成功');
+                        this.notify.info(this.l('删除成功'));
                         this.refreshData();
                     });
             }

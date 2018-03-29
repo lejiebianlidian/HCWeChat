@@ -82,8 +82,8 @@ export class EmployeesComponent extends AppComponentBase implements OnInit {
         this.employeeName = employee.name;
         this.modal.confirm({
             content: contentTpl,
-            okText: '确定',
-            cancelText: '取消',
+            okText: '是',
+            cancelText: '否',
             onOk: () => {
                 this.employeeService.delete(employee.id).subscribe(() => {
                     this.notify.info(this.l('删除成功！'));
