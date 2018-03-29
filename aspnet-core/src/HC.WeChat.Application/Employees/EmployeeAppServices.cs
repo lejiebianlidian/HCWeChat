@@ -13,13 +13,15 @@ using HC.WeChat.Employees.Dtos;
 using HC.WeChat.Employees.DomainServices;
 using HC.WeChat.Employees;
 using System;
+using HC.WeChat.Authorization;
 
 namespace HC.WeChat.Employees
 {
     /// <summary>
     /// Employee应用层服务的接口实现方法
     /// </summary>
-    [AbpAuthorize(EmployeeAppPermissions.Employee)]
+    //[AbpAuthorize(EmployeeAppPermissions.Employee)]
+    //[AbpAuthorize(AppPermissions.Pages)]
     public class EmployeeAppService : WeChatAppServiceBase, IEmployeeAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -51,6 +53,7 @@ namespace HC.WeChat.Employees
             var employeeCount = await query.CountAsync();
 
             var employees = await query
+                .WhereIf(!string.IsNullOrEmpty(input.Filter),e=>e.Name.Contains(input.Filter))
                 .OrderBy(input.Sorting)
                 .PageBy(input)
                 .ToListAsync();
@@ -181,6 +184,32 @@ namespace HC.WeChat.Employees
             await _employeeRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        /// <summary>
+        /// 用于员工模态框的数据获取
+        /// </summary>
+        /// <param name="input">员工姓名或编号</param>
+        /// <returns></returns>
+        public async Task<PagedResultDto<EmployeeListDto>> GetPagedEmployeesModal(GetEmployeesInput input)
+        {
+            var query = _employeeRepository.GetAll();
+            //TODO:根据传入的参数添加过滤条件
+            var employeeCount = await query.CountAsync();
+            input.MaxResultCount = 10;
+            input.SkipCount = 0;
+            var employees = await query
+                .WhereIf(!string.IsNullOrEmpty(input.Filter), e => e.Name.Contains(input.Filter) ||e.Code.Contains(input.Filter))
+                .OrderBy(input.Sorting)
+                .PageBy(input)
+                .ToListAsync();
+
+            //var employeeListDtos = ObjectMapper.Map<List <EmployeeListDto>>(employees);
+            var employeeListDtos = employees.MapTo<List<EmployeeListDto>>();
+
+            return new PagedResultDto<EmployeeListDto>(
+                employeeCount,
+                employeeListDtos
+                );
+        }
     }
 }
 

@@ -18,6 +18,7 @@ import { AuthSettingComponent } from './weichat-setting/auth-setting/auth-settin
 import { MessagesComponent } from './weichat-setting/messages/messages.component';
 import { EditMessageComponent } from './weichat-setting/messages/edit-message/edit-message.component';
 import { CreateMessageComponent } from './weichat-setting/messages/create-message/create-message.component';
+import { EmployeeModalComponent } from './users/employee-modal/employee-modal.component';
 
 //权限判断
 import { AppRouteGuard } from '../shared/auth/auth-route-guard';
@@ -44,7 +45,8 @@ import { AppRouteGuard } from '../shared/auth/auth-route-guard';
     AuthSettingComponent,
     MessagesComponent,
     EditMessageComponent,
-    CreateMessageComponent
+    CreateMessageComponent,
+    EmployeeModalComponent
    ],
    providers: [ AppRouteGuard,DriverComponent ]
 })

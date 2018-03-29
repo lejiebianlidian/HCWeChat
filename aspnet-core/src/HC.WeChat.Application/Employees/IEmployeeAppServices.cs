@@ -56,5 +56,7 @@ namespace HC.WeChat.Employees
         /// 批量删除Employee
         /// </summary>
         Task BatchDeleteEmployeesAsync(List<Guid> input);
+
+        Task<PagedResultDto<EmployeeListDto>> GetPagedEmployeesModal(GetEmployeesInput input);
     }
 }

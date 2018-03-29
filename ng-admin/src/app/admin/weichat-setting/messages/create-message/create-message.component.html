@@ -41,11 +41,16 @@
                                     <span>图文消息</span>
                                 </label>
                             </nz-radio-group>
+                            <!-- <nz-dropdown *ngFor="let type of msyTypes">
+                                <ul nz-menu >
+                                        <li nz-menu-item>  {{type.text}}</li>
+                                  </ul>
+                            </nz-dropdown> -->
                         </div>
                     </div>
                 <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getcFormControl('content')">
                     <div nz-form-label nz-col [nzSm]="4">
-                        <label for="content" nz-form-item-required>回复内容</label>
+                        <label for="content" nz-form-item-required>内容</label>
                     </div>
                     <nz-input nzType="textarea" nzRows="4" formControlName="content" [(ngModel)]="messages.content" [nzId]="'content'"></nz-input>
                     <div nz-form-explain *ngIf="getcFormControl('content').dirty&&getcFormControl('content').hasError('required')">内容不能为空</div>

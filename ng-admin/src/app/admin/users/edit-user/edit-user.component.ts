@@ -4,6 +4,8 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { FormGroup, FormBuilder, Validators, FormControl, AsyncValidatorFn, AbstractControl } from '@angular/forms';
 
 import * as _ from "lodash";
+import { EmployeeModalComponent } from '../employee-modal/employee-modal.component';
+import { Employee } from '@shared/service-proxies/entity/employee';
 
 @Component({
     selector: 'edit-user-modal',
@@ -11,6 +13,7 @@ import * as _ from "lodash";
 })
 export class EditUserComponent extends AppComponentBase implements OnInit {
 
+    @ViewChild('selecteEmployeeModal') selecteEmployeeModal: EmployeeModalComponent;
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
     modalVisible: boolean = false;
@@ -18,9 +21,9 @@ export class EditUserComponent extends AppComponentBase implements OnInit {
     userRoles: RoleDto[] = null;
     roles: any = [];
     isConfirmLoading = false;
-    form: FormGroup;
+    eform: FormGroup;
     loading = false;
-
+    isDisable = false;
     constructor(
         injector: Injector,
         private fb: FormBuilder,
@@ -39,7 +42,7 @@ export class EditUserComponent extends AppComponentBase implements OnInit {
                 this.roles = this.userRoles.map(i => { return { label: i.name, value: i.normalizedName, checked: true }; });
             });
 
-        this.form = this.fb.group({
+        this.eform = this.fb.group({
             email: [null, [Validators.email]],
             username: [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(32)])],
             name: [null, Validators.compose([Validators.required, Validators.maxLength(32)])],
@@ -75,14 +78,20 @@ export class EditUserComponent extends AppComponentBase implements OnInit {
         //用户
         this._userService.get(id)
             .subscribe(
-            (result) => {
-                this.user = result;
-                //角色
-                //this.roles = this.userRoles.map(i => { return { label: i.name, value: i.normalizedName, checked: this.userInRole(i, this.user) }; });
-                this.roles = this.userRoles.map(i => { return { label: i.name, value: i.normalizedName, checked: true }; });
-                this.userInRoles();
-                this.loading = false;
-            });
+                (result) => {
+                    this.user = result;
+                    //角色
+                    //this.roles = this.userRoles.map(i => { return { label: i.name, value: i.normalizedName, checked: this.userInRole(i, this.user) }; });
+                    this.roles = this.userRoles.map(i => { return { label: i.name, value: i.normalizedName, checked: true }; });
+                    this.userInRoles();
+                    this.loading = false;
+                    //对isDisable做初始化
+                    this.isDisable = false;
+                    if (this.user.employeeId) {
+                        this.isDisable = true;
+                    }
+                });
+
     }
 
     handleCancel = (e) => {
@@ -91,12 +100,12 @@ export class EditUserComponent extends AppComponentBase implements OnInit {
         this.reset(e);
     }
 
-    save(): void {
-        for (const i in this.form.controls) {
-            this.form.controls[i].markAsDirty();
+    esave(): void {
+        for (const i in this.eform.controls) {
+            this.eform.controls[i].markAsDirty();
         }
-        console.log('log', this.form.value);
-        if (this.form.valid) {
+        console.log('log', this.eform.value);
+        if (this.eform.valid) {
             this.isConfirmLoading = true;
 
             var roles = [];
@@ -112,7 +121,7 @@ export class EditUserComponent extends AppComponentBase implements OnInit {
             this._userService.update(this.user)
                 .finally(() => { this.isConfirmLoading = false; })
                 .subscribe(() => {
-                    this.notify.info(this.l('SavedSuccessfully'));
+                    this.notify.info(this.l('保存成功！'));
                     this.close();
                     this.modalSave.emit(null);
                 });
@@ -124,16 +133,41 @@ export class EditUserComponent extends AppComponentBase implements OnInit {
     }
 
     getFormControl(name: string) {
-        return this.form.controls[name];
+        return this.eform.controls[name];
     }
 
     reset(e): void {
         if (e) {
             e.preventDefault();
         }
-        this.form.reset();
-        for (const key in this.form.controls) {
-            this.form.controls[key].markAsPristine();
+        this.eform.reset();
+        for (const key in this.eform.controls) {
+            this.eform.controls[key].markAsPristine();
+        }
+    }
+    /**
+     * 显示选择员工弹框
+     */
+    employees() {
+        this.selecteEmployeeModal.show();
+    }
+    /**
+     * 选择员工弹框回传数据
+     */
+    getSelectData = (employee: Employee) => {
+        //对isDisable做初始化
+        this.isDisable = false;
+        if (employee) {
+            if (employee.id) {
+                this.isDisable = true;
+            }
+            this.user.name = employee.name;
+            this.user.employeeId = employee.id;
+        }
+        for (const key in this.eform.controls) {
+            if (!this.user[key]) {
+                this.eform.controls[key].markAsPristine();
+            }
         }
     }
 }
