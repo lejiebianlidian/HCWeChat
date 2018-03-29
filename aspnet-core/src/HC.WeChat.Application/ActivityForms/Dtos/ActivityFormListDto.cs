@@ -18,6 +18,21 @@ namespace HC.WeChat.ActivityForms.Dtos
         public int Num { get; set; }
         public string Reason { get; set; }
         public FormStatusEnum Status { get; set; }
+
+        public string StatusName
+        {
+            get
+            {
+                return Status.ToString();
+            }
+        }
+
         public DateTime CreationTime { get; set; }
+
+        public string ActivityName { get; set; }
+
+        public string RetailerName { get; set; }
+
+        public string ManagerName { get; set; }
     }
 }

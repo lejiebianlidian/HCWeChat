@@ -22,12 +22,6 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
     };
     data: ActivityFormDto[] = [];
     loading = false;
-    selectedRows: any[] = [];
-    curRows: any[] = [];
-    totalCallNo = 0;
-    indeterminate = false;
-    sortMap: any = {};
-    expandForm = false;
 
     constructor(injector: Injector, public msg: NzMessageService, private _ActivityFormService: ActivityFormServiceProxy) {
         super(injector);
@@ -36,12 +30,6 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
     ngOnInit() {
         this.refreshData();
     }
-
-
-    clear() {
-        this.selectedRows = [];
-        this.totalCallNo = 0;
-    } 
 
     refreshData(reset = false) {
         if (reset) {
@@ -52,11 +40,7 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
             this.loading = false;
             let status = 0;
             this.q.total = result.totalCount;
+            this.data = result.items;
         })
     };
-
-    reset(ls: any[]) {
-        for (const item of ls) item.value = false;
-        this.refreshData();
-    }
 }

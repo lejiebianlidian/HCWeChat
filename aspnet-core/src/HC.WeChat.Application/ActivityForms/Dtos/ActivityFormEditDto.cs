@@ -78,5 +78,11 @@ namespace HC.WeChat.ActivityForms.Dtos
         /// </summary>
         [Required]
         public DateTime CreationTime { get; set; }
+
+        public string ActivityName { get; set; }
+
+        public string RetailerName { get; set; }
+
+        public string ManagerName { get; set; }
     }
 }

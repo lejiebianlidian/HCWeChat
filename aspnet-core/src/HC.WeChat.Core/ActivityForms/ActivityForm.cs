@@ -95,5 +95,23 @@ namespace HC.WeChat.ActivityForms
         /// </summary>
         [ForeignKey("ActivityFormId")]
         public virtual ICollection<ActivityFormLog> ApprovalLogs { get; set; }
+
+        /// <summary>
+        /// 活动名称 快照
+        /// </summary>
+        [StringLength(200)]
+        public string ActivityName { get; set; }
+
+        /// <summary>
+        /// 零售户名称 快照
+        /// </summary>
+        [StringLength(50)]
+        public string RetailerName { get; set; }
+
+        /// <summary>
+        /// 客户经理名称 快照
+        /// </summary>
+        [StringLength(50)]
+        public string ManagerName { get; set; }
     }
 }

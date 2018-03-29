@@ -9,6 +9,9 @@ export class ActivityForm implements IActivityForm {
     reason: string;
     status: number;
     creationTime: Date;
+    activityName: string;
+    retailerName: string;
+    managerName: string;
     constructor(data?: IActivityForm) {
         if (data) {
             for (var property in data) {
@@ -30,6 +33,9 @@ export class ActivityForm implements IActivityForm {
             this.reason = data["reason"];
             this.status = data["status"];
             this.creationTime = data["creationTime"];
+            this.activityName = data["activityName"];
+            this.retailerName = data["retailerName"];
+            this.managerName = data["managerName"];
         }
     }
 
@@ -51,6 +57,9 @@ export class ActivityForm implements IActivityForm {
         this.reason = data["reason"];
         this.status = data["status"];
         this.creationTime = data["creationTime"];
+        this.activityName = data["activityName"];
+        this.retailerName = data["retailerName"];
+        this.managerName = data["managerName"];
         return data;
     }
 
@@ -72,6 +81,9 @@ export class IActivityForm {
     reason: string;
     status: number;
     creationTime: Date;
+    activityName: string;
+    retailerName: string;
+    managerName: string;
 }
 
 export class ActivityFormDto implements IActivityFormDto {
@@ -84,7 +96,11 @@ export class ActivityFormDto implements IActivityFormDto {
     num: number;
     reason: string;
     status: number;
+    statusName: string;
     creationTime: Date;
+    activityName: string;
+    retailerName: string;
+    managerName: string;
 
     constructor(data?: IActivityFormDto) {
         if (data) {
@@ -107,6 +123,9 @@ export class ActivityFormDto implements IActivityFormDto {
             this.reason = data["reason"];
             this.status = data["status"];
             this.creationTime = data["creationTime"];
+            this.activityName = data["activityName"];
+            this.retailerName = data["retailerName"];
+            this.managerName = data["managerName"];
         }
     }
 
@@ -128,6 +147,9 @@ export class ActivityFormDto implements IActivityFormDto {
         this.reason = data["reason"];
         this.status = data["status"];
         this.creationTime = data["creationTime"];
+        this.activityName = data["activityName"];
+        this.retailerName = data["retailerName"];
+        this.managerName = data["managerName"];
 
         return data;
     }
@@ -151,4 +173,7 @@ export interface IActivityFormDto {
     reason: string;
     status: number;
     creationTime: Date;
+    activityName: string;
+    retailerName: string;
+    managerName: string;
 }

@@ -7,7 +7,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/catch';
 
 
-import { ActivityForm } from "@shared/service-proxies/entity/activity-form";
+import { ActivityForm, ActivityFormDto } from "@shared/service-proxies/entity/activity-form";
 import { Observable } from 'rxjs/Observable';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { Http, Headers, ResponseContentType, Response } from '@angular/http';
@@ -253,7 +253,7 @@ export class ActivityFormServiceProxy {
 }
 export class PagedResultDtoOfActivityForm implements IPagedResultDtoOfActivityForm {
     totalCount: number;
-    items: ActivityForm[];
+    items: ActivityFormDto[];
 
     constructor(data?: IPagedResultDtoOfActivityForm) {
         if (data) {
@@ -270,7 +270,7 @@ export class PagedResultDtoOfActivityForm implements IPagedResultDtoOfActivityFo
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
                 for (let item of data["items"])
-                    this.items.push(ActivityForm.fromJS(item));
+                    this.items.push(ActivityFormDto.fromJS(item));
             }
         }
     }
@@ -302,5 +302,5 @@ export class PagedResultDtoOfActivityForm implements IPagedResultDtoOfActivityFo
 
 export interface IPagedResultDtoOfActivityForm {
     totalCount: number;
-    items: ActivityForm[];
+    items: ActivityFormDto[];
 }
