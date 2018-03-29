@@ -68,6 +68,8 @@ export class CreateUserComponent extends AppComponentBase implements OnInit {
             element.checked = true;
         });
         this.modalVisible = true;
+         //对isDisablec做初始化
+         this.isDisablec = false;
     }
 
     //onShown(): void {
@@ -160,6 +162,8 @@ export class CreateUserComponent extends AppComponentBase implements OnInit {
      * 模态框返回
      */
     getSelectData = (employee?: Employee) => {
+        //对isDisablec做初始化
+        this.isDisablec = false;
         if (employee) {
             if (employee.id) {
                 this.isDisablec = true;

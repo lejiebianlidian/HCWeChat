@@ -85,6 +85,8 @@ export class EditUserComponent extends AppComponentBase implements OnInit {
                     this.roles = this.userRoles.map(i => { return { label: i.name, value: i.normalizedName, checked: true }; });
                     this.userInRoles();
                     this.loading = false;
+                    //对isDisable做初始化
+                    this.isDisable = false;
                     if (this.user.employeeId) {
                         this.isDisable = true;
                     }
@@ -153,6 +155,8 @@ export class EditUserComponent extends AppComponentBase implements OnInit {
      * 选择员工弹框回传数据
      */
     getSelectData = (employee: Employee) => {
+        //对isDisable做初始化
+        this.isDisable = false;
         if (employee) {
             if (employee.id) {
                 this.isDisable = true;
