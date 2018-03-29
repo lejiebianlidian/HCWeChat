@@ -125,5 +125,11 @@ namespace HC.WeChat.Retailers
         /// 租户ID
         /// </summary>
         public int? TenantId { get; set; }
+
+        /// <summary>
+        /// 客户经理 快照
+        /// </summary>
+        [StringLength(50)]
+        public string LicenseKey { get; set; }
     }
 }

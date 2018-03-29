@@ -109,5 +109,8 @@ namespace HC.WeChat.Retailers.Dtos
         [StringLength(500)]
         public string DeliveryLine { get; set; }
         public int? TenantId { get; set; }
+
+        [StringLength(50)]
+        public string LicenseKey { get; set; }
     }
 }

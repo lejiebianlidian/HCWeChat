@@ -26,6 +26,12 @@ namespace HC.WeChat.Migrations
               table: "ActivityForms",
               maxLength: 50,
               nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+             name: "LicenseKey",
+             table: "Retailers",
+             maxLength: 50,
+             nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -41,6 +47,11 @@ namespace HC.WeChat.Migrations
             migrationBuilder.DropColumn(
                name: "ManagerName",
                table: "ActivityForms");
+
+            migrationBuilder.DropColumn(
+              name: "LicenseKey",
+              table: "Retailers");
+
         }
     }
 }
