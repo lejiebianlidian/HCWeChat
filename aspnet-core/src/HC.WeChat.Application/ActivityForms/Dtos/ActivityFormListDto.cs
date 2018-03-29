@@ -27,6 +27,27 @@ namespace HC.WeChat.ActivityForms.Dtos
             }
         }
 
+        public string StatusType
+        {
+            get
+            {
+                switch (Status)
+                {
+                    case FormStatusEnum.提交申请:
+                        return "error";
+                    case FormStatusEnum.初审通过:
+                        return "processing";
+                    case FormStatusEnum.拒绝:
+                        return "default";
+                    case FormStatusEnum.完成:
+                        return "success";
+                    case FormStatusEnum.取消:
+                        return "default";
+                    default: return "default";
+                }
+            }
+        }
+
         public DateTime CreationTime { get; set; }
 
         public string ActivityName { get; set; }

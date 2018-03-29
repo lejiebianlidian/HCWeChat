@@ -13,6 +13,7 @@ using HC.WeChat.ActivityForms.Dtos;
 using HC.WeChat.ActivityForms.DomainServices;
 using HC.WeChat.ActivityForms;
 using System;
+using System.Linq;
 using HC.WeChat.Authorization;
 
 namespace HC.WeChat.ActivityForms
@@ -48,12 +49,18 @@ namespace HC.WeChat.ActivityForms
         public async Task<PagedResultDto<ActivityFormListDto>> GetPagedActivityForms(GetActivityFormsInput input)
         {
 
-            var query = _activityformRepository.GetAll();
+            var query = _activityformRepository.GetAll()
+                .WhereIf(!string.IsNullOrEmpty(input.FormCode), q => q.FormCode == input.FormCode)
+                .WhereIf(input.BeginDate.HasValue, q => q.CreationTime >= input.BeginDate)
+                .WhereIf(input.EndDate.HasValue, q => q.CreationTime < input.EndDateOne)
+                .WhereIf(input.Status.HasValue, q => q.Status == input.Status)
+                .WhereIf(!string.IsNullOrEmpty(input.Filter), q => q.ActivityName.Contains(input.Filter) 
+                || q.RetailerName.Contains(input.Filter) || q.ManagerName.Contains(input.Filter));
             //TODO:根据传入的参数添加过滤条件
             var activityformCount = await query.CountAsync();
 
             var activityforms = await query
-                .OrderBy(input.Sorting)
+                .OrderByDescending(q => q.CreationTime)
                 .PageBy(input)
                 .ToListAsync();
 

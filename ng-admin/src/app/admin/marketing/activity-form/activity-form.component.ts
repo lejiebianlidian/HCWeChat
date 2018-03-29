@@ -1,7 +1,6 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd';
-//import { getRule, saveRule, removeRule } from '../../../../_mock/rule.service';
-import { ActivityFormDto } from '@shared/service-proxies/entity';
+import { ActivityFormDto, Parameter } from '@shared/service-proxies/entity';
 import { ActivityFormServiceProxy, PagedResultDtoOfActivityForm } from '@shared/service-proxies/marketing-service/activity-form-service';
 
 import { AppComponentBase } from '@shared/app-component-base';
@@ -11,17 +10,17 @@ import { AppComponentBase } from '@shared/app-component-base';
     templateUrl: './activity-form.component.html'
 })
 export class ActivityFormComponent extends AppComponentBase implements OnInit {
-
-    q: any = {
-        pi: 1,
-        ps: 10,
-        total: 0,
-        sorter: '',
-        status: -1,
-        statusList: []
-    };
     data: ActivityFormDto[] = [];
     loading = false;
+    parameters: any = { beginDate: null, endDate: null };
+
+    statusList = [
+        { text: '提交申请', value: 1, type: 'error' },
+        { text: '初审通过', value: 2, type: 'processing' },
+        { text: '拒绝', value: 3, type: 'default' },
+        { text: '取消', value: 3, type: 'default' },
+        { text: '完成', value: 4, type: 'success' }
+    ];
 
     constructor(injector: Injector, public msg: NzMessageService, private _ActivityFormService: ActivityFormServiceProxy) {
         super(injector);
@@ -33,14 +32,25 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
 
     refreshData(reset = false) {
         if (reset) {
-            this.q.pi = 1;
+            this.query.pageIndex = 1;
         }
         this.loading = true;
-        this._ActivityFormService.getAll((this.q.pi - 1) * this.q.ps, this.q.ps, '').subscribe((result: PagedResultDtoOfActivityForm) => {
+
+        this._ActivityFormService.getAll(this.query.skipCount(), this.query.pageSize, this.getParameter()).subscribe((result: PagedResultDtoOfActivityForm) => {
             this.loading = false;
             let status = 0;
-            this.q.total = result.totalCount;
+            this.query.total = result.totalCount;
             this.data = result.items;
         })
     };
+
+    getParameter(): Parameter[]{
+        let parray = [];
+        parray.push(Parameter.fromJS({ key: 'FormCode', value: this.parameters.formCode }));
+        parray.push(Parameter.fromJS({ key: 'BeginDate', value: this.parameters.beginDate }));
+        parray.push(Parameter.fromJS({ key: 'EndDate', value: this.parameters.endDate }));
+        parray.push(Parameter.fromJS({ key: 'Status', value: this.parameters.status }));
+        parray.push(Parameter.fromJS({ key: 'Filter', value: this.parameters.filter }));
+        return parray;
+    }
 }

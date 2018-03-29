@@ -7,7 +7,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/catch';
 
 
-import { ActivityForm, ActivityFormDto } from "@shared/service-proxies/entity/activity-form";
+import { ActivityForm, ActivityFormDto, Parameter } from "@shared/service-proxies/entity";
 import { Observable } from 'rxjs/Observable';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { Http, Headers, ResponseContentType, Response } from '@angular/http';
@@ -35,14 +35,22 @@ export class ActivityFormServiceProxy {
      * 获取活动表单
      * @return Success
      */
-    getAll(skipCount: number, maxResultCount: number, Filter:string): Observable<PagedResultDtoOfActivityForm> {
+    getAll(skipCount: number, maxResultCount: number, parameter: Parameter[]): Observable<PagedResultDtoOfActivityForm> {
         let url_ = this.baseUrl + "/api/services/app/ActivityForm/GetPagedActivityForms?";
         if (skipCount !== undefined)
             url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
         if (maxResultCount !== undefined)
             url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
-        if (Filter !== undefined)
-            url_ += "Filter=" + encodeURIComponent("" + Filter) + "&"; 
+
+        console.table(parameter);
+        if (parameter.length > 0) {
+            parameter.forEach(element => {
+                if (element.value !== undefined && element.value !== null) {
+                    url_ += element.key + "=" + encodeURIComponent("" + element.value) + "&"; 
+                }
+            });
+        }
+            
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
