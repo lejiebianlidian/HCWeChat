@@ -23,7 +23,7 @@ export class EditUserComponent extends AppComponentBase implements OnInit {
     isConfirmLoading = false;
     eform: FormGroup;
     loading = false;
-
+    isDisable = false;
     constructor(
         injector: Injector,
         private fb: FormBuilder,
@@ -85,8 +85,11 @@ export class EditUserComponent extends AppComponentBase implements OnInit {
                     this.roles = this.userRoles.map(i => { return { label: i.name, value: i.normalizedName, checked: true }; });
                     this.userInRoles();
                     this.loading = false;
+                    if (this.user.employeeId) {
+                        this.isDisable = true;
+                    }
                 });
-                 
+
     }
 
     handleCancel = (e) => {
@@ -149,8 +152,11 @@ export class EditUserComponent extends AppComponentBase implements OnInit {
     /**
      * 选择员工弹框回传数据
      */
-    getSelectData=(employee:Employee)=>{
+    getSelectData = (employee: Employee) => {
         if (employee) {
+            if (employee.id) {
+                this.isDisable = true;
+            }
             this.user.name = employee.name;
             this.user.employeeId = employee.id;
         }

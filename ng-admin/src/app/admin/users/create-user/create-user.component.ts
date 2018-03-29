@@ -24,7 +24,7 @@ export class CreateUserComponent extends AppComponentBase implements OnInit {
 
     modalVisible = false;
     isConfirmLoading = false;
-
+    isDisablec = false;
     user: CreateUserDto = null;
     //roles: RoleDto[] = null;
 
@@ -161,6 +161,9 @@ export class CreateUserComponent extends AppComponentBase implements OnInit {
      */
     getSelectData = (employee?: Employee) => {
         if (employee) {
+            if (employee.id) {
+                this.isDisablec = true;
+            }
             this.user.name = employee.name;
             this.user.employeeId = employee.id;
         }
