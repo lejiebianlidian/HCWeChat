@@ -53,7 +53,7 @@ namespace HC.WeChat.Employees
             var employeeCount = await query.CountAsync();
 
             var employees = await query
-                .WhereIf(!string.IsNullOrEmpty(input.Filter),e=>e.Name.Contains(input.Filter))
+                .WhereIf(!string.IsNullOrEmpty(input.Filter), e => e.Name.Contains(input.Filter) || e.Code.Contains(input.Filter))
                 .OrderBy(input.Sorting)
                 .PageBy(input)
                 .ToListAsync();
@@ -137,7 +137,7 @@ namespace HC.WeChat.Employees
         /// <summary>
         /// 新增Employee
         /// </summary>
-        [AbpAuthorize(EmployeeAppPermissions.Employee_CreateEmployee)]
+        //[AbpAuthorize(EmployeeAppPermissions.Employee_CreateEmployee)]
         protected virtual async Task<EmployeeEditDto> CreateEmployeeAsync(EmployeeEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -150,7 +150,7 @@ namespace HC.WeChat.Employees
         /// <summary>
         /// 编辑Employee
         /// </summary>
-        [AbpAuthorize(EmployeeAppPermissions.Employee_EditEmployee)]
+        //[AbpAuthorize(EmployeeAppPermissions.Employee_EditEmployee)]
         protected virtual async Task UpdateEmployeeAsync(EmployeeEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
@@ -166,7 +166,7 @@ namespace HC.WeChat.Employees
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(EmployeeAppPermissions.Employee_DeleteEmployee)]
+        //[AbpAuthorize(EmployeeAppPermissions.Employee_DeleteEmployee)]
         public async Task DeleteEmployee(EntityDto<Guid> input)
         {
 
@@ -177,7 +177,7 @@ namespace HC.WeChat.Employees
         /// <summary>
         /// 批量删除Employee的方法
         /// </summary>
-        [AbpAuthorize(EmployeeAppPermissions.Employee_BatchDeleteEmployees)]
+        //[AbpAuthorize(EmployeeAppPermissions.Employee_BatchDeleteEmployees)]
         public async Task BatchDeleteEmployeesAsync(List<Guid> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除

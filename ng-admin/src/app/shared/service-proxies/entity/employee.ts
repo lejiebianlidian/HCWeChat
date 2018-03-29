@@ -16,6 +16,8 @@ export class Employee implements IEmployee {
     creationTime: Date;
     creatorUserId: number;
     id: string;
+    activeType: string;
+    activeText: string;
     constructor(data?: IEmployee) {
         if (data) {
             for (var property in data) {
@@ -29,8 +31,9 @@ export class Employee implements IEmployee {
         if (data) {
             this.id = data["id"];
             this.code = data["code"];
-            this.name  = data["name"];
+            this.name = data["name"];
             this.position = data["position"];
+            this.phone = data["phone"];
             this.company = data["company"];
             this.department = data["department"];
             this.isAction = data["isAction"];
@@ -55,8 +58,9 @@ export class Employee implements IEmployee {
         data = typeof data === 'object' ? data : {};
         this.id = data["id"];
         this.code = data["code"];
-        this.name  = data["name"];
+        this.name = data["name"];
         this.position = data["position"];
+        this.phone = data["phone"];
         this.company = data["company"];
         this.department = data["department"];
         this.isAction = data["isAction"];
