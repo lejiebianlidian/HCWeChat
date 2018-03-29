@@ -13,13 +13,15 @@ using HC.WeChat.ActivityForms.Dtos;
 using HC.WeChat.ActivityForms.DomainServices;
 using HC.WeChat.ActivityForms;
 using System;
+using HC.WeChat.Authorization;
 
 namespace HC.WeChat.ActivityForms
 {
     /// <summary>
     /// ActivityForm应用层服务的接口实现方法
     /// </summary>
-    [AbpAuthorize(ActivityFormAppPermissions.ActivityForm)]
+    //[AbpAuthorize(ActivityFormAppPermissions.ActivityForm)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class ActivityFormAppService : WeChatAppServiceBase, IActivityFormAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -134,7 +136,7 @@ namespace HC.WeChat.ActivityForms
         /// <summary>
         /// 新增ActivityForm
         /// </summary>
-        [AbpAuthorize(ActivityFormAppPermissions.ActivityForm_CreateActivityForm)]
+        //[AbpAuthorize(ActivityFormAppPermissions.ActivityForm_CreateActivityForm)]
         protected virtual async Task<ActivityFormEditDto> CreateActivityFormAsync(ActivityFormEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -147,7 +149,7 @@ namespace HC.WeChat.ActivityForms
         /// <summary>
         /// 编辑ActivityForm
         /// </summary>
-        [AbpAuthorize(ActivityFormAppPermissions.ActivityForm_EditActivityForm)]
+        //[AbpAuthorize(ActivityFormAppPermissions.ActivityForm_EditActivityForm)]
         protected virtual async Task UpdateActivityFormAsync(ActivityFormEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
@@ -163,7 +165,7 @@ namespace HC.WeChat.ActivityForms
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(ActivityFormAppPermissions.ActivityForm_DeleteActivityForm)]
+        //[AbpAuthorize(ActivityFormAppPermissions.ActivityForm_DeleteActivityForm)]
         public async Task DeleteActivityForm(EntityDto<Guid> input)
         {
 
@@ -174,7 +176,7 @@ namespace HC.WeChat.ActivityForms
         /// <summary>
         /// 批量删除ActivityForm的方法
         /// </summary>
-        [AbpAuthorize(ActivityFormAppPermissions.ActivityForm_BatchDeleteActivityForms)]
+        //[AbpAuthorize(ActivityFormAppPermissions.ActivityForm_BatchDeleteActivityForms)]
         public async Task BatchDeleteActivityFormsAsync(List<Guid> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除
