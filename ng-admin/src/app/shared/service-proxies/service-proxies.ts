@@ -3741,12 +3741,67 @@ export class EmployeesServiceProxy {
      * 获取自动回复消息
      * @return Success
      */
-    getAll(Filter:string): Observable<PagedResultDtoOfEmployee> {
+    getAllModal(Filter:string): Observable<PagedResultDtoOfEmployee> {
         let url_ = this.baseUrl + "/api/services/app/Employee/GetPagedEmployeesModal?";
         // if (skipCount !== undefined)
         //     url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
         // if (maxResultCount !== undefined)
         //     url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (Filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + Filter) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetAllModal(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetAllModal(response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfEmployee>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfEmployee>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetAllModal(response: Response): Observable<PagedResultDtoOfEmployee> {
+        const status = response.status; 
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfEmployee.fromJS(resultData200) : new PagedResultDtoOfEmployee();
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<PagedResultDtoOfEmployee>(<any>null);
+    }
+
+    getAll(skipCount:number,maxResultCount:number, Filter:string): Observable<PagedResultDtoOfEmployee> {
+        let url_ = this.baseUrl + "/api/services/app/Employee/GetPagedEmployees?";
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
         if (Filter !== undefined)
             url_ += "Filter=" + encodeURIComponent("" + Filter) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
@@ -3795,6 +3850,7 @@ export class EmployeesServiceProxy {
         }
         return Observable.of<PagedResultDtoOfEmployee>(<any>null);
     }
+
 
     /**
      * 通过消息id获取自动回复消息信息
@@ -3910,7 +3966,7 @@ export class EmployeesServiceProxy {
      /**
      * @return Success
      */
-    delete(id: number): Observable<void> {
+    delete(id: string): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Employee/DeleteEmployee?";
         if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 

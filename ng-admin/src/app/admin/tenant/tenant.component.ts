@@ -54,7 +54,7 @@ export class TenantComponent extends AppComponentBase implements OnInit {
 
     /**
      * 分页获取租户信息
-     * @param reset是否刷新页面
+     * @param reset 是否刷新页面
      */
     refreshData(reset = false) {
         if (reset) {
@@ -81,9 +81,6 @@ export class TenantComponent extends AppComponentBase implements OnInit {
     }
 
 
-
-
-   
     /**
      * 删除单个租户
      * @param tenant 租户信息

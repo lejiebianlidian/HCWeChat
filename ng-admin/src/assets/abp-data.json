@@ -57,7 +57,7 @@
             "icon":"anticon anticon-shop",
             "children":[{
                 "text":"营销人员",
-                "link":"/admin",
+                "link":"/admin/employee",
                 "translate":"market-user"
           },{
                 "text":"营销活动",

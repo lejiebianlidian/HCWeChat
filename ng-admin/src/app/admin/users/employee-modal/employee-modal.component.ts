@@ -52,11 +52,11 @@ export class EmployeeModalComponent implements OnInit {
      */
     refreshData() {
         this.eloading = true;
-        this.service.getAll(this.q.no).subscribe((result: PagedResultDtoOfEmployee) => {
+        this.service.getAllModal(this.q.no).subscribe((result: PagedResultDtoOfEmployee) => {
             this.eloading = false;
             let status = 5;
             this.employee = result.items.map(i => {
-                i.positionName = this.positions[i.position-1].text;
+                i.positionName = this.positions[i.position - 1].text;
                 return i;
             });
             this.q.total = result.totalCount;
@@ -71,16 +71,16 @@ export class EmployeeModalComponent implements OnInit {
         // this.isConfirmLoading = false;
         // this.reset(e);
         this.modalSelect.emit(null);
-        this.q.no='';
+        this.q.no = '';
     }
     /**
      * 
      * @param employee 选择事件（对选择的数据进行回传）
      */
     SelectEmployee(employee: Employee): void {
-        this.q.no='';
+        this.q.no = '';
         this.modalSelect.emit(employee);
-        this.emodalVisible=false;
+        this.emodalVisible = false;
     }
 
 }
