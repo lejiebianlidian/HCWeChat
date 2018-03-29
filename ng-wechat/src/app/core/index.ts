@@ -9,3 +9,6 @@ export * from './services/platform.service';
 export * from './models/apiresult';
 export * from './models/user';
 export * from './services/auth.service';
+export * from './models/retailer';
+export * from './models/employee';
+export * from './models/wechat';

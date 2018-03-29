@@ -22,6 +22,16 @@ namespace HC.WeChat.Web.Host.Controllers
             return Redirect("/swagger");
         }
 
+        public IActionResult WeChat()
+        {
+            return View();
+        }
+
+        public IActionResult WeChatT()
+        {
+            return View();
+        }
+
         /// <summary>
         /// This is a demo code to demonstrate sending notification to default tenant admin and host admin uers.
         /// Don't use this code in production !!!

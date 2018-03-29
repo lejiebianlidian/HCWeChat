@@ -1,0 +1,42 @@
+<ion-header>
+    <ion-navbar no-border-bottom>
+        <ion-title>
+            用户中心
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content class="user-content-basic">
+    <ion-item class="photo" text-center no-border>
+        <ion-icon name="contact" color="primary" ></ion-icon>
+        <ion-img width="80" height="80" *ngIf="false" src=""></ion-img>
+    </ion-item>
+    <ion-item no-border>
+        <ion-label>用户名</ion-label>
+        <ion-label>{{user.Name}}</ion-label>
+    </ion-item>
+    <ion-item no-border>
+        <ion-label>用户类型</ion-label>
+        <ion-label>{{user.UserTypeName}}</ion-label>
+    </ion-item>
+    <ion-list no-border>
+        <ion-list-header>
+            营销活动
+        </ion-list-header>
+        <ion-item>
+            <ion-icon ios="ios-hammer" md="md-hammer" color="primary" item-start></ion-icon>
+            待审核
+            <ion-badge color="danger" item-end>10</ion-badge>
+        </ion-item>
+        <ion-item>
+            <ion-icon ios="ios-arrow-forward" md="md-arrow-forward" color="primary" item-start></ion-icon>
+            资料回传
+            <ion-note item-end>
+                无
+            </ion-note>
+        </ion-item>
+        <ion-item small>
+            <ion-icon md="md-reorder" ios="ios-reorder" color="primary" item-start></ion-icon>
+            已完成
+        </ion-item>
+    </ion-list>
+</ion-content>

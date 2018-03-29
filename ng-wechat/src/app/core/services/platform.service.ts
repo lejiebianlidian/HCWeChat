@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Platform, ToastController, Nav, App, ViewController, Toast, ActionSheet, Alert, Loading, Modal, Popover } from 'ionic-angular';
-import { TabsPage } from '../../../pages/tabs/tabs';
 
 @Injectable()
 export class PlatformService {
@@ -166,14 +165,14 @@ export class PlatformService {
     private _onBackButtonClicked() {
         let activeVC = this._rootNav.getActive();
         let page = activeVC.instance;
-        if (!(page instanceof TabsPage)) {
+        /*if (!(page instanceof TabsPage)) {
             if (!this._rootNav.canGoBack()) {
                 // 当前页面为tabs，退出APP
                 return this._showExit();
             }
             // 当前页面为tabs的子页面，正常返回
             return this._rootNav.pop();
-        }
+        }*/
         // 获取主Tab组件
         let tabs = page.tabs;
         let activeNav = tabs.getSelected();
