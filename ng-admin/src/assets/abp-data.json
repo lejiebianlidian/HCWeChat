@@ -61,7 +61,7 @@
                 "translate":"market-user"
           },{
                 "text":"营销活动",
-                "link":"/admin",
+                "link":"/admin/activity",
                 "translate":"market-active"
           },{
                 "text":"活动配置",

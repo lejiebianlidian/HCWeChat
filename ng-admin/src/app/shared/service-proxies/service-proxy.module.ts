@@ -17,7 +17,10 @@ import * as MarketingServiceProxies from './marketing-service/employee-service';
         ApiServiceProxies.MessageServiceProxy,
         ApiServiceProxies.SubscribeServiceProxy,
         MarketingServiceProxies.EmployeeServiceProxy,
-        ApiServiceProxies.EmployeesServiceProxy
+        ApiServiceProxies.EmployeesServiceProxy,
+        MarketingServiceProxies.ActivityServiceProxy,
+        ApiServiceProxies.ActivityServiceProxy,
+        
     ]
 })
 export class ServiceProxyModule { }
