@@ -8,7 +8,7 @@ export class AppConsts {
         };
     
         static readonly localization = {
-            defaultLocalizationSourceName: 'DHQR'
+            defaultLocalizationSourceName: 'WeChat'
         };
     
         static readonly authorization = {

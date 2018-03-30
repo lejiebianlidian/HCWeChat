@@ -1,7 +1,7 @@
 {
     "app": {
-        "name": "达州到货确认平台",
-        "description": "达州到货确认平台"
+        "name": "宜宾微信平台",
+        "description": "宜宾微信平台"
     },
     "user": {
         "name": "Admin",
@@ -29,7 +29,7 @@
             "link": "/admin",
             "icon": "anticon anticon-setting",
             "children":[{
-                "text":"微信授权配置",
+                "text":"授权配置",
                 "link":"/admin/authsetting",
                 "translate":"wechat-configs"
              },{
@@ -37,7 +37,7 @@
                 "link":"/admin/message",
                 "translate":"aut-res"
              },{
-                "text":"自定义菜单",
+                "text":"菜单管理",
                 "link":"/admin",
                 "translate":"custom-menu"
              }] 
@@ -64,17 +64,13 @@
                 "link":"/admin/activity",
                 "translate":"market-active"
           },{
-                "text":"活动配置",
-                "link":"/admin",
-                "translate":"active-setting"
+                "text":"活动申请单",
+                "link":"/admin/activity-form",
+                "translate":"activity-form"
           },{
                 "text":"营销统计",
                 "link":"/admin",
                 "translate":"market-count"
-          },{
-                "text":"用户中心",
-                "link":"/admin",
-                "translate":"user-center"
           },{
                 "text":"问卷调查",
                 "link":"/admin",

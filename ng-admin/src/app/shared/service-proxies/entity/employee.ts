@@ -74,7 +74,7 @@ export class Employee implements IEmployee {
         return result;
     }
 }
-export class IEmployee {
+export interface IEmployee {
     code: string;
     name: string;
     position: number;

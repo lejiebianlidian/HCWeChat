@@ -13,6 +13,16 @@ export abstract class AppComponentBase {
 
     localizationSourceName = AppConsts.localization.defaultLocalizationSourceName;
 
+    query: any = {
+        pageIndex: 1,
+        pageSize: 10,
+        skipCount: function() { return (this.pageIndex - 1) * this.pageSize; } ,
+        total: 0,
+        sorter: '',
+        status: -1,
+        statusList: []
+    };
+
     localization: LocalizationService;
     permission: PermissionCheckerService;
     feature: FeatureCheckerService;
@@ -53,4 +63,5 @@ export abstract class AppComponentBase {
     isGranted(permissionName: string): boolean {
         return this.permission.isGranted(permissionName);
     }
+
 }

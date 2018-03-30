@@ -10,8 +10,10 @@ import { DriverComponent } from './basic-info/driver/driver.component';
 import { TenantComponent } from './tenant/tenant.component';
 import { AuthSettingComponent } from './weichat-setting/auth-setting/auth-setting.component';
 import { MessagesComponent } from './weichat-setting/messages/messages.component';
+import { ActivityFormComponent } from './marketing/activity-form/activity-form.component';
 import { EmployeesComponent } from './markeeting-serve/employees/employees.component';
 import { ActivityComponent } from './markeeting-serve/activity/activity.component';
+
 
 const routes: Routes = [
   {
@@ -27,7 +29,7 @@ const routes: Routes = [
           { path: 'message', component: MessagesComponent, data: { translate: 'message', permission: 'Pages' }, canActivate: [AppRouteGuard] },
           { path: 'employee', component: EmployeesComponent, data: { translate: 'employee', permission: 'Pages' }, canActivate: [AppRouteGuard] },
           { path: 'activity', component: ActivityComponent, data: { translate: 'activity', permission: 'Pages' }, canActivate: [AppRouteGuard] },
-          
+          { path: 'activity-form', component: ActivityFormComponent, data: { translate: 'activity-form', permission: 'Pages' }, canActivate: [AppRouteGuard] },
       ]
   }
 ];

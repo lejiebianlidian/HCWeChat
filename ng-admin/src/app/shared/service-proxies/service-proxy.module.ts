@@ -2,6 +2,7 @@
 
 import * as ApiServiceProxies from './service-proxies';
 import * as MarketingServiceProxies from './marketing-service/employee-service';
+import { ActivityFormServiceProxy } from './marketing-service/activity-form-service';
 
 @NgModule({
     providers: [
@@ -21,6 +22,7 @@ import * as MarketingServiceProxies from './marketing-service/employee-service';
         MarketingServiceProxies.ActivityServiceProxy,
         ApiServiceProxies.ActivityServiceProxy,
         
+        ActivityFormServiceProxy
     ]
 })
 export class ServiceProxyModule { }

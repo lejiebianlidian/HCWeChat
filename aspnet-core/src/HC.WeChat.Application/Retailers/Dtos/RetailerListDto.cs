@@ -29,5 +29,7 @@ namespace HC.WeChat.Retailers.Dtos
         public MarketTypeEnum? MarketType { get; set; }
         public string DeliveryLine { get; set; }
         public int? TenantId { get; set; }
+
+        public string LicenseKey { get; set; }
     }
 }

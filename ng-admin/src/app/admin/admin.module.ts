@@ -22,6 +22,8 @@ import { EmployeeModalComponent } from './users/employee-modal/employee-modal.co
 import { EmployeesComponent } from './markeeting-serve/employees/employees.component';
 import { ActivityComponent } from './markeeting-serve/activity/activity.component';
 
+import { ActivityFormComponent } from './marketing/activity-form/activity-form.component';
+
 //权限判断
 import { AppRouteGuard } from '../shared/auth/auth-route-guard';
 
@@ -50,7 +52,9 @@ import { AppRouteGuard } from '../shared/auth/auth-route-guard';
     CreateMessageComponent,
     EmployeeModalComponent,
     EmployeesComponent,
-    ActivityComponent
+    ActivityComponent,
+    ActivityFormComponent,
+    EmployeesComponent
    ],
    providers: [ AppRouteGuard,DriverComponent ]
 })

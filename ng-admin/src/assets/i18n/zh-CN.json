@@ -103,8 +103,8 @@
     "roles": "角色管理",
     "tenants": "租户管理",
     "homeindex": {
-     "title":"达州烟草",
-     "welcome":"欢迎您！达州烟草信息化平台"
+     "title":"宜宾烟草",
+     "welcome":"欢迎您！宜宾烟草信息化平台"
     },
     "rolepage":{
         "title":"角色管理",
@@ -127,7 +127,7 @@
     "dists" : "配送单信息",
     "dist-orders" : "订单信息",
     "dist-lines" : "配送线路",
-    "wechat-configs" : "微信授权配置",
+    "wechat-configs" : "授权配置",
     "api-configs" : "微信接口配置",
     "data-sync-log" : "数据同步日志",
     "audit-log" : "审计日志",
@@ -139,11 +139,11 @@
     "weichat-groupsend":"微信群发",
     "weichat-setting":"微信设置",
     "aut-res":"自动回复",
-    "custom-menu":"自定义菜单",
+    "custom-menu":"菜单管理",
     "market-serve":"营销服务",
     "market-user":"营销人员",
     "market-active":"营销活动",
-    "active-setting":"活动配置",
+    "activity-form":"活动申请单",
     "market-count":"营销统计",
     "exper-sharing":"经验分享",
     "user-center":"用户中心",
