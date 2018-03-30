@@ -1,21 +1,8 @@
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/finally';
-
-
-import { Employee } from "@shared/service-proxies/entity/employee";
-import { Observable } from 'rxjs/Observable';
-import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
-import { Http, Headers, ResponseContentType, Response } from '@angular/http';
-import { Activity } from '@shared/service-proxies/entity/acitivity';
-import { API_BASE_URL, SwaggerException } from '@shared/service-proxies/service-proxies';
-// import * as moment from 'moment';
-
+import { Activity } from "@shared/service-proxies/entity/acitivity";
+import { SwaggerException, API_BASE_URL } from "@shared/service-proxies/service-proxies";
+import { Inject, Optional, } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import { Http,Headers,ResponseContentType ,Response} from "@angular/http";
 
 function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): Observable<any> {
     if(result !== null && result !== undefined)
@@ -24,7 +11,7 @@ function throwException(message: string, status: number, response: string, heade
         return Observable.throw(new SwaggerException(message, status, response, headers, null));
 }
 
-export class EmployeeServiceProxy {
+export class ActivityServiceProxy {
     private http: Http;
     private baseUrl: string;
     protected jsonParseReviver: (key: string, value: any) => any = undefined;
@@ -34,71 +21,13 @@ export class EmployeeServiceProxy {
         this.baseUrl=baseUrl?baseUrl:"";
     }
    
-    /**
-     * 获取自动回复消息
-     * @return Success
-     */
-    getAll(skipCount: number, maxResultCount: number,Filter:string): Observable<PagedResultDtoOfEmployee> {
-        let url_ = this.baseUrl + "/api/services/app/Employee/GetPagedEmployees?";
-        if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
-        if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
-        if (Filter !== undefined)
-            url_ += "Filter=" + encodeURIComponent("" + Filter) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = {
-            method: "get",
-            headers: new Headers({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processGetAll(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof Response) {
-                try {
-                    return this.processGetAll(response_);
-                } catch (e) {
-                    return <Observable<PagedResultDtoOfEmployee>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<PagedResultDtoOfEmployee>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetAll(response: Response): Observable<PagedResultDtoOfEmployee> {
-        const status = response.status; 
-
-        let _headers: any = response.headers ? response.headers.toJSON() : {};
-        if (status === 200) {
-            const _responseText = response.text();
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? PagedResultDtoOfEmployee.fromJS(resultData200) : new PagedResultDtoOfEmployee();
-            return Observable.of(result200);
-        } else if (status === 401) {
-            const _responseText = response.text();
-            return throwException("A server error occurred.", status, _responseText, _headers);
-        } else if (status === 403) {
-            const _responseText = response.text();
-            return throwException("A server error occurred.", status, _responseText, _headers);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.text();
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Observable.of<PagedResultDtoOfEmployee>(<any>null);
-    }
 
     /**
      * 通过消息id获取自动回复消息信息
      * @param id 消息id
      */
-    get(id: number): Observable<Employee> {
-        let url_ = this.baseUrl + "/api/services/app/Employee/GetEmployeeByIdAsync?";
+    get(id: number): Observable<Activity> {
+        let url_ = this.baseUrl + "/api/services/app/Activity/GetActivityByIdAsync?";
         if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
@@ -118,14 +47,14 @@ export class EmployeeServiceProxy {
                 try {
                     return this.processGet(response_);
                 } catch (e) {
-                    return <Observable<Employee>><any>Observable.throw(e);
+                    return <Observable<Activity>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<Employee>><any>Observable.throw(response_);
+                return <Observable<Activity>><any>Observable.throw(response_);
         });
     }
 
-    protected processGet(response: Response): Observable<Employee> {
+    protected processGet(response: Response): Observable<Activity> {
         const status = response.status; 
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
@@ -133,7 +62,7 @@ export class EmployeeServiceProxy {
             const _responseText = response.text();
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? Employee.fromJS(resultData200) : new Employee();
+            result200 = resultData200 ? Activity.fromJS(resultData200) : new Activity();
             return Observable.of(result200);
         } else if (status === 401) {
             const _responseText = response.text();
@@ -145,15 +74,15 @@ export class EmployeeServiceProxy {
             const _responseText = response.text();
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Observable.of<Employee>(<any>null);
+        return Observable.of<Activity>(<any>null);
     }
 
     /**
      * 新增或修改自动回复消息信息
      * @param input 
      */
-    update(input: Employee): Observable<Employee> {
-        let url_ = this.baseUrl + "/api/services/app/Employee/CreateOrUpdateWechatMessageDto";
+    update(input: Activity): Observable<Activity> {
+        let url_ = this.baseUrl + "/api/services/app/Activity/CreateOrUpdateWechatMessageDto";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
@@ -174,14 +103,14 @@ export class EmployeeServiceProxy {
                 try {
                     return this.processUpdate(response_);
                 } catch (e) {
-                    return <Observable<Employee>><any>Observable.throw(e);
+                    return <Observable<Activity>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<Employee>><any>Observable.throw(response_);
+                return <Observable<Activity>><any>Observable.throw(response_);
         });
     }
 
-    protected processUpdate(response: Response): Observable<Employee> {
+    protected processUpdate(response: Response): Observable<Activity> {
         const status = response.status; 
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
@@ -189,7 +118,7 @@ export class EmployeeServiceProxy {
             const _responseText = response.text();
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? Employee.fromJS(resultData200) : new Employee();
+            result200 = resultData200 ? Activity.fromJS(resultData200) : new Activity();
             return Observable.of(result200);
         } else if (status === 401) {
             const _responseText = response.text();
@@ -201,14 +130,14 @@ export class EmployeeServiceProxy {
             const _responseText = response.text();
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Observable.of<Employee>(<any>null);
+        return Observable.of<Activity>(<any>null);
     }
 
      /**
      * @return Success
      */
     delete(id: number): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Employee/DeleteEmployee?";
+        let url_ = this.baseUrl + "/api/services/app/Activity/DeleteActivity?";
         if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
@@ -254,11 +183,11 @@ export class EmployeeServiceProxy {
         return Observable.of<void>(<any>null);
     }
 }
-export class PagedResultDtoOfEmployee implements IPagedResultDtoOfEmployee {
+export class PagedResultDtoOfActivity implements IPagedResultDtoOfActivity {
     totalCount: number;
-    items: Employee[];
+    items: Activity[];
 
-    constructor(data?: IPagedResultDtoOfEmployee) {
+    constructor(data?: IPagedResultDtoOfActivity) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -273,13 +202,13 @@ export class PagedResultDtoOfEmployee implements IPagedResultDtoOfEmployee {
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
                 for (let item of data["items"])
-                    this.items.push(Employee.fromJS(item));
+                    this.items.push(Activity.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): PagedResultDtoOfEmployee {
-        let result = new PagedResultDtoOfEmployee();
+    static fromJS(data: any): PagedResultDtoOfActivity {
+        let result = new PagedResultDtoOfActivity();
         result.init(data);
         return result;
     }
@@ -297,13 +226,13 @@ export class PagedResultDtoOfEmployee implements IPagedResultDtoOfEmployee {
 
     clone() {
         const json = this.toJSON();
-        let result = new PagedResultDtoOfEmployee();
+        let result = new PagedResultDtoOfActivity();
         result.init(json);
         return result;
     }
 }
 
-export interface IPagedResultDtoOfEmployee {
+export interface IPagedResultDtoOfActivity {
     totalCount: number;
-    items: Employee[];
+    items: Activity[];
 }
