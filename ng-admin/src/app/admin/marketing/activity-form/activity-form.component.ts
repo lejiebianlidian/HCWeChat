@@ -47,8 +47,8 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
     getParameter(): Parameter[]{
         let parray = [];
         parray.push(Parameter.fromJS({ key: 'FormCode', value: this.parameters.formCode }));
-        parray.push(Parameter.fromJS({ key: 'BeginDate', value: this.parameters.beginDate }));
-        parray.push(Parameter.fromJS({ key: 'EndDate', value: this.parameters.endDate }));
+        parray.push(Parameter.fromJS({ key: 'BeginDate', value: this.dateFormat(this.parameters.beginDate) }));
+        parray.push(Parameter.fromJS({ key: 'EndDate', value: this.dateFormat(this.parameters.endDate) }));
         parray.push(Parameter.fromJS({ key: 'Status', value: this.parameters.status }));
         parray.push(Parameter.fromJS({ key: 'Filter', value: this.parameters.filter }));
         return parray;

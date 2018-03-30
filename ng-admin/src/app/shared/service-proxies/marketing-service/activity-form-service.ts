@@ -42,7 +42,7 @@ export class ActivityFormServiceProxy {
         if (maxResultCount !== undefined)
             url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
 
-        console.table(parameter);
+        //console.table(parameter);
         if (parameter.length > 0) {
             parameter.forEach(element => {
                 if (element.value !== undefined && element.value !== null) {

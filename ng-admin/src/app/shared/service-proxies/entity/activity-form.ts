@@ -101,6 +101,7 @@ export class ActivityFormDto implements IActivityFormDto {
     activityName: string;
     retailerName: string;
     managerName: string;
+    statusType: string;
 
     constructor(data?: IActivityFormDto) {
         if (data) {

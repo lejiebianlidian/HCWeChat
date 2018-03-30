@@ -16,7 +16,7 @@ export abstract class AppComponentBase {
     query: any = {
         pageIndex: 1,
         pageSize: 10,
-        skipCount: function() { return (this.pageIndex - 1) * this.pageSize; } ,
+        skipCount: function () { return (this.pageIndex - 1) * this.pageSize; },
         total: 0,
         sorter: '',
         status: -1,
@@ -62,6 +62,17 @@ export abstract class AppComponentBase {
 
     isGranted(permissionName: string): boolean {
         return this.permission.isGranted(permissionName);
+    }
+
+    dateFormat(date: any): string {
+        if (date === null) {
+            return null;
+        }
+        let d = <Date>date;
+        let y = d.getFullYear().toString();
+        let m = (d.getMonth() + 1).toString();
+        let day = d.getDate().toString();
+        return  y + '-' + m + '-' + day;
     }
 
 }
