@@ -8,6 +8,7 @@ import { SettingService } from '@abp/settings/setting.service';
 import { MessageService } from '@abp/message/message.service';
 import { AbpMultiTenancyService } from '@abp/multi-tenancy/abp-multi-tenancy.service';
 import { AppSessionService } from '@shared/session/app-session.service';
+//import { DatePipe } from '@angular/common';
 
 export abstract class AppComponentBase {
 
@@ -73,6 +74,8 @@ export abstract class AppComponentBase {
         let m = (d.getMonth() + 1).toString();
         let day = d.getDate().toString();
         return  y + '-' + m + '-' + day;
+        //let dateStr:string = this.datePipe.transform(d,'yyyy-MM-dd');
+        //return dateStr;
     }
 
 }

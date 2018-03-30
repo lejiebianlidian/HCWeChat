@@ -48,9 +48,10 @@ namespace HC.WeChat.Web.Host.Startup
             // MVC
             services.AddMvc(
                 options => options.Filters.Add(new CorsAuthorizationFilterFactory(_defaultCorsPolicyName))
-            ).AddJsonOptions(
-                options => { options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm"; }
-                );
+            ).AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm";
+                });
 
             IdentityRegistrar.Register(services);
             AuthConfigurer.Configure(services, _appConfiguration);
