@@ -46,7 +46,7 @@ export class Activity implements IActivity{
         data = typeof data === 'object' ? data : {};
         this.id = data["id"];
         this.name = data["name"];
-        this.beginTime = data["beginTime"];
+        this.beginTime = data["beginTimename"];
         this.endTime = data["endTime"];
         this.activityType = data["activityType"];
         this.content = data["content"];
@@ -65,7 +65,7 @@ export class Activity implements IActivity{
         return result;
     }
 }
-export class IActivity {
+export interface IActivity {
     id: string;
     name: string;
     beginTime: Date;

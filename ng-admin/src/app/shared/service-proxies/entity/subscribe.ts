@@ -52,7 +52,7 @@ export class Subscribess implements ISubscribe{
         return result;
     }
 }
-export class ISubscribe {
+export interface ISubscribe {
     id:number;
     msgType: number;
     content: string;

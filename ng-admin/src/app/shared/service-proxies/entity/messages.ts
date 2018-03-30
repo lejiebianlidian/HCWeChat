@@ -58,7 +58,7 @@ export class Messagess implements IMessagess{
         return result;
     }
 }
-export class IMessagess {
+export interface IMessagess {
     keyWord: string;
     matchMode: number;
     msgType: number;

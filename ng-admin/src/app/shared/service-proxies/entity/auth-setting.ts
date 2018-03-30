@@ -67,7 +67,7 @@ export class AuthSetting implements IAuthSetting{
         return result;
     }
 }
-export class IAuthSetting {
+export interface IAuthSetting {
     creationTime: Date;
     lastModificationTime: Date;
     name: string;

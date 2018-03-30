@@ -33,7 +33,7 @@ export class ActivityGoods implements IActivityGoods {
             this.isDeleted = data["isDeleted"];
             this.creationTime = data["creationTime"];
             this.creatorUserId = data["creatorUserId"];
-            
+
         }
     }
 
@@ -45,19 +45,19 @@ export class ActivityGoods implements IActivityGoods {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        this.id = data["id"];
-        this.specification = data["specification"];
-        this.activityId = data["activityId"];
-        this.minNum = data["minNum"];
-        this.maxNum = data["maxNum"];
-        this.discountDesc = data["discountDesc"];
-        this.isDeleted = data["isDeleted"];
-        this.creationTime = data["creationTime"];
-        this.creatorUserId = data["creatorUserId"];
-        this.lastModificationTime = data["lastModificationTime"];
-        this.lastModifierUserId = data["lastModifierUserId"];
-        this.deletionTime = data["deletionTime"];
-        this.deleterUserId = data["deleterUserId"];
+        data["id"] = this.id;
+        data["specification"] = this.specification;
+        data["activityId"] = this.activityId;
+        data["minNum"] = this.minNum;
+        data["maxNum"] = this.maxNum;
+        data["discountDesc"] = this.discountDesc;
+        data["isDeleted"] = this.isDeleted;
+        data["creationTime"] = this.creationTime;
+        data["creatorUserId"] = this.creatorUserId;
+        data["lastModificationTime"] = this.lastModificationTime;
+        data["lastModifierUserId"] = this.lastModifierUserId;
+        data["deletionTime"] = this.deletionTime;
+        data["deleterUserId"] = this.deleterUserId;
         return data;
     }
 
@@ -68,7 +68,7 @@ export class ActivityGoods implements IActivityGoods {
         return result;
     }
 }
-export class IActivityGoods {
+export interface IActivityGoods {
     id: string;
     specification: string;
     activityId: string;
