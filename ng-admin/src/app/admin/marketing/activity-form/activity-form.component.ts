@@ -4,6 +4,7 @@ import { ActivityFormDto, Parameter } from '@shared/service-proxies/entity';
 import { ActivityFormServiceProxy, PagedResultDtoOfActivityForm } from '@shared/service-proxies/marketing-service/activity-form-service';
 
 import { AppComponentBase } from '@shared/app-component-base';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-page-activity-form',
@@ -22,7 +23,7 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
         { text: '完成', value: 4, type: 'success' }
     ];
 
-    constructor(injector: Injector, public msg: NzMessageService, private _ActivityFormService: ActivityFormServiceProxy) {
+    constructor(injector: Injector, public msg: NzMessageService, private _ActivityFormService: ActivityFormServiceProxy, private _router: Router) {
         super(injector);
     }
 
@@ -44,7 +45,7 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
         })
     };
 
-    getParameter(): Parameter[]{
+    getParameter(): Parameter[] {
         let parray = [];
         parray.push(Parameter.fromJS({ key: 'FormCode', value: this.parameters.formCode }));
         parray.push(Parameter.fromJS({ key: 'BeginDate', value: this.dateFormat(this.parameters.beginDate) }));
@@ -52,5 +53,9 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
         parray.push(Parameter.fromJS({ key: 'Status', value: this.parameters.status }));
         parray.push(Parameter.fromJS({ key: 'Filter', value: this.parameters.filter }));
         return parray;
+    }
+
+    goDetail(formId: string) {
+        this._router.navigate(['admin/activity-form-detail']);
     }
 }
