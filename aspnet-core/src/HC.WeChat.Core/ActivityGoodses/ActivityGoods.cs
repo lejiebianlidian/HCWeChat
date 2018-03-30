@@ -1,4 +1,5 @@
-﻿using Abp.Domain.Entities.Auditing;
+﻿using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,8 +11,8 @@ namespace HC.WeChat.ActivityGoodses
     /// <summary>
     /// 活动商品
     /// </summary>
-    [Table("ActivityGoodss")]
-    public class ActivityGoods : FullAuditedEntity<Guid>
+    [Table("ActivityGoodes")]
+    public class ActivityGoods : FullAuditedEntity<Guid>, IMayHaveTenant
     {
 
         /// <summary>
@@ -43,6 +44,10 @@ namespace HC.WeChat.ActivityGoodses
         /// 优惠说明
         /// </summary>
         public string DiscountDesc { get; set; }
-     
+
+        /// <summary>
+        /// 租户ID
+        /// </summary>
+        public int? TenantId { get; set; }
     }
 }

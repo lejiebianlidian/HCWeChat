@@ -2,14 +2,17 @@
 using HC.WeChat.ActivityGoodses.Dtos.LTMAutoMapper;
 using HC.WeChat.ActivityGoodses;
 using System;
+using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
 
 namespace HC.WeChat.ActivityGoodses.Dtos
 {
-    public class ActivityGoodsEditDto
+    [AutoMapTo(typeof(ActivityGoods))]
+    public class ActivityGoodsEditDto:AuditedEntityDto<Guid?>
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION
-        public Guid? Id { get; set; }
+        //public Guid? Id { get; set; }
 
         /// <summary>
         /// 商品规格

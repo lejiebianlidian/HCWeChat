@@ -5,7 +5,7 @@ using HC.WeChat.Activities;
 
 namespace HC.WeChat.Activities.Dtos
 {
-    public class ActivityListDto : FullAuditedEntityDto<Guid>
+    public class ActivityListDto : EntityDto
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION
@@ -19,5 +19,10 @@ namespace HC.WeChat.Activities.Dtos
         public int? TenantId { get; set; }
         public DateTime? PublishTime { get; set; }
         public WechatEnums.ActivityStatusEnum Status { get; set; }
+        public string StatusName {
+            get {
+                return Status.ToString();
+            }
+        }
     }
 }

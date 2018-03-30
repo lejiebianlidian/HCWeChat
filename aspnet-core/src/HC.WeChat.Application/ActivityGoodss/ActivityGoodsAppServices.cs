@@ -5,6 +5,7 @@ using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
+using System.Linq;
 
 using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
@@ -182,6 +183,54 @@ namespace HC.WeChat.ActivityGoodses
             //TODO:批量删除前的逻辑判断，是否允许删除
             await _activitygoodsRepository.DeleteAsync(s => input.Contains(s.Id));
         }
+
+        /// <summary>
+        /// 添加或者修改ActivityGoods的方法
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task CreateOrUpdateActivityGoodsDto(ActivityGoodsEditDto input)
+        {
+            if (input.Id.HasValue)
+            {
+                await UpdateActivityGoodsAsync(input);
+            }
+            else
+            {
+                await CreateActivityGoodsAsync(input);
+            }
+
+        }
+
+        /// <summary>
+        /// 根据活动id获取ActivityGoods的分页列表信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<PagedResultDto<ActivityGoodsListDto>> GetPagedActivityGoodsesByAcId(GetActivityGoodsesInput input)
+        {
+            if (input.AvtivityId.HasValue) {
+                var query = _activitygoodsRepository.GetAll();
+                //TODO:根据传入的参数添加过滤条件
+                var activitygoodsCount = await query.CountAsync();
+
+                var activitygoodss = await query
+                    .Where(g => g.ActivityId == input.AvtivityId)
+                    .WhereIf(!string.IsNullOrEmpty(input.SearchName),g=>g.Specification.Contains(input.SearchName))
+                    .OrderBy(input.Sorting)
+                    .PageBy(input)
+                    .ToListAsync();
+
+                var activitygoodsListDtos = activitygoodss.MapTo<List<ActivityGoodsListDto>>();
+
+                return new PagedResultDto<ActivityGoodsListDto>(
+                    activitygoodsCount,
+                    activitygoodsListDtos
+                    );
+            }
+           return new PagedResultDto<ActivityGoodsListDto>();
+        }
+
 
     }
 }

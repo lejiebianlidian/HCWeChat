@@ -56,5 +56,21 @@ namespace HC.WeChat.ActivityGoodses
         /// 批量删除ActivityGoods
         /// </summary>
         Task BatchDeleteActivityGoodsesAsync(List<Guid> input);
+
+        /// <summary>
+        /// 添加或者修改ActivityGoods的方法
+        /// </summary>
+        /// <param name="input">活动商品实体</param>
+        /// <returns></returns>
+        Task CreateOrUpdateActivityGoodsDto(ActivityGoodsEditDto input);
+
+        /// <summary>
+        /// 根据活动id获取ActivityGoods的分页列表信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task<PagedResultDto<ActivityGoodsListDto>> GetPagedActivityGoodsesByAcId(GetActivityGoodsesInput input);
+
+
     }
 }

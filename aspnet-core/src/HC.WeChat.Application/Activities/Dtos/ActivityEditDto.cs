@@ -3,14 +3,18 @@ using HC.WeChat.Activities.Dtos.LTMAutoMapper;
 using HC.WeChat.Activities;
 using System;
 using HC.WeChat.WechatEnums;
+using Abp.Application.Services.Dto;
+using HC.WeChat.WechatMessages;
+using Abp.AutoMapper;
 
 namespace HC.WeChat.Activities.Dtos
 {
-    public class ActivityEditDto
+    [AutoMapTo(typeof(Activity))]
+    public class ActivityEditDto: AuditedEntityDto<Guid?>
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION
-        public Guid? Id { get; set; }
+        //public Guid? Id { get; set; }
 
         /// <summary>
         /// 活动名称

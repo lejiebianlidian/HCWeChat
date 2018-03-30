@@ -10,7 +10,7 @@ export class Activity implements IActivity{
     tenantId: number;
     publishTime: Date;
     status: number;
-
+    statusName:string;
     constructor(data?: IActivity) {
         if (data) {
             for (var property in data) {
@@ -33,6 +33,8 @@ export class Activity implements IActivity{
             this.tenantId = data["tenantId"];
             this.publishTime = data["publishTime"];
             this.status = data["status"];
+            this.statusName = data["statusName"];
+            
         }
     }
 

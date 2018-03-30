@@ -4083,10 +4083,10 @@ export class ActivityServiceProxy {
      * 通过消息id获取营销活动信息
      * @param id 消息id
      */
-    get(id: number): Observable<Activity> {
-        let url_ = this.baseUrl + "/api/services/app/Activity/GetActivityByIdAsync?";
-        if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+    get(): Observable<Activity> {
+        let url_ = this.baseUrl + "/api/services/app/Activity/GetActivityByTenantIdAsync?";
+        // if (id !== undefined)
+        //     url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {

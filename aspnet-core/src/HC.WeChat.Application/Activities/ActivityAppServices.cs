@@ -5,6 +5,7 @@ using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
+using System.Linq;
 
 using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +14,15 @@ using HC.WeChat.Activities.Dtos;
 using HC.WeChat.Activities.DomainServices;
 using HC.WeChat.Activities;
 using System;
+using HC.WeChat.Authorization;
 
 namespace HC.WeChat.Activities
 {
     /// <summary>
     /// Activity应用层服务的接口实现方法
     /// </summary>
-    [AbpAuthorize(ActivityAppPermissions.Activity)]
+    //[AbpAuthorize(ActivityAppPermissions.Activity)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class ActivityAppService : WeChatAppServiceBase, IActivityAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -134,7 +137,7 @@ namespace HC.WeChat.Activities
         /// <summary>
         /// 新增Activity
         /// </summary>
-        [AbpAuthorize(ActivityAppPermissions.Activity_CreateActivity)]
+        //[AbpAuthorize(ActivityAppPermissions.Activity_CreateActivity)]
         protected virtual async Task<ActivityEditDto> CreateActivityAsync(ActivityEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -147,7 +150,7 @@ namespace HC.WeChat.Activities
         /// <summary>
         /// 编辑Activity
         /// </summary>
-        [AbpAuthorize(ActivityAppPermissions.Activity_EditActivity)]
+        //[AbpAuthorize(ActivityAppPermissions.Activity_EditActivity)]
         protected virtual async Task UpdateActivityAsync(ActivityEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
@@ -163,7 +166,7 @@ namespace HC.WeChat.Activities
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(ActivityAppPermissions.Activity_DeleteActivity)]
+        //[AbpAuthorize(ActivityAppPermissions.Activity_DeleteActivity)]
         public async Task DeleteActivity(EntityDto<Guid> input)
         {
 
@@ -174,12 +177,22 @@ namespace HC.WeChat.Activities
         /// <summary>
         /// 批量删除Activity的方法
         /// </summary>
-        [AbpAuthorize(ActivityAppPermissions.Activity_BatchDeleteActivities)]
+        //[AbpAuthorize(ActivityAppPermissions.Activity_BatchDeleteActivities)]
         public async Task BatchDeleteActivitiesAsync(List<Guid> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除
             await _activityRepository.DeleteAsync(s => input.Contains(s.Id));
         }
+        /// <summary>
+        /// 通过租户id获取
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ActivityListDto> GetActivityByTenantIdAsync()
+        {
+            var query =await _activityRepository.GetAll().Where(r => r.TenantId == AbpSession.TenantId).FirstOrDefaultAsync();
+            return query.MapTo<ActivityListDto>();
+        }
+
 
     }
 }

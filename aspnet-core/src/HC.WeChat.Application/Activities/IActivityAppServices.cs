@@ -56,5 +56,11 @@ namespace HC.WeChat.Activities
         /// 批量删除Activity
         /// </summary>
         Task BatchDeleteActivitiesAsync(List<Guid> input);
+
+        /// <summary>
+        /// 通过租户id获取活动信息
+        /// </summary>
+        /// <returns></returns>
+        Task<ActivityListDto> GetActivityByTenantIdAsync();
     }
 }

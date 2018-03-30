@@ -15,7 +15,7 @@ namespace HC.WeChat.Activities
     /// 营销活动
     /// </summary>
     [Table("Activities")]
-    public class Activity : FullAuditedEntity<Guid>, IMayHaveTenant
+    public class Activity : AuditedEntity<Guid>, IMayHaveTenant
     {
 
         /// <summary>

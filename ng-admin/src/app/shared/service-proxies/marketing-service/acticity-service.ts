@@ -1,11 +1,19 @@
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/catch';
+
 import { Activity } from "@shared/service-proxies/entity/acitivity";
 import { SwaggerException, API_BASE_URL } from "@shared/service-proxies/service-proxies";
-import { Inject, Optional, } from "@angular/core";
+import { Inject, Optional, Injectable, InjectionToken } from "@angular/core";
 import { Observable } from "rxjs/Observable";
-import { Http,Headers,ResponseContentType ,Response} from "@angular/http";
+import { Http, Headers, ResponseContentType, Response } from "@angular/http";
 
 function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): Observable<any> {
-    if(result !== null && result !== undefined)
+    if (result !== null && result !== undefined)
         return Observable.throw(result);
     else
         return Observable.throw(new SwaggerException(message, status, response, headers, null));
@@ -16,26 +24,24 @@ export class ActivityServiceProxy {
     private baseUrl: string;
     protected jsonParseReviver: (key: string, value: any) => any = undefined;
 
-    constructor(@Inject(Http) http:Http,@Optional() @Inject(API_BASE_URL) baseUrl?:string) { 
-        this.http=http;
-        this.baseUrl=baseUrl?baseUrl:"";
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
     }
-   
+
 
     /**
      * 通过消息id获取自动回复消息信息
      * @param id 消息id
      */
-    get(id: number): Observable<Activity> {
-        let url_ = this.baseUrl + "/api/services/app/Activity/GetActivityByIdAsync?";
-        if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+    get(): Observable<Activity> {
+        let url_ = this.baseUrl + "/api/services/app/Activity/GetActivityByTenantIdAsync?";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -55,7 +61,7 @@ export class ActivityServiceProxy {
     }
 
     protected processGet(response: Response): Observable<Activity> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -86,12 +92,12 @@ export class ActivityServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -111,7 +117,7 @@ export class ActivityServiceProxy {
     }
 
     protected processUpdate(response: Response): Observable<Activity> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -133,19 +139,19 @@ export class ActivityServiceProxy {
         return Observable.of<Activity>(<any>null);
     }
 
-     /**
-     * @return Success
-     */
+    /**
+    * @return Success
+    */
     delete(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Activity/DeleteActivity?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "delete",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
             })
         };
 
@@ -164,7 +170,7 @@ export class ActivityServiceProxy {
     }
 
     protected processDelete(response: Response): Observable<void> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -221,7 +227,7 @@ export class PagedResultDtoOfActivity implements IPagedResultDtoOfActivity {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 
     clone() {
