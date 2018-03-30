@@ -13,13 +13,15 @@ using HC.WeChat.ActivityGoodses.Dtos;
 using HC.WeChat.ActivityGoodses.DomainServices;
 using HC.WeChat.ActivityGoodses;
 using System;
+using HC.WeChat.Authorization;
 
 namespace HC.WeChat.ActivityGoodses
 {
     /// <summary>
     /// ActivityGoods应用层服务的接口实现方法
     /// </summary>
-    [AbpAuthorize(ActivityGoodsAppPermissions.ActivityGoods)]
+    //[AbpAuthorize(ActivityGoodsAppPermissions.ActivityGoods)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class ActivityGoodsAppService : WeChatAppServiceBase, IActivityGoodsAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -134,7 +136,7 @@ namespace HC.WeChat.ActivityGoodses
         /// <summary>
         /// 新增ActivityGoods
         /// </summary>
-        [AbpAuthorize(ActivityGoodsAppPermissions.ActivityGoods_CreateActivityGoods)]
+        //[AbpAuthorize(ActivityGoodsAppPermissions.ActivityGoods_CreateActivityGoods)]
         protected virtual async Task<ActivityGoodsEditDto> CreateActivityGoodsAsync(ActivityGoodsEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -147,7 +149,7 @@ namespace HC.WeChat.ActivityGoodses
         /// <summary>
         /// 编辑ActivityGoods
         /// </summary>
-        [AbpAuthorize(ActivityGoodsAppPermissions.ActivityGoods_EditActivityGoods)]
+        //[AbpAuthorize(ActivityGoodsAppPermissions.ActivityGoods_EditActivityGoods)]
         protected virtual async Task UpdateActivityGoodsAsync(ActivityGoodsEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
@@ -163,7 +165,7 @@ namespace HC.WeChat.ActivityGoodses
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(ActivityGoodsAppPermissions.ActivityGoods_DeleteActivityGoods)]
+        //[AbpAuthorize(ActivityGoodsAppPermissions.ActivityGoods_DeleteActivityGoods)]
         public async Task DeleteActivityGoods(EntityDto<Guid> input)
         {
 
@@ -174,7 +176,7 @@ namespace HC.WeChat.ActivityGoodses
         /// <summary>
         /// 批量删除ActivityGoods的方法
         /// </summary>
-        [AbpAuthorize(ActivityGoodsAppPermissions.ActivityGoods_BatchDeleteActivityGoodses)]
+        //[AbpAuthorize(ActivityGoodsAppPermissions.ActivityGoods_BatchDeleteActivityGoodses)]
         public async Task BatchDeleteActivityGoodsesAsync(List<Guid> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除

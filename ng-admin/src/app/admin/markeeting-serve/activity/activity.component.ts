@@ -4,6 +4,7 @@ import { ActivityServiceProxy } from '@shared/service-proxies/service-proxies';
 import { Activity } from '@shared/service-proxies/entity/acitivity';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivityGoods } from '@shared/service-proxies/entity/activitygoods';
+import { ActivityGoodsServiceProxy } from '@shared/service-proxies/marketing-service/activity-goods-service';
 
 @Component({
     moduleId: module.id,
@@ -25,7 +26,9 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
     goodes:ActivityGoods=new ActivityGoods;
     html = '';
     formA: FormGroup;
-    constructor(injector: Injector, private activityService: ActivityServiceProxy, private fb: FormBuilder) {
+    constructor(injector: Injector, private activityService: ActivityServiceProxy, 
+        private fb: FormBuilder,private activityGoodsService:ActivityGoodsServiceProxy,
+    ) {
         super(injector);
     }
 
@@ -46,6 +49,7 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
         });
     }
     //#region 活动
+
     /**
      * 
      * @param name 
@@ -57,6 +61,7 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
     //#endregion
 
     //#region 活动商品
+
     refreshData(){
 
     }
