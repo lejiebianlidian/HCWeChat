@@ -107,9 +107,9 @@
                 <td nz-td>{{activityForm.num}}</td>
                 <td nz-td>{{activityForm.reason}}</td>
                 <td nz-td><nz-badge [nzStatus]="activityForm.statusType" [nzText]="activityForm.statusName"></nz-badge></td>
-                <td nz-td>{{activityForm.creationTime}}</td>
+                <td nz-td>{{activityForm.creationTime | _date}}</td>
                 <td nz-td>
-                    <a>查看详细</a>
+                    <a (click)="goDetail(activityForm.id)" [routerLink]="['/admin/activity-form-detail']" >查看详细</a>
                 </td>
             </tr>
         </tbody>

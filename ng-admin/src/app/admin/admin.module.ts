@@ -23,6 +23,7 @@ import { EmployeesComponent } from './markeeting-serve/employees/employees.compo
 import { ActivityComponent } from './markeeting-serve/activity/activity.component';
 
 import { ActivityFormComponent } from './marketing/activity-form/activity-form.component';
+import { ActivityFormDetailComponent } from './marketing/activity-form-detail/activity-form-detail.component';
 
 //权限判断
 import { AppRouteGuard } from '../shared/auth/auth-route-guard';
@@ -54,7 +55,7 @@ import { AppRouteGuard } from '../shared/auth/auth-route-guard';
     EmployeesComponent,
     ActivityComponent,
     ActivityFormComponent,
-    EmployeesComponent
+    ActivityFormDetailComponent
    ],
    providers: [ AppRouteGuard,DriverComponent ]
 })
