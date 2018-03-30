@@ -127,6 +127,8 @@ export class ActivityFormDto implements IActivityFormDto {
             this.activityName = data["activityName"];
             this.retailerName = data["retailerName"];
             this.managerName = data["managerName"];
+            this.statusType = data["statusType"];
+            this.statusName = data["statusName"];
         }
     }
 
@@ -177,4 +179,6 @@ export interface IActivityFormDto {
     activityName: string;
     retailerName: string;
     managerName: string;
+    statusType: string;
+    statusName: string;
 }
