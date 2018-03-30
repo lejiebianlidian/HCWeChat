@@ -12,6 +12,7 @@ import { AuthSettingComponent } from './weichat-setting/auth-setting/auth-settin
 import { MessagesComponent } from './weichat-setting/messages/messages.component';
 import { ActivityFormComponent } from './marketing/activity-form/activity-form.component';
 import { EmployeesComponent } from './markeeting-serve/employees/employees.component';
+import { ActivityComponent } from './markeeting-serve/activity/activity.component';
 
 
 const routes: Routes = [
@@ -26,8 +27,9 @@ const routes: Routes = [
           { path: 'tenant', component: TenantComponent, data: { translate: 'tenant', permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
           { path: 'authsetting', component: AuthSettingComponent, data: { translate: 'authsetting', permission: 'Pages' }, canActivate: [AppRouteGuard] },
           { path: 'message', component: MessagesComponent, data: { translate: 'message', permission: 'Pages' }, canActivate: [AppRouteGuard] },
+          { path: 'employee', component: EmployeesComponent, data: { translate: 'employee', permission: 'Pages' }, canActivate: [AppRouteGuard] },
+          { path: 'activity', component: ActivityComponent, data: { translate: 'activity', permission: 'Pages' }, canActivate: [AppRouteGuard] },
           { path: 'activity-form', component: ActivityFormComponent, data: { translate: 'activity-form', permission: 'Pages' }, canActivate: [AppRouteGuard] },
-          { path: 'employee', component: EmployeesComponent, data: { translate: 'employee', permission: 'Pages' }, canActivate: [AppRouteGuard] }
       ]
   }
 ];

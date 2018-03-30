@@ -19,6 +19,9 @@ import { ActivityFormServiceProxy } from './marketing-service/activity-form-serv
         ApiServiceProxies.SubscribeServiceProxy,
         MarketingServiceProxies.EmployeeServiceProxy,
         ApiServiceProxies.EmployeesServiceProxy,
+        MarketingServiceProxies.ActivityServiceProxy,
+        ApiServiceProxies.ActivityServiceProxy,
+        
         ActivityFormServiceProxy
     ]
 })

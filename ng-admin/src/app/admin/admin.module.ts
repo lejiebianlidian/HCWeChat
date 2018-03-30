@@ -20,6 +20,7 @@ import { EditMessageComponent } from './weichat-setting/messages/edit-message/ed
 import { CreateMessageComponent } from './weichat-setting/messages/create-message/create-message.component';
 import { EmployeeModalComponent } from './users/employee-modal/employee-modal.component';
 import { EmployeesComponent } from './markeeting-serve/employees/employees.component';
+import { ActivityComponent } from './markeeting-serve/activity/activity.component';
 
 import { ActivityFormComponent } from './marketing/activity-form/activity-form.component';
 
@@ -50,6 +51,8 @@ import { AppRouteGuard } from '../shared/auth/auth-route-guard';
     EditMessageComponent,
     CreateMessageComponent,
     EmployeeModalComponent,
+    EmployeesComponent,
+    ActivityComponent,
     ActivityFormComponent,
     EmployeesComponent
    ],
