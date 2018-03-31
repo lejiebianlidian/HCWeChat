@@ -30,7 +30,7 @@ const routes: Routes = [
           { path: 'employee', component: EmployeesComponent, data: { translate: 'employee', permission: 'Pages' }, canActivate: [AppRouteGuard] },
           { path: 'activity', component: ActivityComponent, data: { translate: 'activity', permission: 'Pages' }, canActivate: [AppRouteGuard] },
           { path: 'activity-form', component: ActivityFormComponent, data: { translate: 'activity-form', permission: 'Pages' }, canActivate: [AppRouteGuard] },
-          { path: 'activity-form-detail', component: ActivityFormDetailComponent, data: { translate: 'activity-form-detail', permission: 'Pages' }, canActivate: [AppRouteGuard] },
+          { path: 'activity-form-detail/:id', component: ActivityFormDetailComponent, data: { translate: 'activity-form-detail', permission: 'Pages' }, canActivate: [AppRouteGuard] },
       ]
   }
 ];

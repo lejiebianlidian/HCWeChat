@@ -55,7 +55,7 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
         return parray;
     }
 
-    goDetail(formId: string) {
-        this._router.navigate(['admin/activity-form-detail']);
+    goDetail(id: string) {
+        this._router.navigate(['admin/activity-form-detail', id]);
     }
 }

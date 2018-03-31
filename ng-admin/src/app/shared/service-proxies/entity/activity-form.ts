@@ -12,6 +12,7 @@ export class ActivityForm implements IActivityForm {
     activityName: string;
     retailerName: string;
     managerName: string;
+    creationUser: string;
     constructor(data?: IActivityForm) {
         if (data) {
             for (var property in data) {
@@ -36,6 +37,7 @@ export class ActivityForm implements IActivityForm {
             this.activityName = data["activityName"];
             this.retailerName = data["retailerName"];
             this.managerName = data["managerName"];
+            this.creationUser = data["creationUser"];
         }
     }
 
@@ -47,19 +49,20 @@ export class ActivityForm implements IActivityForm {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        this.id = data["id"];
-        this.formCode = data["formCode"];
-        this.activityId = data["activityId"];
-        this.retailerId = data["retailerId"];
-        this.activityGoodsId = data["activityGoodsId"];
-        this.goodsSpecification = data["goodsSpecification"];
-        this.num = data["num"];
-        this.reason = data["reason"];
-        this.status = data["status"];
-        this.creationTime = data["creationTime"];
-        this.activityName = data["activityName"];
-        this.retailerName = data["retailerName"];
-        this.managerName = data["managerName"];
+        data["id"] = this.id;
+        data["formCode"] = this.formCode;
+        data["activityId"] = this.activityId;
+        data["retailerId"] = this.retailerId;
+        data["activityGoodsId"] = this.activityGoodsId;
+        data["goodsSpecification"] = this.goodsSpecification;
+        data["num"] = this.num;
+        data["reason"] = this.reason;
+        data["status"] = this.status;
+        data["creationTime"] = this.creationTime;
+        data["activityName"] = this.activityName;
+        data["retailerName"] = this.retailerName;
+        data["managerName"] = this.managerName;
+        data["creationUser"] = this.creationUser;
         return data;
     }
 
@@ -84,6 +87,7 @@ export interface IActivityForm {
     activityName: string;
     retailerName: string;
     managerName: string;
+    creationUser: string;
 }
 
 export class ActivityFormDto implements IActivityFormDto {
@@ -102,6 +106,7 @@ export class ActivityFormDto implements IActivityFormDto {
     retailerName: string;
     managerName: string;
     statusType: string;
+    creationUser: string;
 
     constructor(data?: IActivityFormDto) {
         if (data) {
@@ -129,6 +134,7 @@ export class ActivityFormDto implements IActivityFormDto {
             this.managerName = data["managerName"];
             this.statusType = data["statusType"];
             this.statusName = data["statusName"];
+            this.creationUser = data["creationUser"];
         }
     }
 
@@ -153,6 +159,7 @@ export class ActivityFormDto implements IActivityFormDto {
         data["activityName"] = this.activityName;
         data["retailerName"] = this.retailerName;
         data["managerName"] = this.managerName;
+        data["creationUser"] = this.creationUser;
 
         return data;
     }
@@ -181,4 +188,5 @@ export interface IActivityFormDto {
     managerName: string;
     statusType: string;
     statusName: string;
+    creationUser: string;
 }
