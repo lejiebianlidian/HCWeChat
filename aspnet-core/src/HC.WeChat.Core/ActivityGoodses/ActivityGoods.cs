@@ -11,8 +11,8 @@ namespace HC.WeChat.ActivityGoodses
     /// <summary>
     /// 活动商品
     /// </summary>
-    [Table("ActivityGoodes")]
-    public class ActivityGoods : FullAuditedEntity<Guid>, IMayHaveTenant
+    [Table("ActivityGoodses")]
+    public class ActivityGoods : FullAuditedEntity<Guid>
     {
 
         /// <summary>
@@ -45,9 +45,9 @@ namespace HC.WeChat.ActivityGoodses
         /// </summary>
         public string DiscountDesc { get; set; }
 
-        /// <summary>
-        /// 租户ID
-        /// </summary>
-        public int? TenantId { get; set; }
+        ///// <summary>
+        ///// 租户ID
+        ///// </summary>
+        //public int? TenantId { get; set; }
     }
 }

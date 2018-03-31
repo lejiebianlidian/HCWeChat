@@ -64,6 +64,14 @@ export class Employee implements IEmployee {
         this.company = data["company"];
         this.department = data["department"];
         this.isAction = data["isAction"];
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["name"] = this.name;
+        data["position"] = this.position;
+        data["phone"] = this.phone;
+        data["company"] = this.company;
+        data["department"] = this.department;
+        data["isAction"] = this.isAction;
         return data;
     }
 

@@ -62,7 +62,7 @@ namespace HC.WeChat.ActivityGoodses
         /// </summary>
         /// <param name="input">活动商品实体</param>
         /// <returns></returns>
-        Task CreateOrUpdateActivityGoodsDto(ActivityGoodsEditDto input);
+        Task<ActivityGoodsEditDto> CreateOrUpdateActivityGoodsDto(ActivityGoodsEditDto input);
 
         /// <summary>
         /// 根据活动id获取ActivityGoods的分页列表信息

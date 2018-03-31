@@ -5,7 +5,7 @@ using HC.WeChat.Activities;
 
 namespace HC.WeChat.Activities.Dtos
 {
-    public class ActivityListDto : EntityDto
+    public class ActivityListDto : EntityDto<Guid>
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION

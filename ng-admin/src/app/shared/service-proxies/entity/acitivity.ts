@@ -46,17 +46,17 @@ export class Activity implements IActivity{
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        this.id = data["id"];
-        this.name = data["name"];
-        this.beginTime = data["beginTimename"];
-        this.endTime = data["endTime"];
-        this.activityType = data["activityType"];
-        this.content = data["content"];
-        this.mUnfinished = data["mUnfinished"];
-        this.rUnfinished = data["rUnfinished"];
-        this.tenantId = data["tenantId"];
-        this.publishTime = data["publishTime"];
-        this.status = data["status"];
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["content"] = this.content;
+        data["beginTime"] = this.beginTime;
+        data["endTime"] = this.endTime;
+        data["tenantId"] = this.tenantId;
+        data["mUnfinished"] = this.mUnfinished;
+        data["rUnfinished"] = this.rUnfinished;
+        data["publishTime"] = this.publishTime;
+        data["status"] = this.status;
+        data["activityType"] = this.status;
         return data;
     }
 

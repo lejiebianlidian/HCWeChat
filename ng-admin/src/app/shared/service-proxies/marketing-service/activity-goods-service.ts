@@ -12,8 +12,8 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { Http, Headers, ResponseContentType, Response } from '@angular/http';
 import { API_BASE_URL, SwaggerException } from '@shared/service-proxies/service-proxies';
-import { ActivityGoods } from '@shared/service-proxies/entity/activitygoods';
 import { Parameter } from '@shared/service-proxies/entity';
+import { ActivityGoods } from '@shared/service-proxies/entity/activity-goods';
 // import * as moment from 'moment';
 
 

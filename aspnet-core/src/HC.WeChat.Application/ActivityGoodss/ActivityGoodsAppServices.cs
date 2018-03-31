@@ -189,15 +189,15 @@ namespace HC.WeChat.ActivityGoodses
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task CreateOrUpdateActivityGoodsDto(ActivityGoodsEditDto input)
+        public async Task<ActivityGoodsEditDto> CreateOrUpdateActivityGoodsDto(ActivityGoodsEditDto input)
         {
             if (input.Id.HasValue)
             {
-                await UpdateActivityGoodsAsync(input);
+                 return await UpdateActivityGoodsAsyncNew(input);
             }
             else
             {
-                await CreateActivityGoodsAsync(input);
+                return await CreateActivityGoodsAsync(input);
             }
 
         }
@@ -218,7 +218,7 @@ namespace HC.WeChat.ActivityGoodses
                     .Where(g => g.ActivityId == input.AvtivityId)
                     .WhereIf(!string.IsNullOrEmpty(input.SearchName),g=>g.Specification.Contains(input.SearchName))
                     .OrderBy(input.Sorting)
-                    .PageBy(input)
+                    //.PageBy(input)
                     .ToListAsync();
 
                 var activitygoodsListDtos = activitygoodss.MapTo<List<ActivityGoodsListDto>>();
@@ -230,7 +230,16 @@ namespace HC.WeChat.ActivityGoodses
             }
            return new PagedResultDto<ActivityGoodsListDto>();
         }
+        protected virtual async Task<ActivityGoodsEditDto> UpdateActivityGoodsAsyncNew(ActivityGoodsEditDto input)
+        {
+            //TODO:更新前的逻辑判断，是否允许更新
+            var entity = await _activitygoodsRepository.GetAsync(input.Id.Value);
+            input.MapTo(entity);
 
+            // ObjectMapper.Map(input, entity);
+            entity = await _activitygoodsRepository.UpdateAsync(entity);
+            return entity.MapTo<ActivityGoodsEditDto>();
+        }
 
     }
 }
