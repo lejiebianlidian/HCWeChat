@@ -7,6 +7,7 @@ import { Parameter } from '@shared/service-proxies/entity';
 import { ActivityServiceProxy } from '@shared/service-proxies/marketing-service/acticity-service';
 import { NzModalService } from 'ng-zorro-antd';
 import { ActivityGoods } from '@shared/service-proxies/entity/activity-goods';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     moduleId: module.id,
@@ -25,7 +26,7 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
     AcTypes = [
         { text: '办事用烟', value: 1 }
     ];
-    publishTimes: string;
+    publishTimes: Date;
     activityId = '';
     //按钮是否可见
     isSave = true;
@@ -36,12 +37,13 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
     //行内编辑
     editIndex = -1;
     editObj = {};
-
+    id = ''
     constructor(injector: Injector, private activityService: ActivityServiceProxy,
         private fb: FormBuilder, private activityGoodsService: ActivityGoodsServiceProxy,
-        private modal: NzModalService,
+        private modal: NzModalService, private router: ActivatedRoute
     ) {
         super(injector);
+        this.id = this.router.snapshot.params['id']
     }
 
     /**
@@ -79,22 +81,26 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
     getSingleActivity() {
         this.activityService.get().subscribe((result: Activity) => {
             this.acitivityDto = result;
-            this.publishTimes = this.dateFormat(this.acitivityDto.publishTime);
+            this.publishTimes = this.acitivityDto.publishTime;
+            // this.publishTimes = this.dateFormat(this.acitivityDto.publishTime);
             this.activityId = result.id;
             if (this.acitivityDto.id) {
-                this.isGoodabled=true;
+                this.isGoodabled = true;
                 this.isSave = false;
                 this.isPulish = true;
             } else {
                 //活动活动状态
                 this.acitivityDto.status = 1;
+                this.acitivityDto.statusName = '草稿';
                 //按钮是否可见
                 this.isSave = true;
                 this.isPulish = false;
                 this.acitivityDto.mUnfinished = 15;
                 this.acitivityDto.rUnfinished = 6;
             }
-            this.refreshData();
+            if (result.id) {
+                this.refreshData();
+            }
         });
     }
     /**
@@ -120,8 +126,10 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
     saveActivity() {
         this.activityService.update(this.acitivityDto)
             .finally(() => { this.isConfirmLoading = false; })
-            .subscribe(() => {
+            .subscribe((result: Activity) => {
+                this.acitivityDto = result;
                 this.notify.info(this.l('保存成功！'));
+                this.isGoodabled = true;
             });
     }
 
@@ -162,7 +170,7 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
 
     getParameter(): Parameter[] {
         let arry = [];
-        arry.push(Parameter.fromJS({ key: 'AvtivityId', value: this.acitivityDto.id == '0' ? '' : this.acitivityDto.id }));
+        arry.push(Parameter.fromJS({ key: 'AvtivityId', value: this.acitivityDto.id }));
         arry.push(Parameter.fromJS({ key: 'SearchName', value: this.searchName }));
         return arry;
     }
@@ -215,11 +223,16 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
      * 删除
      * @param i 
      */
-    delete(index: number, id?: number) {
+    delete(index: number, id?: string) {
         if (id) {
             this.activityGoodsService.delete(this.items.at(index).value.id).subscribe(() => {
                 this.notify.info(this.l('删除成功！'));
                 this.items.removeAt(index);
+                for(let i=0;i<this.goodes.length;i++){
+                    if (this.goodes[i].id == id) {
+                        this.goodes.splice(i,1);
+                    }
+                }
             });
         } else {
             this.items.removeAt(index);

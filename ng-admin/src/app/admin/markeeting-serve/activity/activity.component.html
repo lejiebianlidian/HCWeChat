@@ -42,7 +42,7 @@
                         <label>发布时间</label>
                     </div>
                     <div nz-form-control nz-col class="text-pink-light">
-                        {{publishTimes}}
+                        {{publishTimes|_date}}
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                         <label nz-form-item-required>结束时间</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="getFormControl('endTime')">
-                        <nz-datepicker style="width:100%;" formControlName="endTime" [(ngModel)]="acitivityDto.endTime" nzPlaceHolder="请输入小于等于32的字符"></nz-datepicker>
+                        <nz-datepicker style="width:100%;" formControlName="endTime" [(ngModel)]="acitivityDto.endTime" ></nz-datepicker>
                         <div nz-form-explain *ngIf="getFormControl('endTime').dirty&&getFormControl('endTime').hasError('required')">请输入活动结束时间</div>
                     </div>
 
@@ -90,7 +90,7 @@
                         <label nz-form-item-required>分类</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="getFormControl('activityType')">
-                        <nz-select formControlName="activityType" [nzPlaceHolder]="'活动分类'" [nzShowSearch]="true" nzSize="large">
+                        <nz-select formControlName="activityType" [nzPlaceHolder]="'活动分类'" [(ngModel)]="acitivityDto.activityType" [nzShowSearch]="true" nzSize="large">
                             <nz-option *ngFor="let i of AcTypes" [nzLabel]="i.text" [nzValue]="i.value">
                             </nz-option>
                         </nz-select>
