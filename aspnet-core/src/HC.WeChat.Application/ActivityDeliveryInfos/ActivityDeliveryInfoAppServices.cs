@@ -13,13 +13,16 @@ using HC.WeChat.ActivityDeliveryInfos.Dtos;
 using HC.WeChat.ActivityDeliveryInfos.DomainServices;
 using HC.WeChat.ActivityDeliveryInfos;
 using System;
+using System.Linq;
+using HC.WeChat.Authorization;
 
 namespace HC.WeChat.ActivityDeliveryInfos
 {
     /// <summary>
     /// ActivityDeliveryInfo应用层服务的接口实现方法
     /// </summary>
-    [AbpAuthorize(ActivityDeliveryInfoAppPermissions.ActivityDeliveryInfo)]
+    //[AbpAuthorize(ActivityDeliveryInfoAppPermissions.ActivityDeliveryInfo)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class ActivityDeliveryInfoAppService : WeChatAppServiceBase, IActivityDeliveryInfoAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -71,6 +74,13 @@ namespace HC.WeChat.ActivityDeliveryInfos
         public async Task<ActivityDeliveryInfoListDto> GetActivityDeliveryInfoByIdAsync(EntityDto<Guid> input)
         {
             var entity = await _activitydeliveryinfoRepository.GetAsync(input.Id);
+
+            return entity.MapTo<ActivityDeliveryInfoListDto>();
+        }
+
+        public async Task<ActivityDeliveryInfoListDto> GetActivityDeliveryInfoByFormIdAsync(EntityDto<Guid> input)
+        {
+            var entity = await _activitydeliveryinfoRepository.GetAll().Where(a => a.ActivityFormId == input.Id).FirstOrDefaultAsync();
 
             return entity.MapTo<ActivityDeliveryInfoListDto>();
         }
@@ -134,7 +144,7 @@ namespace HC.WeChat.ActivityDeliveryInfos
         /// <summary>
         /// 新增ActivityDeliveryInfo
         /// </summary>
-        [AbpAuthorize(ActivityDeliveryInfoAppPermissions.ActivityDeliveryInfo_CreateActivityDeliveryInfo)]
+        //[AbpAuthorize(ActivityDeliveryInfoAppPermissions.ActivityDeliveryInfo_CreateActivityDeliveryInfo)]
         protected virtual async Task<ActivityDeliveryInfoEditDto> CreateActivityDeliveryInfoAsync(ActivityDeliveryInfoEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -147,7 +157,7 @@ namespace HC.WeChat.ActivityDeliveryInfos
         /// <summary>
         /// 编辑ActivityDeliveryInfo
         /// </summary>
-        [AbpAuthorize(ActivityDeliveryInfoAppPermissions.ActivityDeliveryInfo_EditActivityDeliveryInfo)]
+        //[AbpAuthorize(ActivityDeliveryInfoAppPermissions.ActivityDeliveryInfo_EditActivityDeliveryInfo)]
         protected virtual async Task UpdateActivityDeliveryInfoAsync(ActivityDeliveryInfoEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
@@ -163,7 +173,7 @@ namespace HC.WeChat.ActivityDeliveryInfos
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(ActivityDeliveryInfoAppPermissions.ActivityDeliveryInfo_DeleteActivityDeliveryInfo)]
+        //[AbpAuthorize(ActivityDeliveryInfoAppPermissions.ActivityDeliveryInfo_DeleteActivityDeliveryInfo)]
         public async Task DeleteActivityDeliveryInfo(EntityDto<Guid> input)
         {
 
@@ -174,7 +184,7 @@ namespace HC.WeChat.ActivityDeliveryInfos
         /// <summary>
         /// 批量删除ActivityDeliveryInfo的方法
         /// </summary>
-        [AbpAuthorize(ActivityDeliveryInfoAppPermissions.ActivityDeliveryInfo_BatchDeleteActivityDeliveryInfos)]
+        //[AbpAuthorize(ActivityDeliveryInfoAppPermissions.ActivityDeliveryInfo_BatchDeleteActivityDeliveryInfos)]
         public async Task BatchDeleteActivityDeliveryInfosAsync(List<Guid> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除

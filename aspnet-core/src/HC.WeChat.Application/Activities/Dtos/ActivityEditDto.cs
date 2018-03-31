@@ -10,7 +10,7 @@ using Abp.AutoMapper;
 namespace HC.WeChat.Activities.Dtos
 {
     [AutoMapTo(typeof(Activity))]
-    public class ActivityEditDto: AuditedEntityDto<Guid?>
+    public class ActivityEditDto: FullAuditedEntityDto<Guid?>
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION

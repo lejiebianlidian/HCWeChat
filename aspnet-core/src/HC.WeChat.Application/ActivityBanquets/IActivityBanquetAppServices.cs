@@ -25,6 +25,8 @@ namespace HC.WeChat.ActivityBanquets
         /// </summary>
         Task<ActivityBanquetListDto> GetActivityBanquetByIdAsync(EntityDto<Guid> input);
 
+        Task<ActivityBanquetListDto> GetActivityBanquetByFormIdAsync(EntityDto<Guid> input);
+
         /// <summary>
         /// 导出ActivityBanquet为excel表
         /// </summary>

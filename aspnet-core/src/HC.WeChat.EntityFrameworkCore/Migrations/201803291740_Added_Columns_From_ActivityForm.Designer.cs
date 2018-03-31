@@ -1323,6 +1323,7 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("ActivityName").HasMaxLength(200);
                 b.Property<string>("RetailerName").HasMaxLength(50);
                 b.Property<string>("ManagerName").HasMaxLength(50);
+                b.Property<string>("CreationUser").HasMaxLength(50);
 
                 b.HasKey("Id");
 

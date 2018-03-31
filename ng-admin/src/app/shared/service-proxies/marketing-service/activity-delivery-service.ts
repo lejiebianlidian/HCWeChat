@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/catch';
 
-import { ActivityForm, ActivityFormDto, Parameter } from "@shared/service-proxies/entity";
+import { ActivityDeliveryInfoDto, Parameter } from "@shared/service-proxies/entity";
 import { Observable } from 'rxjs/Observable';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { Http, Headers, ResponseContentType, Response } from '@angular/http';
@@ -20,7 +20,7 @@ function throwException(message: string, status: number, response: string, heade
         return Observable.throw(new SwaggerException(message, status, response, headers, null));
 }
 
-export class ActivityFormServiceProxy {
+export class ActivityDeliveryInfoServiceProxy {
     private http: Http;
     private baseUrl: string;
     protected jsonParseReviver: (key: string, value: any) => any = undefined;
@@ -30,79 +30,13 @@ export class ActivityFormServiceProxy {
         this.baseUrl=baseUrl?baseUrl:"";
     }
    
+   
     /**
-     * 获取活动表单
-     * @return Success
+     * 通过id获取回传资料信息
+     * @param id 消息id
      */
-    getAll(skipCount: number, maxResultCount: number, parameter: Parameter[]): Observable<PagedResultDtoOfActivityForm> {
-        let url_ = this.baseUrl + "/api/services/app/ActivityForm/GetPagedActivityForms?";
-        if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
-        if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
-
-        //console.table(parameter);
-        if (parameter.length > 0) {
-            parameter.forEach(element => {
-                if (element.value !== undefined && element.value !== null) {
-                    url_ += element.key + "=" + encodeURIComponent("" + element.value) + "&"; 
-                }
-            });
-        }
-            
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = {
-            method: "get",
-            headers: new Headers({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processGetAll(response_);
-        }).catch((response_: any) => {
-            if (response_ instanceof Response) {
-                try {
-                    return this.processGetAll(response_);
-                } catch (e) {
-                    return <Observable<PagedResultDtoOfActivityForm>><any>Observable.throw(e);
-                }
-            } else
-                return <Observable<PagedResultDtoOfActivityForm>><any>Observable.throw(response_);
-        });
-    }
-
-    protected processGetAll(response: Response): Observable<PagedResultDtoOfActivityForm> {
-        const status = response.status; 
-
-        let _headers: any = response.headers ? response.headers.toJSON() : {};
-        if (status === 200) {
-            const _responseText = response.text();
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? PagedResultDtoOfActivityForm.fromJS(resultData200) : new PagedResultDtoOfActivityForm();
-            return Observable.of(result200);
-        } else if (status === 401) {
-            const _responseText = response.text();
-            return throwException("A server error occurred.", status, _responseText, _headers);
-        } else if (status === 403) {
-            const _responseText = response.text();
-            return throwException("A server error occurred.", status, _responseText, _headers);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.text();
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Observable.of<PagedResultDtoOfActivityForm>(<any>null);
-    }
-
-    /**
-     * 通过消息id
-     * @param id 表单id
-     */
-    get(id: string): Observable<ActivityFormDto> {
-        let url_ = this.baseUrl + "/api/services/app/ActivityForm/GetActivityFormByIdAsync?";
+    get(id: string): Observable<ActivityDeliveryInfoDto> {
+        let url_ = this.baseUrl + "/api/services/app/ActivityDeliveryInfo/GetActivityDeliveryInfoByIdAsync?";
         if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
@@ -122,14 +56,47 @@ export class ActivityFormServiceProxy {
                 try {
                     return this.processGet(response_);
                 } catch (e) {
-                    return <Observable<ActivityFormDto>><any>Observable.throw(e);
+                    return <Observable<ActivityDeliveryInfoDto>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<ActivityFormDto>><any>Observable.throw(response_);
+                return <Observable<ActivityDeliveryInfoDto>><any>Observable.throw(response_);
         });
     }
 
-    protected processGet(response: Response): Observable<ActivityFormDto> {
+     /**
+     * 通过formId获取回传资料信息
+     * @param formId 消息id
+     */
+    getByFormId(formId: string): Observable<ActivityDeliveryInfoDto> {
+        let url_ = this.baseUrl + "/api/services/app/ActivityDeliveryInfo/GetActivityDeliveryInfoByFormIdAsync?";
+        if (formId !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + formId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGet(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGet(response_);
+                } catch (e) {
+                    return <Observable<ActivityDeliveryInfoDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ActivityDeliveryInfoDto>><any>Observable.throw(response_);
+        });
+    }
+
+
+    protected processGet(response: Response): Observable<ActivityDeliveryInfoDto> {
         const status = response.status; 
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
@@ -137,7 +104,7 @@ export class ActivityFormServiceProxy {
             const _responseText = response.text();
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ActivityFormDto.fromJS(resultData200) : new ActivityFormDto();
+            result200 = resultData200 ? ActivityDeliveryInfoDto.fromJS(resultData200) : new ActivityDeliveryInfoDto();
             return Observable.of(result200);
         } else if (status === 401) {
             const _responseText = response.text();
@@ -149,14 +116,14 @@ export class ActivityFormServiceProxy {
             const _responseText = response.text();
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Observable.of<ActivityFormDto>(<any>null);
+        return Observable.of<ActivityDeliveryInfoDto>(<any>null);
     }
 }
-export class PagedResultDtoOfActivityForm implements IPagedResultDtoOfActivityForm {
+export class PagedResultDtoOfActivityDeliveryInfo implements IPagedResultDtoOfActivityDeliveryInfo {
     totalCount: number;
-    items: ActivityFormDto[];
+    items: ActivityDeliveryInfoDto[];
 
-    constructor(data?: IPagedResultDtoOfActivityForm) {
+    constructor(data?: IPagedResultDtoOfActivityDeliveryInfo) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -171,13 +138,13 @@ export class PagedResultDtoOfActivityForm implements IPagedResultDtoOfActivityFo
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
                 for (let item of data["items"])
-                    this.items.push(ActivityFormDto.fromJS(item));
+                    this.items.push(ActivityDeliveryInfoDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): PagedResultDtoOfActivityForm {
-        let result = new PagedResultDtoOfActivityForm();
+    static fromJS(data: any): PagedResultDtoOfActivityDeliveryInfo {
+        let result = new PagedResultDtoOfActivityDeliveryInfo();
         result.init(data);
         return result;
     }
@@ -195,13 +162,13 @@ export class PagedResultDtoOfActivityForm implements IPagedResultDtoOfActivityFo
 
     clone() {
         const json = this.toJSON();
-        let result = new PagedResultDtoOfActivityForm();
+        let result = new PagedResultDtoOfActivityDeliveryInfo();
         result.init(json);
         return result;
     }
 }
 
-export interface IPagedResultDtoOfActivityForm {
+export interface IPagedResultDtoOfActivityDeliveryInfo {
     totalCount: number;
-    items: ActivityFormDto[];
+    items: ActivityDeliveryInfoDto[];
 }

@@ -81,20 +81,23 @@ namespace HC.WeChat.ActivityForms
         /// <summary>
         /// 活动宴席信息
         /// </summary>
-        [ForeignKey("ActivityFormId")]
-        public virtual ICollection<ActivityBanquet> Banquet { get; set; }
+        ///[NotMapped]
+        //[ForeignKey("ActivityFormId")]
+        //public virtual ICollection<ActivityBanquet> Banquet { get; set; }
 
         /// <summary>
         /// 活动邮件信息
         /// </summary>
-        [ForeignKey("ActivityFormId")]
-        public virtual ICollection<ActivityDeliveryInfo> DeliveryInfo { get; set; }
+        //[NotMapped]
+        //[ForeignKey("ActivityFormId")]
+        //public virtual ICollection<ActivityDeliveryInfo> DeliveryInfo { get; set; }
 
         /// <summary>
         /// 活动审批日志
         /// </summary>
-        [ForeignKey("ActivityFormId")]
-        public virtual ICollection<ActivityFormLog> ApprovalLogs { get; set; }
+        //[NotMapped]
+        //[ForeignKey("ActivityFormId")]
+        //public virtual ICollection<ActivityFormLog> ApprovalLogs { get; set; }
 
         /// <summary>
         /// 活动名称 快照
@@ -113,5 +116,11 @@ namespace HC.WeChat.ActivityForms
         /// </summary>
         [StringLength(50)]
         public string ManagerName { get; set; }
+
+        /// <summary>
+        /// 申请用户
+        /// </summary>
+        [StringLength(50)]
+        public virtual string CreationUser { get; set; }
     }
 }
