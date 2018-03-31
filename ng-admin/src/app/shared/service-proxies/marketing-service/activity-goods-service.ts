@@ -214,7 +214,7 @@ export class ActivityGoodsServiceProxy {
     /**
     * @return Success
     */
-    delete(id: number): Observable<void> {
+    delete(id: string): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/ActivityGoods/DeleteActivityGoods?";
         if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&";

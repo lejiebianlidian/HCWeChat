@@ -62,5 +62,12 @@ namespace HC.WeChat.Activities
         /// </summary>
         /// <returns></returns>
         Task<ActivityListDto> GetActivityByTenantIdAsync();
+
+        /// <summary>
+        /// 添加或者修改Activity的公共方法
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task<ActivityEditDto> CreateOrUpdateActivityDto(ActivityEditDto input);
     }
 }

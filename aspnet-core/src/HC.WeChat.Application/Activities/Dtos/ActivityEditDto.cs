@@ -61,5 +61,12 @@ namespace HC.WeChat.Activities.Dtos
         /// </summary>
         [Required]
         public ActivityStatusEnum Status { get; set; }
+        public string StatusName
+        {
+            get
+            {
+                return Status.ToString();
+            }
+        }
     }
 }

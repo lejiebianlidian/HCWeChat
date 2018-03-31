@@ -151,7 +151,7 @@ namespace HC.WeChat.Activities
         /// 编辑Activity
         /// </summary>
         //[AbpAuthorize(ActivityAppPermissions.Activity_EditActivity)]
-        protected virtual async Task UpdateActivityAsync(ActivityEditDto input)
+        protected virtual async Task<ActivityEditDto> UpdateActivityAsync(ActivityEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
             var entity = await _activityRepository.GetAsync(input.Id.Value);
@@ -159,6 +159,7 @@ namespace HC.WeChat.Activities
 
             // ObjectMapper.Map(input, entity);
             await _activityRepository.UpdateAsync(entity);
+            return entity.MapTo<ActivityEditDto>();
         }
 
         /// <summary>
@@ -191,6 +192,24 @@ namespace HC.WeChat.Activities
         {
             var query =await _activityRepository.GetAll().Where(r => r.TenantId == AbpSession.TenantId).FirstOrDefaultAsync();
             return query.MapTo<ActivityListDto>();
+        }
+
+        /// <summary>
+        /// 添加或者修改Activity的公共方法
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<ActivityEditDto> CreateOrUpdateActivityDto(ActivityEditDto input)
+        {
+            if (input.Id.HasValue)
+            {
+                return await UpdateActivityAsync(input);
+            }
+            else
+            {
+                return  await CreateActivityAsync(input);
+            }
+
         }
 
 

@@ -11,6 +11,7 @@ import { SwaggerException, API_BASE_URL } from "@shared/service-proxies/service-
 import { Inject, Optional, Injectable, InjectionToken } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { Http, Headers, ResponseContentType, Response } from "@angular/http";
+import { Parameter } from '@shared/service-proxies/entity';
 
 function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): Observable<any> {
     if (result !== null && result !== undefined)
@@ -88,7 +89,7 @@ export class ActivityServiceProxy {
      * @param input 
      */
     update(input: Activity): Observable<Activity> {
-        let url_ = this.baseUrl + "/api/services/app/Activity/CreateOrUpdateWechatMessageDto";
+        let url_ = this.baseUrl + "/api/services/app/Activity/CreateOrUpdateActivityDto";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
@@ -142,7 +143,7 @@ export class ActivityServiceProxy {
     /**
     * @return Success
     */
-    delete(id: number): Observable<void> {
+    delete(id: string): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Activity/DeleteActivity?";
         if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&";
@@ -188,7 +189,75 @@ export class ActivityServiceProxy {
         }
         return Observable.of<void>(<any>null);
     }
+
+    
+    /**
+     * 获取活动商品
+     * @return Success
+     */
+    getAll(skipCount: number, maxResultCount: number, parameter: Parameter[]): Observable<PagedResultDtoOfActivity> {
+        let url_ = this.baseUrl + "/api/services/app/Activity/GetPagedActivities?";
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+            
+        if (parameter.length > 0) {
+            parameter.forEach(element => {
+                if (element.value !== undefined && element.value !== null) {
+                    url_ += element.key + "=" + encodeURIComponent("" + element.value) + "&";
+                }
+            });
+        }
+      
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetAll(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetAll(response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfActivity>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfActivity>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetAll(response: Response): Observable<PagedResultDtoOfActivity> {
+        const status = response.status;
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfActivity.fromJS(resultData200) : new PagedResultDtoOfActivity();
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<PagedResultDtoOfActivity>(<any>null);
+    }
 }
+
 export class PagedResultDtoOfActivity implements IPagedResultDtoOfActivity {
     totalCount: number;
     items: Activity[];
