@@ -32,5 +32,10 @@ namespace HC.WeChat.Controllers
         {
             return tenantId;
         }
+
+        public virtual IActionResult BindUser()
+        {
+            return Redirect("/ybwechat/user_bind.html");
+        }
     }
 }
