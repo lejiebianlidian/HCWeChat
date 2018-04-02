@@ -146,7 +146,7 @@ export class ActivityServiceProxy {
     * @return Success
     */
     delete(id: string): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Activity/BatchDeleteActivitiesAsyncDtos?";
+        let url_ = this.baseUrl + "/api/services/app/Activity/DeleteActivitiesAsyncDtos?";
         if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");

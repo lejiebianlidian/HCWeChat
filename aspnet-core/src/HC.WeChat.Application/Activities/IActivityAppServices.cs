@@ -75,6 +75,6 @@ namespace HC.WeChat.Activities
         /// </summary>
         /// <param name="input">活动id</param>
         /// <returns></returns>
-        Task BatchDeleteActivitiesAsyncDtos(EntityDto<Guid> input);
+        Task DeleteActivitiesAsyncDtos(EntityDto<Guid> input);
     }
 }

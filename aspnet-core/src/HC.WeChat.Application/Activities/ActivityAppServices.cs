@@ -228,20 +228,22 @@ namespace HC.WeChat.Activities
         /// </summary>
         /// <param name="input">活动id</param>
         /// <returns></returns>
-        public async Task BatchDeleteActivitiesAsyncDtos(EntityDto<Guid> input)
+        public async Task DeleteActivitiesAsyncDtos(EntityDto<Guid> input)
         {
-            //List<Guid> idList = new List<Guid>();
-            //var goodes = _activitygoodsRepository.GetAll().Where(g => g.ActivityId == input.Id).ToList();
-            //if (goodes.Count > 0) {
-            //    foreach (ActivityGoods i in goodes)
-            //    {
-            //        idList.Add(i.Id);
-            //    }
-            //}
+            List<Guid> idList = new List<Guid>();
+            var goodes = _activitygoodsRepository.GetAll().Where(g => g.ActivityId == input.Id).ToList();
+            if (goodes.Count > 0)
+            {
+                foreach (ActivityGoods i in goodes)
+                {
+                    idList.Add(i.Id);
+                }
+            }
             await DeleteActivity(input);
-            //if (idList.Count > 0) {
-            //    await _activitygoodsRepository.DeleteAsync(s => idList.Contains(s.Id));
-            //}
+            if (idList.Count > 0)
+            {
+                await _activitygoodsRepository.DeleteAsync(s => idList.Contains(s.Id));
+            }
         }
     }
 }

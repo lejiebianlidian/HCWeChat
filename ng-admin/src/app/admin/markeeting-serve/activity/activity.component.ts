@@ -92,8 +92,12 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
                 this.isSave = this.acitivityDto.status == 1 || this.acitivityDto.status == 3 ? true : false;
                 this.isPulish = this.acitivityDto.status == 1 || this.acitivityDto.status == 3 ? true : false;
                 this.isDropOff = this.acitivityDto.status == 2 ? true : false;
+
             }
             else {
+                //新增时清除日期默认值
+                this.acitivityDto.beginTime=null;
+                this.acitivityDto.endTime=null;
                 //活动活动状态
                 this.acitivityDto.status = 1;
                 this.acitivityDto.statusName = '草稿';

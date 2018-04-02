@@ -80,18 +80,18 @@ export class ActivityListComponent extends AppComponentBase implements OnInit {
     /**
      * 删除活动
      */
-    delete(acticity: Activity, TplContent) {
-        this.activityName = acticity.name;
-        this.modal.confirm({
-            content: TplContent,
-            okText: '确定',
-            cancelText: '取消',
-            onOk: () => {
-                this.ActivityService.delete(acticity.id).subscribe(() => {
-                    this.notify.info(this.l('删除成功！'));
-                    this.refreshData();
-                });
-            }
-        });
-    }
+    // delete(acticity: Activity, TplContent) {
+    //     this.activityName = acticity.name;
+    //     this.modal.confirm({
+    //         content: TplContent,
+    //         okText: '确定',
+    //         cancelText: '取消',
+    //         onOk: () => {
+    //             this.ActivityService.delete(acticity.id).subscribe(() => {
+    //                 this.notify.info(this.l('删除成功！'));
+    //                 this.refreshData();
+    //             });
+    //         }
+    //     });
+    // }
 }
