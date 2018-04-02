@@ -1,8 +1,8 @@
 ﻿
 @{
     ViewData["Title"] = "活动申请";
+    var GoodsList = ViewBag.GoodsList as List<HC.WeChat.ActivityGoodses.Dtos.ActivityGoodsDto>;
 }
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,41 +24,45 @@
         <div class="pr advise_area">
             <!--透明背景-->
             <div class="opacity_bg all_width">
-                <!--标题-->
-                <div class="advise_warp pt5 pb5">
-                    <span class="entry_key fl">标题</span>
-                    <input type="text" class="fl ml10 entry_value" placeholder="请输入标题" />
-                </div>
-                <!--联系电话-->
+                <!--选择商品-->
                 <div class="advise_warp pt3 pb3">
-                    <select class="fl entry_value" placeholder="请输入联系电话">
-                        <option>我是消费者</option>
-                        <option>我是零售户</option>
+                    <select id="dllSpecification" class="fl entry_value" placeholder="请选择申请商品规格">
+                        @foreach (var item in GoodsList)
+                        {
+                            <option value="@item.Id">@item.Specification</option>
+                        }
                     </select>
                 </div>
+                <!--申请数量-->
+                <div class="advise_warp pt5 pb5">
+                    <span class="entry_key fl">申请数量</span>
+                    <input type="number" id="txtNum" class="fl ml10 entry_value" placeholder="请输入申请数量" />
+                </div>
                 <div class="advise_warp">
-                    <span class="entry_key db pb20 pt5">建议举报内容</span>
+                    <span class="entry_key db pb20 pt5">申请理由</span>
                     <!--内容输入框-->
-                    <textarea class="contain_entry" placeholder="请输入举报内容"></textarea>
+                    <textarea class="contain_entry" id="txtReason" placeholder="请输入申请理由"></textarea>
+                </div>
+                <div class="advise_warp pt5 pb5">
+                    <span class="entry_key fl">收货人姓名</span>
+                    <input type="text" maxlength="50" id="txtUserNaem" class="fl ml10 entry_value" placeholder="请输入收货人姓名" />
                 </div>
                 <!--联系电话-->
                 <div class="advise_warp pt3 pb3">
                     <span class="entry_key fl">联系电话</span>
-                    <input type="text" class="fl ml10 entry_value" placeholder="请输入联系电话" />
+                    <input type="text" maxlength="13" id="txtPhone" class="fl ml10 entry_value" placeholder="请输入联系电话" />
                 </div>
-                <!--上传图片-->
-                <div class="file_upload pr">
-                    <input id="Photos" multiple type="file" class="none pa">
-                    <img id="add" src="static/img/advise/add.png">
+                <!--收货地址-->
+                <div class="advise_warp pt3 pb3">
+                    <span class="entry_key fl">收货地址</span>
+                    <input type="text" maxlength="500" id="txtAddress" class="fl ml10 entry_value" placeholder="请输入收货地址" />
                 </div>
-                <!--上传图片限制提示-->
-                <span class="upload_tips">最多可上传8张图片</span>
             </div>
         </div>
         <!--用户操作按钮-->
         <div class="width_90 mt30 mb20">
-            <input type="button" class="middel_btn fl cancel" value="取消发布" />
-            <input type="button" class="middel_btn fr ok" value="确认发布" onclick="javascript:window.location.href='advise_back.html'" />
+            <input type="button" class="middel_btn fl cancel" value="取消申请" />
+            <input type="button" class="middel_btn fr ok" value="提交申请" onclick="Save()" />
         </div>
     </div>
     <script type="text/javascript" src="static/js/jquery.min.js"></script>
@@ -70,6 +74,50 @@
                 window.location.href = "@ViewBag.Url";
             }
         });
+
+        var Save = function () {
+            var reqUrl = "@ViewBag.ServerRootAddress" + "api/services/app/WeChatUser/BindWeChatUserAsync";
+        var BindRetailer = function () {
+            var para = {};
+            para.userName = $("#txtRetailerName").val();
+            if (para.userName == "") {
+                alert("用户名不能为空！");
+                return;
+            }
+            para.licenseKey = $("#txtLicenseKey").val();
+            if (para.licenseKey == "") {
+                alert("专卖证号不能为空！");
+                return;
+            }
+
+            para.tenantId = $("#hidTenantId").val();
+            para.userType = 1;
+            para.nickName = $("#hidNickName").val();
+
+            $.ajax({
+                url: reqUrl,
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(para),
+                success: function (data) {
+                    if (data.success) {
+                        if (data.result.code == 0) {
+                            alert(data.result.msg);
+                            window.location.href = "@ViewBag.Url";
+                        } else {
+                            alert(data.result.msg);
+                        }
+                    } else {
+                        alert("保存异常！");
+                    }
+                },
+                error: function () {
+                    alert("提交失败！");
+                }
+            });
+        }
+        }
     </script>
 </body>
 </html>

@@ -71,6 +71,6 @@ namespace HC.WeChat.ActivityGoodses
         /// <returns></returns>
         Task<PagedResultDto<ActivityGoodsListDto>> GetPagedActivityGoodsesByAcId(GetActivityGoodsesInput input);
 
-
+        Task<List<ActivityGoodsDto>> GetActivityGoodsByActivityId(Guid activityId);
     }
 }

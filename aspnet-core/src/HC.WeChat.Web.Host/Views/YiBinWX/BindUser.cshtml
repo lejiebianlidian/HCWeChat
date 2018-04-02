@@ -26,10 +26,10 @@
             <div class="all_width">
                 <ul class="bind_area all_width">
                     <li>
-                        <input type="text" id="txtRetailerName" placeholder="请输入姓名" />
+                        <input type="text" id="txtRetailerName" maxlength="50" placeholder="请输入姓名" />
                     </li>
                     <li>
-                        <input type="text" id="txtLicenseKey" placeholder="请输入专卖证号" />
+                        <input type="text" id="txtLicenseKey" maxlength="50" placeholder="请输入专卖证号" />
                     </li>
                 </ul>
                 <input type="button" value="立即绑定" onclick="BindRetailer()" class="ok middel_btn mt20 center db" />
@@ -38,10 +38,10 @@
             <div class="all_width none">
                 <ul class="bind_area all_width">
                     <li>
-                        <input type="text" id="txtEmployeeName" placeholder="请输入姓名" />
+                        <input type="text" id="txtEmployeeName" maxlength="50" placeholder="请输入姓名" />
                     </li>
                     <li>
-                        <input type="text" id="txtCode" placeholder="请输入员工编码" />
+                        <input type="text" id="txtCode" maxlength="50" placeholder="请输入员工编码" />
                     </li>
                 </ul>
                 <input type="button" value="立即绑定" onclick="BindEmployee()" class="ok middel_btn mt20 center db" />
@@ -62,7 +62,7 @@
         });
     </script>
     <script type="text/javascript">
-        var reqUrl = "http://localhost:21021/api/services/app/WeChatUser/BindWeChatUserAsync";
+        var reqUrl = "@ViewBag.ServerRootAddress"+"api/services/app/WeChatUser/BindWeChatUserAsync";
         var BindRetailer = function () {
             var para = {};
             para.userName = $("#txtRetailerName").val();
