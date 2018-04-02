@@ -2,6 +2,7 @@
 using Abp.Application.Services.Dto;
 using HC.WeChat.Activities.Dtos.LTMAutoMapper;
 using HC.WeChat.Activities;
+using HC.WeChat.WechatEnums;
 
 namespace HC.WeChat.Activities.Dtos
 {
@@ -12,7 +13,7 @@ namespace HC.WeChat.Activities.Dtos
         public string Name { get; set; }
         public DateTime BeginTime { get; set; }
         public DateTime EndTime { get; set; }
-        public int ActivityType { get; set; }
+        public ActivityTypeEnum ActivityType { get; set; }
         public string Content { get; set; }
         public int? MUnfinished { get; set; }
         public int? RUnfinished { get; set; }

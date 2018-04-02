@@ -56,7 +56,7 @@ export class Activity implements IActivity{
         data["rUnfinished"] = this.rUnfinished;
         data["publishTime"] = this.publishTime;
         data["status"] = this.status;
-        data["activityType"] = this.status;
+        data["activityType"] = this.activityType;
         return data;
     }
 
