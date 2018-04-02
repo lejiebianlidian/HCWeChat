@@ -19,5 +19,7 @@ namespace HC.WeChat.WeChatUsers.Dtos
         public DateTime? BindTime { get; set; }
         public int? TenantId { get; set; }
         public DateTime? UnBindTime { get; set; }
+
+        public string HeadImgUrl { get; set; }
     }
 }

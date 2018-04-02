@@ -5,6 +5,7 @@ using Abp.Application.Services.Dto;
 using HC.WeChat.WeChatUsers.Dtos;
 using HC.WeChat.WeChatUsers;
 using System;
+using HC.WeChat.Dto;
 
 namespace HC.WeChat.WeChatUsers
 {
@@ -57,6 +58,9 @@ namespace HC.WeChat.WeChatUsers
         /// </summary>
         Task BatchDeleteWeChatUsersAsync(List<Guid> input);
 
-        Task BindWeChatUser(WeChatUserEditDto input);
+        Task<APIResultDto> BindWeChatUserAsync(UserBindDto input);
+
+
+        Task<WeChatUserListDto> GetWeChatUserAsync(string openId, int? tenantId);
     }
 }

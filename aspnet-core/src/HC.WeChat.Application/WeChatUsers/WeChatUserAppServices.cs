@@ -14,6 +14,11 @@ using HC.WeChat.WeChatUsers.DomainServices;
 using HC.WeChat.WeChatUsers;
 using System;
 using HC.WeChat.Authorization;
+using HC.WeChat.Dto;
+using HC.WeChat.WechatEnums;
+using HC.WeChat.Retailers;
+using HC.WeChat.Employees;
+using System.Linq;
 
 namespace HC.WeChat.WeChatUsers
 {
@@ -23,20 +28,24 @@ namespace HC.WeChat.WeChatUsers
     //[AbpAuthorize(WeChatUserAppPermissions.WeChatUser)]
     public class WeChatUserAppService : WeChatAppServiceBase, IWeChatUserAppService
     {
-        ////BCC/ BEGIN CUSTOM CODE SECTION
-        ////ECC/ END CUSTOM CODE SECTION
         private readonly IRepository<WeChatUser, Guid> _wechatuserRepository;
         private readonly IWeChatUserManager _wechatuserManager;
+        private readonly IRepository<Retailer, Guid> _retailerRepository;
+        private readonly IRepository<Employee, Guid> _employeeRepository;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public WeChatUserAppService(IRepository<WeChatUser, Guid> wechatuserRepository
-      , IWeChatUserManager wechatuserManager
+        public WeChatUserAppService(IRepository<WeChatUser, Guid> wechatuserRepository,
+       IWeChatUserManager wechatuserManager,
+       IRepository<Retailer, Guid> retailerRepository,
+       IRepository<Employee, Guid> employeeRepository
         )
         {
             _wechatuserRepository = wechatuserRepository;
             _wechatuserManager = wechatuserManager;
+            _retailerRepository = retailerRepository;
+            _employeeRepository = employeeRepository;
         }
 
         /// <summary>
@@ -182,11 +191,55 @@ namespace HC.WeChat.WeChatUsers
             await _wechatuserRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
-        public async Task BindWeChatUser(WeChatUserEditDto input)
+        /// <summary>
+        /// 用户绑定
+        /// </summary>
+        public async Task<APIResultDto> BindWeChatUserAsync(UserBindDto input)
         {
-            var entity = ObjectMapper.Map<WeChatUser>(input);
+            Logger.InfoFormat("UserBindDto:", Newtonsoft.Json.Linq.JObject.FromObject(input).ToString());
+            var entity = await _wechatuserManager.GetWeChatUserAsync(input.OpenId, input.TenantId);
+            if (entity == null)
+            {
+                entity = input.MapTo<WeChatUser>();
+            }
 
+            if (input.UserType == UserTypeEnum.零售客户)
+            {
+                //验证零售户
+                var retaliler = _retailerRepository.GetAll().Where(r => r.IsAction && r.Name == input.UserName && r.LicenseKey == input.LicenseKey).FirstOrDefault();
+                if (retaliler == null)
+                {
+                    return new APIResultDto() { Code = 901, Msg = "用户验证未通过" };
+                }
+                entity.UserId = retaliler.Id;
+            }
+            else if(input.UserType == UserTypeEnum.客户经理)
+            {
+                //验证客户经理
+                var employee = _employeeRepository.GetAll().Where(e => e.IsAction && e.Name == input.UserName && e.Code == input.Code && e.Position == UserTypeEnum.客户经理).FirstOrDefault();
+                if (employee == null)
+                {
+                    return new APIResultDto() { Code = 901, Msg = "用户验证未通过" };
+                }
+                entity.UserId = employee.Id;
+            }
+            else
+            {
+                return new APIResultDto() { Code = 903, Msg = "用户类型不支持" };
+            }
+            
+            entity.UserName = input.UserName;
+            entity.UserType = input.UserType;
+            entity.BindStatus = BindStatusEnum.已绑定;
+            entity.BindTime = DateTime.Now;
             await _wechatuserManager.BindWeChatUserAsync(entity);
+            return new APIResultDto() { Code = 0, Msg = "绑定成功" };
+        }
+
+        public async Task<WeChatUserListDto> GetWeChatUserAsync(string openId, int? tenantId)
+        {
+            var user = await _wechatuserManager.GetWeChatUserAsync(openId, tenantId);
+            return user.MapTo<WeChatUserListDto>();
         }
     }
 }

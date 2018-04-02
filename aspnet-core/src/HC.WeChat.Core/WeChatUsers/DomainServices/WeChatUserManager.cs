@@ -46,11 +46,11 @@ namespace HC.WeChat.WeChatUsers.DomainServices
         /// 获取微信用户
         /// </summary>
         [UnitOfWork]
-        public Task<WeChatUser> GetWeChatUser(string openId, int? tenantId)
+        public async Task<WeChatUser> GetWeChatUserAsync(string openId, int? tenantId)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
-                return Task.FromResult(_wechatuserRepository.GetAll().Where(w => w.TenantId == tenantId && w.OpenId == openId).FirstOrDefault());
+                return await Task.FromResult(_wechatuserRepository.GetAll().Where(w => w.TenantId == tenantId && w.OpenId == openId).FirstOrDefault());
             }
         }
 
@@ -71,7 +71,7 @@ namespace HC.WeChat.WeChatUsers.DomainServices
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
-                var user = GetWeChatUser(openId, tenantId).Result;
+                var user = await GetWeChatUserAsync(openId, tenantId);
                 if (user != null)
                 {
                     user.NickName = nickName;
@@ -104,7 +104,7 @@ namespace HC.WeChat.WeChatUsers.DomainServices
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
-                var user = GetWeChatUser(openId, tenantId).Result;
+                var user = await GetWeChatUserAsync(openId, tenantId);
                 //解绑后变成消费者
                 if (user != null)
                 {
@@ -126,7 +126,7 @@ namespace HC.WeChat.WeChatUsers.DomainServices
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
-                var user = GetWeChatUser(openId, tenantId).Result;
+                var user = await GetWeChatUserAsync(openId, tenantId);
                 //解绑后变成消费者
                 if (user != null)
                 {
