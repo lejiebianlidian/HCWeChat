@@ -55,5 +55,7 @@ namespace HC.WeChat.ActivityForms.Dtos
         public string RetailerName { get; set; }
 
         public string ManagerName { get; set; }
+
+        public string CreationUser { get; set; }
     }
 }

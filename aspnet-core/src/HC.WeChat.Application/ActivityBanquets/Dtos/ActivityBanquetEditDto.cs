@@ -89,5 +89,6 @@ namespace HC.WeChat.ActivityBanquets.Dtos
         [Required]
         [StringLength(50)]
         public string UserName { get; set; }
+
     }
 }

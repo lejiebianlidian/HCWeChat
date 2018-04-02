@@ -19,15 +19,16 @@ namespace HC.WeChat.Web.Host.Controllers
 
         public IActionResult Index()
         {
-            return Redirect("/swagger");
+            //return Redirect("/swagger");
+            return Redirect("/index.html");
         }
 
         public IActionResult WeChat()
         {
-            return View();
+            return Redirect("/wechat/index.html");
         }
 
-        public IActionResult WeChatT()
+        public IActionResult Admin()
         {
             return View();
         }

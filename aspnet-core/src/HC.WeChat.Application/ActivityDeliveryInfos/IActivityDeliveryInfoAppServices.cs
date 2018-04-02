@@ -25,6 +25,8 @@ namespace HC.WeChat.ActivityDeliveryInfos
         /// </summary>
         Task<ActivityDeliveryInfoListDto> GetActivityDeliveryInfoByIdAsync(EntityDto<Guid> input);
 
+        Task<ActivityDeliveryInfoListDto> GetActivityDeliveryInfoByFormIdAsync(EntityDto<Guid> input);
+
         /// <summary>
         /// 导出ActivityDeliveryInfo为excel表
         /// </summary>

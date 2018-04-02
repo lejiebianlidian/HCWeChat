@@ -84,5 +84,20 @@ namespace HC.WeChat.ActivityForms.Dtos
         public string RetailerName { get; set; }
 
         public string ManagerName { get; set; }
+
+        [StringLength(50)]
+        public string CreationUser { get; set; }
+
+        //public ICollection<ActivityBanquet> Banquet { get; set; }
+
+        /// <summary>
+        /// 活动邮件信息
+        /// </summary>
+        //public ICollection<ActivityDeliveryInfo> DeliveryInfo { get; set; }
+
+        /// <summary>
+        /// 活动审批日志
+        /// </summary>
+        //public  ICollection<ActivityFormLog> ApprovalLogs { get; set; }
     }
 }

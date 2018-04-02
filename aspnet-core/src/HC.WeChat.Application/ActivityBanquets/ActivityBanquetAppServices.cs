@@ -13,13 +13,16 @@ using HC.WeChat.ActivityBanquets.Dtos;
 using HC.WeChat.ActivityBanquets.DomainServices;
 using HC.WeChat.ActivityBanquets;
 using System;
+using System.Linq;
+using HC.WeChat.Authorization;
 
 namespace HC.WeChat.ActivityBanquets
 {
     /// <summary>
     /// ActivityBanquet应用层服务的接口实现方法
     /// </summary>
-    [AbpAuthorize(ActivityBanquetAppPermissions.ActivityBanquet)]
+    //[AbpAuthorize(ActivityBanquetAppPermissions.ActivityBanquet)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class ActivityBanquetAppService : WeChatAppServiceBase, IActivityBanquetAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -71,6 +74,13 @@ namespace HC.WeChat.ActivityBanquets
         public async Task<ActivityBanquetListDto> GetActivityBanquetByIdAsync(EntityDto<Guid> input)
         {
             var entity = await _activitybanquetRepository.GetAsync(input.Id);
+
+            return entity.MapTo<ActivityBanquetListDto>();
+        }
+
+        public async Task<ActivityBanquetListDto> GetActivityBanquetByFormIdAsync(EntityDto<Guid> input)
+        {
+            var entity = await _activitybanquetRepository.GetAll().Where(a => a.ActivityFormId == input.Id).FirstOrDefaultAsync();
 
             return entity.MapTo<ActivityBanquetListDto>();
         }
@@ -134,7 +144,7 @@ namespace HC.WeChat.ActivityBanquets
         /// <summary>
         /// 新增ActivityBanquet
         /// </summary>
-        [AbpAuthorize(ActivityBanquetAppPermissions.ActivityBanquet_CreateActivityBanquet)]
+        //[AbpAuthorize(ActivityBanquetAppPermissions.ActivityBanquet_CreateActivityBanquet)]
         protected virtual async Task<ActivityBanquetEditDto> CreateActivityBanquetAsync(ActivityBanquetEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -147,7 +157,7 @@ namespace HC.WeChat.ActivityBanquets
         /// <summary>
         /// 编辑ActivityBanquet
         /// </summary>
-        [AbpAuthorize(ActivityBanquetAppPermissions.ActivityBanquet_EditActivityBanquet)]
+        //[AbpAuthorize(ActivityBanquetAppPermissions.ActivityBanquet_EditActivityBanquet)]
         protected virtual async Task UpdateActivityBanquetAsync(ActivityBanquetEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
@@ -163,7 +173,7 @@ namespace HC.WeChat.ActivityBanquets
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(ActivityBanquetAppPermissions.ActivityBanquet_DeleteActivityBanquet)]
+        //[AbpAuthorize(ActivityBanquetAppPermissions.ActivityBanquet_DeleteActivityBanquet)]
         public async Task DeleteActivityBanquet(EntityDto<Guid> input)
         {
 
@@ -174,7 +184,7 @@ namespace HC.WeChat.ActivityBanquets
         /// <summary>
         /// 批量删除ActivityBanquet的方法
         /// </summary>
-        [AbpAuthorize(ActivityBanquetAppPermissions.ActivityBanquet_BatchDeleteActivityBanquets)]
+        //[AbpAuthorize(ActivityBanquetAppPermissions.ActivityBanquet_BatchDeleteActivityBanquets)]
         public async Task BatchDeleteActivityBanquetsAsync(List<Guid> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除

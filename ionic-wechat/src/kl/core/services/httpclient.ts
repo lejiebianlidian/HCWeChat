@@ -8,6 +8,8 @@ import { ApiResult } from 'kl/model';
 @Injectable()
 export class HttpClient {
 
+  readonly baseUrl = 'http://wx.photostory.top/api/services/app/';
+
   constructor(private http: Http, private loading: LoadingService) { }
 
   get<T>(url: string, params?: { [key: string]: string }, showLoading?: boolean): Observable<ApiResult<T>> {

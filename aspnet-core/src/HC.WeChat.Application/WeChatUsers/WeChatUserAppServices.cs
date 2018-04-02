@@ -13,13 +13,14 @@ using HC.WeChat.WeChatUsers.Dtos;
 using HC.WeChat.WeChatUsers.DomainServices;
 using HC.WeChat.WeChatUsers;
 using System;
+using HC.WeChat.Authorization;
 
 namespace HC.WeChat.WeChatUsers
 {
     /// <summary>
     /// WeChatUser应用层服务的接口实现方法
     /// </summary>
-    [AbpAuthorize(WeChatUserAppPermissions.WeChatUser)]
+    //[AbpAuthorize(WeChatUserAppPermissions.WeChatUser)]
     public class WeChatUserAppService : WeChatAppServiceBase, IWeChatUserAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -134,7 +135,7 @@ namespace HC.WeChat.WeChatUsers
         /// <summary>
         /// 新增WeChatUser
         /// </summary>
-        [AbpAuthorize(WeChatUserAppPermissions.WeChatUser_CreateWeChatUser)]
+        //[AbpAuthorize(WeChatUserAppPermissions.WeChatUser_CreateWeChatUser)]
         protected virtual async Task<WeChatUserEditDto> CreateWeChatUserAsync(WeChatUserEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -147,7 +148,7 @@ namespace HC.WeChat.WeChatUsers
         /// <summary>
         /// 编辑WeChatUser
         /// </summary>
-        [AbpAuthorize(WeChatUserAppPermissions.WeChatUser_EditWeChatUser)]
+        //[AbpAuthorize(WeChatUserAppPermissions.WeChatUser_EditWeChatUser)]
         protected virtual async Task UpdateWeChatUserAsync(WeChatUserEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
@@ -163,7 +164,7 @@ namespace HC.WeChat.WeChatUsers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(WeChatUserAppPermissions.WeChatUser_DeleteWeChatUser)]
+        //[AbpAuthorize(WeChatUserAppPermissions.WeChatUser_DeleteWeChatUser)]
         public async Task DeleteWeChatUser(EntityDto<Guid> input)
         {
 
@@ -174,13 +175,19 @@ namespace HC.WeChat.WeChatUsers
         /// <summary>
         /// 批量删除WeChatUser的方法
         /// </summary>
-        [AbpAuthorize(WeChatUserAppPermissions.WeChatUser_BatchDeleteWeChatUsers)]
+        //[AbpAuthorize(WeChatUserAppPermissions.WeChatUser_BatchDeleteWeChatUsers)]
         public async Task BatchDeleteWeChatUsersAsync(List<Guid> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除
             await _wechatuserRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        public async Task BindWeChatUser(WeChatUserEditDto input)
+        {
+            var entity = ObjectMapper.Map<WeChatUser>(input);
+
+            await _wechatuserManager.BindWeChatUserAsync(entity);
+        }
     }
 }
 

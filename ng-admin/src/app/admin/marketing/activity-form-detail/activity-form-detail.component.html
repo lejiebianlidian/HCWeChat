@@ -2,14 +2,15 @@
     <ng-template #logo>
         <img src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
     </ng-template>
-    <ng-template #action>
-        <button nz-button [nzSize]="'large'">取消</button>
-        <button nz-button [nzSize]="'large'">拒绝</button>
-        <button nz-button [nzType]="'primary'" [nzSize]="'large'">初审通过</button>
-        <button nz-button [nzType]="'primary'" [nzSize]="'large'">资料回传审核通过</button>
+    <ng-template *ngIf="form" #action>
+        <button nz-button [nzSize]="'large'" *ngIf="form.status == 1 || form.status == 2 || form.status == 3">取消</button>
+        <button nz-button [nzSize]="'large'" *ngIf="form.status == 1 || form.status == 2">拒绝</button>
+        <button nz-button [nzType]="'primary'" *ngIf="form.status == 1" [nzSize]="'large'">初审通过</button>
+        <button nz-button [nzType]="'primary'" *ngIf="form.status == 2" [nzSize]="'large'">资料回传审核通过</button>
     </ng-template>
+    <ng-template style="display:none; width:0px;" #extra></ng-template>
     <ng-template #content>
-        <desc-list size="small" col="3">
+        <desc-list size="small" col="3" *ngIf="form">
             <desc-list-item term="活动名称">{{form.activityName}}</desc-list-item>
             <desc-list-item term="零售客户">{{form.retailerName}}</desc-list-item>
             <desc-list-item term="客户经理">{{form.managerName}}</desc-list-item>
@@ -24,67 +25,62 @@
         <nz-tabset [nzSize]="'default'">
             <nz-tab>
                 <ng-template #nzTabHeading>详情</ng-template>
-                <nz-card [nzBordered]="false" class="mb-lg" nzTitle="流程进度">
-                    <nz-steps [nzCurrent]="1">
-                        <nz-step [nzTitle]="'创建项目'" [nzDescription]="createDesc">
-                            <ng-template #createDesc>
-                                <p class="my-sm">曲丽丽
-                                </p>
-                                <p>2016-12-12 12:32</p>
-                            </ng-template>
-                        </nz-step>
-                        <nz-step [nzTitle]="'部门初审'" [nzDescription]="checkedDesc">
-                            <ng-template #checkedDesc>
-                                <p class="my-sm">周毛毛
-                                </p>
-                                <a (click)="msg.success('click')">催一下</a>
-                            </ng-template>
-                        </nz-step>
-                        <nz-step [nzTitle]="'财务复核'"></nz-step>
-                        <nz-step [nzTitle]="'完成'"></nz-step>
-                    </nz-steps>
-                    <div class="steps-content"></div>
-                </nz-card>
-                <nz-card [nzBordered]="false" nzTitle="宴席回传信息" class="mb-lg">
-                    <desc-list class="mb-lg">
-                        <desc-list-item term="区县">{{banquet.area}}</desc-list-item>
-                        <desc-list-item term="责任人">{{banquet.responsible}}</desc-list-item>
-                        <desc-list-item term="活动执行人">{{banquet.executor}}</desc-list-item>
-                        <desc-list-item term="宴席时间">{{banquet.banquetTime}}</desc-list-item>
-                        <desc-list-item term="宴席地点">{{banquet.position}}</desc-list-item>
-                        <desc-list-item term="现场人数">{{banquet.num}}</desc-list-item>
-                        <desc-list-item term="现场效果简述">{{banquet.desc}}</desc-list-item>
-                        <desc-list-item term="回传时间">{{banquet.creationTime | _date}}</desc-list-item>
-                        <desc-list-item term="回传人">{{banquet.userName}}</desc-list-item>
-                    </desc-list>
-                </nz-card>
-                <h4 class="mb-md">现场照片</h4>
-                <nz-list [nzLoading]="loading" [nzDataSource]="list" [nzGrid]="{gutter: 24, lg: 6, md: 8, sm: 12, xs: 24 }">
-                    <ng-template #item let-item>
-                        <nz-list-item>
-                            <nz-card nzHoverable>
-                                <ng-template #cover>
-                                    <img alt="{{item.title}}" src="{{item.cover}}">
+                <span>
+                    <nz-card class="mb-lg">
+                        <nz-steps [nzCurrent]="1">
+                            <nz-step [nzTitle]="'创建项目'" [nzDescription]="createDesc">
+                                <ng-template #createDesc>
+                                    <p class="my-sm">曲丽丽
+                                    </p>
+                                    <p>2016-12-12 12:32</p>
                                 </ng-template>
-                                <nz-card-meta [nzTitle]="nzTitle" [nzDescription]="item.subDescription">
-                                    <ng-template #nzTitle>
-                                        <a (click)="msg.success('标题：' + item.id);">{{item.title}}</a>
-                                    </ng-template>
-                                </nz-card-meta>
-                                <div class="card-item-content">
-                                    <span class="text-grey">{{item.updatedAt}}</span>
-                                    <avatar-list size="mini">
-                                        <avatar-list-item *ngFor="let m of item.members" [src]="m.avatar" [tips]="m.name"></avatar-list-item>
-                                    </avatar-list>
-                                </div>
-                            </nz-card>
-                        </nz-list-item>
-                    </ng-template>
-                </nz-list>
+                            </nz-step>
+                            <nz-step [nzTitle]="'部门初审'" [nzDescription]="checkedDesc">
+                                <ng-template #checkedDesc>
+                                    <p class="my-sm">周毛毛
+                                    </p>
+                                    <a (click)="msg.success('click')">催一下</a>
+                                </ng-template>
+                            </nz-step>
+                            <nz-step [nzTitle]="'财务复核'"></nz-step>
+                            <nz-step [nzTitle]="'完成'"></nz-step>
+                        </nz-steps>
+                        <div class="steps-content"></div>
+                    </nz-card>
+                    <nz-card class="mb-lg">
+                        <ng-template #title>
+                            宴席信息
+                        </ng-template>
+                        <ng-template #extra>
+                            <a>添加/修改</a>
+                        </ng-template>
+                        <ng-template #body>
+                            <desc-list class="mb-lg" *ngIf="banquet">
+                                <desc-list-item term="区县">{{banquet.area}}</desc-list-item>
+                                <desc-list-item term="责任人">{{banquet.responsible}}</desc-list-item>
+                                <desc-list-item term="活动执行人">{{banquet.executor}}</desc-list-item>
+                                <desc-list-item term="宴席时间">{{banquet.banquetTime}}</desc-list-item>
+                                <desc-list-item term="宴席地点">{{banquet.position}}</desc-list-item>
+                                <desc-list-item term="现场人数">{{banquet.num}}</desc-list-item>
+                                <desc-list-item term="现场效果简述">{{banquet.desc}}</desc-list-item>
+                                <desc-list-item term="上传时间">{{banquet.creationTime | _date}}</desc-list-item>
+                                <desc-list-item term="上传人">{{banquet.userName}}</desc-list-item>
+                            </desc-list>
+                            <h4 class="mb-md">现场照片</h4>
+                            <nz-list [nzLoading]="loading" class="imgList" [nzDataSource]="list" [nzGrid]="{gutter: 24, lg: 6, md: 8, sm: 12, xs: 24 }">
+                                <ng-template #item let-item>
+                                    <nz-list-item>
+                                        <img alt="{{item.title}}" src="{{item.cover}}">
+                                    </nz-list-item>
+                                </ng-template>
+                            </nz-list>
+                        </ng-template>
+                    </nz-card>
+                </span>
             </nz-tab>
             <nz-tab>
                 <ng-template #nzTabHeading>收货信息</ng-template>
-                <nz-card [nzBordered]="false" class="mb-lg">
+                <nz-card class="mb-lg">
                     <ng-template #title>
                         邮寄地址
                     </ng-template>
@@ -92,9 +88,9 @@
                         <a>修改</a>
                     </ng-template>
                     <ng-template #body>
-                        <desc-list class="mb-lg">
+                        <desc-list class="mb-lg" *ngIf="delivery">
                             <desc-list-item term="消费者姓名">{{delivery.userName}}</desc-list-item>
-                            <desc-list-item term="邮寄地址">{{delivery.userName}}</desc-list-item>
+                            <desc-list-item term="邮寄地址">{{delivery.address}}</desc-list-item>
                             <desc-list-item term="联系电话">{{delivery.phone}}</desc-list-item>
                         </desc-list>
                     </ng-template>

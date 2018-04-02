@@ -56,5 +56,7 @@ namespace HC.WeChat.WeChatUsers
         /// 批量删除WeChatUser
         /// </summary>
         Task BatchDeleteWeChatUsersAsync(List<Guid> input);
+
+        Task BindWeChatUser(WeChatUserEditDto input);
     }
 }

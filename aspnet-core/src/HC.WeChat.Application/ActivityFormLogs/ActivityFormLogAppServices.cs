@@ -13,13 +13,15 @@ using HC.WeChat.ActivityFormLogs.Dtos;
 using HC.WeChat.ActivityFormLogs.DomainServices;
 using HC.WeChat.ActivityFormLogs;
 using System;
+using HC.WeChat.Authorization;
 
 namespace HC.WeChat.ActivityFormLogs
 {
     /// <summary>
     /// ActivityFormLog应用层服务的接口实现方法
     /// </summary>
-    [AbpAuthorize(ActivityFormLogAppPermissions.ActivityFormLog)]
+    //[AbpAuthorize(ActivityFormLogAppPermissions.ActivityFormLog)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class ActivityFormLogAppService : WeChatAppServiceBase, IActivityFormLogAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -134,7 +136,7 @@ namespace HC.WeChat.ActivityFormLogs
         /// <summary>
         /// 新增ActivityFormLog
         /// </summary>
-        [AbpAuthorize(ActivityFormLogAppPermissions.ActivityFormLog_CreateActivityFormLog)]
+        //[AbpAuthorize(ActivityFormLogAppPermissions.ActivityFormLog_CreateActivityFormLog)]
         protected virtual async Task<ActivityFormLogEditDto> CreateActivityFormLogAsync(ActivityFormLogEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -147,7 +149,7 @@ namespace HC.WeChat.ActivityFormLogs
         /// <summary>
         /// 编辑ActivityFormLog
         /// </summary>
-        [AbpAuthorize(ActivityFormLogAppPermissions.ActivityFormLog_EditActivityFormLog)]
+        //[AbpAuthorize(ActivityFormLogAppPermissions.ActivityFormLog_EditActivityFormLog)]
         protected virtual async Task UpdateActivityFormLogAsync(ActivityFormLogEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
@@ -163,7 +165,7 @@ namespace HC.WeChat.ActivityFormLogs
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(ActivityFormLogAppPermissions.ActivityFormLog_DeleteActivityFormLog)]
+        //[AbpAuthorize(ActivityFormLogAppPermissions.ActivityFormLog_DeleteActivityFormLog)]
         public async Task DeleteActivityFormLog(EntityDto<Guid> input)
         {
 
@@ -174,7 +176,7 @@ namespace HC.WeChat.ActivityFormLogs
         /// <summary>
         /// 批量删除ActivityFormLog的方法
         /// </summary>
-        [AbpAuthorize(ActivityFormLogAppPermissions.ActivityFormLog_BatchDeleteActivityFormLogs)]
+        //[AbpAuthorize(ActivityFormLogAppPermissions.ActivityFormLog_BatchDeleteActivityFormLogs)]
         public async Task BatchDeleteActivityFormLogsAsync(List<Guid> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除
