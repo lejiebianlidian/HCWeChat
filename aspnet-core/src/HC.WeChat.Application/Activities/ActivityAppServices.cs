@@ -15,6 +15,7 @@ using HC.WeChat.Activities.DomainServices;
 using HC.WeChat.Activities;
 using System;
 using HC.WeChat.Authorization;
+using HC.WeChat.ActivityGoodses;
 
 namespace HC.WeChat.Activities
 {
@@ -30,15 +31,19 @@ namespace HC.WeChat.Activities
         private readonly IRepository<Activity, Guid> _activityRepository;
         private readonly IActivityManager _activityManager;
 
+        private readonly IRepository<ActivityGoods, Guid> _activitygoodsRepository;
+
         /// <summary>
         /// 构造函数
         /// </summary>
         public ActivityAppService(IRepository<Activity, Guid> activityRepository
-      , IActivityManager activityManager
+      , IActivityManager activityManager, IRepository<ActivityGoods, Guid> activitygoodsRepository
         )
         {
             _activityRepository = activityRepository;
             _activityManager = activityManager;
+            _activitygoodsRepository = activitygoodsRepository;
+            
         }
 
         /// <summary>
@@ -214,6 +219,29 @@ namespace HC.WeChat.Activities
             {
                 return  await CreateActivityAsync(input);
             }
+        }
+
+
+
+        /// <summary>
+        /// 联动删除商品信息
+        /// </summary>
+        /// <param name="input">活动id</param>
+        /// <returns></returns>
+        public async Task BatchDeleteActivitiesAsyncDtos(EntityDto<Guid> input)
+        {
+            //List<Guid> idList = new List<Guid>();
+            //var goodes = _activitygoodsRepository.GetAll().Where(g => g.ActivityId == input.Id).ToList();
+            //if (goodes.Count > 0) {
+            //    foreach (ActivityGoods i in goodes)
+            //    {
+            //        idList.Add(i.Id);
+            //    }
+            //}
+            await DeleteActivity(input);
+            //if (idList.Count > 0) {
+            //    await _activitygoodsRepository.DeleteAsync(s => idList.Contains(s.Id));
+            //}
         }
     }
 }

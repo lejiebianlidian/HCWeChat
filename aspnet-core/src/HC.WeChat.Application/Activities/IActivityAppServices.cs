@@ -69,5 +69,12 @@ namespace HC.WeChat.Activities
         /// <param name="input"></param>
         /// <returns></returns>
         Task<ActivityEditDto> CreateOrUpdateActivityDto(ActivityEditDto input);
+
+        /// <summary>
+        /// 联动删除商品信息
+        /// </summary>
+        /// <param name="input">活动id</param>
+        /// <returns></returns>
+        Task BatchDeleteActivitiesAsyncDtos(EntityDto<Guid> input);
     }
 }
