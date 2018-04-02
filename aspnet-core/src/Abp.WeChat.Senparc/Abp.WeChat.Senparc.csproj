@@ -9,4 +9,8 @@
     <PackageReference Include="Senparc.Weixin.MP" Version="14.10.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Senparc\OAuth\AbpOAuth\" />
+  </ItemGroup>
+
 </Project>

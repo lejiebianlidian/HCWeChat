@@ -3,6 +3,7 @@ using HC.WeChat.WeChatUsers.Dtos.LTMAutoMapper;
 using HC.WeChat.WeChatUsers;
 using System;
 using HC.WeChat.WechatEnums;
+using Abp.AutoMapper;
 
 namespace HC.WeChat.WeChatUsers.Dtos
 {
@@ -57,5 +58,23 @@ namespace HC.WeChat.WeChatUsers.Dtos
         public DateTime? BindTime { get; set; }
         public int? TenantId { get; set; }
         public DateTime? UnBindTime { get; set; }
+    }
+
+    [AutoMapTo(typeof(WeChatUser))]
+    public class UserBindDto
+    {
+        public string OpenId { get; set; }
+
+        public UserTypeEnum UserType { get; set; }
+
+        public string UserName { get; set; }
+
+        public string LicenseKey { get; set; }
+
+        public string Code { get; set; }
+
+        public int? TenantId { get; set; }
+
+        public string NickName { get; set; }
     }
 }
