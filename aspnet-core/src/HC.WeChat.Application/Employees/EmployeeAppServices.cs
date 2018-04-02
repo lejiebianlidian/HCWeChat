@@ -53,7 +53,7 @@ namespace HC.WeChat.Employees
             var employeeCount = await query.CountAsync();
 
             var employees = await query
-                .WhereIf(!string.IsNullOrEmpty(input.Filter), e => e.Name.Contains(input.Filter) || e.Code.Contains(input.Filter))
+                .WhereIf(!string.IsNullOrEmpty(input.Filter) && input.Filter!="null", e => e.Name.Contains(input.Filter) || e.Code.Contains(input.Filter))
                 .OrderBy(input.Sorting)
                 .PageBy(input)
                 .ToListAsync();

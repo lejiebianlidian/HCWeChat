@@ -20,6 +20,7 @@ export class EmployeesComponent extends AppComponentBase implements OnInit {
         statusList: [],
         search: ''
     };
+    search='';
     loading = false;
     status = [
         { text: '启用', value: false, type: 'success' },
