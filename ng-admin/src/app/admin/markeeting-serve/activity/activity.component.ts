@@ -7,7 +7,7 @@ import { Parameter } from '@shared/service-proxies/entity';
 import { ActivityServiceProxy } from '@shared/service-proxies/marketing-service/acticity-service';
 import { NzModalService } from 'ng-zorro-antd';
 import { ActivityGoods } from '@shared/service-proxies/entity/activity-goods';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     moduleId: module.id,
@@ -39,13 +39,14 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
     //行内编辑
     editIndex = -1;
     editObj = {};
-    id = ''
+    id = 0
     constructor(injector: Injector, private activityService: ActivityServiceProxy,
         private fb: FormBuilder, private activityGoodsService: ActivityGoodsServiceProxy,
-        private modal: NzModalService, private router: ActivatedRoute
+        private modal: NzModalService, private routerpar: ActivatedRoute,
+        private router: Router
     ) {
         super(injector);
-        this.id = this.router.snapshot.params['id']
+        this.id = this.routerpar.snapshot.params['id'];
     }
 
     /**
@@ -81,7 +82,7 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
      * 获取单个活动信息
      */
     getSingleActivity() {
-        this.activityService.get().subscribe((result: Activity) => {
+        this.activityService.get(this.id).subscribe((result: Activity) => {
             this.acitivityDto = result;
             // this.publishTimes = this.acitivityDto.publishTime;
             this.activityId = result.id;
@@ -224,7 +225,7 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
         this.itemToGood(index);
         this.activityGoodsService.update(this.good).subscribe((result: ActivityGoods) => {
             //将新增的实体添加到实体集合中
-            if(!this.good.id){
+            if (!this.good.id) {
                 this.goodes.push(result);
             }
             //将新增的实体加入到form中（主要是添加id）
@@ -304,4 +305,10 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
         this.good.maxNum = this.items.at(index).value.maxNum;
         this.good.discountDesc = this.items.at(index).value.discountDesc;
     }
+    /**
+     * 返回列表
+     */
+    // Return() {
+    //     this.router.navigate(['admin/activity-list']);
+    // }
 }

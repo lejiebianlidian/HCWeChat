@@ -188,9 +188,9 @@ namespace HC.WeChat.Activities
         /// 通过租户id获取
         /// </summary>
         /// <returns></returns>
-        public async Task<ActivityListDto> GetActivityByTenantIdAsync()
+        public async Task<ActivityListDto> GetActivityByIdDtoAsync(EntityDto<Guid> input)
         {
-            var query =await _activityRepository.GetAll().Where(r => r.TenantId == AbpSession.TenantId).FirstOrDefaultAsync();
+            var query =await _activityRepository.GetAll().Where(r => r.Id == input.Id).FirstOrDefaultAsync();
             return query.MapTo<ActivityListDto>();
         }
 
@@ -209,10 +209,7 @@ namespace HC.WeChat.Activities
             {
                 return  await CreateActivityAsync(input);
             }
-
         }
-
-
     }
 }
 

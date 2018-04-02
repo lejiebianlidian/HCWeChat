@@ -61,7 +61,7 @@ namespace HC.WeChat.Activities
         /// 通过租户id获取活动信息
         /// </summary>
         /// <returns></returns>
-        Task<ActivityListDto> GetActivityByTenantIdAsync();
+        Task<ActivityListDto> GetActivityByIdDtoAsync(EntityDto<Guid> input);
 
         /// <summary>
         /// 添加或者修改Activity的公共方法

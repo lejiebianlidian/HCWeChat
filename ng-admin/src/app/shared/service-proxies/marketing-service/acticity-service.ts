@@ -35,8 +35,10 @@ export class ActivityServiceProxy {
      * 通过消息id获取自动回复消息信息
      * @param id 消息id
      */
-    get(): Observable<Activity> {
-        let url_ = this.baseUrl + "/api/services/app/Activity/GetActivityByTenantIdAsync?";
+    get(id: number): Observable<Activity> {
+        let url_ = this.baseUrl + "/api/services/app/Activity/GetActivityByIdDtoAsync?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
@@ -190,7 +192,7 @@ export class ActivityServiceProxy {
         return Observable.of<void>(<any>null);
     }
 
-    
+
     /**
      * 获取活动商品
      * @return Success
@@ -201,7 +203,7 @@ export class ActivityServiceProxy {
             url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
         if (maxResultCount !== undefined)
             url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
-            
+
         if (parameter.length > 0) {
             parameter.forEach(element => {
                 if (element.value !== undefined && element.value !== null) {
@@ -209,7 +211,7 @@ export class ActivityServiceProxy {
                 }
             });
         }
-      
+
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
