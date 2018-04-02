@@ -11,6 +11,7 @@ export class Activity implements IActivity{
     publishTime: Date;
     status: number;
     statusName:string;
+    typeName:string;
     constructor(data?: IActivity) {
         if (data) {
             for (var property in data) {
@@ -34,6 +35,7 @@ export class Activity implements IActivity{
             this.publishTime = data["publishTime"];
             this.status = data["status"];
             this.statusName = data["statusName"];
+            this.typeName = data["typeName"];
             
         }
     }

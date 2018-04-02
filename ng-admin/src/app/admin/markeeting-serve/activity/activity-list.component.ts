@@ -17,7 +17,17 @@ export class ActivityListComponent extends AppComponentBase implements OnInit {
     acticities: Activity[] = [];
     loading = false;
     activityName = '';
-    search: any = { startTime: null, endTime: null }
+    search: any = { startTime: null, endTime: null, status: null, type: null };
+    //活动类型下拉数据
+    AcTypes = [
+        { text: '办事用烟', value: 1 }
+    ];
+    //活动状态下拉数据
+    statuses = [
+        { text: '草稿', value: 1 },
+        { text: '已发布', value: 2 },
+        { text: '已下架', value: 3 }
+    ]
     constructor(injector: Injector, private ActivityService: ActivityServiceProxy, private router: Router,
         private ActivityGoodsService: ActivityGoodsServiceProxy,
         private modal: NzModalService,
@@ -34,6 +44,7 @@ export class ActivityListComponent extends AppComponentBase implements OnInit {
     refreshData(reset = false) {
         if (reset) {
             this.query.pageIndex = 1;
+            this.search={ startTime: null, endTime: null, status: null, type: null };
         }
         this.loading = true;
         this.ActivityService.getAll(this.query.skipCount(), this.query.pageSize, this.getParmeter()).subscribe((result: PagedResultDtoOfActivity) => {
@@ -47,9 +58,11 @@ export class ActivityListComponent extends AppComponentBase implements OnInit {
      */
     getParmeter(): Parameter[] {
         var arry = [];
-        arry.push(Parameter.fromJS({ key: 'name', value: this.search.name }));
-        arry.push(Parameter.fromJS({ key: 'startTime', value: this.dateFormat(this.search.startTime) }));
-        arry.push(Parameter.fromJS({ key: 'endTime', value: this.dateFormat(this.search.endTime) }));
+        arry.push(Parameter.fromJS({ key: 'Name', value: this.search.name }));
+        arry.push(Parameter.fromJS({ key: 'StartTime', value: this.dateFormat(this.search.startTime) }));
+        arry.push(Parameter.fromJS({ key: 'EndTime', value: this.dateFormat(this.search.endTime) }));
+        arry.push(Parameter.fromJS({ key: 'Type', value: this.search.type }));
+        arry.push(Parameter.fromJS({ key: 'Status', value: this.search.status }));
         return arry;
     }
     /**
@@ -77,9 +90,8 @@ export class ActivityListComponent extends AppComponentBase implements OnInit {
                 this.ActivityService.delete(acticity.id).subscribe(() => {
                     this.notify.info(this.l('删除成功！'));
                     this.refreshData();
-                })
+                });
             }
-
-        })
+        });
     }
 }

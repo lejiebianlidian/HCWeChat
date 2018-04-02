@@ -25,5 +25,12 @@ namespace HC.WeChat.Activities.Dtos
                 return Status.ToString();
             }
         }
+        public string TypeName
+        {
+            get
+            {
+                return ActivityType.ToString();
+            }
+        }
     }
 }
