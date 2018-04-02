@@ -31,6 +31,8 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
     //按钮是否可见
     isSave = true;
     isPulish = false;
+    isDropOff = false;
+    //商品管理
     isGoodabled = false;
     isConfirmLoading = false;
     isAlert = false;
@@ -81,14 +83,16 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
     getSingleActivity() {
         this.activityService.get().subscribe((result: Activity) => {
             this.acitivityDto = result;
-            this.publishTimes = this.acitivityDto.publishTime;
-            // this.publishTimes = this.dateFormat(this.acitivityDto.publishTime);
+            // this.publishTimes = this.acitivityDto.publishTime;
             this.activityId = result.id;
+
             if (this.acitivityDto.id) {
                 this.isGoodabled = true;
-                this.isSave = false;
-                this.isPulish = true;
-            } else {
+                this.isSave = this.acitivityDto.status == 1 || this.acitivityDto.status == 3 ? true : false;
+                this.isPulish = this.acitivityDto.status == 1 || this.acitivityDto.status == 3 ? true : false;
+                this.isDropOff = this.acitivityDto.status == 2 ? true : false;
+            }
+            else {
                 //活动活动状态
                 this.acitivityDto.status = 1;
                 this.acitivityDto.statusName = '草稿';
@@ -98,6 +102,8 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
                 this.acitivityDto.mUnfinished = 15;
                 this.acitivityDto.rUnfinished = 6;
             }
+            //当活动状态为发布时下架按钮可见
+            this.isDropOff = this.acitivityDto.status == 2 ? true : false;
             if (result.id) {
                 this.refreshData();
             }
@@ -129,7 +135,13 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
             .subscribe((result: Activity) => {
                 this.acitivityDto = result;
                 this.notify.info(this.l('保存成功！'));
-                this.isGoodabled = true;
+                if (this.acitivityDto.id) {
+                    this.isGoodabled = true;
+                    this.isSave = this.acitivityDto.status == 1 || this.acitivityDto.status == 3 ? true : false;
+                    this.isPulish = this.acitivityDto.status == 1 || this.acitivityDto.status == 3 ? true : false;
+                    this.isDropOff = this.acitivityDto.status == 2 ? true : false;
+                    // this.isPulish = true;
+                }
             });
     }
 
@@ -212,7 +224,9 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
         this.itemToGood(index);
         this.activityGoodsService.update(this.good).subscribe((result: ActivityGoods) => {
             //将新增的实体添加到实体集合中
-            this.goodes.push(result)
+            if(!this.good.id){
+                this.goodes.push(result);
+            }
             //将新增的实体加入到form中（主要是添加id）
             this.items.at(index).patchValue(result);
             this.notify.info(this.l('保存成功！'));
@@ -228,9 +242,9 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
             this.activityGoodsService.delete(this.items.at(index).value.id).subscribe(() => {
                 this.notify.info(this.l('删除成功！'));
                 this.items.removeAt(index);
-                for(let i=0;i<this.goodes.length;i++){
+                for (let i = 0; i < this.goodes.length; i++) {
                     if (this.goodes[i].id == id) {
-                        this.goodes.splice(i,1);
+                        this.goodes.splice(i, 1);
                     }
                 }
             });
@@ -258,10 +272,10 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
     /**
      * 发布(增加下架验证)
      */
-    pulish(contentTpl) {
+    pulish(contentTpl, status: number) {
         if (this.goodes.length > 0) {
-            this.acitivityDto.status = 2;
-            this.acitivityDto.publishTime = new Date;
+            this.acitivityDto.status = status;
+            this.acitivityDto.publishTime = status == 2 ? new Date : null;
             this.saveSub();
         } else {
             this.modal.warning({

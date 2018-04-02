@@ -42,7 +42,7 @@ namespace HC.WeChat.Activities.Dtos
         /// 活动分类（办事用烟）数据库可维护
         /// </summary>
         [Required]
-        public int ActivityType { get; set; }
+        public ActivityTypeEnum ActivityType { get; set; }
 
 
         /// <summary>

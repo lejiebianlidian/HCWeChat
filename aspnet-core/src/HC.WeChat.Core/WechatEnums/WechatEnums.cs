@@ -34,7 +34,8 @@ namespace HC.WeChat.WechatEnums
     public enum ActivityStatusEnum
     {
         草稿 = 1,
-        已发布 = 2
+        已发布 = 2,
+        已下架=3
     }
 
     /// <summary>
@@ -109,5 +110,9 @@ namespace HC.WeChat.WechatEnums
     {
         未绑定 = 0,
         已绑定 = 1
+    }
+    public enum ActivityTypeEnum
+    {
+        办事用烟 = 1
     }
 }

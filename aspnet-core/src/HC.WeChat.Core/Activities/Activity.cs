@@ -41,7 +41,7 @@ namespace HC.WeChat.Activities
         /// 活动分类（办事用烟）数据库可维护
         /// </summary>
         [Required]
-        public int ActivityType { get; set; }
+        public ActivityTypeEnum ActivityType { get; set; }
 
         /// <summary>
         /// 活动内容（活动商品，优惠信息和规则）（html页面前端显示）

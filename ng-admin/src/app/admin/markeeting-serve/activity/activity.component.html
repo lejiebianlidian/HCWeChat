@@ -10,8 +10,8 @@
 <!-- <nz-card>
     <ueditor [(ngModel)]="html"></ueditor>
 </nz-card> -->
-
-<form nz-form [formGroup]="formA" id="frm_create_role" (ngSubmit)="saveSub()">
+<!-- (ngSubmit)="saveSub()" -->
+<form nz-form [formGroup]="formA" id="frm_create_role">
     <nz-card [nzBordered]="false" nzTitle="活动管理">
         <div nz-row [nzGutter]="16">
             <div nz-col nzMd="7" nzSm="12" nzXs="24">
@@ -42,7 +42,7 @@
                         <label>发布时间</label>
                     </div>
                     <div nz-form-control nz-col class="text-pink-light">
-                        {{publishTimes|_date}}
+                        {{acitivityDto.publishTime|_date}}
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                         <label nz-form-item-required>结束时间</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="getFormControl('endTime')">
-                        <nz-datepicker style="width:100%;" formControlName="endTime" [(ngModel)]="acitivityDto.endTime" ></nz-datepicker>
+                        <nz-datepicker style="width:100%;" formControlName="endTime" [(ngModel)]="acitivityDto.endTime"></nz-datepicker>
                         <div nz-form-explain *ngIf="getFormControl('endTime').dirty&&getFormControl('endTime').hasError('required')">请输入活动结束时间</div>
                     </div>
 
@@ -90,7 +90,8 @@
                         <label nz-form-item-required>分类</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="getFormControl('activityType')">
-                        <nz-select formControlName="activityType" [nzPlaceHolder]="'活动分类'" [(ngModel)]="acitivityDto.activityType" [nzShowSearch]="true" nzSize="large">
+                        <nz-select formControlName="activityType" [nzPlaceHolder]="'活动分类'" [(ngModel)]="acitivityDto.activityType" [nzShowSearch]="true"
+                            nzSize="large">
                             <nz-option *ngFor="let i of AcTypes" [nzLabel]="i.text" [nzValue]="i.value">
                             </nz-option>
                         </nz-select>
@@ -227,14 +228,15 @@
     <button *ngIf="isPulish" nz-button [nzType]="'primary'" (click)="pulish(modelContent)" [nzSize]="'large'" [nzLoading]="isConfirmLoading">
         {{l("发布")}}
     </button> -->
-    <footer-toolbar errorCollect>
-            <button *ngIf="isSave" nz-button [nzType]="'primary'" [nzSize]="'large'" type="submit" [nzLoading]="isConfirmLoading">
-                {{l("保存")}}
-            </button>
-            <button *ngIf="isPulish" nz-button [nzType]="'primary'" (click)="pulish(modelContent)" [nzSize]="'large'" [nzLoading]="isConfirmLoading">
-                {{l("发布")}}
-            </button>
-        </footer-toolbar>
 </form>
-
-
+<footer-toolbar errorCollect>
+    <button *ngIf="isSave" nz-button [nzType]="'primary'" (click)="saveSub()" [nzSize]="'large'" [nzLoading]="isConfirmLoading">
+        {{l("保存")}}
+    </button>
+    <button *ngIf="isPulish" nz-button [nzType]="'primary'" (click)="pulish(modelContent,2)" [nzSize]="'large'" [nzLoading]="isConfirmLoading">
+        {{l("发布")}}
+    </button>
+    <button *ngIf="isDropOff" nz-button [nzType]="'primary'" (click)="pulish(modelContent,3)" [nzSize]="'large'" [nzLoading]="isConfirmLoading">
+        {{l("下架")}}
+    </button>
+</footer-toolbar>
