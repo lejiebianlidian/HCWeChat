@@ -14,5 +14,7 @@ namespace HC.WeChat.Activities.DomainServices
         /// </summary>
         void InitActivity();
 
+        Task<Activity> GetTenantWeChatActivityAsync(int? tenantId);
+
     }
 }

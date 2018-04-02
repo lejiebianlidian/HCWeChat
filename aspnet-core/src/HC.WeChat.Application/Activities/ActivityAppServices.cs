@@ -22,11 +22,9 @@ namespace HC.WeChat.Activities
     /// Activity应用层服务的接口实现方法
     /// </summary>
     //[AbpAuthorize(ActivityAppPermissions.Activity)]
-    [AbpAuthorize(AppPermissions.Pages)]
+    //[AbpAuthorize(AppPermissions.Pages)]
     public class ActivityAppService : WeChatAppServiceBase, IActivityAppService
     {
-        ////BCC/ BEGIN CUSTOM CODE SECTION
-        ////ECC/ END CUSTOM CODE SECTION
         private readonly IRepository<Activity, Guid> _activityRepository;
         private readonly IActivityManager _activityManager;
 
@@ -197,8 +195,6 @@ namespace HC.WeChat.Activities
         /// <summary>
         /// 添加或者修改Activity的公共方法
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
         public async Task<ActivityEditDto> CreateOrUpdateActivityDto(ActivityEditDto input)
         {
             if (input.Id.HasValue)
@@ -212,7 +208,11 @@ namespace HC.WeChat.Activities
 
         }
 
-
+        public async Task<ActivityListDto> GetTenantWeChatActivityAsync(int? tenantId)
+        {
+            var activity = await _activityManager.GetTenantWeChatActivityAsync(tenantId);
+            return activity.MapTo<ActivityListDto>();
+        }
     }
 }
 

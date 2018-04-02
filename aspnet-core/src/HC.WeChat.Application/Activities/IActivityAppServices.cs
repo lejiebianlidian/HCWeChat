@@ -69,5 +69,10 @@ namespace HC.WeChat.Activities
         /// <param name="input"></param>
         /// <returns></returns>
         Task<ActivityEditDto> CreateOrUpdateActivityDto(ActivityEditDto input);
+
+        /// <summary>
+        /// 通过租户ID获取微信活动
+        /// </summary>
+        Task<ActivityListDto> GetTenantWeChatActivityAsync(int? tenantId);
     }
 }

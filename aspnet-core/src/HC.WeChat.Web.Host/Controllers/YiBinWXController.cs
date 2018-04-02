@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HC.WeChat.Activities;
 using HC.WeChat.Authorization.WeChatOAuth;
 using HC.WeChat.Configuration;
 using HC.WeChat.Controllers;
@@ -17,20 +18,21 @@ using Microsoft.Extensions.Options;
 
 namespace HC.WeChat.Web.Host.Controllers
 {
-    public class YiBinWXController : WeChatMessageHandlerControllerBase
+    public class YiBinWXController : WeChatWebControllerBase
     {
         IWeChatOAuthAppService _weChatOAuthAppService;
         IWeChatUserAppService _weChatUserAppService;
         private readonly IConfigurationRoot _appConfiguration;
         private WeChatTenantSetting _settings;
+        IActivityAppService _activityAppService;
 
         private int? tenantId;
-        public YiBinWXController(IMessageHandlerAppServer messageHandlerAppServer,
-           IWechatAppConfigAppService wechatAppConfigAppService,
+        public YiBinWXController(IWechatAppConfigAppService wechatAppConfigAppService,
            IOptions<WeChatTenantSetting> settings,
            IWeChatOAuthAppService weChatOAuthAppService,
            IWeChatUserAppService weChatUserAppService,
-           IHostingEnvironment env) : base(messageHandlerAppServer, wechatAppConfigAppService)
+           IActivityAppService activityAppService,
+           IHostingEnvironment env) : base(wechatAppConfigAppService)
         {
             _settings = settings.Value;
             tenantId = _settings.YiBin;
@@ -38,6 +40,7 @@ namespace HC.WeChat.Web.Host.Controllers
 
             _weChatOAuthAppService = weChatOAuthAppService;
             _weChatUserAppService = weChatUserAppService;
+            _activityAppService = activityAppService;
             _weChatOAuthAppService.WechatAppConfig = WechatAppConfig;//注入配置
             _appConfiguration = env.GetAppConfiguration();
 
@@ -128,6 +131,33 @@ namespace HC.WeChat.Web.Host.Controllers
         /// </summary>
         public IActionResult Question()
         {
+            return View();
+        }
+
+        /// <summary>
+        /// 营销活动
+        /// </summary>
+        public IActionResult Activity()
+        {
+            var activity = _activityAppService.GetTenantWeChatActivityAsync(tenantId).Result;
+            if (activity == null)
+            {
+                return View("NoActivity");
+            }
+            return View();
+        }
+
+        /// <summary>
+        /// 活动表单
+        /// </summary>
+        public IActionResult ActivityForm(string code, string state)
+        {
+            //var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
+            //var tenantId = GetTenantId();
+            //var user = _weChatUserAppService.GetWeChatUserAsync(oauth.openid, tenantId).Result;
+            ViewBag.UserType = 1;//user.UserType;
+            // var url = _appConfiguration["App:ServerRootAddress"] + "YiBinWX/BindUser";
+            ViewBag.Url = Url.Action("BindUser");// _weChatOAuthAppService.GetAuthorizeUrl(url, tenantId.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
             return View();
         }
     }
