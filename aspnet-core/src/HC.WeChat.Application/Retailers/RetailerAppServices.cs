@@ -141,7 +141,7 @@ namespace HC.WeChat.Retailers
         {
             //TODO:新增前的逻辑判断，是否允许新增
             var entity = ObjectMapper.Map<Retailer>(input);
-
+            entity.TenantId = AbpSession.TenantId;
             entity = await _retailerRepository.InsertAsync(entity);
             return entity.MapTo<RetailerEditDto>();
         }

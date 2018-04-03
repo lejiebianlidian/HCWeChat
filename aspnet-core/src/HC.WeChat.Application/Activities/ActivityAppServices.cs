@@ -151,7 +151,7 @@ namespace HC.WeChat.Activities
         {
             //TODO:新增前的逻辑判断，是否允许新增
             var entity = ObjectMapper.Map<Activity>(input);
-
+            entity.TenantId = AbpSession.TenantId;
             entity = await _activityRepository.InsertAsync(entity);
             return entity.MapTo<ActivityEditDto>();
         }
