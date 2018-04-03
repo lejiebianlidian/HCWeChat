@@ -19,7 +19,11 @@ export class RetailCustomer implements IRetailCustomer {
     deliveryLine: string;
     tenantId: number;
     licenseKey: string;
-    id: string
+    id: string;
+    orderModeName: string;
+    terminalTypeName: string;
+    scaleName: string;
+    marketTypeName: string;
     // isDeleted: boolean;
     // deleterUserId: number;
     // deletionTime: Date;
@@ -50,7 +54,7 @@ export class RetailCustomer implements IRetailCustomer {
             this.tenantId = data["tenantId"];
             this.branchCompany = data["branchCompany"];
             this.department = data["department"];
-            this.employeeId = data["employeeId"]; 
+            this.employeeId = data["employeeId"];
             this.manager = data["manager"];
             this.orderMode = data["orderMode"];
             this.terminalType = data["terminalType"];
@@ -60,7 +64,10 @@ export class RetailCustomer implements IRetailCustomer {
             this.deliveryLine = data["deliveryLine"];
             this.tenantId = data["tenantId"];
             this.licenseKey = data["licenseKey"];
-
+            this.orderModeName = data["orderModeName"];
+            this.terminalTypeName = data["terminalTypeName"];
+            this.scaleName = data["scaleName"];
+            this.marketTypeName = data["marketTypeName"];
             // this.isDeleted = data["isDeleted"];
             // this.creationTime = data["creationTime"];
             // this.creatorUserId = data["creatorUserId"];
@@ -101,7 +108,7 @@ export class RetailCustomer implements IRetailCustomer {
         data["tenantId"] = this.tenantId;
         data["employeeId"] = this.employeeId;
         data["licenseKey"] = this.licenseKey;
-        
+
         // data["isDeleted"] = this.isDeleted;
         // data["creationTime"] = this.creationTime;
         // data["creatorUserId"] = this.creatorUserId;

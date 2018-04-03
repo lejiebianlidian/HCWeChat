@@ -21,5 +21,20 @@ namespace HC.WeChat.WeChatUsers.Dtos
         public DateTime? UnBindTime { get; set; }
 
         public string HeadImgUrl { get; set; }
+
+        public string UserTypeName
+        {
+            get
+            {
+                return UserType.ToString();
+            }
+        }
+        public string BindStatusName
+        {
+            get
+            {
+                return BindStatus.ToString();
+            }
+        }
     }
 }

@@ -26,6 +26,7 @@ namespace HC.WeChat.WeChatUsers
     /// WeChatUser应用层服务的接口实现方法
     /// </summary>
     //[AbpAuthorize(WeChatUserAppPermissions.WeChatUser)]
+    //[AbpAuthorize(AppPermissions.Pages)]
     public class WeChatUserAppService : WeChatAppServiceBase, IWeChatUserAppService
     {
         private readonly IRepository<WeChatUser, Guid> _wechatuserRepository;
@@ -149,7 +150,7 @@ namespace HC.WeChat.WeChatUsers
         {
             //TODO:新增前的逻辑判断，是否允许新增
             var entity = ObjectMapper.Map<WeChatUser>(input);
-
+            entity.TenantId = AbpSession.TenantId;
             entity = await _wechatuserRepository.InsertAsync(entity);
             return entity.MapTo<WeChatUserEditDto>();
         }
@@ -240,6 +241,24 @@ namespace HC.WeChat.WeChatUsers
         {
             var user = await _wechatuserManager.GetWeChatUserAsync(openId, tenantId);
             return user.MapTo<WeChatUserListDto>();
+        }
+
+        /// <summary>
+        /// 添加或者修改WeChatUser的方法
+        /// </summary>
+        /// <param name="input">微信用户实体</param>
+        /// <returns></returns>
+        public async Task CreateOrUpdateWeChatUserDto(WeChatUserEditDto input)
+        {
+
+            if (input.Id.HasValue)
+            {
+                await UpdateWeChatUserAsync(input);
+            }
+            else
+            {
+                await CreateWeChatUserAsync(input);
+            }
         }
     }
 }

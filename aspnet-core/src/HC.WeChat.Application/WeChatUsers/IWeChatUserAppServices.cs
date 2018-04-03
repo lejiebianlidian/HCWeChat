@@ -62,5 +62,12 @@ namespace HC.WeChat.WeChatUsers
 
 
         Task<WeChatUserListDto> GetWeChatUserAsync(string openId, int? tenantId);
+
+        /// <summary>
+        /// 添加或者修改WeChatUser的方法
+        /// </summary>
+        /// <param name="input">微信用户实体</param>
+        /// <returns></returns>
+        Task CreateOrUpdateWeChatUserDto(WeChatUserEditDto input);
     }
 }

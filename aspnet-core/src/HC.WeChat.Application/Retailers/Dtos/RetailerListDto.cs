@@ -31,5 +31,35 @@ namespace HC.WeChat.Retailers.Dtos
         public int? TenantId { get; set; }
 
         public string LicenseKey { get; set; }
+
+        public string OrderModeName
+        {
+            get
+            {
+                return OrderMode.ToString();
+            }
+        }
+        public string TerminalTypeName
+        {
+            get
+            {
+                return TerminalType.ToString();
+            }
+        }
+        public string ScaleName
+        {
+            get
+            {
+                return Scale.ToString();
+            }
+        }
+        public string MarketTypeName
+        {
+            get
+            {
+                return MarketType.ToString();
+            }
+        }
+
     }
 }
