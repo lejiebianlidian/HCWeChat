@@ -28,6 +28,7 @@ import { ActivityFormDetailComponent } from './marketing/activity-form-detail/ac
 //权限判断
 import { AppRouteGuard } from '../shared/auth/auth-route-guard';
 import { ActivityListComponent } from './markeeting-serve/activity/activity-list.component';
+import { CreateEmployeeComponent } from './markeeting-serve/employees/create-employee/create-employee.component';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { ActivityListComponent } from './markeeting-serve/activity/activity-list
     ActivityComponent,
     ActivityFormComponent,
     ActivityFormDetailComponent,
-    ActivityListComponent
+    ActivityListComponent,
+    CreateEmployeeComponent,
    ],
    providers: [ AppRouteGuard,DriverComponent ]
 })

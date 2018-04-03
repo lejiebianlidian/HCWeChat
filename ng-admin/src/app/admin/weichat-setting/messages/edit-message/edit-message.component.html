@@ -7,55 +7,48 @@
                 关键字回复
             </ng-template>
             <fieldset>
-                <div nz-form-item nz-row>
-                    <div nz-form-label nz-col [nzSm]="4">
+                <div nz-form-item nz-row [nzGutter]="24">
+                    <div nz-form-label nz-col [nzSm]="6">
                         <label for="keyWord" nz-form-item-required>关键字</label>
                     </div>
-                    <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="geteFormControl('keyWord')">
+                    <div nz-form-control nz-col [nzSm]="18" nzHasFeedback [nzValidateStatus]="geteFormControl('keyWord')">
                         <nz-input formControlName="keyWord" [(ngModel)]="messages.keyWord" [nzId]="'tenancyName'"></nz-input>
                         <div nz-form-explain *ngIf="geteFormControl('keyWord').dirty&&geteFormControl('keyWord').hasError('maxlength')">字符长度小于等于50</div>
                         <div nz-form-explain *ngIf="geteFormControl('keyWord').dirty&&geteFormControl('keyWord').hasError('required')">关键字不能为空</div>
                     </div>
                 </div>
-                <div nz-form-item nz-row>
-                    <div nz-form-label nz-col [nzSm]="4">
+                <div nz-form-item nz-row [nzGutter]="24">
+                    <div nz-form-label nz-col [nzSm]="6">
                         <label for="matchMode" nz-form-item-required>匹配模式</label>
                     </div>
-                    <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="geteFormControl('matchMode')">
+                    <div nz-form-control nz-col [nzSm]="18" nzHasFeedback [nzValidateStatus]="geteFormControl('matchMode')">
                         <nz-radio-group formControlName="matchMode" [(ngModel)]="messages.matchMode" class="mb-md">
-                            <label nz-radio [nzValue]="1">
-                                <span>精准匹配</span>
-                            </label>
-                            <label nz-radio [nzValue]="2">
-                                <span>模糊匹配</span>
+                            <label nz-radio [nzValue]="o.value" *ngFor="let o of matchModes">
+                                <span>{{o.text}}</span>
                             </label>
                         </nz-radio-group>
-                        <!-- <nz-input formControlName="matchMode" [(ngModel)]="messages.matchMode" [nzId]="'matchMode'"></nz-input>
-                        <div nz-form-explain *ngIf="geteFormControl('matchMode').dirty&&geteFormControl('matchMode').hasError('maxlength')">字符长度小于等于128</div>
-                        <div nz-form-explain *ngIf="geteFormControl('matchMode').dirty&&geteFormControl('matchMode').hasError('required')">请输入名称</div> -->
                     </div>
                 </div>
-                <div nz-form-item nz-row>
-                    <div nz-form-label nz-col [nzSm]="4">
+                <div nz-form-item nz-row [nzGutter]="24">
+                    <div nz-form-label nz-col [nzSm]="6">
                         <label for="msgType" nz-form-item-required>消息类型</label>
                     </div>
-                    <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="geteFormControl('msgType')">
+                    <div nz-form-control nz-col [nzSm]="18" nzHasFeedback [nzValidateStatus]="geteFormControl('msgType')">
                         <nz-radio-group formControlName="msgType" [(ngModel)]="messages.msgType" class="mb-md">
-                            <label nz-radio [nzValue]="1">
-                                <span>文字消息</span>
-                            </label>
-                            <label nz-radio [nzValue]="2">
-                                <span>图文消息</span>
+                            <label nz-radio [nzValue]="o.value" *ngFor="let o of msyTypes">
+                                <span>{{o.text}}</span>
                             </label>
                         </nz-radio-group>
                     </div>
                 </div>
-                <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="geteFormControl('content')">
-                    <div nz-form-label nz-col [nzSm]="4">
+                <div nz-form-item nz-row [nzGutter]="24">
+                    <div nz-form-label nz-col [nzSm]="6">
                         <label for="content" nz-form-item-required>回复内容</label>
                     </div>
-                    <nz-input nzType="textarea" nzRows="4" formControlName="content" [(ngModel)]="messages.content" [nzId]="'content'"></nz-input>
-                    <div nz-form-explain *ngIf="geteFormControl('content').dirty&&geteFormControl('content').hasError('required')">内容不能为空</div>
+                    <div nz-form-control nz-col [nzSm]="18" nzHasFeedback [nzValidateStatus]="geteFormControl('content')">
+                        <nz-input nzType="textarea" nzRows="4" formControlName="content" [(ngModel)]="messages.content" [nzId]="'content'"></nz-input>
+                        <div nz-form-explain *ngIf="geteFormControl('content').dirty&&geteFormControl('content').hasError('required')">内容不能为空</div>
+                    </div>
                 </div>
             </fieldset>
         </ng-template>

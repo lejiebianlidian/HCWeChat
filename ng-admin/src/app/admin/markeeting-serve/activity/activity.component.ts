@@ -96,8 +96,9 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
             }
             else {
                 //新增时清除日期默认值
-                this.acitivityDto.beginTime=null;
-                this.acitivityDto.endTime=null;
+                this.acitivityDto.beginTime = null;
+                this.acitivityDto.endTime = null;
+                this.acitivityDto.activityType=1;
                 //活动活动状态
                 this.acitivityDto.status = 1;
                 this.acitivityDto.statusName = '草稿';
@@ -279,9 +280,23 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
      */
     pulish(contentTpl, status: number) {
         if (this.goodes.length > 0) {
-            this.acitivityDto.status = status;
-            this.acitivityDto.publishTime = status == 2 ? new Date : null;
-            this.saveSub();
+            if (status == 2) {
+                this.activityService.isPulish().subscribe((isPulishs: boolean) => {
+                    if (isPulishs) {
+                        this.acitivityDto.status = status;
+                        this.acitivityDto.publishTime = new Date;
+                        this.saveSub();
+                    } else {
+                        this.modal.warning({
+                            title: '请先下架其它已发布商品！'
+                        });
+                    }
+                });
+            } else {
+                this.acitivityDto.status = status;
+                this.acitivityDto.publishTime = null;
+                this.saveSub();
+            }
         } else {
             this.modal.warning({
                 title: '请先添加商品！'

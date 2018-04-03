@@ -12,7 +12,13 @@ import { AuthSettingServiceProxy } from '@shared/service-proxies/service-proxies
 export class AuthSettingComponent extends AppComponentBase implements OnInit {
     form: FormGroup;
     authSet: AuthSetting = new AuthSetting();
+    appTypes = [
+        { text: '订阅号', value: 1 },
+        { text: '认证订阅号', value: 2 },
+        { text: '服务号', value: 3 },
+        { text: '认证服务号', value: 4 },
 
+    ]
     constructor(injector: Injector, private fb: FormBuilder, private service: AuthSettingServiceProxy) {
         super(injector);
     }
@@ -52,12 +58,15 @@ export class AuthSettingComponent extends AppComponentBase implements OnInit {
             this.form.controls[i].markAsDirty();
         }
         if (this.form.valid) {
+            console.log('保存');
+            console.log(this.authSet);
             this.service.update(this.authSet).subscribe(() => {
                 this.notify.info(this.l('保存成功！'));
+                this.getAuthSetByTenantId();
             });
         }
         abp.multiTenancy.setTenantIdCookie();
-        
+
     }
 
     /**
@@ -66,6 +75,11 @@ export class AuthSettingComponent extends AppComponentBase implements OnInit {
     getAuthSetByTenantId() {
         this.service.get().subscribe((result: AuthSetting) => {
             this.authSet = result;
+            console.log('获取');
+            console.log(this.authSet);
+            if (!this.authSet.id ) {
+                this.authSet.appType = 3;
+            }
         });
     }
 }

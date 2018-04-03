@@ -56,14 +56,14 @@ export class Employee implements IEmployee {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        this.id = data["id"];
-        this.code = data["code"];
-        this.name = data["name"];
-        this.position = data["position"];
-        this.phone = data["phone"];
-        this.company = data["company"];
-        this.department = data["department"];
-        this.isAction = data["isAction"];
+        // this.id = data["id"];
+        // this.code = data["code"];
+        // this.name = data["name"];
+        // this.position = data["position"];
+        // this.phone = data["phone"];
+        // this.company = data["company"];
+        // this.department = data["department"];
+        // this.isAction = data["isAction"];
         data["id"] = this.id;
         data["code"] = this.code;
         data["name"] = this.name;

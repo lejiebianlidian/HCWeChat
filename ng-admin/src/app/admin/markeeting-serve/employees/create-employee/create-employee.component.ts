@@ -40,17 +40,33 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
      * 显示模态框（进入新增页）
      */
     show(){
+        this.reset();
+        this.employeec=new Employee();
         this.cmodalVisible=true;
 
     }
-    
+    getFormControl(name)
+    {
+        this.formc.controls[name];
+    }
     /**
      * 取消按钮时间
      */
     chandleCancel=(e)=>{
-
+        this.cmodalVisible = false;
+        this.isConfirmLoading = false;
+        this.reset(e);
     }
     save(){
 
+    }
+    reset(e?): void {
+        if (e) {
+            e.preventDefault();
+        }
+        this.formc.reset();
+        for (const key in this.formc.controls) {
+            this.formc.controls[key].markAsPristine();
+        }
     }
 }

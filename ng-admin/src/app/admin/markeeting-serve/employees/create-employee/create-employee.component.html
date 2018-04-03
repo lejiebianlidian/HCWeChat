@@ -1,4 +1,4 @@
-<form nz-form [formGroup]="form" *ngIf="cmodalVisible" id="frm_create_user" (ngSubmit)="save()">
+<form nz-form [formGroup]="formc" *ngIf="cmodalVisible" id="frm_create_user" (ngSubmit)="save()">
     <nz-modal [nzVisible]="cmodalVisible" [nzTitle]="'创建用户'" [nzConfirmLoading]="cloading" [nzContent]="modalContent" [nzFooter]="modalFooter"
         (nzOnCancel)="chandleCancel($event)">
         <ng-template #modalContent>

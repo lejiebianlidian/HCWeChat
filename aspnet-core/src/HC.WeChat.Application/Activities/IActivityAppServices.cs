@@ -76,5 +76,11 @@ namespace HC.WeChat.Activities
         /// <param name="input">活动id</param>
         /// <returns></returns>
         Task DeleteActivitiesAsyncDtos(EntityDto<Guid> input);
+
+        /// <summary>
+        /// 发布是否可用
+        /// </summary>
+        /// <returns></returns>
+        bool IsPulish();
     }
 }

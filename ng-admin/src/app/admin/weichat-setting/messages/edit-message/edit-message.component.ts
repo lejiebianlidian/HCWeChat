@@ -16,6 +16,14 @@ export class EditMessageComponent extends AppComponentBase implements OnInit {
     modalVisible=false;
     isConfirmLoading = false;
     forme:FormGroup;
+    msyTypes = [
+        { value: 1, text: '文字消息' },
+        // { value: 2, text: '图文消息' },
+    ];
+    matchModes = [
+        { value: 1, text: '精准匹配' },
+        { value: 2, text: '模糊匹配' },
+    ];
     constructor(injector:Injector ,private messageService: MessageServiceProxy,private fb:FormBuilder) {
         super(injector);
     }

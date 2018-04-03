@@ -1,8 +1,9 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { EmployeesServiceProxy, PagedResultDtoOfEmployee } from '@shared/service-proxies/service-proxies';
 import { Employee } from '@shared/service-proxies/entity/employee';
 import { NzModalService } from 'ng-zorro-antd';
+import { CreateEmployeeComponent } from './create-employee/create-employee.component';
 
 @Component({
     moduleId: module.id,
@@ -11,6 +12,8 @@ import { NzModalService } from 'ng-zorro-antd';
 })
 export class EmployeesComponent extends AppComponentBase implements OnInit {
 
+    // @ViewChild('editUserModal') editUserModal: EditUserComponent;
+    @ViewChild('createEmployeeModal') createEmployeeModal: CreateEmployeeComponent;
     q: any = {
         pi: 1,
         ps: 10,
@@ -20,7 +23,7 @@ export class EmployeesComponent extends AppComponentBase implements OnInit {
         statusList: [],
         search: ''
     };
-    search='';
+    search = '';
     loading = false;
     status = [
         { text: '启用', value: false, type: 'success' },
@@ -56,7 +59,7 @@ export class EmployeesComponent extends AppComponentBase implements OnInit {
             this.q.pi = 1;
         }
         this.loading = true;
-        this.employeeService.getAll((this.q.pi - 1) * this.q.ps, this.q.ps, this.q.search).subscribe((result: PagedResultDtoOfEmployee) => {
+        this.employeeService.getAll(this.query.skipCount(), this.query.pageSize, this.search).subscribe((result: PagedResultDtoOfEmployee) => {
             this.loading = false;
             let status = 0;
             this.employees = result.items.map(i => {
@@ -99,7 +102,7 @@ export class EmployeesComponent extends AppComponentBase implements OnInit {
      * 打开新建员工模态框
      */
     createEmployee() {
-
+        this.createEmployeeModal.show();
     }
     /**
      * 打开编辑员工模态框

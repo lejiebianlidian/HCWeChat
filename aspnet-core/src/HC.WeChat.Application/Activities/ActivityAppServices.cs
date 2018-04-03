@@ -16,6 +16,7 @@ using HC.WeChat.Activities;
 using System;
 using HC.WeChat.Authorization;
 using HC.WeChat.ActivityGoodses;
+using HC.WeChat.WechatEnums;
 
 namespace HC.WeChat.Activities
 {
@@ -243,6 +244,21 @@ namespace HC.WeChat.Activities
             if (idList.Count > 0)
             {
                 await _activitygoodsRepository.DeleteAsync(s => idList.Contains(s.Id));
+            }
+        }
+        /// <summary>
+        /// 发布是否可用
+        /// </summary>
+        /// <returns></returns>
+        public  bool IsPulish()
+        {
+            var count= _activityRepository.GetAll().Where(a => a.Status == ActivityStatusEnum.已发布 &&a.IsDeleted==false).Count();
+            if (count > 0)
+            {
+                return false;
+            }
+            else {
+                return true;
             }
         }
     }

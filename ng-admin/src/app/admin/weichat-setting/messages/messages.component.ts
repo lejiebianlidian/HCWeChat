@@ -33,6 +33,10 @@ export class MessagesComponent extends AppComponentBase implements OnInit {
     messagess: Messagess[] = [];
     subscribes: Subscribess = new Subscribess();
     form: FormGroup;
+    msyTypes = [
+        { value: 1, text: '文字消息' },
+        // { value: 2, text: '图文消息' },
+    ];
     constructor(injector: Injector, private messageService: MessageServiceProxy,
         private subscribeService: SubscribeServiceProxy, private fb: FormBuilder,
         private modal: NzModalService
@@ -71,8 +75,8 @@ export class MessagesComponent extends AppComponentBase implements OnInit {
     /**
      * 重置
      */
-    ResetSearch():void{
-        this.mesText='';
+    ResetSearch(): void {
+        this.mesText = '';
         this.getMessgeAll(true);
     }
 
@@ -97,7 +101,7 @@ export class MessagesComponent extends AppComponentBase implements OnInit {
      */
     delete(messages: Messagess, contentTpl): void {
         this.mesT = messages.keyWord;
-        this.modal.open({
+        this.modal.confirm({
             content: contentTpl,
             okText: '是',
             cancelText: '否',
@@ -122,6 +126,9 @@ export class MessagesComponent extends AppComponentBase implements OnInit {
     getSubscribe() {
         this.subscribeService.get().subscribe((result: Subscribess) => {
             this.subscribes = result;
+            if (!result.id) {
+                this.subscribes.msgType = 1;
+            }
         });
     }
     /**
@@ -149,7 +156,7 @@ export class MessagesComponent extends AppComponentBase implements OnInit {
         }
     }
     deletes(contentTpl) {
-        this.modal.open({
+        this.modal.confirm({
             content: contentTpl,
             okText: '是',
             cancelText: '否',

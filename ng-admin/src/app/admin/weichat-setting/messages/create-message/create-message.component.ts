@@ -3,6 +3,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { MessageServiceProxy } from '@shared/service-proxies/service-proxies';
 import { Messagess } from '@shared/service-proxies/entity/messages';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
     moduleId: module.id,
@@ -14,17 +15,24 @@ export class CreateMessageComponent extends AppComponentBase implements OnInit {
 
     //模态框是否可见
     modalVisible = false;
-    //加载效果
+    // 加载效果  
     isConfirmLoading = false;
     messages: Messagess = new Messagess();
     formc: FormGroup;
-
+    // msgTypes:[
+    //     {text:'文字消息',value:1}
+    // ]
+    msyTypes = [
+        { value: 1, text: '文字消息' },
+        // { value: 2, text: '图文消息' },
+    ];
+    matchModes = [
+        { value: 1, text: '精准匹配' },
+        { value: 2, text: '模糊匹配' },
+    ];
     constructor(injector: Injector, private messageService: MessageServiceProxy, private fb: FormBuilder) {
         super(injector);
-        let msyTypes = [
-            { value: 1,text:'文字消息'},
-            { value: 2,text:'图文消息'},
-        ]
+
     }
     /**
      * 页面初始加载
@@ -41,6 +49,10 @@ export class CreateMessageComponent extends AppComponentBase implements OnInit {
      * 显示模态框（进入新增页）
      */
     show() {
+        this.reset();
+        this.messages = new Messagess();
+        this.messages.msgType = 1;
+        this.messages.matchMode=1;
         this.modalVisible = true;
     }
 
@@ -88,4 +100,5 @@ export class CreateMessageComponent extends AppComponentBase implements OnInit {
                 this.modalSave.emit(null);
             });
     }
+
 }

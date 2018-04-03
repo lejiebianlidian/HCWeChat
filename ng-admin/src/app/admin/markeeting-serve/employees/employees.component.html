@@ -22,7 +22,7 @@
             </div>
         </div>
     </form>
-    <nz-table #nzTable [nzAjaxData]="employees" [nzTotal]="q.total" [(nzPageIndex)]="q.pi" [(nzPageSize)]="q.ps" [nzLoading]="loading"
+    <nz-table #nzTable [nzAjaxData]="employees" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading"
         [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
         <thead nz-thead>
             <tr>
@@ -73,4 +73,4 @@
     </nz-table>
 </nz-card>
 <!-- <edit-tenant-modal #editTenantModal (modalSave)="refreshData()"></edit-tenant-modal> -->
-<!-- <create-employee-modal #createEmployeeModal (modalSave)="refreshData()"></create-employee-modal> -->
+<create-employee-modal #createEmployeeModal (modalSave)="refreshData()"></create-employee-modal>
