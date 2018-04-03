@@ -156,6 +156,14 @@ namespace HC.WeChat.Web.Host.Controllers
         }
 
         /// <summary>
+        /// 活动流程
+        /// </summary>
+        public IActionResult ActivityFlow()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// 活动表单
         /// </summary>
         public IActionResult ActivityForm(string code, string state)
@@ -173,6 +181,7 @@ namespace HC.WeChat.Web.Host.Controllers
             ViewBag.OpenId = oauth.openid;
             ViewBag.TenantId = tenantId;
             ViewBag.ActivityId = activityId;
+            ViewBag.JumpUrl = Url.Action("Activity");
             return View();
         }
     }
