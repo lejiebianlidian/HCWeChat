@@ -1,14 +1,5 @@
 <div class="wrapper">
     <div #cardBody class="abs-center mt-lg width-lg">
-        <span>
-            {{l("当前租户")}}:
-            <span *ngIf="tenancyName" title="{{name}}">
-                <strong>{{tenancyName}}</strong>
-            </span>
-            <span *ngIf="!tenancyName">{{l("不存在")}}</span> (
-            <a href="javascript:void();" (click)="showChangeModal()">{{l("切换租户")}}</a>)
-            <tenant-change-modal #tenantChangeModal></tenant-change-modal>
-        </span>
         <nz-card [nzTitle]="nzTitle" [nzBordered]="false" class="ant-card__primary ant-card__title-img">
             <ng-template #nzTitle>
                 <div class="text-center" style="color:white; font-weight:bold;">

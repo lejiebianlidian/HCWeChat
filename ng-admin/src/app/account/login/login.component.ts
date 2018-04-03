@@ -1,10 +1,9 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Component, Injector, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppComponentBase } from '@shared/app-component-base';
 
 import { LoginService } from './login.service';
-import { TenantComponent } from '../tenant/tenant.component';
 import { AbpSessionService } from 'abp-ng2-module/src/session/abp-session.service';
 
 @Component({
@@ -15,13 +14,13 @@ export class LoginComponent extends AppComponentBase implements OnInit {
 
   valForm: FormGroup;
   @ViewChild('cardBody') cardBody: ElementRef;
-  @ViewChild('tenantChangeModal') tenantChangeModal: TenantComponent;
+  //@ViewChild('tenantChangeModal') tenantChangeModal: TenantComponent;
   submitting: boolean = false;
   //租户
   tenancyName: string = '';
   name: string = '';
 
-  constructor(injector: Injector, public loginService: LoginService, fb: FormBuilder, private router: Router,private sessionServer:AbpSessionService) {
+  constructor(injector: Injector, public loginService: LoginService, fb: FormBuilder, private router: Router, private route: ActivatedRoute, private sessionServer:AbpSessionService) {
     super(injector);
     loginService.rememberMe = true;
     this.valForm = fb.group({
@@ -29,6 +28,15 @@ export class LoginComponent extends AppComponentBase implements OnInit {
       password: [null, Validators.required],
       rememberMe: [null]
     });
+    var tenancyId = this.route.snapshot.paramMap.get('id');
+    //alert(tenancyId)
+    if(tenancyId == '1'){
+      abp.multiTenancy.setTenantIdCookie(undefined);
+    } else if(tenancyId == '2'){
+      abp.multiTenancy.setTenantIdCookie(2);
+    } else {
+      abp.multiTenancy.setTenantIdCookie(2);//默认宜宾
+    }
   }
 
   login(): void {
@@ -53,9 +61,6 @@ export class LoginComponent extends AppComponentBase implements OnInit {
       this.tenancyName = this.appSession.tenant.tenancyName;
       this.name = this.appSession.tenant.name;
     }
-  }
-  showChangeModal() {
-    this.tenantChangeModal.show(this.tenancyName);
   }
 
 }
