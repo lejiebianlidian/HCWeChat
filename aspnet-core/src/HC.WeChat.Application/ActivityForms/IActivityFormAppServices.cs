@@ -5,6 +5,7 @@ using Abp.Application.Services.Dto;
 using HC.WeChat.ActivityForms.Dtos;
 using HC.WeChat.ActivityForms;
 using System;
+using HC.WeChat.Dto;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -56,5 +57,7 @@ namespace HC.WeChat.ActivityForms
         /// 批量删除ActivityForm
         /// </summary>
         Task BatchDeleteActivityFormsAsync(List<Guid> input);
+
+        Task<APIResultDto> SaveActivityForm(ActivityFormInputDto input);
     }
 }

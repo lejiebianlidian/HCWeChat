@@ -15,6 +15,7 @@ using HC.WeChat.ActivityForms;
 using System;
 using System.Linq;
 using HC.WeChat.Authorization;
+using HC.WeChat.Dto;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -22,7 +23,7 @@ namespace HC.WeChat.ActivityForms
     /// ActivityForm应用层服务的接口实现方法
     /// </summary>
     //[AbpAuthorize(ActivityFormAppPermissions.ActivityForm)]
-    [AbpAuthorize(AppPermissions.Pages)]
+    //[AbpAuthorize(AppPermissions.Pages)]
     public class ActivityFormAppService : WeChatAppServiceBase, IActivityFormAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -190,6 +191,10 @@ namespace HC.WeChat.ActivityForms
             await _activityformRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        public Task<APIResultDto> SaveActivityForm(ActivityFormInputDto input)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

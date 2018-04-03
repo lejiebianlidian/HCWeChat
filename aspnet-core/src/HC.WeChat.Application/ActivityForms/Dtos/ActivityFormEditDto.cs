@@ -100,4 +100,45 @@ namespace HC.WeChat.ActivityForms.Dtos
         /// </summary>
         //public  ICollection<ActivityFormLog> ApprovalLogs { get; set; }
     }
+
+    public class ActivityFormInputDto
+    {
+        /// <summary>
+        /// 活动Id，外键
+        /// </summary>
+        public Guid ActivityId { get; set; }
+
+
+        /// <summary>
+        /// 申请商品Id，外键
+        /// </summary>
+        [Required]
+        public Guid ActivityGoodsId { get; set; }
+
+
+        /// <summary>
+        /// 申请商品规格 快照
+        /// </summary>
+        [Required]
+        [StringLength(200)]
+        public string GoodsSpecification { get; set; }
+
+
+        /// <summary>
+        /// 申请数量（需要做最大最小限制）
+        /// </summary>
+        [Required]
+        public int Num { get; set; }
+
+
+        /// <summary>
+        /// 申请理由
+        /// </summary>
+        [Required]
+        public string Reason { get; set; }
+
+        public string OpenId { get; set; }
+
+        public int? TenantId { get; set; }
+    }
 }

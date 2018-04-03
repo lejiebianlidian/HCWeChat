@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HC.WeChat.Activities;
+using HC.WeChat.ActivityGoodses;
 using HC.WeChat.Authorization.WeChatOAuth;
 using HC.WeChat.Configuration;
 using HC.WeChat.Controllers;
@@ -17,20 +19,23 @@ using Microsoft.Extensions.Options;
 
 namespace HC.WeChat.Web.Host.Controllers
 {
-    public class YiBinWXController : WeChatMessageHandlerControllerBase
+    public class YiBinWXController : WeChatWebControllerBase
     {
         IWeChatOAuthAppService _weChatOAuthAppService;
         IWeChatUserAppService _weChatUserAppService;
         private readonly IConfigurationRoot _appConfiguration;
         private WeChatTenantSetting _settings;
+        IActivityAppService _activityAppService;
+        IActivityGoodsAppService _activityGoodsAppService;
 
         private int? tenantId;
-        public YiBinWXController(IMessageHandlerAppServer messageHandlerAppServer,
-           IWechatAppConfigAppService wechatAppConfigAppService,
+        public YiBinWXController(IWechatAppConfigAppService wechatAppConfigAppService,
            IOptions<WeChatTenantSetting> settings,
            IWeChatOAuthAppService weChatOAuthAppService,
            IWeChatUserAppService weChatUserAppService,
-           IHostingEnvironment env) : base(messageHandlerAppServer, wechatAppConfigAppService)
+           IActivityAppService activityAppService,
+           IActivityGoodsAppService activityGoodsAppService,
+           IHostingEnvironment env) : base(wechatAppConfigAppService)
         {
             _settings = settings.Value;
             tenantId = _settings.YiBin;
@@ -38,6 +43,8 @@ namespace HC.WeChat.Web.Host.Controllers
 
             _weChatOAuthAppService = weChatOAuthAppService;
             _weChatUserAppService = weChatUserAppService;
+            _activityAppService = activityAppService;
+            _activityGoodsAppService = activityGoodsAppService;
             _weChatOAuthAppService.WechatAppConfig = WechatAppConfig;//注入配置
             _appConfiguration = env.GetAppConfiguration();
 
@@ -69,7 +76,9 @@ namespace HC.WeChat.Web.Host.Controllers
             //ViewBag.HeadImgUrl = user.HeadImgUrl;
             ViewBag.OpenId = oauth.openid;
             ViewBag.TenantId = tenantId;
-            var url = _appConfiguration["App:ServerRootAddress"] + "YiBinWX/BindUser";
+            var root = _appConfiguration["App:ServerRootAddress"];
+            ViewBag.ServerRootAddress = root;
+            var url = root + "YiBinWX/BindUser";
             ViewBag.Url = _weChatOAuthAppService.GetAuthorizeUrl(url, tenantId.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
             Logger.InfoFormat("Url:{0}", ViewBag.Url);
             return View();
@@ -128,6 +137,39 @@ namespace HC.WeChat.Web.Host.Controllers
         /// </summary>
         public IActionResult Question()
         {
+            return View();
+        }
+
+        /// <summary>
+        /// 营销活动
+        /// </summary>
+        public IActionResult Activity()
+        {
+            var activity = _activityAppService.GetTenantWeChatActivityAsync(tenantId).Result;
+            if (activity == null)
+            {
+                return View("NoActivity");
+            }
+            // var url = _appConfiguration["App:ServerRootAddress"] + "YiBinWX/ActivityForm";
+            ViewBag.Url = Url.Action("ActivityForm");// _weChatOAuthAppService.GetAuthorizeUrl(url, tenantId.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
+            return View();
+        }
+
+        /// <summary>
+        /// 活动表单
+        /// </summary>
+        public IActionResult ActivityForm(string code, string state)
+        {
+            var activityId = Guid.Parse(state);
+            //var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
+            //var tenantId = GetTenantId();
+            //var user = _weChatUserAppService.GetWeChatUserAsync(oauth.openid, tenantId).Result;
+            ViewBag.UserType = 1;//user.UserType;
+            // var url = _appConfiguration["App:ServerRootAddress"] + "YiBinWX/BindUser";
+            ViewBag.Url = Url.Action("BindUser");// _weChatOAuthAppService.GetAuthorizeUrl(url, tenantId.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
+            ViewBag.GoodsList = _activityGoodsAppService.GetActivityGoodsByActivityId(activityId);
+            var root = _appConfiguration["App:ServerRootAddress"];
+            ViewBag.ServerRootAddress = root;
             return View();
         }
     }

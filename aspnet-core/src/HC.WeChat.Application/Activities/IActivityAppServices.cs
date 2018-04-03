@@ -82,5 +82,8 @@ namespace HC.WeChat.Activities
         /// </summary>
         /// <returns></returns>
         bool IsPulish();
+        /// 通过租户ID获取微信活动
+        /// </summary>
+        Task<ActivityListDto> GetTenantWeChatActivityAsync(int? tenantId);
     }
 }

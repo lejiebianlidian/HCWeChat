@@ -92,4 +92,30 @@ namespace HC.WeChat.Controllers
             AccessTokenContainer.Register(WechatAppConfig.AppId, WechatAppConfig.AppSecret);
         }
     }
+
+    /// <summary>
+    /// 获取租户和配置
+    /// </summary>
+    public abstract class WeChatWebControllerBase : WeChatControllerBase
+    {
+        protected abstract int? GetTenantId();
+        private int? TenantId { get; set; }
+
+        protected WechatAppConfigInfo WechatAppConfig { get; set; }
+
+        IWechatAppConfigAppService _wechatAppConfigAppService;
+
+        public WeChatWebControllerBase(IWechatAppConfigAppService wechatAppConfigAppService) : base()
+        {
+            _wechatAppConfigAppService = wechatAppConfigAppService;
+            //InitAppConfigSetting();
+        }
+
+        protected virtual void InitAppConfigSetting()
+        {
+            TenantId = GetTenantId();
+            WechatAppConfig = _wechatAppConfigAppService.GetWechatAppConfig(TenantId).Result;
+        }
+        
+    }
 }

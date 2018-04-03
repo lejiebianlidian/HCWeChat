@@ -15,4 +15,11 @@ namespace HC.WeChat.ActivityGoodses.Dtos
         public int MaxNum { get; set; }
         public string DiscountDesc { get; set; }
     }
+
+    public class ActivityGoodsDto
+    {
+        public string Specification { get; set; }
+         
+        public Guid Id { get; set; }
+    }
 }
