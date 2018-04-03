@@ -15,6 +15,7 @@ import { EmployeesComponent } from './markeeting-serve/employees/employees.compo
 import { ActivityComponent } from './markeeting-serve/activity/activity.component';
 import { ActivityFormDetailComponent } from './marketing/activity-form-detail/activity-form-detail.component';
 import { ActivityListComponent } from './markeeting-serve/activity/activity-list.component';
+import { RetailCustomerComponent } from './customer-service/retail-customer/retail-customer.component';
 
 const routes: Routes = [
   {
@@ -34,7 +35,7 @@ const routes: Routes = [
       { path: 'activity-form-detail/:id', component: ActivityFormDetailComponent, data: { translate: 'activity-form-detail', permission: 'Pages', title: '申请单明细' }, canActivate: [AppRouteGuard] },
       { path: 'activity-list', component: ActivityListComponent, data: { translate: 'activity-list', permission: 'Pages' }, canActivate: [AppRouteGuard] },
       { path: 'activity/:id', component: ActivityComponent, data: { translate: 'activity', permission: 'Pages' ,title:'活动详情'}, canActivate: [AppRouteGuard] },
-
+      { path: 'retail-customer', component: RetailCustomerComponent, data: { translate: 'retail-customer', permission: 'Pages'}, canActivate: [AppRouteGuard] },
     ]
   }
 ];

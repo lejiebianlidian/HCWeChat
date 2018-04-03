@@ -56,5 +56,12 @@ namespace HC.WeChat.Retailers
         /// 批量删除Retailer
         /// </summary>
         Task BatchDeleteRetailersAsync(List<Guid> input);
+
+        /// <summary>
+        /// 添加或者修改Retailer的公共方法
+        /// </summary>
+        /// <param name="input">零售客户实体</param>
+        /// <returns></returns>
+        Task CreateOrUpdateRetailerDto(RetailerEditDto input);
     }
 }

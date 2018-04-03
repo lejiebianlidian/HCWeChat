@@ -3,14 +3,17 @@ using HC.WeChat.Retailers.Dtos.LTMAutoMapper;
 using HC.WeChat.Retailers;
 using System;
 using HC.WeChat.WechatEnums;
+using Abp.AutoMapper;
+using Abp.Application.Services.Dto;
 
 namespace HC.WeChat.Retailers.Dtos
 {
-    public class RetailerEditDto
+    [AutoMapTo(typeof(Retailer))]
+    public class RetailerEditDto: AuditedEntityDto<Guid?>
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION
-        public Guid? Id { get; set; }
+        //public Guid? Id { get; set; }
 
         /// <summary>
         /// 客户编码

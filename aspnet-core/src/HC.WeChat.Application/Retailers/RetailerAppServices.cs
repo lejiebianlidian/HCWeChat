@@ -13,13 +13,15 @@ using HC.WeChat.Retailers.Dtos;
 using HC.WeChat.Retailers.DomainServices;
 using HC.WeChat.Retailers;
 using System;
+using HC.WeChat.Authorization;
 
 namespace HC.WeChat.Retailers
 {
     /// <summary>
     /// Retailer应用层服务的接口实现方法
     /// </summary>
-    [AbpAuthorize(RetailerAppPermissions.Retailer)]
+    //[AbpAuthorize(RetailerAppPermissions.Retailer)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class RetailerAppService : WeChatAppServiceBase, IRetailerAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -134,7 +136,7 @@ namespace HC.WeChat.Retailers
         /// <summary>
         /// 新增Retailer
         /// </summary>
-        [AbpAuthorize(RetailerAppPermissions.Retailer_CreateRetailer)]
+        //[AbpAuthorize(RetailerAppPermissions.Retailer_CreateRetailer)]
         protected virtual async Task<RetailerEditDto> CreateRetailerAsync(RetailerEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -147,7 +149,7 @@ namespace HC.WeChat.Retailers
         /// <summary>
         /// 编辑Retailer
         /// </summary>
-        [AbpAuthorize(RetailerAppPermissions.Retailer_EditRetailer)]
+        //[AbpAuthorize(RetailerAppPermissions.Retailer_EditRetailer)]
         protected virtual async Task UpdateRetailerAsync(RetailerEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
@@ -163,7 +165,7 @@ namespace HC.WeChat.Retailers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(RetailerAppPermissions.Retailer_DeleteRetailer)]
+        //[AbpAuthorize(RetailerAppPermissions.Retailer_DeleteRetailer)]
         public async Task DeleteRetailer(EntityDto<Guid> input)
         {
 
@@ -174,11 +176,28 @@ namespace HC.WeChat.Retailers
         /// <summary>
         /// 批量删除Retailer的方法
         /// </summary>
-        [AbpAuthorize(RetailerAppPermissions.Retailer_BatchDeleteRetailers)]
+        //[AbpAuthorize(RetailerAppPermissions.Retailer_BatchDeleteRetailers)]
         public async Task BatchDeleteRetailersAsync(List<Guid> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除
             await _retailerRepository.DeleteAsync(s => input.Contains(s.Id));
+        }
+
+        /// <summary>
+        /// 添加或者修改Retailer的方法
+        /// </summary>
+        /// <param name="input">零售客户实体</param>
+        /// <returns></returns>
+        public async Task CreateOrUpdateRetailerDto(RetailerEditDto input)
+        {
+            if (input.Id.HasValue)
+            {
+                await UpdateRetailerAsync(input);
+            }
+            else
+            {
+                await CreateRetailerAsync(input);
+            }
         }
 
     }

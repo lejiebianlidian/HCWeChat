@@ -30,6 +30,7 @@ import { AppRouteGuard } from '../shared/auth/auth-route-guard';
 import { ActivityListComponent } from './markeeting-serve/activity/activity-list.component';
 import { CreateEmployeeComponent } from './markeeting-serve/employees/create-employee/create-employee.component';
 import { EditEmployeeComponent } from './markeeting-serve/employees/edit-employee/edit-employee.component';
+import { RetailCustomerComponent } from './customer-service/retail-customer/retail-customer.component';
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import { EditEmployeeComponent } from './markeeting-serve/employees/edit-employe
     ActivityFormDetailComponent,
     ActivityListComponent,
     CreateEmployeeComponent,
-    EditEmployeeComponent
+    EditEmployeeComponent,
+    RetailCustomerComponent
    ],
    providers: [ AppRouteGuard,DriverComponent ]
 })
