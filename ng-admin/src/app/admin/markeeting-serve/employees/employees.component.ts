@@ -66,6 +66,7 @@ export class EmployeesComponent extends AppComponentBase implements OnInit {
                 i.activeType = statusItem.type;
                 return i;
             });
+            this.query.total = result.totalCount;
         });
     }
 

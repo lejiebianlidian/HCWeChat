@@ -8,14 +8,14 @@
             <div nz-col [nzSpan]="8" class="mb-md">
                 <div nz-form-item class="d-flex">
                     <div nz-form-control class="flex-1">
-                        <nz-input [(ngModel)]="search.name" name="name" [nzSize]="'large'" [nzPlaceHolder]="'请输入员工名或员工编码'" nzId="name"></nz-input>
+                        <nz-input [(ngModel)]="search.name" name="name" [nzSize]="'large'" [nzPlaceHolder]="'请输入昵称或用户名'" nzId="name"></nz-input>
                     </div>
                 </div>
             </div>
             <div nz-col [nzSpan]="8" class="mb-md">
                 <div nz-form-item class="d-flex">
                     <div nz-form-control class="flex-1">
-                        <nz-select name="position" [nzPlaceHolder]="'请输入职位'" [(ngModel)]="search.position" [nzShowSearch]="true" nzSize="large">
+                        <nz-select name="UserType" [nzPlaceHolder]="'请输入用户类型'" [(ngModel)]="search.UserType" [nzShowSearch]="true" nzSize="large">
                             <nz-option *ngFor="let i of positions" [nzLabel]="i.text" [nzValue]="i.value">
                             </nz-option>
                         </nz-select>
@@ -29,7 +29,7 @@
             </div>
         </div>
     </form>
-    <nz-table #nzTable [nzAjaxData]="employees" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize"
+    <nz-table #nzTable [nzAjaxData]="weChatUsers" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize"
         [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
         <thead nz-thead>
             <tr>
@@ -66,10 +66,10 @@
                 <td nz-td>{{wechatUser.userTypeName}}</td>
                 <td nz-td>{{wechatUser.userName}}</td>
                 <td nz-td>{{wechatUser.bindStatusName}}</td>
-                <td nz-td>{{wechatUser.bindTime}}</td>
-                <td nz-td>{{wechatUser.unBindTime}}</td>
+                <td nz-td>{{wechatUser.bindTime | _date}}</td>
+                <td nz-td>{{wechatUser.unBindTime | _date}}</td>
                 <td nz-td>
-                    <a (click)="unBinding(wechatUser)">解除绑定</a>
+                    <a *ngIf="wechatUser.bindStatus==1" (click)="unBinding(wechatUser,deleteContent)">解除绑定</a>
                     <!-- <span nz-table-divider></span>
                     <a (click)="delete(employee,deleteContent)">删除</a> -->
                 </td>
