@@ -1,9 +1,7 @@
-<form nz-form [formGroup]="formc" *ngIf="cmodalVisible" id="frm_create_user" (ngSubmit)="save()">
-    <nz-modal [nzVisible]="cmodalVisible" [nzTitle]="'创建用户'" [nzConfirmLoading]="cloading" [nzContent]="modalContent" [nzFooter]="modalFooter"
+<form nz-form [formGroup]="formc" *ngIf="cmodalVisible" id="frm_create_employee" (ngSubmit)="savec()">
+    <nz-modal [nzVisible]="cmodalVisible" [nzTitle]="'创建员工'" [nzConfirmLoading]="cloading" [nzContent]="modalContent" [nzFooter]="modalFooter"
         (nzOnCancel)="chandleCancel($event)">
         <ng-template #modalContent>
-            <nz-tabset>
-                <nz-tab>
                     <ng-template #nzTabHeading>
                         员工信息
                     </ng-template>
@@ -14,8 +12,7 @@
                             </div>
                             <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('code')">
                                 <nz-input formControlName="code" [(ngModel)]="employeec.code" nzPlaceHolder="输入大于等于2并小于等于32的字符" [nzId]="'username'"></nz-input>
-                                <div nz-form-explain *ngIf="getFormControl('code').dirty&&getFormControl('code').hasError('maxlength')">字符长度小于等于32</div>
-                                <div nz-form-explain *ngIf="getFormControl('code').dirty&&getFormControl('code').hasError('minlength')">字符长度大于等于2</div>
+                                <div nz-form-explain *ngIf="getFormControl('code').dirty&&getFormControl('code').hasError('maxlength')">字符长度小于等于50</div>
                                 <div nz-form-explain *ngIf="getFormControl('code').dirty&&getFormControl('code').hasError('required')">请输入账户</div>
                             </div>
                         </div>
@@ -60,7 +57,7 @@
                                 <label for="company" nz-form-item-required>所属公司</label>
                             </div>
                             <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('company')">
-                                <nz-input formControlName="company" [(ngModel)]="employeec.confirmPassword" [nzType]="'password'" [nzId]="'checkPassword'"></nz-input>
+                                <nz-input formControlName="company" [(ngModel)]="employeec.confirmPassword"  [nzId]="'company'"></nz-input>
                                 <div nz-form-explain *ngIf="getFormControl('company').dirty&&getFormControl('company').hasError('required')">请确认密码</div>
                                 <div nz-form-explain *ngIf="getFormControl('company').dirty&&getFormControl('company').hasError('confirm')">两次输入的密码必须一致</div>
                             </div>
@@ -70,7 +67,7 @@
                                 <label for="department" nz-form-item-required>所属市场部</label>
                             </div>
                             <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('department')">
-                                <nz-input formControlName="department" [(ngModel)]="employeec.confirmPassword" [nzType]="'password'" [nzId]="'checkPassword'"></nz-input>
+                                <nz-input formControlName="department" [(ngModel)]="employeec.confirmPassword"  [nzId]="'department'"></nz-input>
                                 <div nz-form-explain *ngIf="getFormControl('department').dirty&&getFormControl('department').hasError('required')">请确认密码</div>
                                 <div nz-form-explain *ngIf="getFormControl('department').dirty&&getFormControl('department').hasError('confirm')">两次输入的密码必须一致</div>
                             </div>
@@ -83,8 +80,6 @@
                             </div>
                         </div>
                     </fieldset>
-                </nz-tab>
-            </nz-tabset>
         </ng-template>
         <ng-template #modalFooter>
             <button nz-button [nzType]="'default'" [nzSize]="'large'" type="button" (click)="chandleCancel($event)">

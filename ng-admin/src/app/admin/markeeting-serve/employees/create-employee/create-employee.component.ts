@@ -56,7 +56,7 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
         this.isConfirmLoading = false;
         this.reset(e);
     }
-    save() {
+    savec() {
 
     }
     reset(e?): void {
