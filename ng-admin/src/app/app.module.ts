@@ -39,6 +39,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 //export function StartupServiceFactory(startupService: StartupService): Function {
 export function StartupServiceFactory(injector: Injector): Function {//abp 集成
     //return () => startupService.load();
+    //abp.multiTenancy.setTenantIdCookie(2);//默认将租户设为宜宾
     return () => {
         return new Promise<boolean>((resolve, reject) => {
           AppPreBootstrap.run(() => {

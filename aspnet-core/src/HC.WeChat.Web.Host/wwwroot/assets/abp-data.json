@@ -61,12 +61,8 @@
                 "translate":"market-user"
           },{
                 "text":"营销活动",
-                "link":"/admin/activity",
-                "translate":"market-active"
-          },{
-                "text":"营销活动列表",
                 "link":"/admin/activity-list",
-                "translate":"activity-list"
+                "translate":"market-active"
           },{
                 "text":"活动申请单",
                 "link":"/admin/activity-form",

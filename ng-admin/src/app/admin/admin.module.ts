@@ -9,7 +9,6 @@ import { EditUserComponent } from './users/edit-user/edit-user.component';
 import { CreateUserComponent } from "./users/create-user/create-user.component";
 import { RolesComponent } from './roles/roles.component';
 import { CreateRoleComponent } from "./roles/create-role/create-role.component";
-import { DriverComponent } from './basic-info/driver/driver.component';
 import { EditRoleComponent } from './roles/edit-role/edit-role.component';
 import { TenantComponent } from './tenant/tenant.component';
 import { CreateTenantComponent } from './tenant/create-tenant/create-tenant.component';
@@ -46,7 +45,6 @@ import { RetailCustomerComponent } from './customer-service/retail-customer/reta
     CreateUserComponent,
     RolesComponent,
     CreateRoleComponent,
-    DriverComponent,
     EditRoleComponent,
     TenantComponent,
     CreateTenantComponent,
@@ -65,6 +63,6 @@ import { RetailCustomerComponent } from './customer-service/retail-customer/reta
     EditEmployeeComponent,
     RetailCustomerComponent
    ],
-   providers: [ AppRouteGuard,DriverComponent ]
+   providers: [ AppRouteGuard ]
 })
 export class AdminModule { }

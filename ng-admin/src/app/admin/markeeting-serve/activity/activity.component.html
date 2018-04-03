@@ -65,7 +65,7 @@
                         <label nz-form-item-required>开始时间</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="getFormControl('beginTime')">
-                        <nz-datepicker style="height:32px;width:100%;" [nzSize]="large" formControlName="beginTime" [(ngModel)]="acitivityDto.beginTime"></nz-datepicker>
+                        <nz-datepicker style="height:32px;width:100%;" [nzSize]="'large'" formControlName="beginTime" [(ngModel)]="acitivityDto.beginTime"></nz-datepicker>
                         <div nz-form-explain *ngIf="getFormControl('beginTime').dirty&&getFormControl('beginTime').hasError('required')">请输入活动开始时间</div>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
                         <label>客户经理</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="getFormControl('mUnfinished')">
-                        <nz-input-number style="width:100%;" [nzSize]="large" [nzStep]="1" [nzMin]="0" [nzMax]="9999" formControlName="mUnfinished"
+                        <nz-input-number style="width:100%;" [nzSize]="'large'" [nzStep]="1" [nzMin]="0" [nzMax]="9999" formControlName="mUnfinished"
                             [(ngModel)]="acitivityDto.mUnfinished"></nz-input-number>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
                         <label>零售客户</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="getFormControl('rUnfinished')">
-                        <nz-input-number style="width:100%;" [nzSize]="large" [nzStep]="1" [nzMin]="0" [nzMax]="9999" formControlName="rUnfinished"
+                        <nz-input-number style="width:100%;" [nzSize]="'large'" [nzStep]="1" [nzMin]="0" [nzMax]="9999" formControlName="rUnfinished"
                             [(ngModel)]="acitivityDto.rUnfinished"></nz-input-number>
                     </div>
                 </div>
