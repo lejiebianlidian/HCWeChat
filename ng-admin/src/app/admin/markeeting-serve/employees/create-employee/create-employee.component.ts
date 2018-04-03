@@ -11,13 +11,13 @@ import { EmployeesServiceProxy } from '@shared/service-proxies/service-proxies';
 })
 export class CreateEmployeeComponent extends AppComponentBase implements OnInit {
 
-    
-    cmodalVisible=false;
-    cloading=false;
-    isConfirmLoading=false;
-    employeec:Employee=new Employee;
-    formc:FormGroup;
-    constructor(injector: Injector,private fb:FormBuilder,private employeeService:EmployeesServiceProxy) {
+
+    cmodalVisible = false;
+    cloading = false;
+    isConfirmLoading = false;
+    employeec: Employee = new Employee;
+    formc: FormGroup;
+    constructor(injector: Injector, private fb: FormBuilder, private employeeService: EmployeesServiceProxy) {
         super(injector);
     }
 
@@ -25,12 +25,12 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
      * 页面初始加载
      */
     ngOnInit(): void {
-        this.formc=this.fb.group({
-            code:[null,Validators.compose([Validators.required,Validators.maxLength(50)])],
-            name: [null, Validators.compose([Validators.required,Validators.maxLength(50)])],
+        this.formc = this.fb.group({
+            code: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
+            name: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
             position: [null, [Validators.required]],
             phone: [null, Validators.compose([Validators.maxLength(20)])],
-            company: [null, Validators.compose([ Validators.minLength(200)])],
+            company: [null, Validators.compose([Validators.minLength(200)])],
             department: [null, Validators.compose([Validators.maxLength(200)])],
             isAction: [true],
         })
@@ -39,25 +39,24 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
     /**
      * 显示模态框（进入新增页）
      */
-    show(){
+    show() {
         this.reset();
-        this.employeec=new Employee();
-        this.cmodalVisible=true;
+        this.employeec = new Employee();
+        this.cmodalVisible = true;
 
     }
-    getFormControl(name)
-    {
-        this.formc.controls[name];
+    getFormControl(name: string) {
+        return this.formc.controls[name];
     }
     /**
      * 取消按钮时间
      */
-    chandleCancel=(e)=>{
+    chandleCancel = (e) => {
         this.cmodalVisible = false;
         this.isConfirmLoading = false;
         this.reset(e);
     }
-    save(){
+    save() {
 
     }
     reset(e?): void {
