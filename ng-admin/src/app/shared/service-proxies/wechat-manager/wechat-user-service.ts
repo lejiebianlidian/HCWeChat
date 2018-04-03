@@ -14,11 +14,12 @@ import { Http, Headers, ResponseContentType, Response } from '@angular/http';
 import { Activity } from '@shared/service-proxies/entity/acitivity';
 import { API_BASE_URL, SwaggerException } from '@shared/service-proxies/service-proxies';
 import { WechatUser } from '@shared/service-proxies/entity/wechat-user';
+import { Parameter } from '@shared/service-proxies/entity';
 // import * as moment from 'moment';
 
 
 function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): Observable<any> {
-    if(result !== null && result !== undefined)
+    if (result !== null && result !== undefined)
         return Observable.throw(result);
     else
         return Observable.throw(new SwaggerException(message, status, response, headers, null));
@@ -29,28 +30,35 @@ export class WechatUserServiceProxy {
     private baseUrl: string;
     protected jsonParseReviver: (key: string, value: any) => any = undefined;
 
-    constructor(@Inject(Http) http:Http,@Optional() @Inject(API_BASE_URL) baseUrl?:string) { 
-        this.http=http;
-        this.baseUrl=baseUrl?baseUrl:"";
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
     }
     /**
      * 获取自动回复消息
      * @return Success
      */
-    getAll(skipCount: number, maxResultCount: number,Filter:string): Observable<PagedResultDtoOfWeChatUser> {
+    getAll(skipCount: number, maxResultCount: number, parameter: Parameter[]): Observable<PagedResultDtoOfWeChatUser> {
         let url_ = this.baseUrl + "/api/services/app/WeChatUser/GetPagedWeChatUsers?";
         if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
         if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
-        if (Filter !== undefined)
-            url_ += "Filter=" + encodeURIComponent("" + Filter) + "&"; 
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+            
+        if (parameter.length > 0) {
+            parameter.forEach(element => {
+                if (element.value !== undefined && element.value !== null) {
+                    url_ += element.key + "=" + encodeURIComponent("" + element.value) + "&";
+                }
+            });
+        }
+
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -70,7 +78,7 @@ export class WechatUserServiceProxy {
     }
 
     protected processGetAll(response: Response): Observable<PagedResultDtoOfWeChatUser> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -99,13 +107,13 @@ export class WechatUserServiceProxy {
     get(id: string): Observable<WechatUser> {
         let url_ = this.baseUrl + "/api/services/app/WeChatUser/GetWeChatUserByIdAsync?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -125,7 +133,7 @@ export class WechatUserServiceProxy {
     }
 
     protected processGet(response: Response): Observable<WechatUser> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -156,12 +164,12 @@ export class WechatUserServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -181,7 +189,7 @@ export class WechatUserServiceProxy {
     }
 
     protected processUpdate(response: Response): Observable<WechatUser> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -203,19 +211,19 @@ export class WechatUserServiceProxy {
         return Observable.of<WechatUser>(<any>null);
     }
 
-     /**
-     * @return Success
-     */
+    /**
+    * @return Success
+    */
     delete(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/WeChatUser/DeleteWeChatUser?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "delete",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
             })
         };
 
@@ -234,7 +242,7 @@ export class WechatUserServiceProxy {
     }
 
     protected processDelete(response: Response): Observable<void> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -291,7 +299,7 @@ export class PagedResultDtoOfWeChatUser implements IPagedResultDtoOfWeChatUser {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 
     clone() {

@@ -57,7 +57,10 @@ namespace HC.WeChat.WeChatUsers
         public async Task<PagedResultDto<WeChatUserListDto>> GetPagedWeChatUsers(GetWeChatUsersInput input)
         {
 
-            var query = _wechatuserRepository.GetAll();
+            var query = _wechatuserRepository.GetAll()
+                .WhereIf(!string.IsNullOrEmpty(input.Name),u=>u.NickName.Contains(input.Name)|| u.UserName.Contains(input.Name))
+                .WhereIf(input.UserType.HasValue,u=>u.UserType==input.UserType);
+            
             //TODO:根据传入的参数添加过滤条件
             var wechatuserCount = await query.CountAsync();
 

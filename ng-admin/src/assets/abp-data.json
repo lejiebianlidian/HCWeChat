@@ -47,7 +47,7 @@
             "icon":"fa fa-wechat",
             "children":[{
                 "text":"微信用户",
-                "link":"/admin",
+                "link":"/admin/wechat-user",
                 "translate":"wechat-user"
           }]
         },{
