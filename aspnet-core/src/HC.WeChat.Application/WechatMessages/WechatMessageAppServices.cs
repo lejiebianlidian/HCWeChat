@@ -49,16 +49,13 @@ namespace HC.WeChat.WechatMessages
         public async Task<PagedResultDto<WechatMessageListDto>> GetPagedWechatMessages(GetWechatMessagesInput input)
         {
 
-            var query = _wechatmessageRepository.GetAll();
-            //if ((!string.IsNullOrEmpty(input.Filter)&& input.Filter != "null"))
-            //{
-            //    query = query.Where(q => q.KeyWord.Contains(input.Filter));
-            //}
+            var query = _wechatmessageRepository.GetAll()
+                .WhereIf((!string.IsNullOrEmpty(input.Filter)) && input.Filter != "null", m => m.KeyWord.Contains(input.Filter));
+
             //TODO:根据传入的参数添加过滤条件
             var wechatmessageCount = await query.CountAsync();
 
             var wechatmessages = await query
-                .WhereIf((!string.IsNullOrEmpty(input.Filter)) && input.Filter != "null", m => m.KeyWord.Contains(input.Filter))
                 .OrderBy(input.Sorting)
                 .PageBy(input)
                 .ToListAsync();

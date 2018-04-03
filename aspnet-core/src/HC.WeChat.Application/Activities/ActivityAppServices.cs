@@ -53,16 +53,16 @@ namespace HC.WeChat.Activities
         public async Task<PagedResultDto<ActivityListDto>> GetPagedActivities(GetActivitysInput input)
         {
 
-            var query = _activityRepository.GetAll();
+            var query = _activityRepository.GetAll()
+                .WhereIf(!string.IsNullOrEmpty(input.Name), a => a.Name.Contains(input.Name))
+                .WhereIf(input.Status.HasValue, a => a.Status == input.Status)
+                .WhereIf(input.Type.HasValue, a => a.ActivityType == input.Type)
+                .WhereIf(input.StartTime.HasValue, a => a.BeginTime >= input.StartTime)
+                .WhereIf(input.EndTime.HasValue, a => a.EndTime <= input.EndTimeAddOne);
             //TODO:根据传入的参数添加过滤条件
             var activityCount = await query.CountAsync();
 
             var activitys = await query
-                .WhereIf(!string.IsNullOrEmpty(input.Name),a=>a.Name.Contains(input.Name))
-                .WhereIf(input.Status.HasValue,a=>a.Status==input.Status)
-                .WhereIf(input.Type.HasValue,a=>a.ActivityType==input.Type)
-                .WhereIf(input.StartTime.HasValue, a => a.BeginTime >= input.StartTime)
-                .WhereIf(input.EndTime.HasValue, a => a.EndTime <= input.EndTimeAddOne)
                 .OrderBy(input.Sorting)
                 .PageBy(input)
                 .ToListAsync();
