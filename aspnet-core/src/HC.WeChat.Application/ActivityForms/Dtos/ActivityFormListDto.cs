@@ -8,11 +8,9 @@ namespace HC.WeChat.ActivityForms.Dtos
 {
     public class ActivityFormListDto : EntityDto<Guid>
     {
-        ////BCC/ BEGIN CUSTOM CODE SECTION
-        ////ECC/ END CUSTOM CODE SECTION
         public string FormCode { get; set; }
         public Guid ActivityId { get; set; }
-        public Guid RetailerId { get; set; }
+        public Guid? RetailerId { get; set; }
         public Guid ActivityGoodsId { get; set; }
         public string GoodsSpecification { get; set; }
         public int Num { get; set; }

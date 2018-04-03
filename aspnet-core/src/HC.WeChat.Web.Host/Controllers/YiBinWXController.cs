@@ -58,23 +58,22 @@ namespace HC.WeChat.Web.Host.Controllers
         /// <summary>
         /// 用户绑定
         /// </summary>
-        public async Task<ActionResult> BindUser(string code, string state)
+        public IActionResult BindUser(string code, string state)
         {
             Logger.InfoFormat("code:{0} state:{1}", code, state);
-            var oauth = await _weChatOAuthAppService.GetAccessTokenAsync(code);
+            //var oauth = await _weChatOAuthAppService.GetAccessTokenAsync(code);
             var tenantId = GetTenantId();
-            var user = await _weChatUserAppService.GetWeChatUserAsync(oauth.openid, tenantId);
-            var wuser = await _weChatOAuthAppService.GetUserInfoAsync(oauth.access_token, oauth.openid);
-            user.NickName = wuser.nickname;
-            user.HeadImgUrl = wuser.headimgurl;
-            if (user.UserType == UserTypeEnum.零售客户 || user.UserType == UserTypeEnum.客户经理)
-            {
-                return View("UserIndex", user);
-            }
+            //var user = await _weChatUserAppService.GetWeChatUserAsync(oauth.openid, tenantId);
+            //var wuser = await _weChatOAuthAppService.GetUserInfoAsync(oauth.access_token, oauth.openid);
+            //user.NickName = wuser.nickname;
+            //user.HeadImgUrl = wuser.headimgurl;
+            //if (user.UserType == UserTypeEnum.零售客户 || user.UserType == UserTypeEnum.客户经理)
+            //{
+            //    return View("UserIndex", user);
+            //}
 
-            ViewBag.NickName = user.NickName;
-            //ViewBag.HeadImgUrl = user.HeadImgUrl;
-            ViewBag.OpenId = oauth.openid;
+            ViewBag.NickName = "";// user.NickName;
+            ViewBag.OpenId = "";// oauth.openid;
             ViewBag.TenantId = tenantId;
             var root = _appConfiguration["App:ServerRootAddress"];
             ViewBag.ServerRootAddress = root;
@@ -151,7 +150,16 @@ namespace HC.WeChat.Web.Host.Controllers
                 return View("NoActivity");
             }
             // var url = _appConfiguration["App:ServerRootAddress"] + "YiBinWX/ActivityForm";
-            ViewBag.Url = Url.Action("ActivityForm");// _weChatOAuthAppService.GetAuthorizeUrl(url, tenantId.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
+            ViewBag.FormUrl = Url.Action("ActivityForm", new { state = activity.Id });// _weChatOAuthAppService.GetAuthorizeUrl(url, tenantId.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
+            ViewBag.FlowUrl = Url.Action("ActivityFlow");
+            return View();
+        }
+
+        /// <summary>
+        /// 没有上线的活动
+        /// </summary>
+        public IActionResult NoActivity()
+        {
             return View();
         }
 
@@ -169,16 +177,16 @@ namespace HC.WeChat.Web.Host.Controllers
         public IActionResult ActivityForm(string code, string state)
         {
             var activityId = Guid.Parse(state);
-            var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
+            //var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
             //var tenantId = GetTenantId();
             //var user = _weChatUserAppService.GetWeChatUserAsync(oauth.openid, tenantId).Result;
             ViewBag.UserType = 1;//user.UserType;
             // var url = _appConfiguration["App:ServerRootAddress"] + "YiBinWX/BindUser";
             ViewBag.Url = Url.Action("BindUser");// _weChatOAuthAppService.GetAuthorizeUrl(url, tenantId.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
-            ViewBag.GoodsList = _activityGoodsAppService.GetActivityGoodsByActivityId(activityId);
+            ViewBag.GoodsList = _activityGoodsAppService.GetActivityGoodsByActivityId(activityId).Result;
             var root = _appConfiguration["App:ServerRootAddress"];
             ViewBag.ServerRootAddress = root;
-            ViewBag.OpenId = oauth.openid;
+            ViewBag.OpenId = "";// oauth.openid;
             ViewBag.TenantId = tenantId;
             ViewBag.ActivityId = activityId;
             ViewBag.JumpUrl = Url.Action("Activity");

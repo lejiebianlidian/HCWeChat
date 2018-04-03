@@ -209,9 +209,14 @@ namespace HC.WeChat.ActivityForms
 
             var user = await _wechatuserManager.GetWeChatUserAsync(input.OpenId, input.TenantId);
 
+            if (user == null)
+            {
+                return new APIResultDto() { Code = 701, Msg = "当前用户无效" };
+            }
+
             if (user.UserType != UserTypeEnum.零售客户 && user.UserType != UserTypeEnum.客户经理)
             {
-                return new APIResultDto() { Code = 701, Msg = "当前用户类型不支持" };
+                return new APIResultDto() { Code = 702, Msg = "当前用户类型不支持" };
             }
 
             form.CreationUser = user.UserName;
@@ -233,7 +238,7 @@ namespace HC.WeChat.ActivityForms
             delivery.ActivityFormId = formId;
 
             await _activitydeliveryinfoRepository.InsertAsync(delivery);
-            return new APIResultDto() { Code = 701, Msg = "活动申请成功" };
+            return new APIResultDto() { Code = 0, Msg = "活动申请成功" };
         }
 
         private string GetFormCode()

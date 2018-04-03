@@ -45,7 +45,7 @@ namespace HC.WeChat.Migrations
                    Id = table.Column<Guid>(nullable: false),
                    FormCode = table.Column<string>(maxLength: 50, nullable: false),
                    ActivityId = table.Column<Guid>(nullable: false),
-                   RetailerId = table.Column<Guid>(nullable: false),
+                   RetailerId = table.Column<Guid>(nullable: true),
                    ActivityGoodsId = table.Column<Guid>(nullable: false),
                    GoodsSpecification = table.Column<string>(maxLength: 200, nullable: false),
                    Num = table.Column<int>(nullable: false),

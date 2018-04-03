@@ -1313,7 +1313,7 @@ namespace HC.WeChat.Migrations
                 b.Property<Guid>("Id").ValueGeneratedOnAdd();
                 b.Property<string>("FormCode").IsRequired().HasMaxLength(50);
                 b.Property<Guid>("ActivityId").IsRequired();
-                b.Property<Guid>("RetailerId").IsRequired();
+                b.Property<Guid?>("RetailerId");
                 b.Property<Guid>("ActivityGoodsId").IsRequired();
                 b.Property<string>("GoodsSpecification").IsRequired().HasMaxLength(200);
                 b.Property<int>("Num").IsRequired();
