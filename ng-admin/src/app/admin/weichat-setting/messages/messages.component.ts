@@ -65,11 +65,11 @@ export class MessagesComponent extends AppComponentBase implements OnInit {
             this.q.pi = 1;
         }
         this.loading = true;
-        this.messageService.getAll((this.q.pi - 1) * this.q.ps, this.q.ps, this.mesText).subscribe((result: PagedResultDtoOfMessage) => {
+        this.messageService.getAll(this.query.skipCount(), this.query.pageSize, this.mesText).subscribe((result: PagedResultDtoOfMessage) => {
             this.loading = false;
             let status = 0;
             this.messagess = result.items;
-            this.q.total = result.totalCount;
+            this.query.total = result.totalCount;
         });
     }
     /**

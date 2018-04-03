@@ -18,5 +18,11 @@ namespace HC.WeChat.Employees.Dtos
         public string Department { get; set; }
         public bool IsAction { get; set; }
         public int? TenantId { get; set; }
+        public string PositionName {
+            get
+            {
+                return this.Position.ToString();
+            }
+        }
     }
 }

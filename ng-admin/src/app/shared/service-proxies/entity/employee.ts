@@ -45,6 +45,8 @@ export class Employee implements IEmployee {
             this.creatorUserId = data["creatorUserId"];
             this.lastModificationTime = data["lastModificationTime"];
             this.lastModifierUserId = data["lastModifierUserId"];
+            this.positionName = data["positionName"];
+            
         }
     }
 
@@ -56,14 +58,6 @@ export class Employee implements IEmployee {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        // this.id = data["id"];
-        // this.code = data["code"];
-        // this.name = data["name"];
-        // this.position = data["position"];
-        // this.phone = data["phone"];
-        // this.company = data["company"];
-        // this.department = data["department"];
-        // this.isAction = data["isAction"];
         data["id"] = this.id;
         data["code"] = this.code;
         data["name"] = this.name;
@@ -99,4 +93,76 @@ export interface IEmployee {
     creationTime: Date;
     creatorUserId: number;
     id: string;
+}
+
+export class CreateEmployee implements ICreateImployee {
+    id: number;
+    code: string;
+    name: string;
+    position: number;
+    phone: string;
+    company: string;
+    department: string;
+    isAction: boolean;
+    tenantId: number;
+    constructor(data?: ICreateImployee) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.code = data["code"];
+            this.name = data["name"];
+            this.position = data["position"];
+            this.phone = data["phone"];
+            this.company = data["company"];
+            this.department = data["department"];
+            this.isAction = data["isAction"];
+
+        }
+    }
+
+    static fromJS(data: any): CreateEmployee {
+        let result = new CreateEmployee();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["code"] = this.code;
+        data["name"] = this.name;
+        data["position"] = this.position;
+        data["phone"] = this.phone;
+        data["company"] = this.company;
+        data["department"] = this.department;
+        data["isAction"] = this.isAction;
+        return data;
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new CreateEmployee();
+        result.init(json);
+        return result;
+    }
+
+}
+export interface ICreateImployee {
+    id: number;
+    code: string;
+    name: string;
+    position: number;
+    phone: string;
+    company: string;
+    department: string;
+    isAction: boolean;
+    tenantId: number;
+
 }

@@ -48,12 +48,13 @@ namespace HC.WeChat.Employees
         public async Task<PagedResultDto<EmployeeListDto>> GetPagedEmployees(GetEmployeesInput input)
         {
 
-            var query = _employeeRepository.GetAll();
+            var query = _employeeRepository.GetAll()
+                  .WhereIf(!string.IsNullOrEmpty(input.Filter) && input.Filter != "null", e => e.Name.Contains(input.Filter) || e.Code.Contains(input.Filter))
+                  .WhereIf(input.Position.HasValue, e => e.Position == input.Position);
             //TODO:根据传入的参数添加过滤条件
             var employeeCount = await query.CountAsync();
 
             var employees = await query
-                .WhereIf(!string.IsNullOrEmpty(input.Filter) && input.Filter!="null", e => e.Name.Contains(input.Filter) || e.Code.Contains(input.Filter))
                 .OrderBy(input.Sorting)
                 .PageBy(input)
                 .ToListAsync();
@@ -191,13 +192,13 @@ namespace HC.WeChat.Employees
         /// <returns></returns>
         public async Task<PagedResultDto<EmployeeListDto>> GetPagedEmployeesModal(GetEmployeesInput input)
         {
-            var query = _employeeRepository.GetAll();
+            var query = _employeeRepository.GetAll()
+                .WhereIf(!string.IsNullOrEmpty(input.Filter), e => e.Name.Contains(input.Filter) ||e.Code.Contains(input.Filter));
             //TODO:根据传入的参数添加过滤条件
             var employeeCount = await query.CountAsync();
             input.MaxResultCount = 10;
             input.SkipCount = 0;
             var employees = await query
-                .WhereIf(!string.IsNullOrEmpty(input.Filter), e => e.Name.Contains(input.Filter) ||e.Code.Contains(input.Filter))
                 .OrderBy(input.Sorting)
                 .PageBy(input)
                 .ToListAsync();
@@ -209,6 +210,23 @@ namespace HC.WeChat.Employees
                 employeeCount,
                 employeeListDtos
                 );
+        }
+        /// <summary>
+        /// 添加或者修改Employee的方法
+        /// </summary>
+        /// <param name="input">员工信息实体</param>
+        /// <returns></returns>
+        public async Task CreateOrUpdateEmployeeDto(EmployeeEditDto input)
+        {
+
+            if (input.Id.HasValue)
+            {
+                await UpdateEmployeeAsync(input);
+            }
+            else
+            {
+                await CreateEmployeeAsync(input);
+            }
         }
     }
 }

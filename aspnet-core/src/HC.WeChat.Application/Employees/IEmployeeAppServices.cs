@@ -57,6 +57,18 @@ namespace HC.WeChat.Employees
         /// </summary>
         Task BatchDeleteEmployeesAsync(List<Guid> input);
 
+        /// <summary>
+        /// 获取员工信息用于模态框
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         Task<PagedResultDto<EmployeeListDto>> GetPagedEmployeesModal(GetEmployeesInput input);
+
+        /// <summary>
+        /// 添加或者修改Employee的方法
+        /// </summary>
+        /// <param name="input">员工信息实体</param>
+        /// <returns></returns>
+        Task CreateOrUpdateEmployeeDto(EmployeeEditDto input);
     }
 }

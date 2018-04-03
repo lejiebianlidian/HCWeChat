@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </form>
-            <nz-table #nzTable [nzAjaxData]="messagess" [nzTotal]="q.total" [(nzPageIndex)]="q.pi" [(nzPageSize)]="q.ps" [nzLoading]="loading"
+            <nz-table #nzTable [nzAjaxData]="messagess" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading"
                 [nzShowSizeChanger]="true" (nzPageIndexChange)="getMessgeAll()" (nzPageSizeChange)="getMessgeAll()">
                 <thead nz-thead>
                     <tr>
