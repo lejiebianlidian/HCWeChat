@@ -1,8 +1,8 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector, OnInit, Output, EventEmitter } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { Employee } from '@shared/service-proxies/entity/employee';
+import { Employee, CreateEmployee } from '@shared/service-proxies/entity/employee';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { EmployeesServiceProxy } from '@shared/service-proxies/service-proxies';
+import { EmployeeServiceProxy } from '@shared/service-proxies/marketing-service';
 
 @Component({
     moduleId: module.id,
@@ -10,14 +10,18 @@ import { EmployeesServiceProxy } from '@shared/service-proxies/service-proxies';
     templateUrl: 'create-employee.component.html',
 })
 export class CreateEmployeeComponent extends AppComponentBase implements OnInit {
-
+    @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
     cmodalVisible = false;
     cloading = false;
     isConfirmLoading = false;
-    employeec: Employee = new Employee;
+    employeec: Employee = new Employee();
     formc: FormGroup;
-    constructor(injector: Injector, private fb: FormBuilder, private employeeService: EmployeesServiceProxy) {
+    positions = [
+        { text: '客户经理', value: 2 },
+        { text: '营销人员', value: 3 },
+    ]
+    constructor(injector: Injector, private fb: FormBuilder, private employeeService: EmployeeServiceProxy) {
         super(injector);
     }
 
@@ -29,10 +33,10 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
             code: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
             name: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
             position: [null, [Validators.required]],
-            phone: [null, Validators.compose([Validators.maxLength(20)])],
-            company: [null, Validators.compose([Validators.minLength(200)])],
+            phone: [null, Validators.compose([Validators.pattern('^1[3|4|5|7|8|9][0-9]{9}$')])],
+            company: [null, Validators.compose([Validators.maxLength(200)])],
             department: [null, Validators.compose([Validators.maxLength(200)])],
-            isAction: [true],
+            isactive: [true],
         })
     }
 
@@ -42,6 +46,8 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
     show() {
         this.reset();
         this.employeec = new Employee();
+        // this.employeec.position = 2;
+        this.employeec.init({ isAction: true, position: 2 })
         this.cmodalVisible = true;
 
     }
@@ -57,6 +63,21 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
         this.reset(e);
     }
     savec() {
+
+        //检查form验证
+        for (const i in this.formc.controls) {
+            this.formc.controls[i].markAsDirty();
+        }
+        if (this.formc.valid) {
+            this.isConfirmLoading = true;
+            this.employeeService.update(this.employeec)
+                .finally(() => { this.isConfirmLoading = false; })
+                .subscribe(() => {
+                    this.notify.info(this.l('保存成功！'));
+                    this.cmodalVisible = false;
+                    this.modalSave.emit(null);
+                });
+        }
 
     }
     reset(e?): void {

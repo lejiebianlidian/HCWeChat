@@ -15,7 +15,7 @@ export class EditTenantComponent extends AppComponentBase implements OnInit {
 
     modalVisible = false;
     isConfirmLoading = false;
-    tenant: TenantDto ;
+    tenant: TenantDto;
     form: FormGroup;
     constructor(injector: Injector, private _tenantService: TenantServiceProxy, private fb: FormBuilder) {
         super(injector);//来自AppComponentBase
@@ -34,7 +34,7 @@ export class EditTenantComponent extends AppComponentBase implements OnInit {
      */
     show(id: number) {
         this.modalVisible = true;
-        this.tenant=new TenantDto();
+        this.tenant = new TenantDto();
         this._tenantService.get(id).subscribe((result: TenantDto) => {
             this.tenant = result;
         });
@@ -55,6 +55,7 @@ export class EditTenantComponent extends AppComponentBase implements OnInit {
             this.form.controls[i].markAsDirty();
         }
         if (this.form.valid) {
+            this.isConfirmLoading = true;
             this._tenantService.update(this.tenant)
                 .finally(() => { this.isConfirmLoading = false; })
                 .subscribe(() => {

@@ -1,6 +1,7 @@
 ﻿using Abp.Runtime.Validation;
 using HC.WeChat.Dto;
 using HC.WeChat.Employees;
+using HC.WeChat.WechatEnums;
 
 namespace HC.WeChat.Employees.Dtos
 {
@@ -9,9 +10,14 @@ namespace HC.WeChat.Employees.Dtos
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION
         /// <summary>
-        /// 模糊搜索使用的关键字
+        /// 模糊搜索使用的关键字--姓名+编码
         /// </summary>
         public string Filter { get; set; }
+
+        /// <summary>
+        /// 职位
+        /// </summary>
+        public UserTypeEnum? Position { get; set; }
 
         /// <summary>
         /// 正常化排序使用

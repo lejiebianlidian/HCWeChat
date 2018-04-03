@@ -54,6 +54,7 @@ namespace HC.WeChat.Employees
 
             var employees = await query
                 .WhereIf(!string.IsNullOrEmpty(input.Filter) && input.Filter!="null", e => e.Name.Contains(input.Filter) || e.Code.Contains(input.Filter))
+                .WhereIf(input.Position.HasValue, e => e.Position == input.Position)
                 .OrderBy(input.Sorting)
                 .PageBy(input)
                 .ToListAsync();
@@ -209,6 +210,23 @@ namespace HC.WeChat.Employees
                 employeeCount,
                 employeeListDtos
                 );
+        }
+        /// <summary>
+        /// 添加或者修改Employee的方法
+        /// </summary>
+        /// <param name="input">员工信息实体</param>
+        /// <returns></returns>
+        public async Task CreateOrUpdateEmployeeDto(EmployeeEditDto input)
+        {
+
+            if (input.Id.HasValue)
+            {
+                await UpdateEmployeeAsync(input);
+            }
+            else
+            {
+                await CreateEmployeeAsync(input);
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/finally';
 
 
-import { Employee } from "@shared/service-proxies/entity/employee";
+import { Employee, CreateEmployee } from "@shared/service-proxies/entity/employee";
 import { Observable } from 'rxjs/Observable';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { Http, Headers, ResponseContentType, Response } from '@angular/http';
@@ -32,6 +32,64 @@ export class EmployeeServiceProxy {
     constructor(@Inject(Http) http:Http,@Optional() @Inject(API_BASE_URL) baseUrl?:string) { 
         this.http=http;
         this.baseUrl=baseUrl?baseUrl:"";
+    }
+    /**
+     * 获取员工消息（Modal）
+     * @return Success
+     */
+    getAllModal(Filter: string): Observable<PagedResultDtoOfEmployee> {
+        let url_ = this.baseUrl + "/api/services/app/Employee/GetPagedEmployeesModal?";
+        // if (skipCount !== undefined)
+        //     url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        // if (maxResultCount !== undefined)
+        //     url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (Filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + Filter) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetAllModal(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetAllModal(response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfEmployee>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfEmployee>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetAllModal(response: Response): Observable<PagedResultDtoOfEmployee> {
+        const status = response.status;
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfEmployee.fromJS(resultData200) : new PagedResultDtoOfEmployee();
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<PagedResultDtoOfEmployee>(<any>null);
     }
    
     /**
@@ -97,7 +155,7 @@ export class EmployeeServiceProxy {
      * 通过消息id获取自动回复消息信息
      * @param id 消息id
      */
-    get(id: number): Observable<Employee> {
+    get(id: string): Observable<Employee> {
         let url_ = this.baseUrl + "/api/services/app/Employee/GetEmployeeByIdAsync?";
         if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
@@ -153,7 +211,7 @@ export class EmployeeServiceProxy {
      * @param input 
      */
     update(input: Employee): Observable<Employee> {
-        let url_ = this.baseUrl + "/api/services/app/Employee/CreateOrUpdateWechatMessageDto";
+        let url_ = this.baseUrl + "/api/services/app/Employee/CreateOrUpdateEmployeeDto";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);

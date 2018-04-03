@@ -41,12 +41,12 @@ export class AccountServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -66,7 +66,7 @@ export class AccountServiceProxy {
     }
 
     protected processIsTenantAvailable(response: Response): Observable<IsTenantAvailableOutput> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -90,12 +90,12 @@ export class AccountServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -115,7 +115,7 @@ export class AccountServiceProxy {
     }
 
     protected processRegister(response: Response): Observable<RegisterOutput> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -151,12 +151,12 @@ export class ConfigurationServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
             })
         };
 
@@ -175,7 +175,7 @@ export class ConfigurationServiceProxy {
     }
 
     protected processChangeUiTheme(response: Response): Observable<void> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -208,12 +208,12 @@ export class RoleServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -233,7 +233,7 @@ export class RoleServiceProxy {
     }
 
     protected processCreate(response: Response): Observable<RoleDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -263,12 +263,12 @@ export class RoleServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "put",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -288,7 +288,7 @@ export class RoleServiceProxy {
     }
 
     protected processUpdate(response: Response): Observable<RoleDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -316,13 +316,13 @@ export class RoleServiceProxy {
     delete(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Role/Delete?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "delete",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
             })
         };
 
@@ -341,7 +341,7 @@ export class RoleServiceProxy {
     }
 
     protected processDelete(response: Response): Observable<void> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -370,7 +370,7 @@ export class RoleServiceProxy {
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -390,7 +390,7 @@ export class RoleServiceProxy {
     }
 
     protected processGetAllPermissions(response: Response): Observable<ListResultDtoOfPermissionDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -418,13 +418,13 @@ export class RoleServiceProxy {
     get(id: number): Observable<RoleDto> {
         let url_ = this.baseUrl + "/api/services/app/Role/Get?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -444,7 +444,7 @@ export class RoleServiceProxy {
     }
 
     protected processGet(response: Response): Observable<RoleDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -472,15 +472,15 @@ export class RoleServiceProxy {
     getAll(skipCount: number, maxResultCount: number): Observable<PagedResultDtoOfRoleDto> {
         let url_ = this.baseUrl + "/api/services/app/Role/GetAll?";
         if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
         if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -500,7 +500,7 @@ export class RoleServiceProxy {
     }
 
     protected processGetAll(response: Response): Observable<PagedResultDtoOfRoleDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -544,7 +544,7 @@ export class SessionServiceProxy {
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -564,7 +564,7 @@ export class SessionServiceProxy {
     }
 
     protected processGetCurrentLoginInformations(response: Response): Observable<GetCurrentLoginInformationsOutput> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -600,12 +600,12 @@ export class TenantServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -625,7 +625,7 @@ export class TenantServiceProxy {
     }
 
     protected processCreate(response: Response): Observable<TenantDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -653,13 +653,13 @@ export class TenantServiceProxy {
     delete(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Tenant/Delete?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "delete",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
             })
         };
 
@@ -678,7 +678,7 @@ export class TenantServiceProxy {
     }
 
     protected processDelete(response: Response): Observable<void> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -703,13 +703,13 @@ export class TenantServiceProxy {
     get(id: number): Observable<TenantDto> {
         let url_ = this.baseUrl + "/api/services/app/Tenant/Get?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -729,7 +729,7 @@ export class TenantServiceProxy {
     }
 
     protected processGet(response: Response): Observable<TenantDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -757,15 +757,15 @@ export class TenantServiceProxy {
     getAll(skipCount: number, maxResultCount: number): Observable<PagedResultDtoOfTenantDto> {
         let url_ = this.baseUrl + "/api/services/app/Tenant/GetAll?";
         if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
         if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -785,7 +785,7 @@ export class TenantServiceProxy {
     }
 
     protected processGetAll(response: Response): Observable<PagedResultDtoOfTenantDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -815,12 +815,12 @@ export class TenantServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "put",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -840,7 +840,7 @@ export class TenantServiceProxy {
     }
 
     protected processUpdate(response: Response): Observable<TenantDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -882,12 +882,12 @@ export class TokenAuthServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -907,7 +907,7 @@ export class TokenAuthServiceProxy {
     }
 
     protected processAuthenticate(response: Response): Observable<AuthenticateResultModel> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -933,7 +933,7 @@ export class TokenAuthServiceProxy {
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -953,7 +953,7 @@ export class TokenAuthServiceProxy {
     }
 
     protected processGetExternalAuthenticationProviders(response: Response): Observable<ExternalLoginProviderInfoModel[]> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -981,12 +981,12 @@ export class TokenAuthServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -1006,7 +1006,7 @@ export class TokenAuthServiceProxy {
     }
 
     protected processExternalAuthenticate(response: Response): Observable<ExternalAuthenticateResultModel> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -1042,12 +1042,12 @@ export class UserServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -1067,7 +1067,7 @@ export class UserServiceProxy {
     }
 
     protected processCreate(response: Response): Observable<UserDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -1097,12 +1097,12 @@ export class UserServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "put",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -1122,7 +1122,7 @@ export class UserServiceProxy {
     }
 
     protected processUpdate(response: Response): Observable<UserDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -1150,13 +1150,13 @@ export class UserServiceProxy {
     delete(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/User/Delete?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "delete",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
             })
         };
 
@@ -1175,7 +1175,7 @@ export class UserServiceProxy {
     }
 
     protected processDelete(response: Response): Observable<void> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -1204,7 +1204,7 @@ export class UserServiceProxy {
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -1224,7 +1224,7 @@ export class UserServiceProxy {
     }
 
     protected processGetRoles(response: Response): Observable<ListResultDtoOfRoleDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -1252,13 +1252,13 @@ export class UserServiceProxy {
     get(id: number): Observable<UserDto> {
         let url_ = this.baseUrl + "/api/services/app/User/Get?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -1278,7 +1278,7 @@ export class UserServiceProxy {
     }
 
     protected processGet(response: Response): Observable<UserDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -1306,15 +1306,15 @@ export class UserServiceProxy {
     getAll(skipCount: number, maxResultCount: number): Observable<PagedResultDtoOfUserDto> {
         let url_ = this.baseUrl + "/api/services/app/User/GetAll?";
         if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
         if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -1334,7 +1334,7 @@ export class UserServiceProxy {
     }
 
     protected processGetAll(response: Response): Observable<PagedResultDtoOfUserDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -1384,7 +1384,7 @@ export class IsTenantAvailableInput implements IIsTenantAvailableInput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["tenancyName"] = this.tenancyName;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -1429,7 +1429,7 @@ export class IsTenantAvailableOutput implements IIsTenantAvailableOutput {
         data = typeof data === 'object' ? data : {};
         data["state"] = this.state;
         data["tenantId"] = this.tenantId;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -1487,7 +1487,7 @@ export class RegisterInput implements IRegisterInput {
         data["emailAddress"] = this.emailAddress;
         data["password"] = this.password;
         data["captchaResponse"] = this.captchaResponse;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -1534,7 +1534,7 @@ export class RegisterOutput implements IRegisterOutput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["canLogin"] = this.canLogin;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -1576,7 +1576,7 @@ export class ChangeUiThemeInput implements IChangeUiThemeInput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["theme"] = this.theme;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -1641,7 +1641,7 @@ export class CreateRoleDto implements ICreateRoleDto {
             for (let item of this.permissions)
                 data["permissions"].push(item);
         }
-        return data; 
+        return data;
     }
 
     clone() {
@@ -1714,7 +1714,7 @@ export class RoleDto implements IRoleDto {
                 data["permissions"].push(item);
         }
         data["id"] = this.id;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -1770,7 +1770,7 @@ export class ListResultDtoOfPermissionDto implements IListResultDtoOfPermissionD
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 
     clone() {
@@ -1822,7 +1822,7 @@ export class PermissionDto implements IPermissionDto {
         data["displayName"] = this.displayName;
         data["description"] = this.description;
         data["id"] = this.id;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -1878,7 +1878,7 @@ export class PagedResultDtoOfRoleDto implements IPagedResultDtoOfRoleDto {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 
     clone() {
@@ -1927,7 +1927,7 @@ export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInform
         data["application"] = this.application ? this.application.toJSON() : <any>undefined;
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
         data["tenant"] = this.tenant ? this.tenant.toJSON() : <any>undefined;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -1947,7 +1947,7 @@ export interface IGetCurrentLoginInformationsOutput {
 export class ApplicationInfoDto implements IApplicationInfoDto {
     version: string;
     releaseDate: moment.Moment;
-    features: { [key: string] : boolean; };
+    features: { [key: string]: boolean; };
 
     constructor(data?: IApplicationInfoDto) {
         if (data) {
@@ -1989,7 +1989,7 @@ export class ApplicationInfoDto implements IApplicationInfoDto {
                     data["features"][key] = this.features[key];
             }
         }
-        return data; 
+        return data;
     }
 
     clone() {
@@ -2003,7 +2003,7 @@ export class ApplicationInfoDto implements IApplicationInfoDto {
 export interface IApplicationInfoDto {
     version: string;
     releaseDate: moment.Moment;
-    features: { [key: string] : boolean; };
+    features: { [key: string]: boolean; };
 }
 
 export class UserLoginInfoDto implements IUserLoginInfoDto {
@@ -2045,7 +2045,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
         data["userName"] = this.userName;
         data["emailAddress"] = this.emailAddress;
         data["id"] = this.id;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -2097,7 +2097,7 @@ export class TenantLoginInfoDto implements ITenantLoginInfoDto {
         data["tenancyName"] = this.tenancyName;
         data["name"] = this.name;
         data["id"] = this.id;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -2153,7 +2153,7 @@ export class CreateTenantDto implements ICreateTenantDto {
         data["adminEmailAddress"] = this.adminEmailAddress;
         data["connectionString"] = this.connectionString;
         data["isActive"] = this.isActive;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -2210,7 +2210,7 @@ export class TenantDto implements ITenantDto {
         data["name"] = this.name;
         data["isActive"] = this.isActive;
         data["id"] = this.id;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -2268,7 +2268,7 @@ export class PagedResultDtoOfTenantDto implements IPagedResultDtoOfTenantDto {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 
     clone() {
@@ -2317,7 +2317,7 @@ export class AuthenticateModel implements IAuthenticateModel {
         data["userNameOrEmailAddress"] = this.userNameOrEmailAddress;
         data["password"] = this.password;
         data["rememberClient"] = this.rememberClient;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -2370,7 +2370,7 @@ export class AuthenticateResultModel implements IAuthenticateResultModel {
         data["encryptedAccessToken"] = this.encryptedAccessToken;
         data["expireInSeconds"] = this.expireInSeconds;
         data["userId"] = this.userId;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -2418,7 +2418,7 @@ export class ExternalLoginProviderInfoModel implements IExternalLoginProviderInf
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["clientId"] = this.clientId;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -2467,7 +2467,7 @@ export class ExternalAuthenticateModel implements IExternalAuthenticateModel {
         data["authProvider"] = this.authProvider;
         data["providerKey"] = this.providerKey;
         data["providerAccessCode"] = this.providerAccessCode;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -2520,7 +2520,7 @@ export class ExternalAuthenticateResultModel implements IExternalAuthenticateRes
         data["encryptedAccessToken"] = this.encryptedAccessToken;
         data["expireInSeconds"] = this.expireInSeconds;
         data["waitingForActivation"] = this.waitingForActivation;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -2546,7 +2546,7 @@ export class CreateUserDto implements ICreateUserDto {
     isActive: boolean;
     roleNames: string[];
     password: string;
-    employeeId:string;
+    employeeId: string;
     constructor(data?: ICreateUserDto) {
         if (data) {
             for (var property in data) {
@@ -2593,8 +2593,8 @@ export class CreateUserDto implements ICreateUserDto {
         }
         data["password"] = this.password;
         data["employeeId"] = this.employeeId;
-        
-        return data; 
+
+        return data;
     }
 
     clone() {
@@ -2629,7 +2629,7 @@ export class UserDto implements IUserDto {
     activeType: string;
     activeText: string;
     checked: boolean;
-    employeeId:string
+    employeeId: string
     constructor(data?: IUserDto) {
         if (data) {
             for (var property in data) {
@@ -2655,7 +2655,7 @@ export class UserDto implements IUserDto {
                     this.roleNames.push(item);
             }
             this.id = data["id"];
-            this.employeeId=data['employeeId'];
+            this.employeeId = data['employeeId'];
         }
     }
 
@@ -2682,8 +2682,8 @@ export class UserDto implements IUserDto {
         }
         data["id"] = this.id;
         data["employeeId"] = this.employeeId;
-        
-        return data; 
+
+        return data;
     }
 
     clone() {
@@ -2742,7 +2742,7 @@ export class ListResultDtoOfRoleDto implements IListResultDtoOfRoleDto {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 
     clone() {
@@ -2795,7 +2795,7 @@ export class PagedResultDtoOfUserDto implements IPagedResultDtoOfUserDto {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 
     clone() {
@@ -2812,25 +2812,25 @@ export interface IPagedResultDtoOfUserDto {
 }
 
 export enum IsTenantAvailableOutputState {
-    _1 = 1, 
-    _2 = 2, 
-    _3 = 3, 
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
 }
 
 export class SwaggerException extends Error {
     message: string;
-    status: number; 
-    response: string; 
-	headers: { [key: string]: any; };
-    result: any; 
+    status: number;
+    response: string;
+    headers: { [key: string]: any; };
+    result: any;
 
     constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
-		super();
+        super();
 
         this.message = message;
         this.status = status;
         this.response = response;
-		this.headers = headers;
+        this.headers = headers;
         this.result = result;
     }
 
@@ -2842,28 +2842,28 @@ export class SwaggerException extends Error {
 }
 
 function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): Observable<any> {
-    if(result !== null && result !== undefined)
+    if (result !== null && result !== undefined)
         return Observable.throw(result);
     else
         return Observable.throw(new SwaggerException(message, status, response, headers, null));
 }
 
 function blobToText(blob: any): Observable<string> {
-    return new Observable<string>((observer: any) => { 
-        let reader = new FileReader(); 
-        reader.onload = function() { 
+    return new Observable<string>((observer: any) => {
+        let reader = new FileReader();
+        reader.onload = function () {
             observer.next(this.result);
             observer.complete();
         }
-        reader.readAsText(blob); 
+        reader.readAsText(blob);
     });
 }
-export class Driver implements IDriver{
-    useR_ID:string;
-    useR_NAME:string;
-    positioN_CODE:string;
-    creationTime:Date;
-    lastModificationTime:Date;
+export class Driver implements IDriver {
+    useR_ID: string;
+    useR_NAME: string;
+    positioN_CODE: string;
+    creationTime: Date;
+    lastModificationTime: Date;
 
     constructor(data?: IUserDto) {
         if (data) {
@@ -2879,7 +2879,7 @@ export class Driver implements IDriver{
             this.useR_ID = data["useR_ID"];
             this.useR_NAME = data["useR_NAME"];
             this.positioN_CODE = data["positioN_CODE"];
-            
+
             // if (data["roleNames"] && data["roleNames"].constructor === Array) {
             //     this.roleNames = [];
             //     for (let item of data["roleNames"])
@@ -2899,7 +2899,7 @@ export class Driver implements IDriver{
         data = typeof data === 'object' ? data : {};
         data["useR_ID"] = this.useR_ID;
         data["useR_NAME"] = this.useR_NAME;
-        return data; 
+        return data;
     }
 
     clone() {
@@ -2910,11 +2910,11 @@ export class Driver implements IDriver{
     }
 }
 export class IDriver {
-    useR_ID:string;
-    useR_NAME:string;
-    positioN_CODE:string;
-    creationTime:Date;
-    lastModificationTime:Date;
+    useR_ID: string;
+    useR_NAME: string;
+    positioN_CODE: string;
+    creationTime: Date;
+    lastModificationTime: Date;
 }
 @Injectable()
 export class DriverServiceProxy {
@@ -2922,11 +2922,11 @@ export class DriverServiceProxy {
     private baseUrl: string;
     protected jsonParseReviver: (key: string, value: any) => any = undefined;
 
-    constructor(@Inject(Http) http:Http,@Optional() @Inject(API_BASE_URL) baseUrl?:string) { 
-        this.http=http;
-        this.baseUrl=baseUrl?baseUrl:"";
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
     }
-   
+
     /**
      * 获取驾驶员信息
      * @return Success
@@ -2934,15 +2934,15 @@ export class DriverServiceProxy {
     getAll(skipCount: number, maxResultCount: number): Observable<PagedResultDtoOfDriver> {
         let url_ = this.baseUrl + "/api/services/app/DistDriver/GetPagedDistDrivers?";
         if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
         if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -2962,7 +2962,7 @@ export class DriverServiceProxy {
     }
 
     protected processGetAll(response: Response): Observable<PagedResultDtoOfDriver> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3022,7 +3022,7 @@ export class PagedResultDtoOfDriver implements IPagedResultDtoOfDriver {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 
     clone() {
@@ -3045,11 +3045,11 @@ export class AuthSettingServiceProxy {
     private baseUrl: string;
     protected jsonParseReviver: (key: string, value: any) => any = undefined;
 
-    constructor(@Inject(Http) http:Http,@Optional() @Inject(API_BASE_URL) baseUrl?:string) { 
-        this.http=http;
-        this.baseUrl=baseUrl?baseUrl:"";
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
     }
-   
+
     /**
      * 获取微信配置信息
      * @return Success
@@ -3057,15 +3057,15 @@ export class AuthSettingServiceProxy {
     getAll(skipCount: number, maxResultCount: number): Observable<PagedResultDtoOfAuthSetting> {
         let url_ = this.baseUrl + "/api/services/app/WechatAppConfig/GetTenantWechatAppConfigAsync?";
         if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
         if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -3085,7 +3085,7 @@ export class AuthSettingServiceProxy {
     }
 
     protected processGetAll(response: Response): Observable<PagedResultDtoOfAuthSetting> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3115,7 +3115,7 @@ export class AuthSettingServiceProxy {
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -3135,7 +3135,7 @@ export class AuthSettingServiceProxy {
     }
 
     protected processGet(response: Response): Observable<AuthSetting> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3164,12 +3164,12 @@ export class AuthSettingServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -3189,7 +3189,7 @@ export class AuthSettingServiceProxy {
     }
 
     protected processUpdate(response: Response): Observable<AuthSetting> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3251,7 +3251,7 @@ export class PagedResultDtoOfAuthSetting implements IPagedResultDtoOfAuthSetting
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 
     clone() {
@@ -3275,29 +3275,29 @@ export class MessageServiceProxy {
     private baseUrl: string;
     protected jsonParseReviver: (key: string, value: any) => any = undefined;
 
-    constructor(@Inject(Http) http:Http,@Optional() @Inject(API_BASE_URL) baseUrl?:string) { 
-        this.http=http;
-        this.baseUrl=baseUrl?baseUrl:"";
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
     }
-   
+
     /**
      * 获取自动回复消息
      * @return Success
      */
-    getAll(skipCount: number, maxResultCount: number,Filter:string): Observable<PagedResultDtoOfMessage> {
+    getAll(skipCount: number, maxResultCount: number, Filter: string): Observable<PagedResultDtoOfMessage> {
         let url_ = this.baseUrl + "/api/services/app/WechatMessage/GetPagedWechatMessages?";
         if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
         if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         if (Filter !== undefined)
-            url_ += "Filter=" + encodeURIComponent("" + Filter) + "&"; 
+            url_ += "Filter=" + encodeURIComponent("" + Filter) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -3317,7 +3317,7 @@ export class MessageServiceProxy {
     }
 
     protected processGetAll(response: Response): Observable<PagedResultDtoOfMessage> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3346,13 +3346,13 @@ export class MessageServiceProxy {
     get(id: number): Observable<Messagess> {
         let url_ = this.baseUrl + "/api/services/app/WechatMessage/GetWechatMessageByIdAsync?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -3372,7 +3372,7 @@ export class MessageServiceProxy {
     }
 
     protected processGet(response: Response): Observable<Messagess> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3403,12 +3403,12 @@ export class MessageServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -3428,7 +3428,7 @@ export class MessageServiceProxy {
     }
 
     protected processUpdate(response: Response): Observable<Messagess> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3450,19 +3450,19 @@ export class MessageServiceProxy {
         return Observable.of<Messagess>(<any>null);
     }
 
-     /**
-     * @return Success
-     */
+    /**
+    * @return Success
+    */
     delete(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/WechatMessage/DeleteWechatMessage?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "delete",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
             })
         };
 
@@ -3481,7 +3481,7 @@ export class MessageServiceProxy {
     }
 
     protected processDelete(response: Response): Observable<void> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3538,7 +3538,7 @@ export class PagedResultDtoOfMessage implements IPagedResultDtoOfMessage {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 
     clone() {
@@ -3563,11 +3563,11 @@ export class SubscribeServiceProxy {
     private baseUrl: string;
     protected jsonParseReviver: (key: string, value: any) => any = undefined;
 
-    constructor(@Inject(Http) http:Http,@Optional() @Inject(API_BASE_URL) baseUrl?:string) { 
-        this.http=http;
-        this.baseUrl=baseUrl?baseUrl:"";
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
     }
-   
+
     /**
      * 获取关注回复消息通过租户id
      * @return Success
@@ -3579,7 +3579,7 @@ export class SubscribeServiceProxy {
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -3599,7 +3599,7 @@ export class SubscribeServiceProxy {
     }
 
     protected processGet(response: Response): Observable<Subscribess> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3626,12 +3626,12 @@ export class SubscribeServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -3651,7 +3651,7 @@ export class SubscribeServiceProxy {
     }
 
     protected processUpdate(response: Response): Observable<Subscribess> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3674,19 +3674,19 @@ export class SubscribeServiceProxy {
     }
     //#endregion
 
-     /**
-     * @return Success
-     */
+    /**
+    * @return Success
+    */
     delete(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/WechatSubscribe/DeleteWechatSubscribe?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "delete",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
             })
         };
 
@@ -3705,7 +3705,7 @@ export class SubscribeServiceProxy {
     }
 
     protected processDelete(response: Response): Observable<void> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3732,29 +3732,29 @@ export class EmployeesServiceProxy {
     private baseUrl: string;
     protected jsonParseReviver: (key: string, value: any) => any = undefined;
 
-    constructor(@Inject(Http) http:Http,@Optional() @Inject(API_BASE_URL) baseUrl?:string) { 
-        this.http=http;
-        this.baseUrl=baseUrl?baseUrl:"";
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
     }
-   
+
     /**
-     * 获取自动回复消息
+     * 获取员工消息（Modal）
      * @return Success
      */
-    getAllModal(Filter:string): Observable<PagedResultDtoOfEmployee> {
+    getAllModal(Filter: string): Observable<PagedResultDtoOfEmployee> {
         let url_ = this.baseUrl + "/api/services/app/Employee/GetPagedEmployeesModal?";
         // if (skipCount !== undefined)
         //     url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
         // if (maxResultCount !== undefined)
         //     url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
         if (Filter !== undefined)
-            url_ += "Filter=" + encodeURIComponent("" + Filter) + "&"; 
+            url_ += "Filter=" + encodeURIComponent("" + Filter) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -3774,7 +3774,7 @@ export class EmployeesServiceProxy {
     }
 
     protected processGetAllModal(response: Response): Observable<PagedResultDtoOfEmployee> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3795,21 +3795,33 @@ export class EmployeesServiceProxy {
         }
         return Observable.of<PagedResultDtoOfEmployee>(<any>null);
     }
-
-    getAll(skipCount:number,maxResultCount:number, Filter:string): Observable<PagedResultDtoOfEmployee> {
+    /**
+     * 获取员工信息
+     * @param skipCount 跳过条数
+     * @param maxResultCount PageSize
+     * @param Filter 模糊查询条件
+     */
+    getAll(skipCount: number, maxResultCount: number, parameter: Parameter[]): Observable<PagedResultDtoOfEmployee> {
         let url_ = this.baseUrl + "/api/services/app/Employee/GetPagedEmployees?";
         if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
         if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
-        if (Filter !== undefined)
-            url_ += "Filter=" + encodeURIComponent("" + Filter) + "&"; 
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+
+        if (parameter.length > 0) {
+            parameter.forEach(element => {
+                if (element.value !== undefined && element.value !== null) {
+                    url_ += element.key + "=" + encodeURIComponent("" + element.value) + "&";
+                }
+            });
+        }
+        
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -3829,7 +3841,7 @@ export class EmployeesServiceProxy {
     }
 
     protected processGetAll(response: Response): Observable<PagedResultDtoOfEmployee> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3853,19 +3865,19 @@ export class EmployeesServiceProxy {
 
 
     /**
-     * 通过消息id获取自动回复消息信息
+     * 通过消息id获取员工信息
      * @param id 消息id
      */
     get(id: number): Observable<Employee> {
         let url_ = this.baseUrl + "/api/services/app/Employee/GetEmployeeByIdAsync?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -3885,7 +3897,7 @@ export class EmployeesServiceProxy {
     }
 
     protected processGet(response: Response): Observable<Employee> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3908,20 +3920,20 @@ export class EmployeesServiceProxy {
     }
 
     /**
-     * 新增或修改自动回复消息信息
+     * 新增或修改员工信息
      * @param input 
      */
     update(input: Employee): Observable<Employee> {
-        let url_ = this.baseUrl + "/api/services/app/Employee/CreateOrUpdateWechatMessageDto";
+        let url_ = this.baseUrl + "/api/services/app/Employee/CreateOrUpdateEmployeeDto";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -3941,7 +3953,7 @@ export class EmployeesServiceProxy {
     }
 
     protected processUpdate(response: Response): Observable<Employee> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -3963,19 +3975,19 @@ export class EmployeesServiceProxy {
         return Observable.of<Employee>(<any>null);
     }
 
-     /**
-     * @return Success
-     */
+    /**
+    * @return Success
+    */
     delete(id: string): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Employee/DeleteEmployee?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "delete",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
             })
         };
 
@@ -3994,7 +4006,7 @@ export class EmployeesServiceProxy {
     }
 
     protected processDelete(response: Response): Observable<void> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -4051,7 +4063,7 @@ export class PagedResultDtoOfEmployee implements IPagedResultDtoOfEmployee {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 
     clone() {
@@ -4073,11 +4085,11 @@ export class ActivityServiceProxy {
     private baseUrl: string;
     protected jsonParseReviver: (key: string, value: any) => any = undefined;
 
-    constructor(@Inject(Http) http:Http,@Optional() @Inject(API_BASE_URL) baseUrl?:string) { 
-        this.http=http;
-        this.baseUrl=baseUrl?baseUrl:"";
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
     }
-   
+
 
     /**
      * 通过消息id获取营销活动信息
@@ -4092,7 +4104,7 @@ export class ActivityServiceProxy {
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -4112,7 +4124,7 @@ export class ActivityServiceProxy {
     }
 
     protected processGet(response: Response): Observable<Activity> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -4143,12 +4155,12 @@ export class ActivityServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -4168,7 +4180,7 @@ export class ActivityServiceProxy {
     }
 
     protected processUpdate(response: Response): Observable<Activity> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -4190,19 +4202,19 @@ export class ActivityServiceProxy {
         return Observable.of<Activity>(<any>null);
     }
 
-     /**
-     * @return Success
-     */
+    /**
+    * @return Success
+    */
     delete(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Activity/DeleteActivity?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "delete",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
             })
         };
 
@@ -4221,7 +4233,7 @@ export class ActivityServiceProxy {
     }
 
     protected processDelete(response: Response): Observable<void> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -4278,7 +4290,7 @@ export class PagedResultDtoOfActivity implements IPagedResultDtoOfActivity {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 
     clone() {
@@ -4300,4 +4312,5 @@ import { Messagess } from '@shared/service-proxies/entity/messages';
 import { Subscribess } from '@shared/service-proxies/entity/subscribe';
 import { Employee } from '@shared/service-proxies/entity/employee';
 import { Activity } from '@shared/service-proxies/entity/acitivity';
+import { Parameter } from '@shared/service-proxies/entity';
 
