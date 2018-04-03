@@ -29,6 +29,7 @@ export class LoginComponent extends AppComponentBase implements OnInit {
       rememberMe: [null]
     });
     var tenancyId = this.route.snapshot.paramMap.get('id');
+    console.log("tenancyId:"+tenancyId);
     //alert(tenancyId)
     if(tenancyId == '1'){
       abp.multiTenancy.setTenantIdCookie(undefined);
