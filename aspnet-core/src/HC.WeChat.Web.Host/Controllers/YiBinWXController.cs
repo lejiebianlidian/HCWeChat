@@ -161,7 +161,7 @@ namespace HC.WeChat.Web.Host.Controllers
         public IActionResult ActivityForm(string code, string state)
         {
             var activityId = Guid.Parse(state);
-            //var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
+            var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
             //var tenantId = GetTenantId();
             //var user = _weChatUserAppService.GetWeChatUserAsync(oauth.openid, tenantId).Result;
             ViewBag.UserType = 1;//user.UserType;
@@ -170,6 +170,9 @@ namespace HC.WeChat.Web.Host.Controllers
             ViewBag.GoodsList = _activityGoodsAppService.GetActivityGoodsByActivityId(activityId);
             var root = _appConfiguration["App:ServerRootAddress"];
             ViewBag.ServerRootAddress = root;
+            ViewBag.OpenId = oauth.openid;
+            ViewBag.TenantId = tenantId;
+            ViewBag.ActivityId = activityId;
             return View();
         }
     }

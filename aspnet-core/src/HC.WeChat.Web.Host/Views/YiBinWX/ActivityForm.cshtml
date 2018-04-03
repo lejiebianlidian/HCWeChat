@@ -28,9 +28,9 @@
                 <div class="advise_warp pt3 pb3">
                     <select id="dllSpecification" class="fl entry_value" placeholder="请选择申请商品规格">
                         @foreach (var item in GoodsList)
-                        {
-                            <option value="@item.Id">@item.Specification</option>
-                        }
+            {
+                <option value="@item.Id">@item.Specification</option>
+}
                     </select>
                 </div>
                 <!--申请数量-->
@@ -57,6 +57,9 @@
                     <span class="entry_key fl">收货地址</span>
                     <input type="text" maxlength="500" id="txtAddress" class="fl ml10 entry_value" placeholder="请输入收货地址" />
                 </div>
+                <input type="hidden" id="hidOpenId" value="@ViewBag.OpenId" />
+                <input type="hidden" id="hidTenantId" value="@ViewBag.TenantId" />
+                <input type="hidden" id="hidActivityId" value="@ViewBag.ActivityId" />
             </div>
         </div>
         <!--用户操作按钮-->
@@ -76,23 +79,44 @@
         });
 
         var Save = function () {
-            var reqUrl = "@ViewBag.ServerRootAddress" + "api/services/app/WeChatUser/BindWeChatUserAsync";
+            var reqUrl = "@ViewBag.ServerRootAddress" + "api/services/app/ActivityForm/SaveActivityForm";
         var BindRetailer = function () {
             var para = {};
-            para.userName = $("#txtRetailerName").val();
-            if (para.userName == "") {
-                alert("用户名不能为空！");
+            para.activityGoodsId = $("#dllSpecification").val();
+            if (para.activityGoodsId == "") {
+                alert("商品规格不能为空！");
                 return;
             }
-            para.licenseKey = $("#txtLicenseKey").val();
-            if (para.licenseKey == "") {
-                alert("专卖证号不能为空！");
+            para.goodsSpecification = $("#dllSpecification").text();
+            para.num = $("#txtNum").val();
+            if (para.num == "") {
+                alert("申请数量不能为空！");
+                return;
+            }
+            para.reason = $("#txtReason").val();
+            if (para.reason == "") {
+                alert("申请理由不能为空！");
+                return;
+            }
+            para.userNaem = $("#txtUserNaem").val();
+            if (para.userNaem == "") {
+                alert("收货人姓名不能为空！");
+                return;
+            }
+            para.phone = $("#txtPhone").val();
+            if (para.phone == "") {
+                alert("联系电话不能为空！");
+                return;
+            }
+            para.address = $("#txtAddress").val();
+            if (para.address == "") {
+                alert("收货地址不能为空！");
                 return;
             }
 
             para.tenantId = $("#hidTenantId").val();
-            para.userType = 1;
-            para.nickName = $("#hidNickName").val();
+            para.openId = $("#hidOpenId").val();
+            para.activityId = $("#hidActivityId").val();
 
             $.ajax({
                 url: reqUrl,

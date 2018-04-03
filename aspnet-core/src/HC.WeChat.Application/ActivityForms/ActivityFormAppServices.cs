@@ -16,6 +16,10 @@ using System;
 using System.Linq;
 using HC.WeChat.Authorization;
 using HC.WeChat.Dto;
+using HC.WeChat.ActivityDeliveryInfos;
+using HC.WeChat.WeChatUsers.DomainServices;
+using HC.WeChat.Retailers;
+using HC.WeChat.WechatEnums;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -26,20 +30,27 @@ namespace HC.WeChat.ActivityForms
     //[AbpAuthorize(AppPermissions.Pages)]
     public class ActivityFormAppService : WeChatAppServiceBase, IActivityFormAppService
     {
-        ////BCC/ BEGIN CUSTOM CODE SECTION
-        ////ECC/ END CUSTOM CODE SECTION
         private readonly IRepository<ActivityForm, Guid> _activityformRepository;
         private readonly IActivityFormManager _activityformManager;
+        private readonly IWeChatUserManager _wechatuserManager;
+        private readonly IRetailerAppService _retailerAppService;
+        private readonly IRepository<ActivityDeliveryInfo, Guid> _activitydeliveryinfoRepository;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         public ActivityFormAppService(IRepository<ActivityForm, Guid> activityformRepository
       , IActivityFormManager activityformManager
+            , IWeChatUserManager wechatuserManager
+            , IRetailerAppService retailerAppService
+            , IRepository<ActivityDeliveryInfo, Guid> activitydeliveryinfoRepository
         )
         {
             _activityformRepository = activityformRepository;
             _activityformManager = activityformManager;
+            _wechatuserManager = wechatuserManager;
+            _retailerAppService = retailerAppService;
+            _activitydeliveryinfoRepository = activitydeliveryinfoRepository;
         }
 
         /// <summary>
@@ -191,9 +202,45 @@ namespace HC.WeChat.ActivityForms
             await _activityformRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
-        public Task<APIResultDto> SaveActivityForm(ActivityFormInputDto input)
+        public async Task<APIResultDto> SaveActivityForm(ActivityFormInputDto input)
         {
-            throw new NotImplementedException();
+            var form = input.MapTo<ActivityForm>();//表单信息
+            var delivery = input.MapTo<ActivityDeliveryInfo>();//收货信息
+
+            var user = await _wechatuserManager.GetWeChatUserAsync(input.OpenId, input.TenantId);
+
+            if (user.UserType != UserTypeEnum.零售客户 && user.UserType != UserTypeEnum.客户经理)
+            {
+                return new APIResultDto() { Code = 701, Msg = "当前用户类型不支持" };
+            }
+
+            form.CreationUser = user.UserName;
+            if (user.UserType == UserTypeEnum.零售客户)
+            {
+                form.RetailerId = user.UserId.Value;
+                form.RetailerName = user.UserName;
+                var retailer = await _retailerAppService.GetRetailerByIdAsync(new EntityDto<Guid> { Id = user.UserId.Value });
+                form.ManagerName = retailer.Manager;
+            }
+            else if (user.UserType == UserTypeEnum.客户经理)
+            {
+                form.ManagerName = user.UserName;
+            }
+
+            form.FormCode = GetFormCode();
+
+            var formId = await _activityformRepository.InsertAndGetIdAsync(form);
+            delivery.ActivityFormId = formId;
+
+            await _activitydeliveryinfoRepository.InsertAsync(delivery);
+            return new APIResultDto() { Code = 701, Msg = "活动申请成功" };
+        }
+
+        private string GetFormCode()
+        {
+            GenerateCode gserver = new GenerateCode(0, 0);
+            string code = "YB" + gserver.nextId().ToString();
+            return code;
         }
     }
 }
