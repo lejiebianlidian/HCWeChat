@@ -63,5 +63,12 @@ namespace HC.WeChat.Retailers
         /// <param name="input">零售客户实体</param>
         /// <returns></returns>
         Task CreateOrUpdateRetailerDto(RetailerEditDto input);
+
+        /// <summary>
+        /// 通过id查询单个零售户信息
+        /// </summary>
+        /// <param name="input">零售户id</param>
+        /// <returns></returns>
+        Task<RetailerListDto> GetRetailerByIdDtoAsync(EntityDto<Guid> input);
     }
 }

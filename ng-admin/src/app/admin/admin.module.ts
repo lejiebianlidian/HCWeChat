@@ -33,6 +33,7 @@ import { RetailCustomerComponent } from './customer-service/retail-customer/reta
 import { WechatUserComponent } from './wechat-manager/wechat-user/wechat-user.component';
 import { RetailCustomerDetailComponent } from './customer-service/retail-customer-detail/retail-customer-detail.component';
 
+
 @NgModule({
   imports: [
     CommonModule,

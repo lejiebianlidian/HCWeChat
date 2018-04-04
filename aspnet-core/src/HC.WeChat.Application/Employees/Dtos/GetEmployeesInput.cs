@@ -13,6 +13,10 @@ namespace HC.WeChat.Employees.Dtos
         /// 模糊搜索使用的关键字--姓名+编码
         /// </summary>
         public string Filter { get; set; }
+        /// <summary>
+        /// 是否只查询经理级的员工信息
+        /// </summary>
+        public bool IsManger { get; set; }
 
         /// <summary>
         /// 职位

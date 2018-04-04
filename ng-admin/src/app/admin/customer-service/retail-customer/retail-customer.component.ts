@@ -3,6 +3,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { RetailCustomerServiceProxy, PagedResultDtoOfRetailCustomer } from '@shared/service-proxies/customer-service';
 import { Parameter, RetailCustomer } from '@shared/service-proxies/entity';
 import { Router } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
     moduleId: module.id,
@@ -26,7 +27,8 @@ export class RetailCustomerComponent extends AppComponentBase implements OnInit 
         { text: '城镇', value: 2 },
     ];
     retailCustomer: RetailCustomer[] = [];
-    constructor(injector: Injector, private retailService: RetailCustomerServiceProxy, private router: Router) {
+    constructor(injector: Injector, private retailService: RetailCustomerServiceProxy, private router: Router,
+        private modal: NzModalService, ) {
         super(injector);
     }
     ngOnInit(): void {
@@ -64,15 +66,25 @@ export class RetailCustomerComponent extends AppComponentBase implements OnInit 
         return arry;
     }
     editRetail(retail: RetailCustomer) {
-        this.router.navigate(['', retail.id])
+        this.router.navigate(['admin/retail-detail', retail.id])
     }
     /**
      * 
      */
-    delete(retail: RetailCustomer) {
-
+    delete(retail: RetailCustomer, TplContent) {
+        this.modal.confirm({
+            content: TplContent,
+            cancelText: '否',
+            okText: '是',
+            onOk: () => {
+                this.retailService.delete(retail.id).subscribe(()=>{
+                    this.notify.info(this.l('删除成功！'));
+                    this.refreshData();
+                });
+            }
+        })
     }
     createRetail() {
-        this.router.navigate([''])
+        this.router.navigate(['admin/retail-detail']);
     }
 }

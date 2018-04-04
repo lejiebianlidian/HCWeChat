@@ -3741,14 +3741,21 @@ export class EmployeesServiceProxy {
      * 获取员工消息（Modal）
      * @return Success
      */
-    getAllModal(Filter: string): Observable<PagedResultDtoOfEmployee> {
+    getAllModal(parameter: Parameter[]): Observable<PagedResultDtoOfEmployee> {
         let url_ = this.baseUrl + "/api/services/app/Employee/GetPagedEmployeesModal?";
         // if (skipCount !== undefined)
         //     url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
         // if (maxResultCount !== undefined)
         //     url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
-        if (Filter !== undefined)
-            url_ += "Filter=" + encodeURIComponent("" + Filter) + "&";
+        // if (Filter !== undefined)
+        //     url_ += "Filter=" + encodeURIComponent("" + Filter) + "&";
+        if (parameter.length > 0) {
+            parameter.forEach(element => {
+                if (element.value !== undefined && element.value !== null) {
+                    url_ += element.key + "=" + encodeURIComponent("" + element.value) + "&";
+                }
+            });
+        }
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
@@ -3815,7 +3822,7 @@ export class EmployeesServiceProxy {
                 }
             });
         }
-        
+
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {

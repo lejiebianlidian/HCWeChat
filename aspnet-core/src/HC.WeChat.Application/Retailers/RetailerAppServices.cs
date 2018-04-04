@@ -5,6 +5,7 @@ using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
+using System.Linq;
 
 using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,8 @@ using HC.WeChat.Retailers.DomainServices;
 using HC.WeChat.Retailers;
 using System;
 using HC.WeChat.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Abp.IdentityFramework;
 
 namespace HC.WeChat.Retailers
 {
@@ -203,6 +206,17 @@ namespace HC.WeChat.Retailers
             }
         }
 
+        /// <summary>
+        /// 通过id查询单个零售户信息
+        /// </summary>
+        /// <param name="input">零售户id</param>
+        /// <returns></returns>
+        public async Task<RetailerListDto> GetRetailerByIdDtoAsync(EntityDto<Guid> input)
+        {
+            var entity =await _retailerRepository.GetAll().Where(r => r.Id == input.Id).FirstOrDefaultAsync();
+            return entity.MapTo<RetailerListDto>();
+        }
+        
     }
 }
 
