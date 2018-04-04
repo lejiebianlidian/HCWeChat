@@ -18,9 +18,9 @@ export class WechatUserComponent extends AppComponentBase implements OnInit {
         { text: '客户经理', value: 2 },
         { text: '营销人员', value: 3 },
         { text: '零售客户', value: 1 },
-        
+
     ];
-    WechatUserName='';
+    WechatUserName = '';
     constructor(injector: Injector, private wechatUserService: WechatUserServiceProxy, private modal: NzModalService) {
         super(injector);
     }
@@ -42,7 +42,7 @@ export class WechatUserComponent extends AppComponentBase implements OnInit {
     getParameter(): Parameter[] {
         var arry = [];
         arry.push(Parameter.fromJS({ key: 'Name', value: this.search.name }));
-        arry.push(Parameter.fromJS({ key: 'UserType', value: this.search.UserType }));
+        // arry.push(Parameter.fromJS({ key: 'UserType', value: this.search.UserType }));
         return arry;
 
     }
@@ -52,12 +52,13 @@ export class WechatUserComponent extends AppComponentBase implements OnInit {
      * @param wechatUser 微信用户实体
      */
     unBinding(wechatUser: WechatUser, TplContent) {
-        this.WechatUserName=wechatUser.nickName;
+        this.WechatUserName = wechatUser.nickName;
         this.modal.confirm({
             content: TplContent,
             cancelText: '取消',
-            okText:'确定',
-            onOk:()=>{
+            okText: '确定',
+            onOk: () => {
+                wechatUser.userType = 4;
                 wechatUser.bindStatus = 0;
                 wechatUser.unBindTime = new Date;
                 this.wechatUserService.update(wechatUser).subscribe(() => {
@@ -66,6 +67,6 @@ export class WechatUserComponent extends AppComponentBase implements OnInit {
                 });
             }
         })
-      
+
     }
 }

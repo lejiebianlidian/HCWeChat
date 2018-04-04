@@ -39,7 +39,8 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
     //行内编辑
     editIndex = -1;
     editObj = {};
-    id = 0
+    id = 0;
+    addIndex: number;
     constructor(injector: Injector, private activityService: ActivityServiceProxy,
         private fb: FormBuilder, private activityGoodsService: ActivityGoodsServiceProxy,
         private modal: NzModalService, private routerpar: ActivatedRoute,
@@ -98,7 +99,7 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
                 //新增时清除日期默认值
                 this.acitivityDto.beginTime = null;
                 this.acitivityDto.endTime = null;
-                this.acitivityDto.activityType=1;
+                this.acitivityDto.activityType = 1;
                 //活动活动状态
                 this.acitivityDto.status = 1;
                 this.acitivityDto.statusName = '草稿';
@@ -199,7 +200,8 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
      */
     add() {
         this.items.push(this.createFormGoods());
-        var index = this.items.length - 1
+        var index = this.items.length - 1;
+        this.addIndex = index;
         this.edit(index);
         // this.items.at(index).value.minNum = 10;
     }
@@ -209,6 +211,14 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
      * @param i 
      */
     edit(index: number) {
+        var addIndex = this.items.length - 1;
+        if (addIndex != index) {
+            if (!this.items.at(addIndex).value.id) {
+                this.delete(addIndex);
+            }
+        }
+        console.log('editIndex:');
+        console.log(this.editIndex);
         //editIndex用于判断是否新增
         if (this.editIndex !== -1 && this.editObj) {
             this.items.at(this.editIndex).patchValue(this.editObj);
