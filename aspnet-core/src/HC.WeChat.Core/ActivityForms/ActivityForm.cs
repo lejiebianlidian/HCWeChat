@@ -35,8 +35,7 @@ namespace HC.WeChat.ActivityForms
         /// <summary>
         /// 零售户Id， 外键
         /// </summary>
-        [Required]
-        public Guid RetailerId { get; set; }
+        public Guid? RetailerId { get; set; }
 
         /// <summary>
         /// 申请商品Id，外键

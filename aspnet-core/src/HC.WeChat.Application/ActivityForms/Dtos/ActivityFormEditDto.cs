@@ -3,6 +3,8 @@ using HC.WeChat.ActivityForms.Dtos.LTMAutoMapper;
 using HC.WeChat.ActivityForms;
 using System;
 using HC.WeChat.WechatEnums;
+using Abp.AutoMapper;
+using HC.WeChat.ActivityDeliveryInfos;
 
 namespace HC.WeChat.ActivityForms.Dtos
 {
@@ -30,8 +32,7 @@ namespace HC.WeChat.ActivityForms.Dtos
         /// <summary>
         /// 零售户Id， 外键
         /// </summary>
-        [Required]
-        public Guid RetailerId { get; set; }
+        public Guid? RetailerId { get; set; }
 
 
         /// <summary>
@@ -101,6 +102,7 @@ namespace HC.WeChat.ActivityForms.Dtos
         //public  ICollection<ActivityFormLog> ApprovalLogs { get; set; }
     }
 
+    [AutoMapTo(typeof(ActivityForm), typeof(ActivityDeliveryInfo))]
     public class ActivityFormInputDto
     {
         /// <summary>
