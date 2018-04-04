@@ -7,7 +7,7 @@ using Abp.AutoMapper;
 
 namespace HC.WeChat.WeChatUsers.Dtos
 {
-    [AutoMapFrom(typeof(WeChatUser))]
+    [AutoMapFrom(typeof(WeChatUser))]//只匹配查询（与存在的字段相匹配）
     public class WeChatUserListDto : EntityDto<Guid>
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION

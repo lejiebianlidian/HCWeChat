@@ -48,7 +48,10 @@ namespace HC.WeChat.Retailers
         public async Task<PagedResultDto<RetailerListDto>> GetPagedRetailers(GetRetailersInput input)
         {
 
-            var query = _retailerRepository.GetAll();
+            var query = _retailerRepository.GetAll()
+                .WhereIf(!string.IsNullOrEmpty(input.Name), r => r.Name.Contains(input.Name) || r.Code.Contains(input.Name))
+                .WhereIf(input.Scale.HasValue, r => r.Scale == input.Scale)
+                .WhereIf(input.Markets.HasValue, r => r.MarketType == input.Markets);
             //TODO:根据传入的参数添加过滤条件
             var retailerCount = await query.CountAsync();
 

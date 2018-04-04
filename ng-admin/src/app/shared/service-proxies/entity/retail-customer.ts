@@ -24,6 +24,8 @@ export class RetailCustomer implements IRetailCustomer {
     terminalTypeName: string;
     scaleName: string;
     marketTypeName: string;
+    activeText: string;
+    activeType: string;
     // isDeleted: boolean;
     // deleterUserId: number;
     // deletionTime: Date;
@@ -62,7 +64,6 @@ export class RetailCustomer implements IRetailCustomer {
             this.scale = data["scale"];
             this.marketType = data["marketType"];
             this.deliveryLine = data["deliveryLine"];
-            this.tenantId = data["tenantId"];
             this.licenseKey = data["licenseKey"];
             this.orderModeName = data["orderModeName"];
             this.terminalTypeName = data["terminalTypeName"];
