@@ -59,5 +59,7 @@ namespace HC.WeChat.ActivityForms
         Task BatchDeleteActivityFormsAsync(List<Guid> input);
 
         Task<APIResultDto> SubmitActivityFormAsync(ActivityFormInputDto input);
+
+        Task<APIResultDto> ChangeActivityFormStatusAsync(ActivityFormStatusDto input);
     }
 }

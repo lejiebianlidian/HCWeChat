@@ -1373,8 +1373,8 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("StatusName").IsRequired();
                 b.Property<string>("Opinion").HasMaxLength(200);
                 b.Property<int>("UserType").IsRequired();
-                b.Property<Guid>("UserId").IsRequired();
-                b.Property<string>("UserName").IsRequired().HasMaxLength(50);
+                b.Property<Guid?>("UserId");
+                b.Property<string>("UserName").HasMaxLength(50);
                 b.Property<DateTime>("ActionTime").IsRequired();
 
                 b.HasKey("Id");

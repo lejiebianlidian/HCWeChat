@@ -5,13 +5,12 @@ using System;
 using HC.WeChat.WechatEnums;
 using Abp.AutoMapper;
 using HC.WeChat.ActivityDeliveryInfos;
+using Abp.Application.Services.Dto;
 
 namespace HC.WeChat.ActivityForms.Dtos
 {
     public class ActivityFormEditDto
     {
-        ////BCC/ BEGIN CUSTOM CODE SECTION
-        ////ECC/ END CUSTOM CODE SECTION
         public Guid? Id { get; set; }
 
         /// <summary>
@@ -146,5 +145,13 @@ namespace HC.WeChat.ActivityForms.Dtos
         public string UserName { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
+    }
+
+    [AutoMapTo(typeof(ActivityForm))]
+    public class ActivityFormStatusDto : EntityDto<Guid>
+    {
+        public FormStatusEnum Status { get; set; }
+
+        public string Opinion { get; set; }
     }
 }
