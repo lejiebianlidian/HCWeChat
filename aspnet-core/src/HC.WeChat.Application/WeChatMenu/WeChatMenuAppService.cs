@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Abp.Authorization;
+using HC.WeChat.Authorization;
 using HC.WeChat.Dto;
 using HC.WeChat.WechatAppConfigs;
 using HC.WeChat.WechatAppConfigs.Dtos;
@@ -14,6 +16,7 @@ using Senparc.Weixin.MP.Entities.Menu;
 
 namespace HC.WeChat.WeChatMenu
 {
+    [AbpAuthorize(AppPermissions.Pages)]
     public class WeChatMenuAppService : WeChatAppServiceBase, IWeChatMenuAppService
     {
         public int? TenantId { get; set; }
