@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Employee } from '@shared/service-proxies/entity/employee';
 import { EmployeeServiceProxy, PagedResultDtoOfEmployee } from '@shared/service-proxies/marketing-service/employee-service';
 import { EmployeesServiceProxy } from '@shared/service-proxies/service-proxies';
+import { Parameter } from '@shared/service-proxies/entity';
 
 @Component({
     moduleId: module.id,
@@ -34,13 +35,16 @@ export class EmployeeModalComponent implements OnInit {
         { text: '消费者', value: 4 },
         { text: '取消关注', value: 5 },
     ];
+    isManger=false;
     constructor(private employeeService: EmployeeServiceProxy, private service: EmployeesServiceProxy) {
 
     }
     ngOnInit(): void {
 
     }
-    show() {
+    //isManger用判断模态框是否只显示经理级的员工
+    show(isManger=false) {
+        this.isManger=isManger
         this.employee = new Array<Employee>();
         // this.employee=[];
         this.emodalVisible = true;
@@ -52,15 +56,18 @@ export class EmployeeModalComponent implements OnInit {
      */
     refreshData() {
         this.eloading = true;
-        this.service.getAllModal(this.q.no).subscribe((result: PagedResultDtoOfEmployee) => {
+        this.service.getAllModal(this.getParameter()).subscribe((result: PagedResultDtoOfEmployee) => {
             this.eloading = false;
             let status = 5;
-            this.employee = result.items.map(i => {
-                i.positionName = this.positions[i.position - 1].text;
-                return i;
-            });
+            this.employee = result.items;
             this.q.total = result.totalCount;
         });
+    }
+    getParameter(): Parameter[] {
+        var arry = [];
+        arry.push(Parameter.fromJS({ key: 'Filter', value: this.q.no }));
+        arry.push(Parameter.fromJS({ key: 'IsManger', value: this.isManger }));
+        return arry;
     }
 
     /**

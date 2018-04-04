@@ -35,7 +35,7 @@ export class RetailCustomerServiceProxy {
      * @param id 消息id
      */
     get(id: number): Observable<RetailCustomer> {
-        let url_ = this.baseUrl + "/api/services/app/Retailer/GetRetailerByIdAsync?";
+        let url_ = this.baseUrl + "/api/services/app/Retailer/GetRetailerByIdDtoAsync?";
         if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");

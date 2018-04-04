@@ -31,6 +31,7 @@ import { CreateEmployeeComponent } from './markeeting-serve/employees/create-emp
 import { EditEmployeeComponent } from './markeeting-serve/employees/edit-employee/edit-employee.component';
 import { RetailCustomerComponent } from './customer-service/retail-customer/retail-customer.component';
 import { WechatUserComponent } from './wechat-manager/wechat-user/wechat-user.component';
+import { RetailCustomerDetailComponent } from './customer-service/retail-customer-detail/retail-customer-detail.component';
 
 
 @NgModule({
@@ -63,7 +64,8 @@ import { WechatUserComponent } from './wechat-manager/wechat-user/wechat-user.co
     CreateEmployeeComponent,
     EditEmployeeComponent,
     RetailCustomerComponent,
-    WechatUserComponent
+    WechatUserComponent,
+    RetailCustomerDetailComponent
    ],
    providers: [ AppRouteGuard ]
 })

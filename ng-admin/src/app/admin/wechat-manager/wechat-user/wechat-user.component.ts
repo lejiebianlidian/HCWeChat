@@ -42,7 +42,7 @@ export class WechatUserComponent extends AppComponentBase implements OnInit {
     getParameter(): Parameter[] {
         var arry = [];
         arry.push(Parameter.fromJS({ key: 'Name', value: this.search.name }));
-        // arry.push(Parameter.fromJS({ key: 'UserType', value: this.search.UserType }));
+        arry.push(Parameter.fromJS({ key: 'UserType', value: this.search.UserType }));
         return arry;
 
     }
