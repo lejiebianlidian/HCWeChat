@@ -3,9 +3,11 @@ using Abp.Application.Services.Dto;
 using HC.WeChat.WeChatUsers.Dtos.LTMAutoMapper;
 using HC.WeChat.WeChatUsers;
 using HC.WeChat.WechatEnums;
+using Abp.AutoMapper;
 
 namespace HC.WeChat.WeChatUsers.Dtos
 {
+    [AutoMapFrom(typeof(WeChatUser))]//只匹配查询（与存在的字段相匹配）
     public class WeChatUserListDto : EntityDto<Guid>
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -19,7 +21,7 @@ namespace HC.WeChat.WeChatUsers.Dtos
         public DateTime? BindTime { get; set; }
         public int? TenantId { get; set; }
         public DateTime? UnBindTime { get; set; }
-
+        
         public string HeadImgUrl { get; set; }
 
         public string UserTypeName

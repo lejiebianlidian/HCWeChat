@@ -70,12 +70,24 @@
             </div>
             <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('qrCodeUrl')">
                 <!-- <nz-input formControlName="qrCodeUrl" [(ngModel)]="authSet.qrCodeUrl" [nzId]="'qrCodeUrl'"></nz-input> -->
-                <label nz-upload nzAccept="image" nzAction="https://jsonplaceholder.typicode.com/posts/">
+                <!--<label nz-upload nzAccept="image" nzAction="https://jsonplaceholder.typicode.com/posts/">
                     <button nz-button>
                         <i class="anticon anticon-upload"></i>
                         <span>上传</span>
                     </button>
-                </label>
+                    <div ><nz-avatar nzSize="large" nzSrc="authSet.qrCodeUrl"></nz-avatar></div>
+                   
+                </label>-->
+                <!--<img [src]="authSet.qrCodeUrl" >-->
+                <img src="{{authSet.qrCodeUrl}}" >
+                <!-- <nz-upload class="avatar-uploader" nzAction="https://jsonplaceholder.typicode.com/posts/" nzName="avatar" nzListType="picture-card"
+                     [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event)">
+                    <ng-container>
+                        <i class="anticon anticon-plus"></i>
+                        <div class="ant-upload-text">Upload</div>
+                    </ng-container> -->
+                   
+                <!-- </nz-upload> -->
                 <!-- <div nz-form-explain *ngIf="getFormControl('qrCodeUrl').dirty&&getFormControl('qrCodeUrl').hasError('maxlength')">字符长度小于等于250</div> -->
             </div>
         </div>

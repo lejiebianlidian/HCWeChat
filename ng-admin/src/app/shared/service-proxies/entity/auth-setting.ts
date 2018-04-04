@@ -37,6 +37,7 @@ export class AuthSetting implements IAuthSetting{
             this.expiresIn = data["expiresIn"];
             this.accessToken = data["accessToken"];
             this.nextGettime = data["nextGettime"];
+            this.encodingAESKey = data["encodingAESKey"];
             this.id = data["id"];
             
         }
@@ -60,6 +61,7 @@ export class AuthSetting implements IAuthSetting{
         data["expiresIn"] = this.expiresIn;
         data["accessToken"] = this.accessToken;
         data["nextGettime"] = this.nextGettime;
+        data["encodingAESKey"] = this.encodingAESKey;
         data["id"] = this.id;
         return data;
     }

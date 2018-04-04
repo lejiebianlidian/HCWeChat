@@ -82,7 +82,7 @@
             "icon":"anticon anticon-customer-service",
             "children":[{
                 "text":"零售客户",
-                "link":"/admin",
+                "link":"/admin/retail-customer",
                 "translate":"retail-client"
           },{
                 "text":"客户热线",

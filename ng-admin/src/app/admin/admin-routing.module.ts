@@ -36,6 +36,8 @@ const routes: Routes = [
       { path: 'activity/:id', component: ActivityComponent, data: { translate: 'activity', permission: 'Pages' ,title:'活动详情'}, canActivate: [AppRouteGuard] },
       { path: 'retail-customer', component: RetailCustomerComponent, data: { translate: 'retail-customer', permission: 'Pages'}, canActivate: [AppRouteGuard] },
       { path: 'wechat-user', component: WechatUserComponent, data: { translate: 'wechat-user', permission: 'Pages'}, canActivate: [AppRouteGuard] },
+      { path: 'retail-detail', component: WechatUserComponent, data: { translate: 'retail-detail', permission: 'Pages'}, canActivate: [AppRouteGuard] },
+      { path: 'retail-detail/:id', component: WechatUserComponent, data: { translate: 'retail-detail', permission: 'Pages'}, canActivate: [AppRouteGuard] },
       
     ]
   }
