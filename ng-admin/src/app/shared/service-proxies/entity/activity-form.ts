@@ -190,3 +190,46 @@ export interface IActivityFormDto {
     statusName: string;
     creationUser: string;
 }
+
+export class ActivityFormStatusDto {
+    id: string;
+    status: number;
+    opinion: string;
+    constructor(data?: ActivityFormStatusDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.status = data["status"];
+            this.opinion = data["opinion"];
+        }
+    }
+
+    static fromJS(data: any): ActivityFormStatusDto {
+        let result = new ActivityFormStatusDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["status"] = this.status;
+        data["opinion"] = this.opinion;
+        return data;
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new ActivityFormStatusDto();
+        result.init(json);
+        return result;
+    }
+}

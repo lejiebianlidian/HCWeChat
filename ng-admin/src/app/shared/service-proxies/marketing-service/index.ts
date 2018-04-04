@@ -3,3 +3,4 @@ export * from './activity-delivery-service';
 export * from './acticity-service';
 export * from './activity-goods-service';
 export * from './employee-service';
+export * from './activity-form-service';
