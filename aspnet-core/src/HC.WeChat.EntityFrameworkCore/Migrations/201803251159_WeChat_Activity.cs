@@ -123,8 +123,8 @@ namespace HC.WeChat.Migrations
                     StatusName = table.Column<string>(nullable: false),
                     Opinion = table.Column<string>(maxLength: 200, nullable: true),
                     UserType = table.Column<int>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 50, nullable: false),
+                    UserId = table.Column<Guid>(nullable: true),
+                    UserName = table.Column<string>(maxLength: 50, nullable: true),
                     ActionTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>

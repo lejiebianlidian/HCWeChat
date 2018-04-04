@@ -59,7 +59,8 @@ namespace HC.WeChat.WechatEnums
         客户经理 = 2,
         营销人员 = 3,
         消费者 = 4,
-        取消关注 = 5
+        取消关注 = 5,
+        后台 = 6
     }
 
     /// <summary>

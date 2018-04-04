@@ -50,14 +50,12 @@ namespace HC.WeChat.ActivityFormLogs.Dtos
         /// <summary>
         /// 操作用户Id，零售用户 或  客户经理
         /// </summary>
-        [Required]
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
 
 
         /// <summary>
         /// 操作用户名称
         /// </summary>
-        [Required]
         [StringLength(50)]
         public string UserName { get; set; }
 

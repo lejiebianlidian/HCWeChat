@@ -15,7 +15,7 @@ namespace HC.WeChat.ActivityFormLogs.Dtos
         public string StatusName { get; set; }
         public string Opinion { get; set; }
         public UserTypeEnum UserType { get; set; }
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
         public string UserName { get; set; }
         public DateTime ActionTime { get; set; }
     }

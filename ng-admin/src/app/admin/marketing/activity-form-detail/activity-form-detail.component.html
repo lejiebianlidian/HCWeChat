@@ -3,6 +3,7 @@
         <img src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
     </ng-template>
     <ng-template *ngIf="form" #action>
+        <button nz-button *ngIf="form.status == 1" [nzSize]="'large'">修改申请单</button>
         <button nz-button [nzSize]="'large'" *ngIf="form.status == 1 || form.status == 2 || form.status == 3">取消</button>
         <button nz-button [nzSize]="'large'" *ngIf="form.status == 1 || form.status == 2">拒绝</button>
         <button nz-button [nzType]="'primary'" *ngIf="form.status == 1" [nzSize]="'large'">初审通过</button>
@@ -14,7 +15,7 @@
             <desc-list-item term="活动名称">{{form.activityName}}</desc-list-item>
             <desc-list-item term="零售客户">{{form.retailerName}}</desc-list-item>
             <desc-list-item term="客户经理">{{form.managerName}}</desc-list-item>
-            <desc-list-item term="申请商品规格">{{form.goodsSpecification}}</desc-list-item>
+            <desc-list-item term="申请商品">{{form.goodsSpecification}}</desc-list-item>
             <desc-list-item term="申请数量">{{form.num}}</desc-list-item>
             <desc-list-item term="申请人">{{form.creationUser}}</desc-list-item>
             <desc-list-item term="申请时间">{{form.creationTime | _date}}</desc-list-item>

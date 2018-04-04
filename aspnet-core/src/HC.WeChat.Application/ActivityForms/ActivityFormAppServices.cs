@@ -22,6 +22,7 @@ using HC.WeChat.Retailers;
 using HC.WeChat.WechatEnums;
 using HC.WeChat.ActivityFormLogs;
 using HC.WeChat.Activities;
+using HC.WeChat.Authorization.Users;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -39,6 +40,7 @@ namespace HC.WeChat.ActivityForms
         private readonly IRepository<ActivityDeliveryInfo, Guid> _activitydeliveryinfoRepository;
         private readonly IRepository<ActivityFormLog, Guid> _activityFormLogRepository;
         private readonly IRepository<Activity, Guid> _activityRepository;
+        private readonly IRepository<User, long> _userRepository;
 
         /// <summary>
         /// 构造函数
@@ -50,6 +52,7 @@ namespace HC.WeChat.ActivityForms
             , IRepository<ActivityDeliveryInfo, Guid> activitydeliveryinfoRepository
             , IRepository<ActivityFormLog, Guid> activityFormLogRepository
             , IRepository<Activity, Guid> activityRepository
+            , IRepository<User, long> userRepository
         )
         {
             _activityformRepository = activityformRepository;
@@ -59,6 +62,7 @@ namespace HC.WeChat.ActivityForms
             _activitydeliveryinfoRepository = activitydeliveryinfoRepository;
             _activityFormLogRepository = activityFormLogRepository;
             _activityRepository = activityRepository;
+            _userRepository = userRepository;
         }
 
         /// <summary>
@@ -272,6 +276,29 @@ namespace HC.WeChat.ActivityForms
             GenerateCode gserver = new GenerateCode(0, 0);
             string code = "YA" + gserver.nextId().ToString();
             return code;
+        }
+
+        public async Task<APIResultDto> ChangeActivityFormStatusAsync(ActivityFormStatusDto input)
+        {
+            var form = await _activityformRepository.GetAsync(input.Id);
+            var user = await _userRepository.GetAsync(AbpSession.UserId.Value);
+            //更新状态
+            form.Status = input.Status;
+            //更新日志
+            var log = new ActivityFormLog();
+            log.ActionTime = DateTime.Now;
+            log.ActivityFormId = form.Id;
+            log.Opinion = input.Opinion;
+            log.Status = input.Status;
+            log.StatusName = input.Status.ToString();
+            log.UserId = user.EmployeeId;
+            log.UserName = user.UserName;
+            log.UserType = user.EmployeeId.HasValue ? UserTypeEnum.客户经理 : UserTypeEnum.后台;
+
+            await _activityformRepository.UpdateAsync(form);
+            await _activityFormLogRepository.InsertAsync(log);
+
+            return new APIResultDto() { Code = 0, Msg = "操作成功" };
         }
     }
 }
