@@ -70,5 +70,12 @@ namespace HC.WeChat.Retailers
         /// <param name="input">零售户id</param>
         /// <returns></returns>
         Task<RetailerListDto> GetRetailerByIdDtoAsync(EntityDto<Guid> input);
+
+        /// <summary>
+        /// 检查零售户编码是否可用
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        bool CheckName(string code);
     }
 }

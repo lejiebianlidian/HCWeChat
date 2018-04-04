@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RetailCustomer, Employee } from '@shared/service-proxies/entity';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeModalComponent } from '../../users/employee-modal/employee-modal.component';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
     moduleId: module.id,
@@ -44,9 +45,9 @@ export class RetailCustomerDetailComponent extends AppComponentBase implements O
     ]
     isConfirmLoading = false;
     //经理不可编辑
-    isDisablec=true;
+    isDisablec = true;
     constructor(injector: Injector, private retailService: RetailCustomerServiceProxy, private ActRouter: ActivatedRoute,
-        private fb: FormBuilder, private router: Router) {
+        private fb: FormBuilder, private router: Router, private modal: NzModalService) {
         super(injector);
         this.id = this.ActRouter.snapshot.params['id'];
         console.log('id:');
@@ -116,11 +117,20 @@ export class RetailCustomerDetailComponent extends AppComponentBase implements O
         }
         if (this.form.valid) {
             this.isConfirmLoading = true;
-            this.retailService.update(this.retailCustomerd)
-                .finally(() => { this.isConfirmLoading = false; })
-                .subscribe(() => {
-                    this.notify.info(this.l('保存成功！'));
-                });
+            this.retailService.CheckCode(this.retailCustomerd.code).subscribe((isCode: boolean) => {
+                if (isCode) {
+                    this.retailService.update(this.retailCustomerd)
+                        .finally(() => { this.isConfirmLoading = false; })
+                        .subscribe(() => {
+                            this.notify.info(this.l('保存成功！'));
+                        });
+                } else {
+                    this.isConfirmLoading = false;
+                    this.modal.warning({
+                        title: '改客户编码已存在！'
+                    });
+                }
+            })
         }
     }
     /**

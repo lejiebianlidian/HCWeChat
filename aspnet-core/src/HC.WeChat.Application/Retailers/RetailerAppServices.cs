@@ -216,7 +216,24 @@ namespace HC.WeChat.Retailers
             var entity =await _retailerRepository.GetAll().Where(r => r.Id == input.Id).FirstOrDefaultAsync();
             return entity.MapTo<RetailerListDto>();
         }
-        
+
+        /// <summary>
+        /// 检查零售户编码是否可用
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckName(string code)
+        {
+            var count = _retailerRepository.GetAll().Where(r => r.Code==code).Count();
+            if (count > 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
     }
 }
 

@@ -131,22 +131,20 @@
 
     <div nz-row [nzGutter]="16">
         <div nz-col nzMd="8" nzSm="12" nzXs="24">
-            <div nz-form-item nz-row>
-                <div nz-form-label nz-col [nzSm]="">
-                    <label>客户经理</label>
-                </div>
-                <div nz-form-control nz-col [nzSm]="" nzHasFeedback [nzValidateStatus]="getFormControl('manager')">
+            <div nz-form-label nz-col>
+                <label>客户经理</label>
+            </div>
+            <div nz-form-item nz-row style="width:100%;" [nzGutter]="8">
+                <div nz-form-control nz-col [nzSpan]="12" nzHasFeedback [nzValidateStatus]="getFormControl('manager')">
                     <nz-input [nzDisabled]="isDisablec" formControlName="manager" [(ngModel)]="retailCustomerd.manager" [nzId]="'content'">
-                        <ng-template class="bg-primary-dark" #addOnAfter>
-                            <button nz-button style="width: 80px;" [nzType]="'default'" [nzSize]="'large '" type="button" (click)="employee()">
-                                选择经理
-                            </button>
-                        </ng-template>
                     </nz-input>
-
                     <div nz-form-explain *ngIf="getFormControl('manager').dirty&&getFormControl('manager').hasError('maxlength')">字符长度小于等于50</div>
                 </div>
-
+                <div nz-col [nzSpan]="12">
+                    <button nz-button style="width: 80px;" [nzType]="'primary'" [nzSize]="'large '" type="button" (click)="employee()">
+                        选择经理
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -185,7 +183,8 @@
                     <label>经营规模</label>
                 </div>
                 <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="getFormControl('scale')">
-                    <nz-select formControlName="scale" [nzPlaceHolder]="'请选择经营规模'" [(ngModel)]="retailCustomerd.scale" [nzShowSearch]="true" nzSize="large">
+                    <nz-select formControlName="scale" [nzPlaceHolder]="'请选择经营规模'" [(ngModel)]="retailCustomerd.scale" [nzShowSearch]="true"
+                        nzSize="large">
                         <nz-option *ngFor="let i of scales" [nzLabel]="i.text" [nzValue]="i.value">
                         </nz-option>
                     </nz-select>
