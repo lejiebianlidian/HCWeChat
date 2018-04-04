@@ -1,10 +1,12 @@
-<form nz-form [formGroup]="formc" *ngIf="cmodalVisible" id="frm_create_employee" (ngSubmit)="savec()">
+<form nz-form [formGroup]="formc" *ngIf="cmodalVisible" id="frm_create_employee" (ngSubmit)="savec(deleteContent)">
     <nz-modal [nzVisible]="cmodalVisible" [nzTitle]="'创建员工'" [nzConfirmLoading]="cloading" [nzContent]="modalContent" [nzFooter]="modalFooter"
         (nzOnCancel)="chandleCancel($event)">
         <ng-template #modalContent>
             <ng-template #nzTabHeading>
                 员工信息
             </ng-template>
+            <ng-template #deleteContent>
+                </ng-template>
             <fieldset>
                 <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSm]="5">

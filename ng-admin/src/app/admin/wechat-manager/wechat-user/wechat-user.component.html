@@ -15,7 +15,7 @@
             <div nz-col [nzSpan]="8" class="mb-md">
                 <div nz-form-item class="d-flex">
                     <div nz-form-control class="flex-1">
-                        <nz-select name="UserType" [nzPlaceHolder]="'请输入用户类型'" [(ngModel)]="search.UserType" [nzShowSearch]="true" nzSize="large">
+                        <nz-select name="UserType" [nzPlaceHolder]="'请选择用户类型'" [(ngModel)]="search.UserType" [nzShowSearch]="true" nzSize="large">
                             <nz-option *ngFor="let i of positions" [nzLabel]="i.text" [nzValue]="i.value">
                             </nz-option>
                         </nz-select>

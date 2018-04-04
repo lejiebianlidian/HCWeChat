@@ -221,16 +221,28 @@ namespace HC.WeChat.Retailers
         /// 检查零售户编码是否可用
         /// </summary>
         /// <returns></returns>
-        public bool CheckName(string code)
+        public bool CheckName(string code,Guid?id)
         {
             var count = _retailerRepository.GetAll().Where(r => r.Code==code).Count();
-            if (count > 0)
+            var entity = _retailerRepository.GetAll().Where(e => e.Id == id).FirstOrDefault();
+            if (entity != null)
             {
-                return false;
+                if (entity.Code == code)
+                {
+                    return true;
+                }
+                else if (count > 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
             else
             {
-                return true;
+                return count < 0;
             }
         }
 

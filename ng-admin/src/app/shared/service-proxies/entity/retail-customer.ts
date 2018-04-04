@@ -26,13 +26,13 @@ export class RetailCustomer implements IRetailCustomer {
     marketTypeName: string;
     activeText: string;
     activeType: string;
-    // isDeleted: boolean;
-    // deleterUserId: number;
-    // deletionTime: Date;
-    // lastModificationTime: Date;
-    // lastModifierUserId: number;
-    // creationTime: Date;
-    // creatorUserId: number;
+    isDeleted: boolean;
+    deleterUserId: number;
+    deletionTime: Date;
+    lastModificationTime: Date;
+    lastModifierUserId: number;
+    creationTime: Date;
+    creatorUserId: number;
     constructor(data?: IRetailCustomer) {
         if (data) {
             for (var property in data) {
@@ -69,13 +69,13 @@ export class RetailCustomer implements IRetailCustomer {
             this.terminalTypeName = data["terminalTypeName"];
             this.scaleName = data["scaleName"];
             this.marketTypeName = data["marketTypeName"];
-            // this.isDeleted = data["isDeleted"];
-            // this.creationTime = data["creationTime"];
-            // this.creatorUserId = data["creatorUserId"];
-            // this.lastModificationTime = data["lastModificationTime"];
-            // this.lastModifierUserId = data["lastModifierUserId"];
-            // this.deletionTime = data["deletionTime"];
-            // this.deleterUserId = data["deleterUserId"];
+            this.isDeleted = data["isDeleted"];
+            this.creationTime = data["creationTime"];
+            this.creatorUserId = data["creatorUserId"];
+            this.lastModificationTime = data["lastModificationTime"];
+            this.lastModifierUserId = data["lastModifierUserId"];
+            this.deletionTime = data["deletionTime"];
+            this.deleterUserId = data["deleterUserId"];
         }
     }
 
@@ -109,14 +109,11 @@ export class RetailCustomer implements IRetailCustomer {
         data["tenantId"] = this.tenantId;
         data["employeeId"] = this.employeeId;
         data["licenseKey"] = this.licenseKey;
-
-        // data["isDeleted"] = this.isDeleted;
-        // data["creationTime"] = this.creationTime;
-        // data["creatorUserId"] = this.creatorUserId;
-        // data["lastModificationTime"] = this.lastModificationTime;
-        // data["lastModifierUserId"] = this.lastModifierUserId;
-        // data["deletionTime"] = this.deletionTime;
-        // data["deleterUserId"] = this.deleterUserId;
+        data["isDeleted"] = this.isDeleted;
+        data["creationTime"] = this.creationTime;
+        data["creatorUserId"] = this.creatorUserId;
+        data["deletionTime"] = this.deletionTime;
+        data["deleterUserId"] = this.deleterUserId;
         return data;
     }
 

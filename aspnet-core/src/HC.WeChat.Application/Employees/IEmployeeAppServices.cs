@@ -70,5 +70,12 @@ namespace HC.WeChat.Employees
         /// <param name="input">员工信息实体</param>
         /// <returns></returns>
         Task CreateOrUpdateEmployeeDto(EmployeeEditDto input);
+
+        /// <summary>
+        /// 检查零售户编码是否可用
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        bool CheckCode(string code,Guid? id);
     }
 }

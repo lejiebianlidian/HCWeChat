@@ -17,7 +17,7 @@ import { API_BASE_URL, SwaggerException } from '@shared/service-proxies/service-
 
 
 function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): Observable<any> {
-    if(result !== null && result !== undefined)
+    if (result !== null && result !== undefined)
         return Observable.throw(result);
     else
         return Observable.throw(new SwaggerException(message, status, response, headers, null));
@@ -28,9 +28,9 @@ export class EmployeeServiceProxy {
     private baseUrl: string;
     protected jsonParseReviver: (key: string, value: any) => any = undefined;
 
-    constructor(@Inject(Http) http:Http,@Optional() @Inject(API_BASE_URL) baseUrl?:string) { 
-        this.http=http;
-        this.baseUrl=baseUrl?baseUrl:"";
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
     }
     /**
      * 获取员工消息（Modal）
@@ -90,25 +90,25 @@ export class EmployeeServiceProxy {
         }
         return Observable.of<PagedResultDtoOfEmployee>(<any>null);
     }
-   
+
     /**
      * 获取自动回复消息
      * @return Success
      */
-    getAll(skipCount: number, maxResultCount: number,Filter:string): Observable<PagedResultDtoOfEmployee> {
+    getAll(skipCount: number, maxResultCount: number, Filter: string): Observable<PagedResultDtoOfEmployee> {
         let url_ = this.baseUrl + "/api/services/app/Employee/GetPagedEmployees?";
         if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
         if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         if (Filter !== undefined)
-            url_ += "Filter=" + encodeURIComponent("" + Filter) + "&"; 
+            url_ += "Filter=" + encodeURIComponent("" + Filter) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -128,7 +128,7 @@ export class EmployeeServiceProxy {
     }
 
     protected processGetAll(response: Response): Observable<PagedResultDtoOfEmployee> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -157,13 +157,13 @@ export class EmployeeServiceProxy {
     get(id: string): Observable<Employee> {
         let url_ = this.baseUrl + "/api/services/app/Employee/GetEmployeeByIdAsync?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -183,7 +183,7 @@ export class EmployeeServiceProxy {
     }
 
     protected processGet(response: Response): Observable<Employee> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -214,12 +214,12 @@ export class EmployeeServiceProxy {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
-        
+
         let options_ = {
             body: content_,
             method: "post",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -239,7 +239,7 @@ export class EmployeeServiceProxy {
     }
 
     protected processUpdate(response: Response): Observable<Employee> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -261,19 +261,19 @@ export class EmployeeServiceProxy {
         return Observable.of<Employee>(<any>null);
     }
 
-     /**
-     * @return Success
-     */
+    /**
+    * @return Success
+    */
     delete(id: number): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Employee/DeleteEmployee?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "delete",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
             })
         };
 
@@ -292,7 +292,7 @@ export class EmployeeServiceProxy {
     }
 
     protected processDelete(response: Response): Observable<void> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -309,6 +309,62 @@ export class EmployeeServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Observable.of<void>(<any>null);
+    }
+
+    CheckCode(code: string, id?: string): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/Employee/CheckCode?";
+        if (code !== undefined)
+            url_ += "code=" + encodeURIComponent("" + code) + "&";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        // const content_ = JSON.stringify(input);
+
+        let options_ = {
+            // body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processCheckCode(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processCheckCode(response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<boolean>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processCheckCode(response: Response): Observable<boolean> {
+        const status = response.status;
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? resultData200 : false;
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<boolean>(<any>null);
     }
 }
 export class PagedResultDtoOfEmployee implements IPagedResultDtoOfEmployee {
@@ -349,7 +405,7 @@ export class PagedResultDtoOfEmployee implements IPagedResultDtoOfEmployee {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 
     clone() {

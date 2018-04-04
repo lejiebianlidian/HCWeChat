@@ -117,7 +117,7 @@ export class RetailCustomerDetailComponent extends AppComponentBase implements O
         }
         if (this.form.valid) {
             this.isConfirmLoading = true;
-            this.retailService.CheckCode(this.retailCustomerd.code).subscribe((isCode: boolean) => {
+            this.retailService.CheckCode(this.retailCustomerd.code,this.retailCustomerd.id).subscribe((isCode: boolean) => {
                 if (isCode) {
                     this.retailService.update(this.retailCustomerd)
                         .finally(() => { this.isConfirmLoading = false; })

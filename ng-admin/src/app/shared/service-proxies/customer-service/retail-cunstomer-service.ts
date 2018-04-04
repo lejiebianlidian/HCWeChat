@@ -258,10 +258,12 @@ export class RetailCustomerServiceProxy {
         return Observable.of<PagedResultDtoOfRetailCustomer>(<any>null);
     }
 
-   CheckCode(code:string): Observable<boolean> {
+    CheckCode(code: string, id: string): Observable<boolean> {
         let url_ = this.baseUrl + "/api/services/app/Retailer/CheckName?";
         if (code !== undefined)
             url_ += "code=" + encodeURIComponent("" + code) + "&";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         // const content_ = JSON.stringify(input);

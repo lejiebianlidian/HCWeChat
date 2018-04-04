@@ -11,7 +11,7 @@
                         <label for="name">活动名称</label>
                     </div>
                     <div nz-form-control class="flex-1">
-                        <nz-input [(ngModel)]="search.name" name="name" [nzSize]="'large'" [nzPlaceHolder]="'请输入活动名称'" nzId="name"></nz-input>
+                        <nz-input [(ngModel)]="search.name" name="name" [nzSize]="'large'" [nzPlaceHolder]="'请选择活动名称'" nzId="name"></nz-input>
                     </div>
                 </div>
             </div>
@@ -21,7 +21,7 @@
                         <label for="startTime">开始时间</label>
                     </div>
                     <div nz-form-control class="flex-1">
-                        <nz-datepicker name="startTime" style="width:100%;" [nzSize]="'large'" nzId="startTime" [(ngModel)]="search.startTime" nzPlaceHolder="请输入开始时间"></nz-datepicker>
+                        <nz-datepicker name="startTime" style="width:100%;" [nzSize]="'large'" nzId="startTime" [(ngModel)]="search.startTime" nzPlaceHolder="请选择开始时间"></nz-datepicker>
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                         <label>结束时间</label>
                     </div>
                     <div nz-form-control class="flex-1">
-                        <nz-datepicker name="endTime" style="width:100%;" nzId="endTime" [(ngModel)]="search.endTime" nzPlaceHolder="请输入结束时间"></nz-datepicker>
+                        <nz-datepicker name="endTime" style="width:100%;" nzId="endTime" [(ngModel)]="search.endTime" nzPlaceHolder="请选择结束时间"></nz-datepicker>
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                         <label>活动分类</label>
                     </div>
                     <div nz-form-control class="flex-1">
-                        <nz-select  [nzPlaceHolder]="'活动分类'" name="type" [(ngModel)]="search.type" [nzShowSearch]="true" nzSize="large">
+                        <nz-select  [nzPlaceHolder]="'请选择活动分类'" name="type" [(ngModel)]="search.type" [nzShowSearch]="true" nzSize="large">
                             <nz-option *ngFor="let i of AcTypes" [nzLabel]="i.text" [nzValue]="i.value">
                             </nz-option>
                         </nz-select>

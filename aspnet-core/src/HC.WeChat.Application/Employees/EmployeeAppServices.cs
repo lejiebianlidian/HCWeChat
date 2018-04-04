@@ -5,6 +5,7 @@ using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
+using System.Linq;
 
 using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
@@ -229,6 +230,34 @@ namespace HC.WeChat.Employees
             else
             {
                 await CreateEmployeeAsync(input);
+            }
+        }
+        /// <summary>
+        /// 检查零售户编码是否可用
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckCode(string code, Guid? id)
+        {
+            var count = _employeeRepository.GetAll().Where(e => e.Code == code).Count();
+            var entity = _employeeRepository.GetAll().Where(e => e.Id == id).FirstOrDefault();
+            if (entity != null)
+            {
+                if (entity.Code == code)
+                {
+                    return true;
+                }
+                else if (count > 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return count < 0;
             }
         }
     }

@@ -76,6 +76,6 @@ namespace HC.WeChat.Retailers
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        bool CheckName(string code);
+        bool CheckName(string code, Guid? id);
     }
 }

@@ -3,6 +3,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { Employee, CreateEmployee } from '@shared/service-proxies/entity/employee';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeServiceProxy } from '@shared/service-proxies/marketing-service';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
     moduleId: module.id,
@@ -21,7 +22,8 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
         { text: '客户经理', value: 2 },
         { text: '营销人员', value: 3 },
     ]
-    constructor(injector: Injector, private fb: FormBuilder, private employeeService: EmployeeServiceProxy) {
+    constructor(injector: Injector, private fb: FormBuilder, private employeeService: EmployeeServiceProxy,
+        private modal: NzModalService) {
         super(injector);
     }
 
@@ -62,7 +64,7 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
         this.isConfirmLoading = false;
         this.reset(e);
     }
-    savec() {
+    savec(deleteContent) {
 
         //检查form验证
         for (const i in this.formc.controls) {
@@ -70,13 +72,25 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
         }
         if (this.formc.valid) {
             this.isConfirmLoading = true;
-            this.employeeService.update(this.employeec)
-                .finally(() => { this.isConfirmLoading = false; })
-                .subscribe(() => {
-                    this.notify.info(this.l('保存成功！'));
-                    this.cmodalVisible = false;
-                    this.modalSave.emit(null);
-                });
+            this.employeeService.CheckCode(this.employeec.code).subscribe((isCode: boolean) => {
+                if (isCode) {
+                    this.employeeService.update(this.employeec)
+                        .finally(() => { this.isConfirmLoading = false; })
+                        .subscribe(() => {
+                            this.notify.info(this.l('保存成功！'));
+                            this.cmodalVisible = false;
+                            this.modalSave.emit(null);
+                        });
+                } else {
+                    console.log('进来了吗？');
+                    this.isConfirmLoading = false;
+                    this.modal.warning({
+                        content:deleteContent,
+                        title: '改员工编码已存在！'
+                    });
+                }
+            })
+
         }
 
     }

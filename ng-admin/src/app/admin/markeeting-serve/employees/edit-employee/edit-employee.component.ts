@@ -3,6 +3,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { EmployeeServiceProxy } from '@shared/service-proxies/marketing-service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CreateEmployee, Employee } from '@shared/service-proxies/entity/employee';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
     moduleId: module.id,
@@ -20,7 +21,9 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit {
         { text: '客户经理', value: 2 },
         { text: '营销人员', value: 3 },
     ]
-    constructor(injector: Injector, private employeeService: EmployeeServiceProxy, private fb: FormBuilder) {
+    constructor(injector: Injector, private employeeService: EmployeeServiceProxy, private fb: FormBuilder,
+        private modal: NzModalService
+    ) {
         super(injector);
     }
     ngOnInit(): void {
@@ -39,7 +42,7 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit {
      * 显示模态框（进入新增页）
      * @param id 员工id
      */
-    show(id: string ) {
+    show(id: string) {
         this.emodalVisible = true;
         this.employeee = new Employee();
         this.getEmployeeById(id);
@@ -49,7 +52,7 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit {
      * 根据员工id
      * @param id 
      */
-    getEmployeeById(id: string ) {
+    getEmployeeById(id: string) {
         this.employeeService.get(id).subscribe((result: Employee) => {
             this.employeee = result;
         });
@@ -91,17 +94,24 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit {
         }
         if (this.forme.valid) {
             this.iseConfirmLoading = true;
-            this.employeeService.update(this.employeee)
-                .finally(() => {
+            this.employeeService.CheckCode(this.employeee.code,this.employeee.id).subscribe((isCode: boolean) => {
+                if (isCode) {
+                    this.employeeService.update(this.employeee)
+                        .finally(() => {
+                            this.iseConfirmLoading = false;
+                        })
+                        .subscribe(() => {
+                            this.notify.info(this.l('保存成功！'));
+                            this.emodalVisible = false;
+                            this.modalSave.emit(null);
+                        });
+                } else {
                     this.iseConfirmLoading = false;
-                })
-                .subscribe(() => {
-                    this.notify.info(this.l('保存成功！'));
-                    this.emodalVisible = false;
-                    this.modalSave.emit(null);
-                });
+                    this.modal.warning({
+                        title: '改员工编码已存在！'
+                    });
+                }
+            });
         }
-
     }
-
 }

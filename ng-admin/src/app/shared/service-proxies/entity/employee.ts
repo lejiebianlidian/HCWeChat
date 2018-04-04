@@ -66,6 +66,13 @@ export class Employee implements IEmployee {
         data["company"] = this.company;
         data["department"] = this.department;
         data["isAction"] = this.isAction;
+        data["tenantId"] = this.tenantId;
+        data["isDeleted"] = this.isDeleted;
+        data["deleterUserId"] = this.deleterUserId;
+        data["deletionTime"] = this.deletionTime;
+        data["creationTime"] = this.creationTime;
+        data["creatorUserId"] = this.creatorUserId;
+        
         return data;
     }
 

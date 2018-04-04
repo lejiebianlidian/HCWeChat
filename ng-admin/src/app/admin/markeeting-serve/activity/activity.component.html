@@ -90,7 +90,7 @@
                         <label nz-form-item-required>活动类型</label>
                     </div>
                     <div nz-form-control nz-col nzHasFeedback [nzValidateStatus]="getFormControl('activityType')">
-                        <nz-select formControlName="activityType" [nzPlaceHolder]="'活动类型'" [(ngModel)]="acitivityDto.activityType" [nzShowSearch]="true"
+                        <nz-select formControlName="activityType" [nzPlaceHolder]="'请选择活动类型'" [(ngModel)]="acitivityDto.activityType" [nzShowSearch]="true"
                             nzSize="large">
                             <nz-option *ngFor="let i of AcTypes" [nzLabel]="i.text" [nzValue]="i.value">
                             </nz-option>
