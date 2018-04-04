@@ -30,9 +30,9 @@
                 <div class="advise_warp pt5 pb5">
                     <select id="dllSpecification" class="fl entry_value" placeholder="请选择申请商品规格">
                         @foreach (var item in GoodsList)
-                    {
-                        <option value="@item.Id">@item.Specification</option>
-                }
+                        {
+                            <option value="@item.Id">@item.Specification</option>
+                        }
                     </select>
                 </div>
                 <!--申请数量-->
@@ -85,7 +85,7 @@
         }
 
         var Save = function () {
-            var reqUrl = "@ViewBag.ServerRootAddress" + "api/services/app/ActivityForm/SaveActivityForm";
+            var reqUrl = "@ViewBag.ServerRootAddress" + "api/services/app/ActivityForm/SubmitActivityFormAsync";
             var para = {};
             para.activityGoodsId = $("#dllSpecification").val();
             if (para.activityGoodsId == "") {
@@ -122,29 +122,30 @@
             para.tenantId = $("#hidTenantId").val();
             para.openId = $("#hidOpenId").val();
             para.activityId = $("#hidActivityId").val();
-
-            $.ajax({
-                url: reqUrl,
-                type: "POST",
-                dataType: "JSON",
-                contentType: "application/json;charset=utf-8",
-                data: JSON.stringify(para),
-                success: function (data) {
-                    if (data.success) {
-                        if (data.result.code == 0) {
-                            alert(data.result.msg);
-                            window.location.href = "@ViewBag.JumpUrl";
+            if (confirm("请确认信息填写无误，提交后不可更改")) {
+                $.ajax({
+                    url: reqUrl,
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(para),
+                    success: function (data) {
+                        if (data.success) {
+                            if (data.result.code == 0) {
+                                alert(data.result.msg);
+                                window.location.href = "@ViewBag.JumpUrl";
+                            } else {
+                                alert(data.result.msg);
+                            }
                         } else {
-                            alert(data.result.msg);
+                            alert("保存异常！");
                         }
-                    } else {
-                        alert("保存异常！");
+                    },
+                    error: function () {
+                        alert("提交失败！");
                     }
-                },
-                error: function () {
-                    alert("提交失败！");
-                }
-            });
+                });
+            }
         }
     </script>
 </body>

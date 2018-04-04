@@ -236,6 +236,8 @@ namespace HC.WeChat.WeChatUsers
             entity.UserType = input.UserType;
             entity.BindStatus = BindStatusEnum.已绑定;
             entity.BindTime = DateTime.Now;
+            entity.OpenId = input.OpenId;
+            entity.TenantId = input.TenantId;
             await _wechatuserManager.BindWeChatUserAsync(entity);
             return new APIResultDto() { Code = 0, Msg = "绑定成功" };
         }

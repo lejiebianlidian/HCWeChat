@@ -20,6 +20,8 @@ using HC.WeChat.ActivityDeliveryInfos;
 using HC.WeChat.WeChatUsers.DomainServices;
 using HC.WeChat.Retailers;
 using HC.WeChat.WechatEnums;
+using HC.WeChat.ActivityFormLogs;
+using HC.WeChat.Activities;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -35,6 +37,8 @@ namespace HC.WeChat.ActivityForms
         private readonly IWeChatUserManager _wechatuserManager;
         private readonly IRetailerAppService _retailerAppService;
         private readonly IRepository<ActivityDeliveryInfo, Guid> _activitydeliveryinfoRepository;
+        private readonly IRepository<ActivityFormLog, Guid> _activityFormLogRepository;
+        private readonly IRepository<Activity, Guid> _activityRepository;
 
         /// <summary>
         /// 构造函数
@@ -44,6 +48,8 @@ namespace HC.WeChat.ActivityForms
             , IWeChatUserManager wechatuserManager
             , IRetailerAppService retailerAppService
             , IRepository<ActivityDeliveryInfo, Guid> activitydeliveryinfoRepository
+            , IRepository<ActivityFormLog, Guid> activityFormLogRepository
+            , IRepository<Activity, Guid> activityRepository
         )
         {
             _activityformRepository = activityformRepository;
@@ -51,6 +57,8 @@ namespace HC.WeChat.ActivityForms
             _wechatuserManager = wechatuserManager;
             _retailerAppService = retailerAppService;
             _activitydeliveryinfoRepository = activitydeliveryinfoRepository;
+            _activityFormLogRepository = activityFormLogRepository;
+            _activityRepository = activityRepository;
         }
 
         /// <summary>
@@ -202,7 +210,7 @@ namespace HC.WeChat.ActivityForms
             await _activityformRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
-        public async Task<APIResultDto> SaveActivityForm(ActivityFormInputDto input)
+        public async Task<APIResultDto> SubmitActivityFormAsync(ActivityFormInputDto input)
         {
             var form = input.MapTo<ActivityForm>();//表单信息
             var delivery = input.MapTo<ActivityDeliveryInfo>();//收货信息
@@ -233,18 +241,36 @@ namespace HC.WeChat.ActivityForms
             }
 
             form.FormCode = GetFormCode();
-
+            form.Status = FormStatusEnum.提交申请;
+            var activity = await _activityRepository.GetAsync(input.ActivityId);
+            form.ActivityName = activity.Name;
+            //1、保存表单
             var formId = await _activityformRepository.InsertAndGetIdAsync(form);
+            await CurrentUnitOfWork.SaveChangesAsync();//获取保存的Form ID
             delivery.ActivityFormId = formId;
-
+            //2、保存邮寄信息
             await _activitydeliveryinfoRepository.InsertAsync(delivery);
-            return new APIResultDto() { Code = 0, Msg = "活动申请成功" };
+
+            //3、保存记录日志
+            var log = new ActivityFormLog();
+            log.ActionTime = DateTime.Now;
+            log.ActivityFormId = formId;
+            log.Opinion = "提交申请";
+            log.Status = FormStatusEnum.提交申请;
+            log.StatusName = log.Status.ToString();
+            log.UserId = user.UserId.Value;
+            log.UserName = user.UserName;
+            log.UserType = user.UserType;
+
+            await _activityFormLogRepository.InsertAsync(log);
+
+            return new APIResultDto() { Code = 0, Msg = "活动申请成功，待客户经理审核" };
         }
 
         private string GetFormCode()
         {
             GenerateCode gserver = new GenerateCode(0, 0);
-            string code = "YB" + gserver.nextId().ToString();
+            string code = "YA" + gserver.nextId().ToString();
             return code;
         }
     }
