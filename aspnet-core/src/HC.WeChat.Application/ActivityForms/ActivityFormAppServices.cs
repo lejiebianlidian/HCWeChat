@@ -252,6 +252,8 @@ namespace HC.WeChat.ActivityForms
             var formId = await _activityformRepository.InsertAndGetIdAsync(form);
             await CurrentUnitOfWork.SaveChangesAsync();//获取保存的Form ID
             delivery.ActivityFormId = formId;
+            delivery.CreationTime = DateTime.Now;
+            delivery.Type = DeliveryUserTypeEnum.消费者;
             //2、保存邮寄信息
             await _activitydeliveryinfoRepository.InsertAsync(delivery);
 

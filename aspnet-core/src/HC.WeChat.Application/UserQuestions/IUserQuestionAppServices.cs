@@ -5,6 +5,7 @@ using Abp.Application.Services.Dto;
 using HC.WeChat.UserQuestions.Dtos;
 using HC.WeChat.UserQuestions;
 using System;
+using HC.WeChat.Dto;
 
 namespace HC.WeChat.UserQuestions
 {
@@ -56,5 +57,10 @@ namespace HC.WeChat.UserQuestions
         /// 批量删除UserQuestion
         /// </summary>
         Task BatchDeleteUserQuestionsAsync(List<Guid> input);
+
+        /// <summary>
+        /// 问卷调查
+        /// </summary>
+        Task<APIResultDto> SubmitUserQuestionsAsync(UserQuestionDto input);
     }
 }

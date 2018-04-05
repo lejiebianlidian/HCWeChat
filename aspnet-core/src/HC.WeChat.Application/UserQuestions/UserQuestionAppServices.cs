@@ -13,6 +13,8 @@ using HC.WeChat.UserQuestions.Dtos;
 using HC.WeChat.UserQuestions.DomainServices;
 using HC.WeChat.UserQuestions;
 using System;
+using HC.WeChat.Dto;
+using HC.WeChat.UserAnswers;
 
 namespace HC.WeChat.UserQuestions
 {
@@ -25,17 +27,20 @@ namespace HC.WeChat.UserQuestions
         ////BCC/ BEGIN CUSTOM CODE SECTION
         ////ECC/ END CUSTOM CODE SECTION
         private readonly IRepository<UserQuestion, Guid> _userquestionRepository;
+        private readonly IRepository<UserAnswer, Guid> _useranswerRepository;
         private readonly IUserQuestionManager _userquestionManager;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         public UserQuestionAppService(IRepository<UserQuestion, Guid> userquestionRepository
-      , IUserQuestionManager userquestionManager
+        , IUserQuestionManager userquestionManager
+        , IRepository<UserAnswer, Guid> useranswerRepository
         )
         {
             _userquestionRepository = userquestionRepository;
             _userquestionManager = userquestionManager;
+            _useranswerRepository = useranswerRepository;
         }
 
         /// <summary>
@@ -181,6 +186,24 @@ namespace HC.WeChat.UserQuestions
             await _userquestionRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        /// <summary>
+        /// 问卷调查
+        /// </summary>
+        public async Task<APIResultDto> SubmitUserQuestionsAsync(UserQuestionDto input)
+        {
+            var question = input.MapTo<UserQuestion>();
+            question.CreationTime = DateTime.Now;
+            var answerList = input.UserAnswerList.MapTo<List<UserAnswer>>();
+            var questionId = await _userquestionRepository.InsertAndGetIdAsync(question);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            foreach (var item in answerList)
+            {
+                item.UserQuestionId = questionId;
+                //item.Content = item.Content.Substring(0, item.Content.Length - 1);
+                await _useranswerRepository.InsertAsync(item);
+            }
+            return new APIResultDto() { Code = 0, Msg = "提交成功，感谢您的参与！" };
+        }
     }
 }
 
