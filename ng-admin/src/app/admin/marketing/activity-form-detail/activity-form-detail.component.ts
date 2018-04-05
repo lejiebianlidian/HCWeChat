@@ -8,6 +8,7 @@ import { ActivityBanquetServiceProxy, ActivityDeliveryInfoServiceProxy } from '@
 import { ApprovalComponent } from '../approval/approval.component';
 import { EditFormComponent } from '../edit-form/edit-form.component';
 import { EditDeliveryComponent } from '../edit-delivery/edit-delivery.component';
+import { EditExpressComponent } from '../edit-express/edit-express.component';
 import { AppComponentBase } from '@shared/app-component-base';
 
 @Component({
@@ -20,6 +21,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
     @ViewChild('approvalModal') approvalModal: ApprovalComponent;
     @ViewChild('editFormModal') editFormModal: EditFormComponent;
     @ViewChild('editDeliveryModal') editDeliveryModal: EditDeliveryComponent;
+    @ViewChild('editExpressModal') editExpressModal: EditExpressComponent;
 
     formId: string;
     form: ActivityFormDto;
@@ -156,6 +158,33 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
             del.type = 2;
             del.creationTime = new Date();          
             this.editDeliveryModal.show(del);
+        }
+    }
+
+    //修改物流信息
+    editExpress(){
+        this.editExpressModal.title = '消费者物流信息';
+        if (this.delivery) {
+            this.editExpressModal.show(this.delivery);
+        }else{
+            let del = new ActivityDeliveryInfoDto();
+            del.activityFormId = this.formId;
+            del.type = 1;
+            del.creationTime = new Date();
+            this.editExpressModal.show(del);
+        }
+    }
+
+    editRExpress(){
+        this.editExpressModal.title = '推荐人物流信息';
+        if (this.rdelivery) {
+            this.editExpressModal.show(this.rdelivery);
+        }else{
+            let del = new ActivityDeliveryInfoDto();
+            del.activityFormId = this.formId;
+            del.type = 2;
+            del.creationTime = new Date();          
+            this.editExpressModal.show(del);
         }
     }
 }

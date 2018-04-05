@@ -17,7 +17,7 @@
                     <label for="phone" nz-form-item-required>联系电话</label>
                 </div>
                 <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('phone')">
-                    <nz-input formControlName="phone" [(ngModel)]="deliveryDto.phone" nzPlaceHolder="请输入姓名" [nzId]="'phone'"></nz-input>
+                    <nz-input formControlName="phone" [(ngModel)]="deliveryDto.phone" nzPlaceHolder="请输入联系电话" [nzId]="'phone'"></nz-input>
                     <div nz-form-explain *ngIf="getFormControl('phone').dirty&&getFormControl('phone').hasError('maxlength')">字符长度小于等于20</div>
                     <div nz-form-explain *ngIf="getFormControl('phone').dirty&&getFormControl('phone').hasError('required')">请输入联系电话</div>
                 </div>

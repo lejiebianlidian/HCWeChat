@@ -105,13 +105,13 @@
                         物流信息
                     </ng-template>
                     <ng-template #extra>
-                        <a>添加/修改</a>
+                        <a (click)="editExpress()">添加/修改</a>
                     </ng-template>
                     <ng-template #body>
                         <desc-list class="mb-lg" *ngIf="delivery">
                             <desc-list-item term="快递公司">{{delivery.expressCompany}}</desc-list-item>
                             <desc-list-item term="快递单号">{{delivery.expressNo}}</desc-list-item>
-                            <desc-list-item term="发件时间">{{delivery.sendTime | _date}}</desc-list-item>
+                            <desc-list-item term="发件日期">{{delivery.sendTime | _date}}</desc-list-item>
                             <desc-list-item term="备注">{{delivery.remark}}</desc-list-item>
                         </desc-list>
                         <div *ngIf="!delivery" style="text-align: center;">
@@ -145,13 +145,13 @@
                         物流信息
                     </ng-template>
                     <ng-template #extra>
-                        <a>添加/修改</a>
+                        <a (click)="editRExpress()" >添加/修改</a>
                     </ng-template>
                     <ng-template #body>
                         <desc-list class="mb-lg" *ngIf="rdelivery">
                             <desc-list-item term="快递公司">{{rdelivery.expressCompany}}</desc-list-item>
                             <desc-list-item term="快递单号">{{rdelivery.expressNo}}</desc-list-item>
-                            <desc-list-item term="发件时间">{{rdelivery.sendTime | _date}}</desc-list-item>
+                            <desc-list-item term="发件日期">{{rdelivery.sendTime | _date}}</desc-list-item>
                             <desc-list-item term="备注">{{rdelivery.remark}}</desc-list-item>
                         </desc-list>
                         <div *ngIf="!rdelivery" style="text-align: center;">
@@ -166,3 +166,4 @@
 <approval-modal #approvalModal (modalSave)="getFormData()"></approval-modal>
 <edit-form-modal #editFormModal (modalSave)="getFormData()"></edit-form-modal>
 <edit-delivery-modal #editDeliveryModal (modalSave)="getDeliveryData()" ></edit-delivery-modal>
+<edit-express-modal #editExpressModal (modalSave)="getDeliveryData()" ></edit-express-modal>

@@ -36,6 +36,7 @@ import { RetailCustomerDetailComponent } from './customer-service/retail-custome
 import { ApprovalComponent } from './marketing/approval/approval.component';
 import { EditFormComponent } from './marketing/edit-form/edit-form.component';
 import { EditDeliveryComponent } from './marketing/edit-delivery/edit-delivery.component';
+import { EditExpressComponent } from './marketing/edit-express/edit-express.component';
 
 @NgModule({
   imports: [
@@ -71,7 +72,8 @@ import { EditDeliveryComponent } from './marketing/edit-delivery/edit-delivery.c
     RetailCustomerDetailComponent,
     ApprovalComponent,
     EditFormComponent,
-    EditDeliveryComponent
+    EditDeliveryComponent,
+    EditExpressComponent
    ],
    providers: [ AppRouteGuard ]
 })
