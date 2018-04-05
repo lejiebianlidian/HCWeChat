@@ -126,8 +126,14 @@ namespace HC.WeChat.Web.Host.Controllers
         /// <summary>
         /// 意见反馈
         /// </summary>
-        public IActionResult AdviseBack()
+        public IActionResult AdviseBack(string code, string stat)
         {
+            //var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
+            var openid = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
+            ViewBag.OpenId = openid;// oauth.openid;
+            ViewBag.TenantId = tenantId;
+            var root = _appConfiguration["App:ServerRootAddress"];
+            ViewBag.ServerRootAddress = root;
             return View();
         }
 

@@ -314,7 +314,7 @@
                     if (data.success) {
                         if (data.result.code == 0) {
                             alert(data.result.msg);
-                            window.close();
+                            WeixinJSBridge.call('closeWindow');
                         } else {
                             alert(data.result.msg);
                         }

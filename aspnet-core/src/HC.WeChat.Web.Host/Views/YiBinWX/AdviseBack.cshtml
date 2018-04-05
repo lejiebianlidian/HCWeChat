@@ -29,76 +29,91 @@
                 <!--标题-->
                 <div class="advise_warp pt5 pb5">
                     <span class="entry_key fl">标题</span>
-                    <input type="text" class="fl ml10 entry_value" placeholder="请输入标题" />
+                    <input type="text" class="fl ml10 entry_value" id="txtTitle" maxlength="200" placeholder="请输入标题" />
                 </div>
                 <!--联系电话-->
                 <div class="advise_warp pt3 pb3">
-                    <select class="fl entry_value" placeholder="请输入联系电话">
-                        <option>我是消费者</option>
-                        <option>我是零售户</option>
+                    <select class="fl entry_value" id="dllUserTypeName" placeholder="请选择">
+                        <option value="消费者">我是消费者</option>
+                        <option value="零售户">我是零售户</option>
                     </select>
                 </div>
                 <div class="advise_warp">
                     <span class="entry_key db pb20 pt5">建议举报内容</span>
                     <!--内容输入框-->
-                    <textarea class="contain_entry" placeholder="请输入举报内容"></textarea>
+                    <textarea class="contain_entry" id="txtContent" placeholder="请输入举报内容"></textarea>
                 </div>
                 <!--联系电话-->
                 <div class="advise_warp pt3 pb3">
                     <span class="entry_key fl">联系电话</span>
-                    <input type="text" class="fl ml10 entry_value" placeholder="请输入联系电话" />
+                    <input type="text" class="fl ml10 entry_value" id="txtPhone" maxlength="11" placeholder="请输入联系电话" />
                 </div>
                 <!--上传图片-->
-                <div class="file_upload pr">
+                <!-- <div class="file_upload pr">
                     <input id="Photos" multiple type="file" class="none pa">
                     <img id="add" src="static/img/advise/add.png">
-                </div>
+                </div> -->
                 <!--上传图片限制提示-->
-                <span class="upload_tips">最多可上传8张图片</span>
+                <!-- <span class="upload_tips">最多可上传8张图片</span>-->
             </div>
+            <input type="hidden" id="hidOpenId" value="@ViewBag.OpenId" />
+            <input type="hidden" id="hidTenantId" value="@ViewBag.TenantId" />
         </div>
         <!--用户操作按钮-->
         <div class="width_90 mt30 mb20">
-            <input type="button" class="middel_btn fl cancel" value="取消发布" />
-            <input type="button" class="middel_btn fr ok" value="确认发布" onclick="javascript:window.location.href='advise_back.html'" />
+            <input type="button" class="middel_btn fl cancel" value="取消发布" onclick="javascript:WeixinJSBridge.call('closeWindow');" />
+            <input type="button" class="middel_btn fr ok" value="确认发布" onclick="Save()" />
         </div>
     </div>
     <script type="text/javascript" src="static/js/jquery.min.js"></script>
-    <script>
-		$("#add").click(function(e) {
-                $("#Photos").click();
+    <script type="text/javascript">
+       var Save = function () {
+           var reqUrl = "@ViewBag.ServerRootAddress" + "api/services/app/Advise/SubmitAdviseAsync";
+            var para = {};
+           para.title = $("#txtTitle").val();
+           if (para.title == "") {
+                alert("标题不能为空！");
+                return;
+           }
+           para.content = $("#txtContent").val();
+           if (para.content == "") {
+               alert("建议举报内容不能为空！");
+               return;
+           }
+
+            para.phone = $("#txtPhone").val();
+            if (para.phone == "") {
+                alert("电话号码不能为空！");
+                return;
+            }
+
+           para.userTypeName = $("#dllUserTypeName").val();
+            para.tenantId = $("#hidTenantId").val();
+            para.openId = $("#hidOpenId").val();
+
+            $.ajax({
+                url: reqUrl,
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(para),
+                success: function (data) {
+                    if (data.success) {
+                        if (data.result.code == 0) {
+                            alert(data.result.msg);
+                            WeixinJSBridge.call('closeWindow');
+                        } else {
+                            alert(data.result.msg);
+                        }
+                    } else {
+                        alert("保存异常！");
+                    }
+                },
+                error: function () {
+                    alert("提交失败！");
+                }
             });
-			$("#Photos").change(function(e) {
-                var files = $(this)[0].files;
-				for(var i = 0; i < files.length; i++) {
-					//已经添加过了
-					var found = false;
-					var imgs = $("img[name='photo']");
-					/*for(var ii = 0; ii < imgs.length; ii++) {
-						if($(imgs[ii]).prop("file").name == files[i].name) {
-							found = true;
-							break;
-						}
-					}*/
-					if(found)
-						continue;
-
-					//数量限制
-					if(imgs.length >= 8)
-						break;
-
-					var src = window.URL.createObjectURL(files[i]);
-					var img = $('<img name="photo"/>');
-					img[0].src = src;
-					img.prop("file", files[i]);
-					$("#add").before(img);
-					img.click(function(e) {
-						$(this).remove();
-					});
-				}
-
-				$(this).val("");
-            });
+        }
     </script>
 </body>
 </html>

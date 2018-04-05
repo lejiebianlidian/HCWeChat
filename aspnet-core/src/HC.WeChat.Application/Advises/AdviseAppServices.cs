@@ -13,6 +13,7 @@ using HC.WeChat.Advises.Dtos;
 using HC.WeChat.Advises.DomainServices;
 using HC.WeChat.Advises;
 using System;
+using HC.WeChat.Dto;
 
 namespace HC.WeChat.Advises
 {
@@ -181,6 +182,13 @@ namespace HC.WeChat.Advises
             await _adviseRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        public async Task<APIResultDto> SubmitAdviseAsync(AdviseDto input)
+        {
+            var advise = input.MapTo<Advise>();
+            advise.CreationTime = DateTime.Now;
+            await _adviseRepository.InsertAsync(advise);
+            return new APIResultDto() { Code = 0, Msg = "提交成功，我们会尽快处理" };
+        }
     }
 }
 

@@ -5,6 +5,7 @@ using Abp.Application.Services.Dto;
 using HC.WeChat.Advises.Dtos;
 using HC.WeChat.Advises;
 using System;
+using HC.WeChat.Dto;
 
 namespace HC.WeChat.Advises
 {
@@ -56,5 +57,10 @@ namespace HC.WeChat.Advises
         /// 批量删除Advise
         /// </summary>
         Task BatchDeleteAdvisesAsync(List<Guid> input);
+
+        /// <summary>
+        /// 已经反馈
+        /// </summary>
+        Task<APIResultDto> SubmitAdviseAsync(AdviseDto input);
     }
 }
