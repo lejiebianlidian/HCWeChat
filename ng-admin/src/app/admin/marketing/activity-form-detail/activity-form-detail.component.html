@@ -87,14 +87,17 @@
                         基本信息
                     </ng-template>
                     <ng-template #extra>
-                        <a>修改</a>
+                        <a (click)="editDelivery()" >修改</a>
                     </ng-template>
                     <ng-template #body>
                         <desc-list class="mb-lg" *ngIf="delivery">
-                            <desc-list-item term="消费者姓名">{{delivery.userName}}</desc-list-item>
-                            <desc-list-item term="邮寄地址">{{delivery.address}}</desc-list-item>
+                            <desc-list-item term="姓名">{{delivery.userName}}</desc-list-item>
+                            <desc-list-item term="地址">{{delivery.address}}</desc-list-item>
                             <desc-list-item term="联系电话">{{delivery.phone}}</desc-list-item>
                         </desc-list>
+                        <div *ngIf="!delivery" style="text-align: center;">
+                            没有数据
+                        </div>
                     </ng-template>
                 </nz-card>
                 <nz-card class="mb-lg">
@@ -106,10 +109,14 @@
                     </ng-template>
                     <ng-template #body>
                         <desc-list class="mb-lg" *ngIf="delivery">
-                            <desc-list-item term="消费者姓名">{{delivery.userName}}</desc-list-item>
-                            <desc-list-item term="邮寄地址">{{delivery.address}}</desc-list-item>
-                            <desc-list-item term="联系电话">{{delivery.phone}}</desc-list-item>
+                            <desc-list-item term="快递公司">{{delivery.expressCompany}}</desc-list-item>
+                            <desc-list-item term="快递单号">{{delivery.expressNo}}</desc-list-item>
+                            <desc-list-item term="发件时间">{{delivery.sendTime | _date}}</desc-list-item>
+                            <desc-list-item term="备注">{{delivery.remark}}</desc-list-item>
                         </desc-list>
+                        <div *ngIf="!delivery" style="text-align: center;">
+                            没有数据
+                        </div>
                     </ng-template>
                 </nz-card>
             </nz-tab>
@@ -120,14 +127,17 @@
                         基本信息
                     </ng-template>
                     <ng-template #extra>
-                        <a>修改</a>
+                        <a (click)="editRDelivery()" >添加/修改</a>
                     </ng-template>
                     <ng-template #body>
-                        <desc-list class="mb-lg" *ngIf="delivery">
-                            <desc-list-item term="消费者姓名">{{delivery.userName}}</desc-list-item>
-                            <desc-list-item term="邮寄地址">{{delivery.address}}</desc-list-item>
-                            <desc-list-item term="联系电话">{{delivery.phone}}</desc-list-item>
+                        <desc-list class="mb-lg" *ngIf="rdelivery">
+                            <desc-list-item term="姓名">{{rdelivery.userName}}</desc-list-item>
+                            <desc-list-item term="地址">{{rdelivery.address}}</desc-list-item>
+                            <desc-list-item term="联系电话">{{rdelivery.phone}}</desc-list-item>
                         </desc-list>
+                        <div *ngIf="!rdelivery" style="text-align: center;">
+                            没有数据
+                        </div>
                     </ng-template>
                 </nz-card>
                 <nz-card class="mb-lg">
@@ -138,11 +148,15 @@
                         <a>添加/修改</a>
                     </ng-template>
                     <ng-template #body>
-                        <desc-list class="mb-lg" *ngIf="delivery">
-                            <desc-list-item term="消费者姓名">{{delivery.userName}}</desc-list-item>
-                            <desc-list-item term="邮寄地址">{{delivery.address}}</desc-list-item>
-                            <desc-list-item term="联系电话">{{delivery.phone}}</desc-list-item>
+                        <desc-list class="mb-lg" *ngIf="rdelivery">
+                            <desc-list-item term="快递公司">{{rdelivery.expressCompany}}</desc-list-item>
+                            <desc-list-item term="快递单号">{{rdelivery.expressNo}}</desc-list-item>
+                            <desc-list-item term="发件时间">{{rdelivery.sendTime | _date}}</desc-list-item>
+                            <desc-list-item term="备注">{{rdelivery.remark}}</desc-list-item>
                         </desc-list>
+                        <div *ngIf="!rdelivery" style="text-align: center;">
+                            没有数据
+                        </div>
                     </ng-template>
                 </nz-card>
             </nz-tab>
@@ -151,3 +165,4 @@
 </pro-header>
 <approval-modal #approvalModal (modalSave)="getFormData()"></approval-modal>
 <edit-form-modal #editFormModal (modalSave)="getFormData()"></edit-form-modal>
+<edit-delivery-modal #editDeliveryModal (modalSave)="getDeliveryData()" ></edit-delivery-modal>

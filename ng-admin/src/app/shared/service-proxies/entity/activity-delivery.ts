@@ -4,6 +4,12 @@ export class ActivityDeliveryInfoDto implements IActivityDeliveryInfoDto {
     userName: string;
     phone: string;
     address: string;
+    type: number;
+    expressCompany: string;
+    expressNo: string;
+    remark: string;
+    sendTime: Date;
+    creationTime: Date;
     constructor(data?: IActivityDeliveryInfoDto) {
         if (data) {
             for (var property in data) {
@@ -20,6 +26,12 @@ export class ActivityDeliveryInfoDto implements IActivityDeliveryInfoDto {
             this.userName = data["userName"];
             this.phone = data["phone"];
             this.address = data["address"];
+            this.type = data["type"];
+            this.expressCompany = data["expressCompany"];
+            this.expressNo = data["expressNo"];
+            this.remark = data["remark"];
+            this.sendTime = data["sendTime"];
+            this.creationTime = data["creationTime"];
         }
     }
 
@@ -29,6 +41,17 @@ export class ActivityDeliveryInfoDto implements IActivityDeliveryInfoDto {
         return result;
     }
 
+    static fromJSArray(dataArray: any[]): ActivityDeliveryInfoDto[] {
+        let array = [];
+        dataArray.forEach(result => {
+            let item = new ActivityDeliveryInfoDto();
+            item.init(result);
+            array.push(item);
+        });   
+      
+        return array;
+    }
+
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
@@ -36,6 +59,12 @@ export class ActivityDeliveryInfoDto implements IActivityDeliveryInfoDto {
         data["userName"] = this.userName;
         data["phone"] = this.phone;
         data["address"] = this.address;
+        data["type"] = this.type;
+        data["expressCompany"] = this.expressCompany;
+        data["expressNo"] = this.expressNo;
+        data["remark"] = this.remark;
+        data["sendTime"] = this.sendTime;
+        data["creationTime"] = this.creationTime;
         return data;
     }
 
@@ -52,4 +81,10 @@ export interface IActivityDeliveryInfoDto {
     userName: string;
     phone: string;
     address: string;
+    type: number;
+    expressCompany: string;
+    expressNo: string;
+    remark: string;
+    sendTime: Date;
+    creationTime: Date;
 }

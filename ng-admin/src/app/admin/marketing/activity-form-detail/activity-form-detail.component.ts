@@ -7,6 +7,7 @@ import { ActivityFormServiceProxy } from '@shared/service-proxies/marketing-serv
 import { ActivityBanquetServiceProxy, ActivityDeliveryInfoServiceProxy } from '@shared/service-proxies/marketing-service';
 import { ApprovalComponent } from '../approval/approval.component';
 import { EditFormComponent } from '../edit-form/edit-form.component';
+import { EditDeliveryComponent } from '../edit-delivery/edit-delivery.component';
 import { AppComponentBase } from '@shared/app-component-base';
 
 @Component({
@@ -18,12 +19,14 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
 
     @ViewChild('approvalModal') approvalModal: ApprovalComponent;
     @ViewChild('editFormModal') editFormModal: EditFormComponent;
+    @ViewChild('editDeliveryModal') editDeliveryModal: EditDeliveryComponent;
 
     formId: string;
     form: ActivityFormDto;
     formTitle: string;
     banquet: ActivityBanquetDto;
-    delivery: ActivityDeliveryInfoDto;
+    delivery: ActivityDeliveryInfoDto;//消费者
+    rdelivery: ActivityDeliveryInfoDto;//推荐人
 
     list: any[] = [];
     loading = true;
@@ -63,8 +66,18 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         });
 
         //收货信息
+        this.getDeliveryData();
+    }
+
+    getDeliveryData(){
         this.activityDeliveryService.getByFormId(this.formId).subscribe(result => {
-            this.delivery = result;
+            for (let d of result) {
+                if (d.type == 1) {
+                    this.delivery = d;
+                }else if(d.type == 2){
+                    this.rdelivery = d;
+                }
+            } 
         });
     }
 
@@ -105,6 +118,10 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
             this.notify.error('请先回传宴席资料');
             return;
         }
+        if (this.rdelivery == null || this.rdelivery == undefined) {
+            this.notify.error('请先完善推荐人信息');
+            return;
+        }
         let formStatus = new ActivityFormStatusDto();
         formStatus.status = 4;
         formStatus.opinion = "资料回传审核通过";
@@ -114,5 +131,31 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
     //修改商品信息
     editForm(){
         this.editFormModal.show(this.form);
+    }
+    //修改收货信息
+    editDelivery(){
+        this.editDeliveryModal.title = '消费者信息';
+        if (this.delivery) {
+            this.editDeliveryModal.show(this.delivery);
+        }else{
+            let del = new ActivityDeliveryInfoDto();
+            del.activityFormId = this.formId;
+            del.type = 1;
+            del.creationTime = new Date();
+            this.editDeliveryModal.show(del);
+        }
+    }
+
+    editRDelivery(){
+        this.editDeliveryModal.title = '推荐人信息';
+        if (this.rdelivery) {
+            this.editDeliveryModal.show(this.rdelivery);
+        }else{
+            let del = new ActivityDeliveryInfoDto();
+            del.activityFormId = this.formId;
+            del.type = 2;
+            del.creationTime = new Date();          
+            this.editDeliveryModal.show(del);
+        }
     }
 }

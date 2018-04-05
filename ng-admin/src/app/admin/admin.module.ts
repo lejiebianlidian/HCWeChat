@@ -35,6 +35,7 @@ import { RetailCustomerDetailComponent } from './customer-service/retail-custome
 
 import { ApprovalComponent } from './marketing/approval/approval.component';
 import { EditFormComponent } from './marketing/edit-form/edit-form.component';
+import { EditDeliveryComponent } from './marketing/edit-delivery/edit-delivery.component';
 
 @NgModule({
   imports: [
@@ -69,7 +70,8 @@ import { EditFormComponent } from './marketing/edit-form/edit-form.component';
     WechatUserComponent,
     RetailCustomerDetailComponent,
     ApprovalComponent,
-    EditFormComponent
+    EditFormComponent,
+    EditDeliveryComponent
    ],
    providers: [ AppRouteGuard ]
 })

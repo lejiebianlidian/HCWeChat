@@ -67,7 +67,7 @@ export class ActivityDeliveryInfoServiceProxy {
      * 通过formId获取回传资料信息
      * @param formId 消息id
      */
-    getByFormId(formId: string): Observable<ActivityDeliveryInfoDto> {
+    getByFormId(formId: string): Observable<ActivityDeliveryInfoDto[]> {
         let url_ = this.baseUrl + "/api/services/app/ActivityDeliveryInfo/GetActivityDeliveryInfoByFormIdAsync?";
         if (formId !== undefined)
             url_ += "Id=" + encodeURIComponent("" + formId) + "&"; 
@@ -82,17 +82,40 @@ export class ActivityDeliveryInfoServiceProxy {
         };
 
         return this.http.request(url_, options_).flatMap((response_) => {
-            return this.processGet(response_);
+            return this.processGetByFormId(response_);
         }).catch((response_: any) => {
             if (response_ instanceof Response) {
                 try {
-                    return this.processGet(response_);
+                    return this.processGetByFormId(response_);
                 } catch (e) {
-                    return <Observable<ActivityDeliveryInfoDto>><any>Observable.throw(e);
+                    return <Observable<ActivityDeliveryInfoDto[]>><any>Observable.throw(e);
                 }
             } else
-                return <Observable<ActivityDeliveryInfoDto>><any>Observable.throw(response_);
+                return <Observable<ActivityDeliveryInfoDto[]>><any>Observable.throw(response_);
         });
+    }
+
+    protected processGetByFormId(response: Response): Observable<ActivityDeliveryInfoDto[]> {
+        const status = response.status; 
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ActivityDeliveryInfoDto.fromJSArray(resultData200) : Observable.of<ActivityDeliveryInfoDto[]>(<any>null);
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<ActivityDeliveryInfoDto[]>(<any>null);
     }
 
 
@@ -117,6 +140,55 @@ export class ActivityDeliveryInfoServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Observable.of<ActivityDeliveryInfoDto>(<any>null);
+    }
+
+    update(input: ActivityDeliveryInfoDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ActivityDeliveryInfo/CreateOrUpdateActivityDeliveryInfo";
+        url_ = url_.replace(/[?&]$/, "");
+        let inputjson = { activityDeliveryInfo : input};
+        const content_ = JSON.stringify(inputjson);
+
+        let options_ = {
+            body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processUpdate(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processUpdate(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdate(response: Response): Observable<void> {
+        const status = response.status;
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<void>(<any>null);
     }
 }
 export class PagedResultDtoOfActivityDeliveryInfo implements IPagedResultDtoOfActivityDeliveryInfo {

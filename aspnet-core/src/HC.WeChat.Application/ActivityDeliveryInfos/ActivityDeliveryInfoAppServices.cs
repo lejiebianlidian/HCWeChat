@@ -78,11 +78,11 @@ namespace HC.WeChat.ActivityDeliveryInfos
             return entity.MapTo<ActivityDeliveryInfoListDto>();
         }
 
-        public async Task<ActivityDeliveryInfoListDto> GetActivityDeliveryInfoByFormIdAsync(EntityDto<Guid> input)
+        public async Task<List<ActivityDeliveryInfoListDto>> GetActivityDeliveryInfoByFormIdAsync(EntityDto<Guid> input)
         {
-            var entity = await _activitydeliveryinfoRepository.GetAll().Where(a => a.ActivityFormId == input.Id).FirstOrDefaultAsync();
+            var entityList = await _activitydeliveryinfoRepository.GetAll().Where(a => a.ActivityFormId == input.Id).ToListAsync();
 
-            return entity.MapTo<ActivityDeliveryInfoListDto>();
+            return entityList.MapTo<List<ActivityDeliveryInfoListDto>>();
         }
 
         /// <summary>
