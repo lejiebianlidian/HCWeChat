@@ -8,6 +8,7 @@
         <button nz-button [nzSize]="'large'" (click)="reject()" *ngIf="form.status == 1 || form.status == 2">拒绝</button>
         <button nz-button [nzType]="'primary'" (click)="firstApproval()" *ngIf="form.status == 1" [nzSize]="'large'">初审通过</button>
         <button nz-button [nzType]="'primary'" (click)="approval()" *ngIf="form.status == 2" [nzSize]="'large'">资料回传审核通过</button>
+        <button nz-button [nzType]="'primary'" (click)="approval()" *ngIf="form.status == 4" [nzSize]="'large'">营销中心审核通过</button>
     </ng-template>
     <ng-template style="display:none; width:0px;" #extra></ng-template>
     <ng-template #content>
@@ -80,13 +81,61 @@
                 </span>
             </nz-tab>
             <nz-tab>
-                <ng-template #nzTabHeading>收货信息</ng-template>
+                <ng-template #nzTabHeading>消费者信息</ng-template>
                 <nz-card class="mb-lg">
                     <ng-template #title>
-                        邮寄地址
+                        基本信息
                     </ng-template>
                     <ng-template #extra>
                         <a>修改</a>
+                    </ng-template>
+                    <ng-template #body>
+                        <desc-list class="mb-lg" *ngIf="delivery">
+                            <desc-list-item term="消费者姓名">{{delivery.userName}}</desc-list-item>
+                            <desc-list-item term="邮寄地址">{{delivery.address}}</desc-list-item>
+                            <desc-list-item term="联系电话">{{delivery.phone}}</desc-list-item>
+                        </desc-list>
+                    </ng-template>
+                </nz-card>
+                <nz-card class="mb-lg">
+                    <ng-template #title>
+                        物流信息
+                    </ng-template>
+                    <ng-template #extra>
+                        <a>添加/修改</a>
+                    </ng-template>
+                    <ng-template #body>
+                        <desc-list class="mb-lg" *ngIf="delivery">
+                            <desc-list-item term="消费者姓名">{{delivery.userName}}</desc-list-item>
+                            <desc-list-item term="邮寄地址">{{delivery.address}}</desc-list-item>
+                            <desc-list-item term="联系电话">{{delivery.phone}}</desc-list-item>
+                        </desc-list>
+                    </ng-template>
+                </nz-card>
+            </nz-tab>
+            <nz-tab>
+                <ng-template #nzTabHeading>推荐人信息</ng-template>
+                <nz-card class="mb-lg">
+                    <ng-template #title>
+                        基本信息
+                    </ng-template>
+                    <ng-template #extra>
+                        <a>修改</a>
+                    </ng-template>
+                    <ng-template #body>
+                        <desc-list class="mb-lg" *ngIf="delivery">
+                            <desc-list-item term="消费者姓名">{{delivery.userName}}</desc-list-item>
+                            <desc-list-item term="邮寄地址">{{delivery.address}}</desc-list-item>
+                            <desc-list-item term="联系电话">{{delivery.phone}}</desc-list-item>
+                        </desc-list>
+                    </ng-template>
+                </nz-card>
+                <nz-card class="mb-lg">
+                    <ng-template #title>
+                        物流信息
+                    </ng-template>
+                    <ng-template #extra>
+                        <a>添加/修改</a>
                     </ng-template>
                     <ng-template #body>
                         <desc-list class="mb-lg" *ngIf="delivery">

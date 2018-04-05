@@ -15,6 +15,9 @@ using HC.WeChat.ActivityGoodses;
 using HC.WeChat.Employees;
 using HC.WeChat.Retailers;
 using HC.WeChat.WeChatUsers;
+using HC.WeChat.Advises;
+using HC.WeChat.UserAnswers;
+using HC.WeChat.UserQuestions;
 
 namespace HC.WeChat.EntityFrameworkCore
 {
@@ -52,6 +55,11 @@ namespace HC.WeChat.EntityFrameworkCore
 
         public virtual DbSet<WeChatUser> WeChatUsers { get; set; }
 
+        public virtual DbSet<Advise> Advises { get; set; }
+
+        public virtual DbSet<UserAnswer> UserAnswers { get; set; }
+
+        public virtual DbSet<UserQuestion> UserQuestions { get; set; }
 
     }
 }

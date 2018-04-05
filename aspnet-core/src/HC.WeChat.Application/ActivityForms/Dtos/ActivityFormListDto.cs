@@ -37,7 +37,9 @@ namespace HC.WeChat.ActivityForms.Dtos
                         return "processing";
                     case FormStatusEnum.拒绝:
                         return "default";
-                    case FormStatusEnum.完成:
+                    case FormStatusEnum.资料回传已审核:
+                        return "success";
+                    case FormStatusEnum.营销中心已审核:
                         return "success";
                     case FormStatusEnum.取消:
                         return "default";

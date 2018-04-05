@@ -46,8 +46,9 @@ namespace HC.WeChat.WechatEnums
         提交申请 = 1,
         初审通过 = 2,
         拒绝 = 3,
-        完成 = 4,
-        取消 = 5
+        资料回传已审核 = 4,
+        取消 = 5,
+        营销中心已审核 = 6
     }
 
     /// <summary>
@@ -112,8 +113,20 @@ namespace HC.WeChat.WechatEnums
         未绑定 = 0,
         已绑定 = 1
     }
+
+    /// <summary>
+    /// 活动类型
+    /// </summary>
     public enum ActivityTypeEnum
     {
         办事用烟 = 1
+    }
+    /// <summary>
+    /// 收货人类型
+    /// </summary>
+    public enum DeliveryUserTypeEnum
+    {
+        消费者 = 1,
+        推荐人 = 2
     }
 }
