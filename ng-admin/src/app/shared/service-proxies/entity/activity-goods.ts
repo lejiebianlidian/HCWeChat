@@ -43,6 +43,17 @@ export class ActivityGoods implements IActivityGoods {
         return result;
     }
 
+    static fromJSArray(dataArray: any[]): ActivityGoods[] {
+        let array = [];
+        dataArray.forEach(result => {
+            let item = new ActivityGoods();
+            item.init(result);
+            array.push(item);
+        });   
+      
+        return array;
+    }
+
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;

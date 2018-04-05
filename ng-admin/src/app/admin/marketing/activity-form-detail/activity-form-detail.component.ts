@@ -6,6 +6,7 @@ import { ActivityFormDto, ActivityBanquetDto, ActivityDeliveryInfoDto, ActivityF
 import { ActivityFormServiceProxy } from '@shared/service-proxies/marketing-service/activity-form-service';
 import { ActivityBanquetServiceProxy, ActivityDeliveryInfoServiceProxy } from '@shared/service-proxies/marketing-service';
 import { ApprovalComponent } from '../approval/approval.component';
+import { EditFormComponent } from '../edit-form/edit-form.component';
 import { AppComponentBase } from '@shared/app-component-base';
 
 @Component({
@@ -16,6 +17,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 export class ActivityFormDetailComponent extends AppComponentBase implements OnInit {
 
     @ViewChild('approvalModal') approvalModal: ApprovalComponent;
+    @ViewChild('editFormModal') editFormModal: EditFormComponent;
 
     formId: string;
     form: ActivityFormDto;
@@ -108,5 +110,9 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         formStatus.opinion = "资料回传审核通过";
         formStatus.id = this.formId;
         this.approvalModal.show(formStatus);
+    }
+    //修改商品信息
+    editForm(){
+        this.editFormModal.show(this.form);
     }
 }

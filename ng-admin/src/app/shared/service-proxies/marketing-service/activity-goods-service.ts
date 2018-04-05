@@ -260,6 +260,57 @@ export class ActivityGoodsServiceProxy {
         }
         return Observable.of<void>(<any>null);
     }
+
+    getByActivityId(activityId: string): Observable<ActivityGoods[]> {
+        let url_ = this.baseUrl + "/api/services/app/ActivityGoods/GetActivityGoodsByActivityId?";
+        if (activityId !== undefined)
+            url_ += "activityId=" + encodeURIComponent("" + activityId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetByActivityId(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetByActivityId(response_);
+                } catch (e) {
+                    return <Observable<ActivityGoods[]>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ActivityGoods[]>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetByActivityId(response: Response): Observable<ActivityGoods[]> {
+        const status = response.status;
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ActivityGoods.fromJSArray(resultData200) : Observable.of<ActivityGoods[]>(<any>null);
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<ActivityGoods[]>(<any>null);
+    }
 }
 export class PagedResultDtoOfActivityGoods implements IPagedResultDtoOfActivityGoods {
     totalCount: number;
@@ -308,6 +359,8 @@ export class PagedResultDtoOfActivityGoods implements IPagedResultDtoOfActivityG
         result.init(json);
         return result;
     }
+
+
 }
 
 export interface IPagedResultDtoOfActivityGoods {

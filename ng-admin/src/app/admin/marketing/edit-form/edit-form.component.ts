@@ -1,30 +1,32 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, ElementRef, OnInit } from '@angular/core';
-import { ActivityFormStatusDto } from '@shared/service-proxies/entity';
+import { ActivityFormDto, ActivityGoods } from '@shared/service-proxies/entity';
 import { AppComponentBase } from '@shared/app-component-base';
 import { FormGroup, FormBuilder, Validators, FormControl, AsyncValidatorFn, AbstractControl } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
-import { ActivityFormServiceProxy } from '@shared/service-proxies/marketing-service';
+import { ActivityFormServiceProxy, ActivityGoodsServiceProxy } from '@shared/service-proxies/marketing-service';
 
 //import * as _ from "lodash";
 
 @Component({
-    selector: 'approval-modal',
-    templateUrl: './approval.component.html'
+    selector: 'edit-form-modal',
+    templateUrl: './edit-form.component.html'
 })
-export class ApprovalComponent extends AppComponentBase implements OnInit {
+export class EditFormComponent extends AppComponentBase implements OnInit {
 
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
     modalVisible = false;
     isConfirmLoading = false;
     isDisablec = false;
-    formStatus: ActivityFormStatusDto = null;
+    formDto: ActivityFormDto = null;
     form: FormGroup;
+    goodsList: ActivityGoods[];
 
     constructor(
         injector: Injector,
         private _activityFormService: ActivityFormServiceProxy,
+        private _activityGoodsService: ActivityGoodsServiceProxy,
         private fb: FormBuilder
     ) {
         super(injector);
@@ -32,27 +34,47 @@ export class ApprovalComponent extends AppComponentBase implements OnInit {
 
     ngOnInit(): void {
         this.form = this.fb.group({
-            opinion: [null, [Validators.required, Validators.maxLength]]
+            activityGoodsId: [null, [Validators.required]],
+            num: [null, [Validators.required]]
         });
     }
 
-    show(status: ActivityFormStatusDto): void {
+    show(fdto: ActivityFormDto): void {
         this.reset();
-        this.formStatus = status;
+        this.formDto = fdto;
+        this.getGoodList();
         this.modalVisible = true;
          //对isDisablec做初始化
          this.isDisablec = false;
+    }
+
+    getGoodList(){
+        this._activityGoodsService.getByActivityId(this.formDto.activityId)
+                .finally(() => { this.isConfirmLoading = false; })
+                .subscribe(result => {
+                    this.goodsList = result;
+                });
+    }
+
+    setGoodsSpecification(){
+        this.goodsList.forEach(goods =>{
+            if (goods.id == this.formDto.activityGoodsId) {
+                this.formDto.goodsSpecification = goods.specification;
+                return;
+            }
+        });
     }
 
     save(isSave = false): void {
         for (const i in this.form.controls) {
             this.form.controls[i].markAsDirty();
         }
+        this.setGoodsSpecification();
         if (this.form.valid) {
-            this._activityFormService.changeStatus(this.formStatus)
+            this._activityFormService.update(this.formDto)
                 .finally(() => { this.isConfirmLoading = false; })
                 .subscribe(() => {
-                    this.notify.info('提交成功！');
+                    this.notify.info('修改成功！');
                     this.close();
                     this.modalSave.emit(null);
                 });
