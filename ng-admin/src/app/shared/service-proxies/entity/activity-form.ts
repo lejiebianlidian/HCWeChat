@@ -1,3 +1,5 @@
+import { ActivityFormLogDto } from './activity-form-log';
+
 export class ActivityForm implements IActivityForm {
     id: string;
     formCode: string;
@@ -107,6 +109,8 @@ export class ActivityFormDto implements IActivityFormDto {
     managerName: string;
     statusType: string;
     creationUser: string;
+    currentStep: number;
+    formLogList: ActivityFormLogDto[];
 
     constructor(data?: IActivityFormDto) {
         if (data) {
@@ -135,6 +139,8 @@ export class ActivityFormDto implements IActivityFormDto {
             this.statusType = data["statusType"];
             this.statusName = data["statusName"];
             this.creationUser = data["creationUser"];
+            this.currentStep = data["currentStep"];
+            this.formLogList = data["formLogList"];
         }
     }
 
@@ -160,6 +166,8 @@ export class ActivityFormDto implements IActivityFormDto {
         data["retailerName"] = this.retailerName;
         data["managerName"] = this.managerName;
         data["creationUser"] = this.creationUser;
+        data["currentStep"] = this.currentStep;
+        data["formLogList"] = this.formLogList;
 
         return data;
     }
@@ -189,6 +197,8 @@ export interface IActivityFormDto {
     statusType: string;
     statusName: string;
     creationUser: string;
+    currentStep: number;
+    formLogList: ActivityFormLogDto[];
 }
 
 export class ActivityFormStatusDto {

@@ -28,24 +28,16 @@
             <nz-tab>
                 <ng-template #nzTabHeading>详情</ng-template>
                 <span>
-                    <nz-card class="mb-lg">
-                        <nz-steps [nzCurrent]="1">
-                            <nz-step [nzTitle]="'创建项目'" [nzDescription]="createDesc">
-                                <ng-template #createDesc>
-                                    <p class="my-sm">曲丽丽
-                                    </p>
-                                    <p>2016-12-12 12:32</p>
+                    <nz-card *ngIf="form" class="mb-lg">
+                        <nz-steps [nzCurrent]="form.currentStep">
+                            <nz-step *ngFor="let log of form.formLogList" [nzTitle]="log.statusName" [nzDescription]="showDesc">
+                                <ng-template #showDesc>
+                                    <p>{{log.desc}}</p>
+                                    <p *ngIf="log.userName" class="my-sm">{{log.userName}}({{log.userTypeName}})</p>
+                                    <p *ngIf="log.actionTime">{{log.actionTime | _date}}</p>
+                                    <p *ngIf="log.opinion">意见：{{log.opinion}}</p>
                                 </ng-template>
                             </nz-step>
-                            <nz-step [nzTitle]="'部门初审'" [nzDescription]="checkedDesc">
-                                <ng-template #checkedDesc>
-                                    <p class="my-sm">周毛毛
-                                    </p>
-                                    <a (click)="msg.success('click')">催一下</a>
-                                </ng-template>
-                            </nz-step>
-                            <nz-step [nzTitle]="'财务复核'"></nz-step>
-                            <nz-step [nzTitle]="'完成'"></nz-step>
                         </nz-steps>
                         <div class="steps-content"></div>
                     </nz-card>

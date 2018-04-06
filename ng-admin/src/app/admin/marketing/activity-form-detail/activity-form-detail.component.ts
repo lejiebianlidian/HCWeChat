@@ -57,6 +57,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
 
         //宴席信息
         this.getBanquetData();
+
         this.loading = true;
         this.http.get('/api/list', { count: 4 }).subscribe((res: any) => {
             this.list = this.list.concat(res).map(item => {

@@ -8,6 +8,8 @@ export class ActivityFormLogDto implements IActivityFormLogDto {
     userId: string;
     userName: string;
     actionTime: Date;
+    userTypeName: string;
+    desc: string;
     constructor(data?: IActivityFormLogDto) {
         if (data) {
             for (var property in data) {
@@ -28,6 +30,8 @@ export class ActivityFormLogDto implements IActivityFormLogDto {
             this.userId = data["userId"];
             this.userName = data["userName"];
             this.actionTime = data["actionTime"];
+            this.userTypeName = data["userTypeName"];
+            this.desc = data["desc"];
         }
     }
 
@@ -48,6 +52,8 @@ export class ActivityFormLogDto implements IActivityFormLogDto {
         data["userId"] = this.userId;
         data["userName"] = this.userName;
         data["actionTime"] = this.actionTime;
+        data["userTypeName"] = this.userTypeName;
+        data["desc"] = this.desc;
         return data;
     }
 
@@ -68,4 +74,6 @@ export interface IActivityFormLogDto {
     userId: string;
     userName: string;
     actionTime: Date;
+    userTypeName: string;
+    desc: string;
 }

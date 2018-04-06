@@ -105,7 +105,65 @@ namespace HC.WeChat.ActivityForms
         {
             var entity = await _activityformRepository.GetAsync(input.Id);
 
-            return entity.MapTo<ActivityFormListDto>();
+            var result = entity.MapTo<ActivityFormListDto>();
+
+            var logs = await _activityFormLogRepository.GetAll()
+                .Where(l => l.ActivityFormId == input.Id)
+                .OrderBy(l => l.ActionTime).ToListAsync();
+            result.CurrentStep = logs.Count();
+
+            result.FormLogList = logs.MapTo<List<ActivityFormLogDto>>();
+
+            switch (entity.Status)
+            {
+                case FormStatusEnum.提交申请:
+                    {
+                        result.FormLogList.Add(new ActivityFormLogDto()
+                        {
+                            Status = FormStatusEnum.初审通过,
+                            StatusName = FormStatusEnum.初审通过.ToString()
+                        });
+
+                        result.FormLogList.Add(new ActivityFormLogDto()
+                        {
+                            Status = FormStatusEnum.资料回传已审核,
+                            StatusName = FormStatusEnum.资料回传已审核.ToString()
+                        });
+
+                        result.FormLogList.Add(new ActivityFormLogDto()
+                        {
+                            Status = FormStatusEnum.营销中心已审核,
+                            StatusName = FormStatusEnum.营销中心已审核.ToString()
+                        });
+                    }
+                    break;
+                case FormStatusEnum.初审通过:
+                    {
+                        result.FormLogList.Add(new ActivityFormLogDto()
+                        {
+                            Status = FormStatusEnum.资料回传已审核,
+                            StatusName = FormStatusEnum.资料回传已审核.ToString()
+                        });
+
+                        result.FormLogList.Add(new ActivityFormLogDto()
+                        {
+                            Status = FormStatusEnum.营销中心已审核,
+                            StatusName = FormStatusEnum.营销中心已审核.ToString()
+                        });
+                    }
+                    break;
+                case FormStatusEnum.资料回传已审核:
+                    {
+                        result.FormLogList.Add(new ActivityFormLogDto()
+                        {
+                            Status = FormStatusEnum.营销中心已审核,
+                            StatusName = FormStatusEnum.营销中心已审核.ToString()
+                        });
+                    }
+                    break;
+            }
+
+            return result;
         }
 
         /// <summary>
