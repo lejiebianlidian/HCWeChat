@@ -51,7 +51,7 @@ namespace HC.WeChat.UserQuestions
         public async Task<PagedResultDto<UserQuestionListDto>> GetPagedUserQuestions(GetUserQuestionsInput input)
         {
 
-            var query = _userquestionRepository.GetAll();
+            var query = _userquestionRepository.GetAll().WhereIf(!string.IsNullOrEmpty(input.Filter), q => q.UserName.Contains(input.Filter) || q.Phone.Contains(input.Filter));
             //TODO:根据传入的参数添加过滤条件
             var userquestionCount = await query.CountAsync();
 

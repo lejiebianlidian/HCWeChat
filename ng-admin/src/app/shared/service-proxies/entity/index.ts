@@ -10,3 +10,5 @@ export * from './employee';
 export * from './messages';
 export * from './retail-customer';
 export * from './subscribe';
+export * from './user-question';
+export * from './user-answer';

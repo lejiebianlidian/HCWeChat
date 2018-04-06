@@ -156,5 +156,6 @@
     "questionnaire":"问卷调查",
     "activity-form-detail":"申请单详情",
     "/admin/activity-form-detail":"申请单详情",
-    "activity-list":"营销活动列表"
+    "activity-list":"营销活动列表",
+    "user-question":"问卷调查"
 }

@@ -36,10 +36,6 @@
                 "text":"自动回复",
                 "link":"/admin/message",
                 "translate":"aut-res"
-             },{
-                "text":"菜单管理",
-                "link":"/admin",
-                "translate":"custom-menu"
              }] 
         },{
             "text":"微信管理",
@@ -69,12 +65,12 @@
                 "translate":"activity-form"
           },{
                 "text":"营销统计",
-                "link":"/admin",
-                "translate":"market-count"
+                "link":"/admin/activity-query",
+                "translate":"activity-query"
           },{
                 "text":"问卷调查",
-                "link":"/admin",
-                "translate":"questionnaire"
+                "link":"/admin/user-question",
+                "translate":"user-question"
           }]
         },{
             "text":"客户服务",
@@ -84,23 +80,15 @@
                 "text":"零售客户",
                 "link":"/admin/retail-customer",
                 "translate":"retail-client"
-          },{
-                "text":"客户热线",
-                "link":"/admin",
-                "translate":"serve-hotline"
           }]
         },{
             "text":"消费服务",
             "translate":"consume-serve",
             "icon":"fa fa-laptop",
             "children":[{
-                "text":"附近店铺",
-                "link":"/admin",
-                "translate":"near-store"
-            },{
                 "text":"意见反馈",
-                "link":"/admin",
-                "translate":"feedback"
+                "link":"/admin/advise",
+                "translate":"advise"
             }]
         }]
     },
@@ -132,10 +120,6 @@
             "link": "/sys-log",
             "icon": "fa fa-file-text-o",
             "children": [{
-                "text": "数据同步日志",
-                "link": "/sys-log/data-sync-log",
-                "translate": "data-sync-log"
-            }, {
                 "text": "审计日志",
                 "link": "/sys-log/audit-log",
                 "translate": "audit-log"
