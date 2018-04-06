@@ -13,6 +13,7 @@ using HC.WeChat.UserAnswers.Dtos;
 using HC.WeChat.UserAnswers.DomainServices;
 using HC.WeChat.UserAnswers;
 using System;
+using System.Linq;
 
 namespace HC.WeChat.UserAnswers
 {
@@ -181,6 +182,11 @@ namespace HC.WeChat.UserAnswers
             await _useranswerRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        public async Task<List<UserAnswerListDto>> GetUserAnswerListByQuestionIdAsync(Guid id)
+        {
+            var answerList = await _useranswerRepository.GetAll().Where(u => u.UserQuestionId == id).ToListAsync();
+            return answerList.MapTo<List<UserAnswerListDto>>();
+        }
     }
 }
 

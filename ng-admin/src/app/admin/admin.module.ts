@@ -38,6 +38,7 @@ import { EditFormComponent } from './marketing/edit-form/edit-form.component';
 import { EditDeliveryComponent } from './marketing/edit-delivery/edit-delivery.component';
 import { EditExpressComponent } from './marketing/edit-express/edit-express.component';
 import { UserQuestionComponent } from './marketing/user-question/user-question.component';
+import { UserAnswerComponent } from './marketing/user-answer/user-answer.component';
 
 @NgModule({
   imports: [
@@ -75,7 +76,8 @@ import { UserQuestionComponent } from './marketing/user-question/user-question.c
     EditFormComponent,
     EditDeliveryComponent,
     EditExpressComponent,
-    UserQuestionComponent
+    UserQuestionComponent,
+    UserAnswerComponent
    ],
    providers: [ AppRouteGuard ]
 })

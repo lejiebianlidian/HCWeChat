@@ -18,6 +18,7 @@ import { RetailCustomerComponent } from './customer-service/retail-customer/reta
 import { WechatUserComponent } from './wechat-manager/wechat-user/wechat-user.component';
 import { RetailCustomerDetailComponent } from './customer-service/retail-customer-detail/retail-customer-detail.component';
 import { UserQuestionComponent } from './marketing/user-question/user-question.component';
+import { UserAnswerComponent } from './marketing/user-answer/user-answer.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,7 @@ const routes: Routes = [
       { path: 'retail-detail', component: RetailCustomerDetailComponent, data: { translate: 'retail-detail', permission: 'Pages',title:'新增零售用户'}, canActivate: [AppRouteGuard] },
       { path: 'retail-detail/:id', component: RetailCustomerDetailComponent, data: { translate: 'retail-detail', permission: 'Pages',title:'零售户详情'}, canActivate: [AppRouteGuard] },
       { path: 'user-question', component: UserQuestionComponent, data: { translate: 'user-question', permission: 'Pages' }, canActivate: [AppRouteGuard] },
+      { path: 'user-question-detail/:id', component: UserAnswerComponent, data: { translate: 'user-question-detail', permission: 'Pages',title:'问卷调查详细'}, canActivate: [AppRouteGuard] },
     ]
   }
 ];

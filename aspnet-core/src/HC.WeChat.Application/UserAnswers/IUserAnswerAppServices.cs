@@ -56,5 +56,10 @@ namespace HC.WeChat.UserAnswers
         /// 批量删除UserAnswer
         /// </summary>
         Task BatchDeleteUserAnswersAsync(List<Guid> input);
+
+        /// <summary>
+        /// 根据问题Id查询用户回答
+        /// </summary>
+        Task<List<UserAnswerListDto>> GetUserAnswerListByQuestionIdAsync(Guid id);
     }
 }
