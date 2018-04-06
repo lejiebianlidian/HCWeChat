@@ -85,6 +85,8 @@ namespace HC.WeChat.ActivityForms.Dtos
 
         public string ManagerName { get; set; }
 
+        public Guid? ManagerId { get; set; }
+
         [StringLength(50)]
         public string CreationUser { get; set; }
 

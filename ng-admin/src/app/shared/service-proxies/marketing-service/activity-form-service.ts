@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/catch';
 
-import { ActivityForm, ActivityFormDto, Parameter, ApiResult, ActivityFormStatusDto } from "@shared/service-proxies/entity";
+import { ActivityForm, ActivityFormDto, Parameter, ApiResult, ActivityFormStatusDto, ActivityViewDto } from "@shared/service-proxies/entity";
 import { Observable } from 'rxjs/Observable';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { Http, Headers, ResponseContentType, Response } from '@angular/http';
@@ -253,6 +253,70 @@ export class ActivityFormServiceProxy {
         }
         return Observable.of<void>(<any>null);
     }
+
+    getView(skipCount: number, maxResultCount: number, parameter: Parameter[]): Observable<PagedResultOfActivityView> {
+        let url_ = this.baseUrl + "/api/services/app/ActivityForm/GetPagedActivityView?";
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+
+        //console.table(parameter);
+        if (parameter.length > 0) {
+            parameter.forEach(element => {
+                if (element.value !== undefined && element.value !== null) {
+                    url_ += element.key + "=" + encodeURIComponent("" + element.value) + "&"; 
+                }
+            });
+        }
+            
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processGetView(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processGetView(response_);
+                } catch (e) {
+                    return <Observable<PagedResultOfActivityView>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<PagedResultOfActivityView>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processGetView(response: Response): Observable<PagedResultOfActivityView> {
+        const status = response.status; 
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultOfActivityView.fromJS(resultData200) : new PagedResultOfActivityView();
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<PagedResultOfActivityView>(<any>null);
+    }
+
 }
 
 export class PagedResultDtoOfActivityForm implements IPagedResultDtoOfActivityForm {
@@ -307,4 +371,58 @@ export class PagedResultDtoOfActivityForm implements IPagedResultDtoOfActivityFo
 export interface IPagedResultDtoOfActivityForm {
     totalCount: number;
     items: ActivityFormDto[];
+}
+
+export class PagedResultOfActivityView implements IPagedResultOfActivityView {
+    totalCount: number;
+    items: ActivityViewDto[];
+
+    constructor(data?: IPagedResultOfActivityView) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(ActivityViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultOfActivityView {
+        let result = new PagedResultOfActivityView();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new PagedResultOfActivityView();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedResultOfActivityView {
+    totalCount: number;
+    items: ActivityViewDto[];
 }

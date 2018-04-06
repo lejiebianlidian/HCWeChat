@@ -116,6 +116,8 @@ namespace HC.WeChat.ActivityForms
         [StringLength(50)]
         public string ManagerName { get; set; }
 
+        public Guid? ManagerId { get; set; }
+
         /// <summary>
         /// 申请用户
         /// </summary>

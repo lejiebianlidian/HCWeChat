@@ -60,6 +60,8 @@ namespace HC.WeChat.ActivityForms.Dtos
 
         public string ManagerName { get; set; }
 
+        public Guid? ManagerId { get; set; }
+
         public string CreationUser { get; set; }
 
         public List<ActivityFormLogDto> FormLogList { get; set; }
@@ -112,5 +114,33 @@ namespace HC.WeChat.ActivityForms.Dtos
                 }
             }
         }
+    }
+
+    public class ActivityViewDto
+    {
+        /// <summary>
+        /// 区县
+        /// </summary>
+        public string Area { get; set; }
+
+        /// <summary>
+        /// 商品规格
+        /// </summary>
+        public string GoodsSpecification { get; set; }
+
+        /// <summary>
+        /// 客户经理
+        /// </summary>
+        public string ManagerName { get; set; }
+
+        /// <summary>
+        /// 活动开展场次
+        /// </summary>
+        public int OpenNum { get; set; }
+
+        /// <summary>
+        /// 申请商品数量
+        /// </summary>
+        public int GoodsNum { get; set; }
     }
 }

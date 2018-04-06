@@ -23,6 +23,7 @@ using HC.WeChat.WechatEnums;
 using HC.WeChat.ActivityFormLogs;
 using HC.WeChat.Activities;
 using HC.WeChat.Authorization.Users;
+using HC.WeChat.ActivityBanquets;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -41,6 +42,8 @@ namespace HC.WeChat.ActivityForms
         private readonly IRepository<ActivityFormLog, Guid> _activityFormLogRepository;
         private readonly IRepository<Activity, Guid> _activityRepository;
         private readonly IRepository<User, long> _userRepository;
+        private readonly IRepository<ActivityBanquet, Guid> _activityBanquetRepository;
+        private readonly IRepository<Retailer, Guid> _retailerRepository;
 
         /// <summary>
         /// 构造函数
@@ -53,6 +56,8 @@ namespace HC.WeChat.ActivityForms
             , IRepository<ActivityFormLog, Guid> activityFormLogRepository
             , IRepository<Activity, Guid> activityRepository
             , IRepository<User, long> userRepository
+            , IRepository<ActivityBanquet, Guid> activityBanquetRepository
+            , IRepository<Retailer, Guid> retailerRepository
         )
         {
             _activityformRepository = activityformRepository;
@@ -63,6 +68,8 @@ namespace HC.WeChat.ActivityForms
             _activityFormLogRepository = activityFormLogRepository;
             _activityRepository = activityRepository;
             _userRepository = userRepository;
+            _activityBanquetRepository = activityBanquetRepository;
+            _retailerRepository = retailerRepository;
         }
 
         /// <summary>
@@ -296,10 +303,12 @@ namespace HC.WeChat.ActivityForms
                 form.RetailerName = user.UserName;
                 var retailer = await _retailerAppService.GetRetailerByIdAsync(new EntityDto<Guid> { Id = user.UserId.Value });
                 form.ManagerName = retailer.Manager;
+                form.ManagerId = retailer.EmployeeId;
             }
             else if (user.UserType == UserTypeEnum.客户经理)
             {
                 form.ManagerName = user.UserName;
+                form.ManagerId = user.UserId;
             }
 
             form.FormCode = GetFormCode();
@@ -359,6 +368,65 @@ namespace HC.WeChat.ActivityForms
             await _activityFormLogRepository.InsertAsync(log);
 
             return new APIResultDto() { Code = 0, Msg = "操作成功" };
+        }
+
+        public async Task<PagedResultDto<ActivityViewDto>> GetPagedActivityView(GetActivityViewInput input)
+        {
+            var query = from f in _activityformRepository.GetAll()
+                        join b in _activityBanquetRepository.GetAll()
+                        on f.Id equals b.ActivityFormId
+                        where f.Status == FormStatusEnum.营销中心已审核
+                        select new
+                        {
+                            b.Area,
+                            f.ManagerId,
+                            f.ManagerName,
+                            f.ActivityGoodsId,
+                            f.GoodsSpecification,
+                            f.ActivityId,
+                            f.CreationTime,
+                            f.Num
+                        };
+            var queryfilter = query.WhereIf(!string.IsNullOrEmpty(input.Area), q => q.Area == input.Area)
+                                   .WhereIf(!string.IsNullOrEmpty(input.ManagerName), q => q.ManagerName == input.ManagerName)
+                                   .WhereIf(!string.IsNullOrEmpty(input.GoodsSpecification), q => q.GoodsSpecification == input.GoodsSpecification)
+                                   .WhereIf(input.BeginDate.HasValue, q => q.CreationTime >= input.BeginDate)
+                                   .WhereIf(input.EndDate.HasValue, q => q.CreationTime < input.EndDateOne);
+            //第一次分组求活动场次
+            var groupOne = from q in queryfilter
+                           group q by new { q.Area, q.ActivityId, q.GoodsSpecification, q.ManagerId, q.ManagerName }
+                           into g
+                           select new
+                           {
+                               g.Key.Area,
+                               g.Key.ActivityId,
+                               g.Key.GoodsSpecification,
+                               g.Key.ManagerId,
+                               g.Key.ManagerName,
+                               num = g.Sum(a => a.Num)
+                           };
+            //第二次分组求最终结果
+            var groupTwo = from t in groupOne
+                           group t by new { t.Area, t.GoodsSpecification, t.ManagerId, t.ManagerName }
+                           into gt
+                           select new ActivityViewDto
+                           {
+                               Area = gt.Key.Area,
+                               GoodsSpecification = gt.Key.GoodsSpecification,
+                               ManagerName = gt.Key.ManagerName,
+                               OpenNum = gt.Count(),
+                               GoodsNum = gt.Sum(g => g.num)
+                           };
+
+            var dataCount = await groupTwo.CountAsync();
+
+            var dataList = await groupTwo.OrderBy(g => g.Area)
+                .ThenBy(g => g.GoodsSpecification)
+                .ThenBy(g => g.ManagerName)
+                .PageBy(input)
+                .ToListAsync();
+
+            return new PagedResultDto<ActivityViewDto>(dataCount, dataList);
         }
     }
 }

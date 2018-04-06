@@ -13,3 +13,4 @@ export * from './subscribe';
 export * from './user-question';
 export * from './user-answer';
 export * from './advise';
+export * from './activity-view';

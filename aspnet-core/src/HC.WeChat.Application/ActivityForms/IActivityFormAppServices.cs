@@ -61,5 +61,10 @@ namespace HC.WeChat.ActivityForms
         Task<APIResultDto> SubmitActivityFormAsync(ActivityFormInputDto input);
 
         Task<APIResultDto> ChangeActivityFormStatusAsync(ActivityFormStatusDto input);
+
+        /// <summary>
+        /// 获取ActivityView的分页列表信息
+        /// </summary>
+        Task<PagedResultDto<ActivityViewDto>> GetPagedActivityView(GetActivityViewInput input);
     }
 }
