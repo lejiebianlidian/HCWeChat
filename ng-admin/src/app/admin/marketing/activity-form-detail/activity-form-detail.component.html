@@ -54,19 +54,19 @@
                             宴席信息
                         </ng-template>
                         <ng-template #extra>
-                            <a>上传/修改</a>
+                            <a (click)="editBanquet()">上传/修改</a>
                         </ng-template>
                         <ng-template #body>
                             <desc-list class="mb-lg" *ngIf="banquet">
                                 <desc-list-item term="区县">{{banquet.area}}</desc-list-item>
                                 <desc-list-item term="责任人">{{banquet.responsible}}</desc-list-item>
                                 <desc-list-item term="活动执行人">{{banquet.executor}}</desc-list-item>
-                                <desc-list-item term="宴席时间">{{banquet.banquetTime}}</desc-list-item>
+                                <desc-list-item term="宴席时间">{{banquet.banquetTime | _date}}</desc-list-item>
                                 <desc-list-item term="宴席地点">{{banquet.position}}</desc-list-item>
                                 <desc-list-item term="现场人数">{{banquet.num}}</desc-list-item>
-                                <desc-list-item term="现场效果简述">{{banquet.desc}}</desc-list-item>
                                 <desc-list-item term="上传时间">{{banquet.creationTime | _date}}</desc-list-item>
                                 <desc-list-item term="上传人">{{banquet.userName}}</desc-list-item>
+                                <desc-list-item term="现场简述">{{banquet.desc}}</desc-list-item>
                             </desc-list>
                             <h4 class="mb-md">现场照片</h4>
                             <nz-list [nzLoading]="loading" class="imgList" [nzDataSource]="list" [nzGrid]="{gutter: 24, lg: 6, md: 8, sm: 12, xs: 24 }">
@@ -167,3 +167,4 @@
 <edit-form-modal #editFormModal (modalSave)="getFormData()"></edit-form-modal>
 <edit-delivery-modal #editDeliveryModal (modalSave)="getDeliveryData()" ></edit-delivery-modal>
 <edit-express-modal #editExpressModal (modalSave)="getDeliveryData()" ></edit-express-modal>
+<edit-banquet-modal #editBanquetModal (modalSave)="getBanquetData()"></edit-banquet-modal>

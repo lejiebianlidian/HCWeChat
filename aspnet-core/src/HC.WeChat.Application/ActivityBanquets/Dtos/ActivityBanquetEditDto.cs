@@ -86,7 +86,6 @@ namespace HC.WeChat.ActivityBanquets.Dtos
         /// <summary>
         /// 创建用户名 快照
         /// </summary>
-        [Required]
         [StringLength(50)]
         public string UserName { get; set; }
 

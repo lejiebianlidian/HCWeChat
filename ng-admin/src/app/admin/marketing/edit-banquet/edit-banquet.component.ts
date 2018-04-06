@@ -55,6 +55,7 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
         for (const i in this.form.controls) {
             this.form.controls[i].markAsDirty();
         }
+        this.banquetDto.photoUrl = 'test.jpg';
         if (this.form.valid) {
             this._activityBanquetService.update(this.banquetDto)
                 .finally(() => { this.isConfirmLoading = false; })

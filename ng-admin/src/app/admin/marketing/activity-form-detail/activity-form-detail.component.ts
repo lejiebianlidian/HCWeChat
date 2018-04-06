@@ -10,6 +10,7 @@ import { EditFormComponent } from '../edit-form/edit-form.component';
 import { EditDeliveryComponent } from '../edit-delivery/edit-delivery.component';
 import { EditExpressComponent } from '../edit-express/edit-express.component';
 import { AppComponentBase } from '@shared/app-component-base';
+import { EditBanquetComponent } from '../edit-banquet/edit-banquet.component';
 
 @Component({
     selector: 'activity-form-detail',
@@ -22,6 +23,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
     @ViewChild('editFormModal') editFormModal: EditFormComponent;
     @ViewChild('editDeliveryModal') editDeliveryModal: EditDeliveryComponent;
     @ViewChild('editExpressModal') editExpressModal: EditExpressComponent;
+    @ViewChild('editBanquetModal') editBanquetModal: EditBanquetComponent;
 
     formId: string;
     form: ActivityFormDto;
@@ -54,7 +56,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         this.getFormData();
 
         //宴席信息
-        this.banquet = ActivityBanquetDto.fromJS({ area: '宜宾城区' });
+        this.getBanquetData();
         this.loading = true;
         this.http.get('/api/list', { count: 4 }).subscribe((res: any) => {
             this.list = this.list.concat(res).map(item => {
@@ -63,27 +65,29 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
             this.loading = false;
         });
 
-        this.activityBanquetService.getByFormId(this.formId).subscribe(result => {
-            this.banquet = result;
-        });
-
         //收货信息
         this.getDeliveryData();
     }
 
-    getDeliveryData(){
+    getBanquetData() {
+        this.activityBanquetService.getByFormId(this.formId).subscribe(result => {
+            this.banquet = result;
+        });
+    }
+
+    getDeliveryData() {
         this.activityDeliveryService.getByFormId(this.formId).subscribe(result => {
             for (let d of result) {
                 if (d.type == 1) {
                     this.delivery = d;
-                }else if(d.type == 2){
+                } else if (d.type == 2) {
                     this.rdelivery = d;
                 }
-            } 
+            }
         });
     }
 
-    getFormData(){
+    getFormData() {
         this.activityFormService.get(this.formId).subscribe(result => {
             this.form = result;
             this.formTitle = '单号：' + this.form.formCode + ' 状态：' + this.form.statusName;
@@ -91,7 +95,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
     }
 
     //初审
-    firstApproval(){
+    firstApproval() {
         let formStatus = new ActivityFormStatusDto();
         formStatus.status = 2;
         formStatus.opinion = "初审通过";
@@ -99,7 +103,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         this.approvalModal.show(formStatus);
     }
     //取消
-    cancel(){
+    cancel() {
         let formStatus = new ActivityFormStatusDto();
         formStatus.status = 5;
         formStatus.opinion = "取消";
@@ -107,7 +111,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         this.approvalModal.show(formStatus);
     }
     //拒绝
-    reject(){
+    reject() {
         let formStatus = new ActivityFormStatusDto();
         formStatus.status = 3;
         formStatus.opinion = "拒绝";
@@ -115,7 +119,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         this.approvalModal.show(formStatus);
     }
     //终审
-    approval(){
+    approval() {
         if (this.banquet.id == null || this.banquet.id == '') {
             this.notify.error('请先回传宴席资料');
             return;
@@ -131,15 +135,16 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         this.approvalModal.show(formStatus);
     }
     //修改商品信息
-    editForm(){
+    editForm() {
         this.editFormModal.show(this.form);
     }
     //修改收货信息
-    editDelivery(){
+    editDelivery() {
         this.editDeliveryModal.title = '消费者信息';
         if (this.delivery) {
-            this.editDeliveryModal.show(this.delivery);
-        }else{
+            let d = this.delivery.clone();
+            this.editDeliveryModal.show(d);
+        } else {
             let del = new ActivityDeliveryInfoDto();
             del.activityFormId = this.formId;
             del.type = 1;
@@ -148,25 +153,27 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         }
     }
 
-    editRDelivery(){
+    editRDelivery() {
         this.editDeliveryModal.title = '推荐人信息';
         if (this.rdelivery) {
-            this.editDeliveryModal.show(this.rdelivery);
-        }else{
+            let r = this.rdelivery.clone();
+            this.editDeliveryModal.show(r);
+        } else {
             let del = new ActivityDeliveryInfoDto();
             del.activityFormId = this.formId;
             del.type = 2;
-            del.creationTime = new Date();          
+            del.creationTime = new Date();
             this.editDeliveryModal.show(del);
         }
     }
 
     //修改物流信息
-    editExpress(){
+    editExpress() {
         this.editExpressModal.title = '消费者物流信息';
         if (this.delivery) {
-            this.editExpressModal.show(this.delivery);
-        }else{
+            let d = this.delivery.clone();
+            this.editExpressModal.show(d);
+        } else {
             let del = new ActivityDeliveryInfoDto();
             del.activityFormId = this.formId;
             del.type = 1;
@@ -175,16 +182,23 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         }
     }
 
-    editRExpress(){
+    editRExpress() {
         this.editExpressModal.title = '推荐人物流信息';
         if (this.rdelivery) {
-            this.editExpressModal.show(this.rdelivery);
-        }else{
+            let r = this.rdelivery.clone();
+            this.editExpressModal.show(r);
+        } else {
             let del = new ActivityDeliveryInfoDto();
             del.activityFormId = this.formId;
             del.type = 2;
-            del.creationTime = new Date();          
+            del.creationTime = new Date();
             this.editExpressModal.show(del);
         }
+    }
+
+    editBanquet(){
+        this.banquet.activityFormId = this.formId;
+        let b = this.banquet.clone();
+        this.editBanquetModal.show(b);
     }
 }

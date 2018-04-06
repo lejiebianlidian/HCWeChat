@@ -40,6 +40,7 @@ import { EditExpressComponent } from './marketing/edit-express/edit-express.comp
 import { UserQuestionComponent } from './marketing/user-question/user-question.component';
 import { UserAnswerComponent } from './marketing/user-answer/user-answer.component';
 import { AdviseComponent } from './consumer/advise/advise.component';
+import { EditBanquetComponent } from './marketing/edit-banquet/edit-banquet.component';
 
 @NgModule({
   imports: [
@@ -79,7 +80,8 @@ import { AdviseComponent } from './consumer/advise/advise.component';
     EditExpressComponent,
     UserQuestionComponent,
     UserAnswerComponent,
-    AdviseComponent
+    AdviseComponent,
+    EditBanquetComponent
    ],
    providers: [ AppRouteGuard ]
 })

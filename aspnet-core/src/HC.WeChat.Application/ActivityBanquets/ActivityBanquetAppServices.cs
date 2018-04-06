@@ -15,6 +15,7 @@ using HC.WeChat.ActivityBanquets;
 using System;
 using System.Linq;
 using HC.WeChat.Authorization;
+using HC.WeChat.Authorization.Users;
 
 namespace HC.WeChat.ActivityBanquets
 {
@@ -25,20 +26,21 @@ namespace HC.WeChat.ActivityBanquets
     [AbpAuthorize(AppPermissions.Pages)]
     public class ActivityBanquetAppService : WeChatAppServiceBase, IActivityBanquetAppService
     {
-        ////BCC/ BEGIN CUSTOM CODE SECTION
-        ////ECC/ END CUSTOM CODE SECTION
         private readonly IRepository<ActivityBanquet, Guid> _activitybanquetRepository;
+        private readonly IRepository<User, long> _userRepository;
         private readonly IActivityBanquetManager _activitybanquetManager;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         public ActivityBanquetAppService(IRepository<ActivityBanquet, Guid> activitybanquetRepository
-      , IActivityBanquetManager activitybanquetManager
+        , IActivityBanquetManager activitybanquetManager
+        , IRepository<User, long> userRepository
         )
         {
             _activitybanquetRepository = activitybanquetRepository;
             _activitybanquetManager = activitybanquetManager;
+            _userRepository = userRepository;
         }
 
         /// <summary>
@@ -130,13 +132,14 @@ namespace HC.WeChat.ActivityBanquets
         /// <returns></returns>
         public async Task CreateOrUpdateActivityBanquet(CreateOrUpdateActivityBanquetInput input)
         {
-
             if (input.ActivityBanquet.Id.HasValue)
             {
                 await UpdateActivityBanquetAsync(input.ActivityBanquet);
             }
             else
             {
+                var user = await _userRepository.GetAsync(AbpSession.UserId.Value);
+                input.ActivityBanquet.UserName = user.Name;
                 await CreateActivityBanquetAsync(input.ActivityBanquet);
             }
         }
