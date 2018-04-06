@@ -19,94 +19,94 @@ export class UserAnswerComponent extends AppComponentBase implements OnInit {
             no: 1,
             text: '您所开的烟店地处什么位置?',
             answers: [
-                { label:'城市', checked: false, disabled: true },
-                { label:'乡镇', checked: false, disabled: true},
-                { label:'郊区', checked: false, disabled: true},
-                { label:'农村', checked: false, disabled: true}
+                { label: '城市', checked: false },
+                { label: '乡镇', checked: false },
+                { label: '郊区', checked: false },
+                { label: '农村', checked: false }
             ]
         },
         {
             no: 2,
             text: '您经营卷烟零售有多长时间?',
             answers: [
-                { label:'1年或1年以内', checked: false, disabled: true},
-                { label:'1～5年', checked: false, disabled: true},
-                { label:'5年以上', checked: false, disabled: true}
+                { label: '1年或1年以内', checked: false },
+                { label: '1～5年', checked: false },
+                { label: '5年以上', checked: false }
             ]
         },
         {
             no: 3,
             text: '您每月卷烟销量有多少?',
             answers: [
-                { label:'20条以下', checked: false, disabled: true},
-                { label:'20～70条', checked: false, disabled: true},
-                { label:'70～150条', checked: false, disabled: true},
-                { label:'150条以上', checked: false, disabled: true}
+                { label: '20条以下', checked: false },
+                { label: '20～70条', checked: false },
+                { label: '70～150条', checked: false },
+                { label: '150条以上', checked: false }
             ]
         },
         {
             no: 4,
             text: '您每月销售的卷烟中哪种档次的卷烟销量较大?',
             answers: [
-                { label:'30元以下', checked: false, disabled: true},
-                { label:'30～80元', checked: false, disabled: true},
-                { label:'80元以上', checked: false, disabled: true}
+                { label: '30元以下', checked: false },
+                { label: '30～80元', checked: false },
+                { label: '80元以上', checked: false }
             ]
         },
         {
             no: 5,
             text: '您所售卷烟中哪些牌号卷烟销量较大，请依次填写?',
             answers: [
-                { label:'30元以下', checked: false, disabled: true},
-                { label:'30～80元', checked: false, disabled: true},
-                { label:'80元以上', checked: false, disabled: true}
+                { label: '30元以下', checked: false },
+                { label: '30～80元', checked: false },
+                { label: '80元以上', checked: false }
             ]
         },
         {
             no: 6,
             text: '烟草公司的访销员每周到你户访销几次?',
             answers: [
-                { label:'一次', checked: false, disabled: true},
-                { label:'两次', checked: false, disabled: true},
-                { label:'两次以上', checked: false, disabled: true},
-                { label:'不走访', checked: false, disabled: true}
+                { label: '一次', checked: false },
+                { label: '两次', checked: false },
+                { label: '两次以上', checked: false },
+                { label: '不走访', checked: false }
             ]
         },
         {
             no: 7,
             text: '您认为我们访销员一周上门访销几次为好?',
             answers: [
-                { label:'一次', checked: false, disabled: true},
-                { label:'两次', checked: false, disabled: true},
-                { label:'三次', checked: false, disabled: true},
-                { label:'无所谓', checked: false, disabled: true}
+                { label: '一次', checked: false },
+                { label: '两次', checked: false },
+                { label: '三次', checked: false },
+                { label: '无所谓', checked: false }
             ]
         },
         {
             no: 8,
             text: '您对我们上门访销员、市场经理的服务态度是否满意?',
             answers: [
-                { label:'满意', checked: false, disabled: true},
-                { label:'基本满意', checked: false, disabled: true},
-                { label:'不满意', checked: false, disabled: true}
+                { label: '满意', checked: false },
+                { label: '基本满意', checked: false },
+                { label: '不满意', checked: false }
             ]
         },
         {
             no: 9,
             text: '您对我们配送员、驾驶员的服务态度是否满意?',
             answers: [
-                { label:'满意', checked: false, disabled: true},
-                { label:'基本满意', checked: false, disabled: true},
-                { label:'不满意', checked: false, disabled: true}
+                { label: '满意', checked: false },
+                { label: '基本满意', checked: false },
+                { label: '不满意', checked: false }
             ]
         },
         {
             no: 10,
             text: '访销员每次上门访销时做些什么工作?',
             answers: [
-                { label:'完成定单', checked: false, disabled: true},
-                { label:'市场管理', checked: false, disabled: true},
-                { label:'询问信息', checked: false, disabled: true}
+                { label: '完成定单', checked: false },
+                { label: '市场管理', checked: false },
+                { label: '询问信息', checked: false }
             ]
         }
     ];
@@ -124,8 +124,8 @@ export class UserAnswerComponent extends AppComponentBase implements OnInit {
         this.getAanswerData();
     }
 
-    getQuestion(){
-        this._userQuestionService.get(this.questionId).subscribe(result =>{
+    getQuestion() {
+        this._userQuestionService.get(this.questionId).subscribe(result => {
             this.question = result;
         });
     }
@@ -141,7 +141,7 @@ export class UserAnswerComponent extends AppComponentBase implements OnInit {
         })
     }
 
-    setQuestion(answer: UserAnswer){
+    setQuestion(answer: UserAnswer) {
         for (const question of this.questions) {
             if (answer.answerSqe == question.no) {
                 for (const aitem of question.answers) {

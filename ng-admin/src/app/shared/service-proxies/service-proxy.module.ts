@@ -8,6 +8,7 @@ import { ActivityGoodsServiceProxy } from '@shared/service-proxies/marketing-ser
 import { ActivityBanquetServiceProxy, ActivityDeliveryInfoServiceProxy, UserAnswerService, UserQuestionService } from '@shared/service-proxies/marketing-service';
 import { RetailCustomerServiceProxy } from '@shared/service-proxies/customer-service/retail-cunstomer-service';
 import { WechatUserServiceProxy } from '@shared/service-proxies/wechat-manager/wechat-user-service';
+import { AdviseService } from '@shared/service-proxies/consumer-service';
 
 @NgModule({
     providers: [
@@ -33,7 +34,8 @@ import { WechatUserServiceProxy } from '@shared/service-proxies/wechat-manager/w
         RetailCustomerServiceProxy,
         WechatUserServiceProxy,
         UserQuestionService,
-        UserAnswerService
+        UserAnswerService,
+        AdviseService
     ]
 })
 export class ServiceProxyModule { }

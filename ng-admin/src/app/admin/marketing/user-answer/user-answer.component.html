@@ -1,7 +1,8 @@
-<pro-header></pro-header>
-<nz-card [nzNoHovering]="true" [nzBordered]="false">
+<pro-header [title]="'问卷调查详细'"></pro-header>
+<nz-card [nzNoHovering]="true" >
     <ng-template #body>
-        <desc-list size="large" title="问卷调查详细信息" class="mb-lg">
+            <div class="text-lg mb-md">用户提交信息</div>
+        <desc-list size="large" class="mb-lg">
             <desc-list-item term="问卷主题">{{question.name}}</desc-list-item>
             <desc-list-item term="客户姓名">{{question.userName}}</desc-list-item>
             <desc-list-item term="联系电话">{{question.phone}}</desc-list-item>

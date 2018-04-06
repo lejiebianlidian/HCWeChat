@@ -14,6 +14,8 @@ using HC.WeChat.Advises.DomainServices;
 using HC.WeChat.Advises;
 using System;
 using HC.WeChat.Dto;
+using HC.WeChat.Authorization;
+using System.Linq;
 
 namespace HC.WeChat.Advises
 {
@@ -21,6 +23,7 @@ namespace HC.WeChat.Advises
     /// Advise应用层服务的接口实现方法
     /// </summary>
     //[AbpAuthorize(AdviseAppPermissions.Advise)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class AdviseAppService : WeChatAppServiceBase, IAdviseAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
@@ -47,12 +50,13 @@ namespace HC.WeChat.Advises
         public async Task<PagedResultDto<AdviseListDto>> GetPagedAdvises(GetAdvisesInput input)
         {
 
-            var query = _adviseRepository.GetAll();
+            var query = _adviseRepository.GetAll()
+                .WhereIf(!string.IsNullOrEmpty(input.Filter), a => a.Title.Contains(input.Filter) || a.Phone.Contains(input.Filter) || a.Content.Contains(input.Filter));
             //TODO:根据传入的参数添加过滤条件
             var adviseCount = await query.CountAsync();
 
             var advises = await query
-                .OrderBy(input.Sorting)
+                .OrderByDescending(a => a.CreationTime)
                 .PageBy(input)
                 .ToListAsync();
 
@@ -182,6 +186,7 @@ namespace HC.WeChat.Advises
             await _adviseRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        [AbpAllowAnonymous]
         public async Task<APIResultDto> SubmitAdviseAsync(AdviseDto input)
         {
             var advise = input.MapTo<Advise>();

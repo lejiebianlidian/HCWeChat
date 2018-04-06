@@ -15,6 +15,7 @@ using HC.WeChat.UserQuestions;
 using System;
 using HC.WeChat.Dto;
 using HC.WeChat.UserAnswers;
+using System.Linq;
 
 namespace HC.WeChat.UserQuestions
 {
@@ -56,7 +57,7 @@ namespace HC.WeChat.UserQuestions
             var userquestionCount = await query.CountAsync();
 
             var userquestions = await query
-                .OrderBy(input.Sorting)
+                .OrderByDescending(u => u.CreationTime)
                 .PageBy(input)
                 .ToListAsync();
 

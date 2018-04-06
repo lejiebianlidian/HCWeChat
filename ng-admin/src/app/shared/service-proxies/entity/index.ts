@@ -12,3 +12,4 @@ export * from './retail-customer';
 export * from './subscribe';
 export * from './user-question';
 export * from './user-answer';
+export * from './advise';
