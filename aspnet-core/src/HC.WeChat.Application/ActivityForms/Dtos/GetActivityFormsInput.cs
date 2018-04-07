@@ -50,7 +50,7 @@ namespace HC.WeChat.ActivityForms.Dtos
         /// <summary>
         /// 区县
         /// </summary>
-        public string Area { get; set; }
+        public string ActivityArea { get; set; }
 
         /// <summary>
         /// 商品规格

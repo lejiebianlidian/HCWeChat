@@ -41,6 +41,7 @@ import { UserQuestionComponent } from './marketing/user-question/user-question.c
 import { UserAnswerComponent } from './marketing/user-answer/user-answer.component';
 import { AdviseComponent } from './consumer/advise/advise.component';
 import { EditBanquetComponent } from './marketing/edit-banquet/edit-banquet.component';
+import { ActivityViewComponent } from './marketing/activity-view/activity-view.component';
 
 @NgModule({
   imports: [
@@ -81,7 +82,8 @@ import { EditBanquetComponent } from './marketing/edit-banquet/edit-banquet.comp
     UserQuestionComponent,
     UserAnswerComponent,
     AdviseComponent,
-    EditBanquetComponent
+    EditBanquetComponent,
+    ActivityViewComponent
    ],
    providers: [ AppRouteGuard ]
 })

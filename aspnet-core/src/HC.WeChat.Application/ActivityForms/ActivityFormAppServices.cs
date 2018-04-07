@@ -387,11 +387,13 @@ namespace HC.WeChat.ActivityForms
                             f.CreationTime,
                             f.Num
                         };
-            var queryfilter = query.WhereIf(!string.IsNullOrEmpty(input.Area), q => q.Area == input.Area)
+            var queryfilter = query.WhereIf(!string.IsNullOrEmpty(input.ActivityArea), q => q.Area == input.ActivityArea)
                                    .WhereIf(!string.IsNullOrEmpty(input.ManagerName), q => q.ManagerName == input.ManagerName)
                                    .WhereIf(!string.IsNullOrEmpty(input.GoodsSpecification), q => q.GoodsSpecification == input.GoodsSpecification)
                                    .WhereIf(input.BeginDate.HasValue, q => q.CreationTime >= input.BeginDate)
                                    .WhereIf(input.EndDate.HasValue, q => q.CreationTime < input.EndDateOne);
+
+
             //第一次分组求活动场次
             var groupOne = from q in queryfilter
                            group q by new { q.Area, q.ActivityId, q.GoodsSpecification, q.ManagerId, q.ManagerName }

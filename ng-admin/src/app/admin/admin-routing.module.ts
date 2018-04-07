@@ -20,6 +20,7 @@ import { RetailCustomerDetailComponent } from './customer-service/retail-custome
 import { UserQuestionComponent } from './marketing/user-question/user-question.component';
 import { UserAnswerComponent } from './marketing/user-answer/user-answer.component';
 import { AdviseComponent } from './consumer/advise/advise.component';
+import { ActivityViewComponent } from './marketing/activity-view/activity-view.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,7 @@ const routes: Routes = [
       { path: 'user-question', component: UserQuestionComponent, data: { translate: 'user-question', permission: 'Pages' }, canActivate: [AppRouteGuard] },
       { path: 'user-question-detail/:id', component: UserAnswerComponent, data: { translate: 'user-question-detail', permission: 'Pages',title:'问卷调查详细'}, canActivate: [AppRouteGuard] },
       { path: 'advise', component: AdviseComponent, data: { translate: 'advise', permission: 'Pages' }, canActivate: [AppRouteGuard] },
+      { path: 'activity-query', component: ActivityViewComponent, data: { translate: 'activity-query', permission: 'Pages' }, canActivate: [AppRouteGuard] },
     ]
   }
 ];
