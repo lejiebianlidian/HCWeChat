@@ -42,10 +42,12 @@ import { UserAnswerComponent } from './marketing/user-answer/user-answer.compone
 import { AdviseComponent } from './consumer/advise/advise.component';
 import { EditBanquetComponent } from './marketing/edit-banquet/edit-banquet.component';
 import { ActivityViewComponent } from './marketing/activity-view/activity-view.component';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   imports: [
     CommonModule,
+    FileUploadModule,
     SharedModule,
     LayoutModule,
     AdminRoutingModule

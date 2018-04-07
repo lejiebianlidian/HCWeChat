@@ -16,6 +16,7 @@ namespace HC.WeChat.Authorization.Users
 {
     public class UserManager : AbpUserManager<Role, User>
     {
+        private readonly IRepository<User, long> _userRepository;
         public UserManager(
             RoleManager roleManager,
             UserStore store, 
@@ -33,7 +34,8 @@ namespace HC.WeChat.Authorization.Users
             IRepository<OrganizationUnit, long> organizationUnitRepository, 
             IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository, 
             IOrganizationUnitSettings organizationUnitSettings, 
-            ISettingManager settingManager)
+            ISettingManager settingManager,
+            IRepository<User, long> userRepository)
             : base(
                 roleManager, 
                 store, 
@@ -53,6 +55,34 @@ namespace HC.WeChat.Authorization.Users
                 organizationUnitSettings, 
                 settingManager)
         {
+            _userRepository = userRepository;
+        }
+
+        /// <summary>
+        /// 获取当前用户的过滤员工Id admin和营销中心为null，客户经理返回为员工Id，其它返回一个新Id做过滤
+        /// </summary>
+        /// <returns></returns>
+        public Guid? GetControlEmployeeId()
+        {
+            if (!AbpSession.UserId.HasValue)
+            {
+                return Guid.NewGuid();
+            }
+            var user = _userRepository.Get(AbpSession.UserId.Value);
+            var roles = GetRolesAsync(user).Result;
+            //如果是管理员 或 营销中心
+            if (roles.Contains(StaticRoleNames.Tenants.Admin) || roles.Contains(StaticRoleNames.Tenants.CustomerManager))
+            {
+                return null;
+            }
+            if (user.EmployeeId.HasValue)
+            {
+                return user.EmployeeId;
+            }
+            else
+            {
+                return Guid.NewGuid();
+            }
         }
     }
 }

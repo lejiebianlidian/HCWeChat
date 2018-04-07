@@ -24,6 +24,7 @@ using HC.WeChat.ActivityFormLogs;
 using HC.WeChat.Activities;
 using HC.WeChat.Authorization.Users;
 using HC.WeChat.ActivityBanquets;
+using HC.WeChat.Authorization.Roles;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -79,12 +80,13 @@ namespace HC.WeChat.ActivityForms
         /// <returns></returns>
         public async Task<PagedResultDto<ActivityFormListDto>> GetPagedActivityForms(GetActivityFormsInput input)
         {
-
+            var mid = UserManager.GetControlEmployeeId();
             var query = _activityformRepository.GetAll()
                 .WhereIf(!string.IsNullOrEmpty(input.FormCode), q => q.FormCode == input.FormCode)
                 .WhereIf(input.BeginDate.HasValue, q => q.CreationTime >= input.BeginDate)
                 .WhereIf(input.EndDate.HasValue, q => q.CreationTime < input.EndDateOne)
                 .WhereIf(input.Status.HasValue, q => q.Status == input.Status)
+                .WhereIf(mid.HasValue, q => q.ManagerId == mid) //数据权限过滤
                 .WhereIf(!string.IsNullOrEmpty(input.Filter), q => q.ActivityName.Contains(input.Filter) 
                 || q.RetailerName.Contains(input.Filter) || q.ManagerName.Contains(input.Filter));
             //TODO:根据传入的参数添加过滤条件
@@ -387,12 +389,14 @@ namespace HC.WeChat.ActivityForms
                             f.CreationTime,
                             f.Num
                         };
+            var mid = UserManager.GetControlEmployeeId();
             //var dlist = query.ToList();
             var queryfilter = query.WhereIf(!string.IsNullOrEmpty(input.ActivityArea), q => q.Area == input.ActivityArea)
                                    .WhereIf(!string.IsNullOrEmpty(input.ManagerName), q => q.ManagerName == input.ManagerName)
                                    .WhereIf(!string.IsNullOrEmpty(input.GoodsSpecification), q => q.GoodsSpecification == input.GoodsSpecification)
                                    .WhereIf(input.BeginDate.HasValue, q => q.CreationTime >= input.BeginDate)
-                                   .WhereIf(input.EndDate.HasValue, q => q.CreationTime < input.EndDateOne);
+                                   .WhereIf(input.EndDate.HasValue, q => q.CreationTime < input.EndDateOne)
+                                   .WhereIf(mid.HasValue, q => q.ManagerId == mid); //数据权限过滤;
 
             //var d2 = queryfilter.ToList();
             //第一次分组求活动场次

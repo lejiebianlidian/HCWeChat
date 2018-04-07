@@ -6,6 +6,7 @@ using Abp.IdentityFramework;
 using Abp.Runtime.Session;
 using HC.WeChat.Authorization.Users;
 using HC.WeChat.MultiTenancy;
+using HC.WeChat.Authorization.Roles;
 
 namespace HC.WeChat
 {

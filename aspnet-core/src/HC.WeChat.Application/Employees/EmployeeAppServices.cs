@@ -16,6 +16,8 @@ using HC.WeChat.Employees;
 using System;
 using HC.WeChat.Authorization;
 using HC.WeChat.WechatEnums;
+using HC.WeChat.Authorization.Roles;
+using HC.WeChat.Authorization.Users;
 
 namespace HC.WeChat.Employees
 {
@@ -35,7 +37,7 @@ namespace HC.WeChat.Employees
         /// 构造函数
         /// </summary>
         public EmployeeAppService(IRepository<Employee, Guid> employeeRepository
-      , IEmployeeManager employeeManager
+            , IEmployeeManager employeeManager
         )
         {
             _employeeRepository = employeeRepository;

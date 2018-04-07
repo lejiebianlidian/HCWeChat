@@ -74,7 +74,7 @@ namespace HC.WeChat.Web.Host.Controllers
         {
             WeChatFileInput file = data.ToObject<WeChatFileInput>();
             var imageBase64 = file.thumbUrl;
-            
+
             if (!string.IsNullOrWhiteSpace(imageBase64))
             {
                 var reg = new Regex("data:image/(.*);base64,");
@@ -106,6 +106,21 @@ namespace HC.WeChat.Web.Host.Controllers
                 return Json(new APIResultDto() { Code = 701, Msg = "上传数据成功", Data = result });
             }
             return Json(new APIResultDto() { Code = 701, Msg = "上传数据不能为空" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFile()
+        {
+            var data = Request.Form.Files["imgs"];
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            string contentRootPath = _hostingEnvironment.ContentRootPath;
+            var fileDire = webRootPath + "/upload/BanquetPhotos/";
+            var filePath = fileDire + "a.jpg";
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await data.CopyToAsync(stream);
+            }
+            return Ok(new { msg = "OK"});
         }
 
 

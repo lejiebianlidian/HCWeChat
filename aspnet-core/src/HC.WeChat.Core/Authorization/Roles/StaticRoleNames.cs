@@ -10,6 +10,10 @@ namespace HC.WeChat.Authorization.Roles
         public static class Tenants
         {
             public const string Admin = "Admin";
+
+            public const string MarketingCenter = "MarketingCenter";
+
+            public const string CustomerManager = "CustomerManager";
         }
     }
 }

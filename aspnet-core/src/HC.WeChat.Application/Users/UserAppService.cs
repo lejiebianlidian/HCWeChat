@@ -15,6 +15,7 @@ using HC.WeChat.Authorization.Roles;
 using HC.WeChat.Authorization.Users;
 using HC.WeChat.Roles.Dto;
 using HC.WeChat.Users.Dto;
+using System;
 
 namespace HC.WeChat.Users
 {

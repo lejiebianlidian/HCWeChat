@@ -12,6 +12,8 @@ import { ActivityBanquetServiceProxy } from '@shared/service-proxies/marketing-s
 import { filter } from 'rxjs/operators/filter';
 import { HttpRequest, HttpClient, HttpResponse } from '@angular/common/http';
 
+import {FileUploader} from "ng2-file-upload";
+
 @Component({
     selector: 'edit-banquet-modal',
     templateUrl: './edit-banquet.component.html'
@@ -30,6 +32,12 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
     uploading = false;
     fileList = [];
 
+    public uploader:FileUploader = new FileUploader({
+        url: "http://localhost:21021/WeChatFile/UploadFile",
+        method: "POST",
+        itemAlias: "uploadedfile"
+    });
+
     constructor(
         injector: Injector,
         private _activityBanquetService: ActivityBanquetServiceProxy,
@@ -37,6 +45,27 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
         private http: HttpClient, private msg: NzMessageService
     ) {
         super(injector);
+    }
+
+      // C: 定义事件，选择文件
+    selectedFileOnChanged(event:any) {
+        // 打印文件选择名称
+        console.log(event.target.value);
+    }
+    // D: 定义事件，上传文件
+    uploadFile() {
+        // 上传
+        this.uploader.queue[0].onSuccess = function (response, status, headers) {
+            // 上传文件成功
+            if (status == 200) {
+                // 上传文件后获取服务器返回的数据
+                let tempRes = JSON.parse(response);
+            } else {
+                // 上传文件后获取服务器返回的数据错误
+                alert("");
+            }
+        };
+        this.uploader.queue[0].upload(); // 开始上传
     }
 
     ngOnInit(): void {
