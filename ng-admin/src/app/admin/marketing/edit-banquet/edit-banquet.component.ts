@@ -1,6 +1,6 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, ElementRef, OnInit } from '@angular/core';
 import { ActivityBanquetDto } from '@shared/service-proxies/entity';
-import { UploadFile } from 'ng-zorro-antd';
+import { UploadFile, NzMessageService } from 'ng-zorro-antd';
 import { AppComponentBase } from '@shared/app-component-base';
 import { FormGroup, FormBuilder, Validators, FormControl, AsyncValidatorFn, AbstractControl } from '@angular/forms';
 
@@ -9,19 +9,12 @@ import { ActivityBanquetServiceProxy } from '@shared/service-proxies/marketing-s
 
 //import * as _ from "lodash";
 
+import { filter } from 'rxjs/operators/filter';
+import { HttpRequest, HttpClient, HttpResponse } from '@angular/common/http';
+
 @Component({
     selector: 'edit-banquet-modal',
-    templateUrl: './edit-banquet.component.html',
-    styles: [`
-    :host ::ng-deep i {
-        font-size: 32px;
-        color: #999;
-    }
-    :host ::ng-deep .ant-upload-text {
-        margin-top: 8px;
-        color: #666;
-    }
-    `]
+    templateUrl: './edit-banquet.component.html'
 })
 export class EditBanquetComponent extends AppComponentBase implements OnInit {
 
@@ -34,19 +27,14 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
     banquetDto: ActivityBanquetDto = null;
     form: FormGroup;
 
-    fileList = [{
-        uid: '-1',
-        name: 'xxx.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    }];
-    previewImage = '';
-    previewVisible = false;
+    uploading = false;
+    fileList = [];
 
     constructor(
         injector: Injector,
         private _activityBanquetService: ActivityBanquetServiceProxy,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private http: HttpClient, private msg: NzMessageService
     ) {
         super(injector);
     }
@@ -62,13 +50,7 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
             desc: [null, [Validators.required, Validators.maxLength(500)]],
         });
     }
-
-    handlePreview = (file: UploadFile) => {
-        this.previewImage = file.url || file.thumbUrl;
-        this.previewVisible = true;
-      }
     
-
     show(delivery: ActivityBanquetDto): void {
         this.reset();
         this.banquetDto = delivery;
@@ -119,8 +101,32 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
     }
 
     handleChange(info: { file: UploadFile }): void {
-        this._activityBanquetService.upload(info.file).subscribe(result => {
+        this._activityBanquetService.uploadBase64(info.file).subscribe(result => {
             
         });
     }
+
+    beforeUpload = (file: UploadFile): boolean => {
+        this.fileList.push(file);
+        return false;
+      }
+
+      handleUpload() {
+        const formData = new FormData();
+        this.fileList.forEach((file: any) => {
+          formData.append('files[]', file);
+        });
+        this.uploading = true;
+        // You can use any AJAX library you like
+        const req = new HttpRequest('POST', 'https://jsonplaceholder.typicode.com/posts/', formData, {
+          // reportProgress: true
+        });
+        this.http.request(req).pipe(filter(e => e instanceof HttpResponse)).subscribe((event: any) => {
+          this.uploading = false;
+          this.msg.success('upload successfully.');
+        }, (err) => {
+          this.uploading = false;
+          this.msg.error('upload failed.');
+        });
+      }
 }

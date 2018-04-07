@@ -370,7 +370,7 @@ namespace HC.WeChat.ActivityForms
             return new APIResultDto() { Code = 0, Msg = "操作成功" };
         }
 
-        public async Task<PagedResultDto<ActivityViewDto>> GetPagedActivityView(GetActivityViewInput input)
+        public Task<PagedResultDto<ActivityViewDto>> GetPagedActivityView(GetActivityViewInput input)
         {
             var query = from f in _activityformRepository.GetAll()
                         join b in _activityBanquetRepository.GetAll()
@@ -387,13 +387,14 @@ namespace HC.WeChat.ActivityForms
                             f.CreationTime,
                             f.Num
                         };
+            //var dlist = query.ToList();
             var queryfilter = query.WhereIf(!string.IsNullOrEmpty(input.ActivityArea), q => q.Area == input.ActivityArea)
                                    .WhereIf(!string.IsNullOrEmpty(input.ManagerName), q => q.ManagerName == input.ManagerName)
                                    .WhereIf(!string.IsNullOrEmpty(input.GoodsSpecification), q => q.GoodsSpecification == input.GoodsSpecification)
                                    .WhereIf(input.BeginDate.HasValue, q => q.CreationTime >= input.BeginDate)
                                    .WhereIf(input.EndDate.HasValue, q => q.CreationTime < input.EndDateOne);
 
-
+            //var d2 = queryfilter.ToList();
             //第一次分组求活动场次
             var groupOne = from q in queryfilter
                            group q by new { q.Area, q.ActivityId, q.GoodsSpecification, q.ManagerId, q.ManagerName }
@@ -407,6 +408,7 @@ namespace HC.WeChat.ActivityForms
                                g.Key.ManagerName,
                                num = g.Sum(a => a.Num)
                            };
+            //var d3 = groupOne.ToList();
             //第二次分组求最终结果
             var groupTwo = from t in groupOne
                            group t by new { t.Area, t.GoodsSpecification, t.ManagerId, t.ManagerName }
@@ -419,16 +421,25 @@ namespace HC.WeChat.ActivityForms
                                OpenNum = gt.Count(),
                                GoodsNum = gt.Sum(g => g.num)
                            };
+            //var d4 = groupTwo.ToList();
 
-            var dataCount = await groupTwo.CountAsync();
+            var dataCount = groupTwo.Count();
 
-            var dataList = await groupTwo.OrderBy(g => g.Area)
+            //var dataCount = await groupTwo.CountAsync();
+
+            //var dataList = await groupTwo.OrderBy(g => g.Area)
+            //    .ThenBy(g => g.GoodsSpecification)
+            //    .ThenBy(g => g.ManagerName)
+            //    .PageBy(input)
+            //    .ToListAsync();
+
+            var dataList = groupTwo.OrderBy(g => g.Area)
                 .ThenBy(g => g.GoodsSpecification)
                 .ThenBy(g => g.ManagerName)
                 .PageBy(input)
-                .ToListAsync();
+                .ToList();
 
-            return new PagedResultDto<ActivityViewDto>(dataCount, dataList);
+            return Task.FromResult(new PagedResultDto<ActivityViewDto>(dataCount, dataList));
         }
     }
 }
