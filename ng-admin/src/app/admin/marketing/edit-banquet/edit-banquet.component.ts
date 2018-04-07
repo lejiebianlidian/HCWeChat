@@ -1,5 +1,6 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, ElementRef, OnInit } from '@angular/core';
 import { ActivityBanquetDto } from '@shared/service-proxies/entity';
+import { UploadFile } from 'ng-zorro-antd';
 import { AppComponentBase } from '@shared/app-component-base';
 import { FormGroup, FormBuilder, Validators, FormControl, AsyncValidatorFn, AbstractControl } from '@angular/forms';
 
@@ -10,7 +11,17 @@ import { ActivityBanquetServiceProxy } from '@shared/service-proxies/marketing-s
 
 @Component({
     selector: 'edit-banquet-modal',
-    templateUrl: './edit-banquet.component.html'
+    templateUrl: './edit-banquet.component.html',
+    styles: [`
+    :host ::ng-deep i {
+        font-size: 32px;
+        color: #999;
+    }
+    :host ::ng-deep .ant-upload-text {
+        margin-top: 8px;
+        color: #666;
+    }
+    `]
 })
 export class EditBanquetComponent extends AppComponentBase implements OnInit {
 
@@ -22,6 +33,15 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
     isDisablec = false;
     banquetDto: ActivityBanquetDto = null;
     form: FormGroup;
+
+    fileList = [{
+        uid: '-1',
+        name: 'xxx.png',
+        status: 'done',
+        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    }];
+    previewImage = '';
+    previewVisible = false;
 
     constructor(
         injector: Injector,
@@ -43,12 +63,18 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
         });
     }
 
+    handlePreview = (file: UploadFile) => {
+        this.previewImage = file.url || file.thumbUrl;
+        this.previewVisible = true;
+      }
+    
+
     show(delivery: ActivityBanquetDto): void {
         this.reset();
         this.banquetDto = delivery;
         this.modalVisible = true;
-         //对isDisablec做初始化
-         this.isDisablec = false;
+        //对isDisablec做初始化
+        this.isDisablec = false;
     }
 
     save(isSave = false): void {
@@ -90,5 +116,11 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
         for (const key in this.form.controls) {
             this.form.controls[key].markAsPristine();
         }
+    }
+
+    handleChange(info: { file: UploadFile }): void {
+        this._activityBanquetService.upload(info.file).subscribe(result => {
+            
+        });
     }
 }

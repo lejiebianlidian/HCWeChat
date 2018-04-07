@@ -4862,7 +4862,15 @@ ng-zorro-antd-extra@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/ng-zorro-antd-extra/-/ng-zorro-antd-extra-1.1.6.tgz#b69ba30603843ffd6ded09a46dd2038542251e40"
 
-ng-zorro-antd@^0.6.5, ng-zorro-antd@^0.6.7:
+ng-zorro-antd@^0.6.14:
+  version "0.6.15"
+  resolved "https://registry.yarnpkg.com/ng-zorro-antd/-/ng-zorro-antd-0.6.15.tgz#acef41a30febce835b871d52cd47d042ac2ed443"
+  dependencies:
+    "@angular/cdk" "^5.0.0"
+    moment "^2.18.1"
+    tslib "^1.7.1"
+
+ng-zorro-antd@^0.6.7:
   version "0.6.9"
   resolved "https://registry.yarnpkg.com/ng-zorro-antd/-/ng-zorro-antd-0.6.9.tgz#963c6bd1265e8de65d7945986eaa380ffa0b9ba2"
   dependencies:

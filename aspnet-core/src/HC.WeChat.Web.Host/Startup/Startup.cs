@@ -19,6 +19,7 @@ using Senparc.Weixin.Threads;
 using Microsoft.Extensions.Options;
 using Senparc.Weixin.MP.Containers;
 using HC.WeChat.Models.WeChat;
+using Microsoft.AspNetCore.Http.Features;
 
 #if FEATURE_SIGNALR
 using Microsoft.AspNet.SignalR;
@@ -52,6 +53,12 @@ namespace HC.WeChat.Web.Host.Startup
                 {
                     options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm";
                 });
+            //设置文件上传大小限制
+            services.Configure<FormOptions>(x => {
+                x.MemoryBufferThreshold = int.MaxValue;
+                x.ValueLengthLimit = int.MaxValue;
+                x.MultipartBodyLengthLimit = int.MaxValue;
+            });
 
             IdentityRegistrar.Register(services);
             AuthConfigurer.Configure(services, _appConfiguration);

@@ -6,7 +6,8 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/catch';
 
-import { ActivityBanquetDto, Parameter } from "@shared/service-proxies/entity";
+import { ActivityBanquetDto, Parameter, UploadFileDto } from "@shared/service-proxies/entity";
+import { UploadFile } from 'ng-zorro-antd';
 import { Observable } from 'rxjs/Observable';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { Http, Headers, ResponseContentType, Response } from '@angular/http';
@@ -166,6 +167,60 @@ export class ActivityBanquetServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Observable.of<void>(<any>null);
+    }
+
+    /**
+     * 通过formId获取回传资料信息
+     * @param formId 消息id
+     */
+    upload(file: any): Observable<UploadFileDto> {
+        let url_ = this.baseUrl + "/WeChatFile/BanquetPhotoSave";
+        const formData = new FormData();
+        formData.append('imgs', file);
+        let options_ = {
+            body: formData,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processUpload(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processUpload(response_);
+                } catch (e) {
+                    return <Observable<UploadFileDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<UploadFileDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpload(response: Response): Observable<UploadFileDto> {
+        const status = response.status;
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? UploadFileDto.fromJS(resultData200) : new UploadFileDto();
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<UploadFileDto>(<any>null);
     }
 }
 export class PagedResultDtoOfActivityBanquet implements IPagedResultDtoOfActivityBanquet {
