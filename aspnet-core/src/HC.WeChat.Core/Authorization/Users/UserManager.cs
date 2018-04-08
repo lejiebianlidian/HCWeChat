@@ -71,7 +71,7 @@ namespace HC.WeChat.Authorization.Users
             var user = _userRepository.Get(AbpSession.UserId.Value);
             var roles = GetRolesAsync(user).Result;
             //如果是管理员 或 营销中心
-            if (roles.Contains(StaticRoleNames.Tenants.Admin) || roles.Contains(StaticRoleNames.Tenants.CustomerManager))
+            if (roles.Contains(StaticRoleNames.Tenants.Admin) || roles.Contains(StaticRoleNames.Tenants.MarketingCenter))
             {
                 return null;
             }

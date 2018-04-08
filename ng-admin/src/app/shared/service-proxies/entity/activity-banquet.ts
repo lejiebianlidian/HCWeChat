@@ -4,7 +4,7 @@ export class ActivityBanquetDto implements IActivityBanquetDto {
     area: string;
     responsible: string;
     executor: string;
-    banquetTime: Date;
+    banquetTime: string;
     position: string;
     num: number;
     desc: string;
@@ -73,7 +73,7 @@ export interface IActivityBanquetDto {
     area: string;
     responsible: string;
     executor: string;
-    banquetTime: Date;
+    banquetTime: string;
     position: string;
     num: number;
     desc: string;

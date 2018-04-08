@@ -258,6 +258,11 @@
         });
     </script>
     <script type="text/javascript">
+        function checkMobile(str) {
+            var re = /^1\d{10}$/
+            return re.test(str);
+        }
+
         var Save = function () {
             var reqUrl = "@ViewBag.ServerRootAddress" + "api/services/app/UserQuestion/SubmitUserQuestionsAsync";
             var para = {};
@@ -271,6 +276,12 @@
                 alert("电话号码不能为空！");
                 return;
             }
+
+            if (!checkMobile(para.phone)) {
+                alert("请输入正确的电话号码！");
+                return;
+            }
+
             para.address = $("#txtAddress").val();
             if (para.address == "") {
                 alert("地址不能为空！");

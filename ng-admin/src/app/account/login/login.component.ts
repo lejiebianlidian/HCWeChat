@@ -38,7 +38,10 @@ export class LoginComponent extends AppComponentBase implements OnInit {
       } else if(tenancyId == 2){
         abp.multiTenancy.setTenantIdCookie(2);
       } else {
-        abp.multiTenancy.setTenantIdCookie(2);//默认宜宾
+        if (tid != 2) {
+          abp.multiTenancy.setTenantIdCookie(2);//默认宜宾
+          location.reload();
+        }
       }
       //location.reload();
     //} 

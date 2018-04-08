@@ -1898,6 +1898,7 @@ export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInform
     application: ApplicationInfoDto;
     user: UserLoginInfoDto;
     tenant: TenantLoginInfoDto;
+    roles: string[];
 
     constructor(data?: IGetCurrentLoginInformationsOutput) {
         if (data) {
@@ -1913,6 +1914,7 @@ export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInform
             this.application = data["application"] ? ApplicationInfoDto.fromJS(data["application"]) : <any>undefined;
             this.user = data["user"] ? UserLoginInfoDto.fromJS(data["user"]) : <any>undefined;
             this.tenant = data["tenant"] ? TenantLoginInfoDto.fromJS(data["tenant"]) : <any>undefined;
+            this.roles = data["roles"];
         }
     }
 
@@ -1927,6 +1929,7 @@ export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInform
         data["application"] = this.application ? this.application.toJSON() : <any>undefined;
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
         data["tenant"] = this.tenant ? this.tenant.toJSON() : <any>undefined;
+        data["roles"] = this.roles;
         return data;
     }
 
@@ -1942,6 +1945,7 @@ export interface IGetCurrentLoginInformationsOutput {
     application: ApplicationInfoDto;
     user: UserLoginInfoDto;
     tenant: TenantLoginInfoDto;
+    roles: string[];
 }
 
 export class ApplicationInfoDto implements IApplicationInfoDto {

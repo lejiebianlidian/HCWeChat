@@ -1,6 +1,7 @@
 import { NzMessageService } from 'ng-zorro-antd';
 import { Component, OnInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
+import { AppSessionService } from '@shared/session/app-session.service';
 
 @Component({
     selector: 'app-home-index',
@@ -8,15 +9,13 @@ import { _HttpClient } from '@delon/theme';
 })
 export class IndexComponent implements OnInit {
 
-    constructor(private http: _HttpClient, public msg: NzMessageService) { }
+    constructor(private http: _HttpClient, public msg: NzMessageService, private _appSessionService: AppSessionService) { }
 
     todoData: any[] = [
-        { completed: true, avatar: '1', name: '苏先生', content: `请告诉我，我应该说点什么好？` },
-        { completed: false, avatar: '2', name: 'はなさき', content: `ハルカソラトキヘダツヒカリ` },
-        { completed: false, avatar: '3', name: 'cipchk', content: `this world was never meant for one as beautiful as you.` },
-        { completed: false, avatar: '4', name: 'Kent', content: `my heart is beating with hers` },
-        { completed: false, avatar: '5', name: 'Are you', content: `They always said that I love beautiful girl than my friends` },
-        { completed: false, avatar: '6', name: 'Forever', content: `Walking through green fields ，sunshine in my eyes.` }
+        { completed: true, avatar: '1', name: '苏者名', content: `订货流程是什么样的？` },
+        { completed: false, avatar: '2', name: '杨太', content: `我想咨询如何订货` },
+        { completed: false, avatar: '3', name: '李红', content: `我想咨询如何参加本次活动` },
+        { completed: false, avatar: '4', name: '曾开', content: `你们的营销电话是多少` }
     ];
 
     quickMenu = false;
@@ -24,6 +23,7 @@ export class IndexComponent implements OnInit {
     webSite: any[] = [ ];
     salesData: any[] =  [ ];
     offlineChartData: any[] = [];
+    roleName: string = '';
 
     ngOnInit() {
         this.http.get('/chart').subscribe((res: any) => {
@@ -31,5 +31,20 @@ export class IndexComponent implements OnInit {
             this.salesData = res.salesData;
             this.offlineChartData = res.offlineChartData;
         });
+        let roles = this._appSessionService.roles;
+        if (roles.includes('HostAdmin')) {
+            this.roleName += '系统管理员';
+        }
+        if (roles.includes('Admin')) {
+            this.roleName += '管理员';
+        }
+
+        if (roles.includes('MarketingCenter')) {
+            this.roleName += ' 营销中心';
+        }
+
+        if (roles.includes('CustomerManager')) {
+            this.roleName += ' 客户经理';
+        }
     }
 }

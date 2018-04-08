@@ -67,6 +67,11 @@
     </div>
     <script type="text/javascript" src="static/js/jquery.min.js"></script>
     <script type="text/javascript">
+        function checkMobile(str) {
+            var re = /^1\d{10}$/
+            return re.test(str);
+        }
+
        var Save = function () {
            var reqUrl = "@ViewBag.ServerRootAddress" + "api/services/app/Advise/SubmitAdviseAsync";
             var para = {};
@@ -85,7 +90,12 @@
             if (para.phone == "") {
                 alert("电话号码不能为空！");
                 return;
-            }
+           }
+
+           if (!checkMobile(para.phone)) {
+               alert("请输入正确的电话号码！");
+               return;
+           }
 
            para.userTypeName = $("#dllUserTypeName").val();
             para.tenantId = $("#hidTenantId").val();
