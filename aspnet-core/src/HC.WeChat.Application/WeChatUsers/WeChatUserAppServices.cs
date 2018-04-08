@@ -206,40 +206,42 @@ namespace HC.WeChat.WeChatUsers
             {
                 entity = input.MapTo<WeChatUser>();
             }
+            using (CurrentUnitOfWork.SetTenantId(input.TenantId))
+            {
+                if (input.UserType == UserTypeEnum.零售客户)
+                {
+                    //验证零售户
+                    var retaliler = _retailerRepository.GetAll().Where(r => r.IsAction && r.Name == input.UserName && r.LicenseKey == input.LicenseKey).FirstOrDefault();
+                    if (retaliler == null)
+                    {
+                        return new APIResultDto() { Code = 901, Msg = "零售户验证未通过" };
+                    }
+                    entity.UserId = retaliler.Id;
+                }
+                else if (input.UserType == UserTypeEnum.客户经理)
+                {
+                    //验证客户经理
+                    var employee = _employeeRepository.GetAll().Where(e => e.IsAction && e.Name == input.UserName && e.Code == input.Code && e.Position == UserTypeEnum.客户经理).FirstOrDefault();
+                    if (employee == null)
+                    {
+                        return new APIResultDto() { Code = 902, Msg = "客户经理验证未通过" };
+                    }
+                    entity.UserId = employee.Id;
+                }
+                else
+                {
+                    return new APIResultDto() { Code = 903, Msg = "用户类型不支持" };
+                }
 
-            if (input.UserType == UserTypeEnum.零售客户)
-            {
-                //验证零售户
-                var retaliler = _retailerRepository.GetAll().Where(r => r.IsAction && r.Name == input.UserName && r.LicenseKey == input.LicenseKey).FirstOrDefault();
-                if (retaliler == null)
-                {
-                    return new APIResultDto() { Code = 901, Msg = "用户验证未通过" };
-                }
-                entity.UserId = retaliler.Id;
+                entity.UserName = input.UserName;
+                entity.UserType = input.UserType;
+                entity.BindStatus = BindStatusEnum.已绑定;
+                entity.BindTime = DateTime.Now;
+                entity.OpenId = input.OpenId;
+                entity.TenantId = input.TenantId;
+                await _wechatuserManager.BindWeChatUserAsync(entity);
+                return new APIResultDto() { Code = 0, Msg = "绑定成功" };
             }
-            else if(input.UserType == UserTypeEnum.客户经理)
-            {
-                //验证客户经理
-                var employee = _employeeRepository.GetAll().Where(e => e.IsAction && e.Name == input.UserName && e.Code == input.Code && e.Position == UserTypeEnum.客户经理).FirstOrDefault();
-                if (employee == null)
-                {
-                    return new APIResultDto() { Code = 901, Msg = "用户验证未通过" };
-                }
-                entity.UserId = employee.Id;
-            }
-            else
-            {
-                return new APIResultDto() { Code = 903, Msg = "用户类型不支持" };
-            }
-            
-            entity.UserName = input.UserName;
-            entity.UserType = input.UserType;
-            entity.BindStatus = BindStatusEnum.已绑定;
-            entity.BindTime = DateTime.Now;
-            entity.OpenId = input.OpenId;
-            entity.TenantId = input.TenantId;
-            await _wechatuserManager.BindWeChatUserAsync(entity);
-            return new APIResultDto() { Code = 0, Msg = "绑定成功" };
         }
 
         public async Task<WeChatUserListDto> GetWeChatUserAsync(string openId, int? tenantId)

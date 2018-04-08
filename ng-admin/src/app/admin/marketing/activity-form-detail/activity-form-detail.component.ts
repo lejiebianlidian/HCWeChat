@@ -33,7 +33,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
     rdelivery: ActivityDeliveryInfoDto;//推荐人
 
     list: any[] = [];
-    loading = true;
+    loading = false;
     ismcenter = false;//是否是营销中心
 
     constructor(injector: Injector,
@@ -64,13 +64,14 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         //宴席信息
         this.getBanquetData();
 
-        this.loading = true;
-        this.http.get('/api/list', { count: 4 }).subscribe((res: any) => {
-            this.list = this.list.concat(res).map(item => {
-                return item;
-            });
-            this.loading = false;
-        });
+        //this.loading = true;
+        //this.http.get('/api/list', { count: 4 }).subscribe((res: any) => {
+            //this.list = this.list.concat(res).map(item => {
+            //    return item;
+            //});
+            //this.list = [];
+            //this.loading = false;
+        //});
 
         //收货信息
         this.getDeliveryData();
@@ -125,7 +126,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         formStatus.id = this.formId;
         this.approvalModal.show(formStatus);
     }
-    //终审
+    //资料审核
     approval() {
         if (this.banquet.id == null || this.banquet.id == '') {
             this.notify.error('请先回传宴席资料');
@@ -138,6 +139,14 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         let formStatus = new ActivityFormStatusDto();
         formStatus.status = 4;
         formStatus.opinion = "资料回传审核通过";
+        formStatus.id = this.formId;
+        this.approvalModal.show(formStatus);
+    }
+    //营销中心审核
+    approvalEnd(){
+        let formStatus = new ActivityFormStatusDto();
+        formStatus.status = 6;
+        formStatus.opinion = "营销中心审核通过";
         formStatus.id = this.formId;
         this.approvalModal.show(formStatus);
     }

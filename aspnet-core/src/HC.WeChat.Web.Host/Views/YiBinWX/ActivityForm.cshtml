@@ -69,6 +69,9 @@
             <input type="button" class="middel_btn fl cancel" onclick="Cancel()" value="取消申请" />
             <input type="button" class="middel_btn fr ok" id="btnSave" value="提交申请" onclick="Save()" />
         </div>
+        <a style="display:none" href="@ViewBag.Url">
+            <input type="button" id="abtnGoBindUser" />
+        </a>
     </div>
     <script type="text/javascript" src="static/js/jquery.min.js"></script>
     <script type="text/javascript">
@@ -76,7 +79,8 @@
             var userType = @ViewBag.UserType;
             if (userType != 1 && userType != 2) {
                 alert("如果您是零售客户请先完成用户绑定，如果您是消费者请咨询附近商家");
-                window.location.href = "@ViewBag.Url";
+                //window.location.href = "";
+                $('#abtnGoBindUser').click();
             }
         });
 

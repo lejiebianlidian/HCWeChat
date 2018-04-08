@@ -82,7 +82,22 @@
                     <ng-template #nzTabHeading>
                         上传照片
                     </ng-template>
-
+                    <div class="clearfix">
+                        <nz-upload
+                          nzAction="http://wechat.intcov.com/WeChatFile/BanquetPhotoSave/"
+                          nzListType="picture-card"
+                          [(nzFileList)]="fileList"
+                          [nzShowButton]="fileList.length < 6"
+                          [nzPreview]="handlePreview">
+                            <i class="anticon anticon-plus"></i>
+                            <div class="ant-upload-text">上传</div>
+                        </nz-upload>
+                        <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible=false">
+                          <ng-template #modalContent>
+                            <img [src]="previewImage" [ngStyle]="{ 'width': '100%' }" />
+                          </ng-template>
+                        </nz-modal>
+                      </div>
                 </nz-tab>
             </nz-tabset>
         </ng-template>
@@ -95,8 +110,4 @@
             </button>
         </ng-template>
     </nz-modal>
-</form>
-<form id="uploadForm" enctype="multipart/form-data">
-    <input type="file" name="imgs" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" />
-    <button nz-button (click)="uploadFile()" [nzType]="'primary'" [nzSize]="'small'">上传</button>
 </form>

@@ -16,7 +16,17 @@ import { FileUploader } from "ng2-file-upload";
 
 @Component({
     selector: 'edit-banquet-modal',
-    templateUrl: './edit-banquet.component.html'
+    templateUrl: './edit-banquet.component.html',
+    styles: [`
+    :host ::ng-deep i {
+      font-size: 32px;
+      color: #999;
+    }
+    :host ::ng-deep .ant-upload-text {
+      margin-top: 8px;
+      color: #666;
+    }
+    `]
 })
 export class EditBanquetComponent extends AppComponentBase implements OnInit {
 
@@ -31,6 +41,9 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
 
     uploading = false;
     fileList = [];
+
+      previewImage = '';
+      previewVisible = false;
 
     public uploader: FileUploader = new FileUploader({
         url: "http://localhost:21021/WeChatFile/UploadFile",
@@ -47,6 +60,11 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
     ) {
         super(injector);
     }
+
+    handlePreview = (file: UploadFile) => {
+        this.previewImage = file.url || file.thumbUrl;
+        this.previewVisible = true;
+      }
 
     // C: 定义事件，选择文件
     selectedFileOnChanged(event: any) {

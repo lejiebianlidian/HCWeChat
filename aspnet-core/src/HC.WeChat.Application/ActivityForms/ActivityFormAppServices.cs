@@ -91,7 +91,7 @@ namespace HC.WeChat.ActivityForms
                 .WhereIf(input.EndDate.HasValue, q => q.CreationTime < input.EndDateOne)
                 .WhereIf(input.Status.HasValue, q => q.Status == input.Status)
                 .WhereIf(mid.HasValue, q => q.ManagerId == mid) //数据权限过滤
-                .WhereIf(!string.IsNullOrEmpty(input.Filter), q => q.ActivityName.Contains(input.Filter) 
+                .WhereIf(!string.IsNullOrEmpty(input.Filter), q => q.ActivityName.Contains(input.Filter)
                 || q.RetailerName.Contains(input.Filter) || q.ManagerName.Contains(input.Filter));
             //TODO:根据传入的参数添加过滤条件
             var activityformCount = await query.CountAsync();
@@ -303,47 +303,74 @@ namespace HC.WeChat.ActivityForms
             }
 
             form.CreationUser = user.UserName;
-            if (user.UserType == UserTypeEnum.零售客户)
+            using (CurrentUnitOfWork.SetTenantId(input.TenantId))
             {
-                form.RetailerId = user.UserId.Value;
-                form.RetailerName = user.UserName;
-                var retailer = await _retailerAppService.GetRetailerByIdAsync(new EntityDto<Guid> { Id = user.UserId.Value });
-                form.ManagerName = retailer.Manager;
-                form.ManagerId = retailer.EmployeeId;
+                var activity = await _activityRepository.GetAsync(input.ActivityId);
+
+                if (user.UserType == UserTypeEnum.零售客户)
+                {
+                    //单数限制
+                    var rcount = _activityformRepository.GetAll()
+                        .Where(a => a.RetailerId == user.UserId
+                        && a.Status == FormStatusEnum.提交申请
+                        && a.Status == FormStatusEnum.初审通过
+                        && a.CreationUser == user.UserName).Count();
+                    if (rcount >= activity.RUnfinished)
+                    {
+                        return new APIResultDto() { Code = 703, Msg = "未完成单数已超过零售户限制，不能再申请" };
+                    }
+
+                    form.RetailerId = user.UserId.Value;
+                    form.RetailerName = user.UserName;
+                    var retailer = await _retailerAppService.GetRetailerByIdAsync(new EntityDto<Guid> { Id = user.UserId.Value });
+                    form.ManagerName = retailer.Manager;
+                    form.ManagerId = retailer.EmployeeId;
+                }
+                else if (user.UserType == UserTypeEnum.客户经理)
+                {
+                    //单数限制
+                    var mcount = _activityformRepository.GetAll()
+                        .Where(a => a.ManagerId == user.UserId
+                        && a.Status == FormStatusEnum.提交申请
+                        && a.Status == FormStatusEnum.初审通过
+                        && a.CreationUser == user.UserName).Count();
+
+                    if (mcount >= activity.MUnfinished)
+                    {
+                        return new APIResultDto() { Code = 704, Msg = "未完成单数已超过客户经理限制，不能再申请" };
+                    }
+                    form.ManagerName = user.UserName;
+                    form.ManagerId = user.UserId;
+                }
+
+                form.FormCode = GetFormCode();
+                form.Status = FormStatusEnum.提交申请;
+
+                form.ActivityName = activity.Name;
+                //1、保存表单
+                var formId = await _activityformRepository.InsertAndGetIdAsync(form);
+                await CurrentUnitOfWork.SaveChangesAsync();//获取保存的Form ID
+                delivery.ActivityFormId = formId;
+                delivery.CreationTime = DateTime.Now;
+                delivery.Type = DeliveryUserTypeEnum.消费者;
+                //2、保存邮寄信息
+                await _activitydeliveryinfoRepository.InsertAsync(delivery);
+
+                //3、保存记录日志
+                var log = new ActivityFormLog();
+                log.ActionTime = DateTime.Now;
+                log.ActivityFormId = formId;
+                log.Opinion = "提交申请";
+                log.Status = FormStatusEnum.提交申请;
+                log.StatusName = log.Status.ToString();
+                log.UserId = user.UserId.Value;
+                log.UserName = user.UserName;
+                log.UserType = user.UserType;
+
+                await _activityFormLogRepository.InsertAsync(log);
+
+                return new APIResultDto() { Code = 0, Msg = "活动申请成功，待客户经理审核" };
             }
-            else if (user.UserType == UserTypeEnum.客户经理)
-            {
-                form.ManagerName = user.UserName;
-                form.ManagerId = user.UserId;
-            }
-
-            form.FormCode = GetFormCode();
-            form.Status = FormStatusEnum.提交申请;
-            var activity = await _activityRepository.GetAsync(input.ActivityId);
-            form.ActivityName = activity.Name;
-            //1、保存表单
-            var formId = await _activityformRepository.InsertAndGetIdAsync(form);
-            await CurrentUnitOfWork.SaveChangesAsync();//获取保存的Form ID
-            delivery.ActivityFormId = formId;
-            delivery.CreationTime = DateTime.Now;
-            delivery.Type = DeliveryUserTypeEnum.消费者;
-            //2、保存邮寄信息
-            await _activitydeliveryinfoRepository.InsertAsync(delivery);
-
-            //3、保存记录日志
-            var log = new ActivityFormLog();
-            log.ActionTime = DateTime.Now;
-            log.ActivityFormId = formId;
-            log.Opinion = "提交申请";
-            log.Status = FormStatusEnum.提交申请;
-            log.StatusName = log.Status.ToString();
-            log.UserId = user.UserId.Value;
-            log.UserName = user.UserName;
-            log.UserType = user.UserType;
-
-            await _activityFormLogRepository.InsertAsync(log);
-
-            return new APIResultDto() { Code = 0, Msg = "活动申请成功，待客户经理审核" };
         }
 
         private string GetFormCode()
@@ -459,10 +486,10 @@ namespace HC.WeChat.ActivityForms
             var dto = new ActivityFormCountInfoDto();
             var query = _activityformRepository.GetAll();
             var WeiChatquery = _wechatuserRepository.GetAll();
-            dto.CheckCount = await query.Where(f => f.Status == FormStatusEnum.提交申请).CountAsync();
+            dto.CheckCount = await query.Where(f => f.Status == FormStatusEnum.提交申请 || f.Status == FormStatusEnum.初审通过 || f.Status == FormStatusEnum.资料回传已审核).CountAsync();
             dto.IsCheckedCount = query.Count();
-            dto.GoodsCount = await query.Where(f => f.Status == FormStatusEnum.营销中心已审核).CountAsync();
-            dto.WeiChatAttention = await WeiChatquery.Where(w => w.UserType == UserTypeEnum.取消关注).CountAsync();
+            dto.GoodsCount = await query.Where(f => f.Status == FormStatusEnum.营销中心已审核).SumAsync(s => s.Num);
+            dto.WeiChatAttention = await WeiChatquery.Where(w => w.UserType != UserTypeEnum.取消关注).CountAsync();
             return dto;
         }
     }
