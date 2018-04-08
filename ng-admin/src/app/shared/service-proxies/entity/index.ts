@@ -15,3 +15,4 @@ export * from './user-answer';
 export * from './advise';
 export * from './activity-view';
 export * from './upload';
+export * from './activity-form-info';

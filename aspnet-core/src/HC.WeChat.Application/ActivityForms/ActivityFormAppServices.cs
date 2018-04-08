@@ -25,6 +25,7 @@ using HC.WeChat.Activities;
 using HC.WeChat.Authorization.Users;
 using HC.WeChat.ActivityBanquets;
 using HC.WeChat.Authorization.Roles;
+using HC.WeChat.WeChatUsers;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -45,6 +46,7 @@ namespace HC.WeChat.ActivityForms
         private readonly IRepository<User, long> _userRepository;
         private readonly IRepository<ActivityBanquet, Guid> _activityBanquetRepository;
         private readonly IRepository<Retailer, Guid> _retailerRepository;
+        private readonly IRepository<WeChatUser, Guid> _wechatuserRepository;
 
         /// <summary>
         /// 构造函数
@@ -59,6 +61,7 @@ namespace HC.WeChat.ActivityForms
             , IRepository<User, long> userRepository
             , IRepository<ActivityBanquet, Guid> activityBanquetRepository
             , IRepository<Retailer, Guid> retailerRepository
+            , IRepository<WeChatUser, Guid> wechatuserRepository
         )
         {
             _activityformRepository = activityformRepository;
@@ -71,6 +74,7 @@ namespace HC.WeChat.ActivityForms
             _userRepository = userRepository;
             _activityBanquetRepository = activityBanquetRepository;
             _retailerRepository = retailerRepository;
+            _wechatuserRepository = wechatuserRepository;
         }
 
         /// <summary>
@@ -444,6 +448,22 @@ namespace HC.WeChat.ActivityForms
                 .ToList();
 
             return Task.FromResult(new PagedResultDto<ActivityViewDto>(dataCount, dataList));
+        }
+
+        /// <summary>
+        /// 获取首页的数据
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ActivityFormCountInfoDto> GetHomeInfo()
+        {
+            var dto = new ActivityFormCountInfoDto();
+            var query = _activityformRepository.GetAll();
+            var WeiChatquery = _wechatuserRepository.GetAll();
+            dto.CheckCount = await query.Where(f => f.Status == FormStatusEnum.提交申请).CountAsync();
+            dto.IsCheckedCount = query.Count();
+            dto.GoodsCount = await query.Where(f => f.Status == FormStatusEnum.营销中心已审核).CountAsync();
+            dto.WeiChatAttention = await WeiChatquery.Where(w => w.UserType == UserTypeEnum.取消关注).CountAsync();
+            return dto;
         }
     }
 }

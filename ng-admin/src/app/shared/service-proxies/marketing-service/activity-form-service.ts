@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/catch';
 
-import { ActivityForm, ActivityFormDto, Parameter, ApiResult, ActivityFormStatusDto, ActivityViewDto } from "@shared/service-proxies/entity";
+import { ActivityForm, ActivityFormDto, Parameter, ApiResult, ActivityFormStatusDto, ActivityViewDto, ActivityFormInfo } from "@shared/service-proxies/entity";
 import { Observable } from 'rxjs/Observable';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { Http, Headers, ResponseContentType, Response } from '@angular/http';
@@ -316,6 +316,58 @@ export class ActivityFormServiceProxy {
         }
         return Observable.of<PagedResultOfActivityView>(<any>null);
     }
+
+    getFormHomeInfo(): Observable<ActivityFormInfo> {
+        let url_ = this.baseUrl + "/api/services/app/ActivityForm/GetHomeInfo";
+        // if (id !== undefined)
+        //     url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = {
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processgetFormHomeInfo(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processgetFormHomeInfo(response_);
+                } catch (e) {
+                    return <Observable<ActivityFormInfo>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ActivityFormInfo>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processgetFormHomeInfo(response: Response): Observable<ActivityFormInfo> {
+        const status = response.status;
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ActivityFormInfo.fromJS(resultData200) : new ActivityFormInfo();
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<ActivityFormInfo>(<any>null);
+    }
+
 
 }
 
