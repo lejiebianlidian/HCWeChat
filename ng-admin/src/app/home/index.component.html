@@ -55,7 +55,7 @@
     <div nz-col nzXs="24" nzMd="12">
         <nz-card [nzBordered]="false">
             <ng-template #title>
-                近12个月申请单数
+                近12个月申请单数 (模拟数据)
             </ng-template>
             <bar height="275" [data]="salesData"></bar>
         </nz-card>
@@ -63,7 +63,7 @@
     <div nz-col nzXs="24" nzMd="12">
         <nz-card [nzTitle]="nzTitle1" [nzBordered]="false">
             <ng-template #nzTitle1>
-                24小时网站访问量和活动申请单笔数
+                24小时网站访问量和活动申请单笔数 (模拟数据)
             </ng-template>
             <timeline [data]="offlineChartData" [height]="239" [padding]="[0, 0, 0, 0]" [titleMap]="{ y1: '网站访问量', y2: '申请单笔数' }"></timeline>
         </nz-card>
@@ -81,7 +81,7 @@
     <div nz-col nzXs="24" nzMd="18">
         <nz-card [nzTitle]="nzTitle3" [nzBordered]="false" nzNoPadding>
             <ng-template #nzTitle3>
-                最新用户建议反馈
+                最新用户建议反馈 (模拟数据)
             </ng-template>
             <div nz-row [nzType]="'flex'" [nzJustify]="'center'" [nzAlign]="'middle'" class="py-sm bg-grey-lighter-h point" *ngFor="let item of todoData">
                 <div nz-col [nzSpan]="4" class="text-center">

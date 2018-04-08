@@ -32,7 +32,7 @@
                         <input type="text" id="txtLicenseKey" maxlength="50" placeholder="请输入专卖证号" />
                     </li>
                 </ul>
-                <input type="button" value="立即绑定" onclick="BindRetailer()" class="ok middel_btn mt20 center db" />
+                <input type="button" value="立即绑定" onclick="BindRetailer()" id="btnSave" class="ok middel_btn mt20 center db" />
             </div>
             <!--营销人员绑定-->
             <div class="all_width none">
@@ -44,7 +44,7 @@
                         <input type="text" id="txtCode" maxlength="50" placeholder="请输入员工编码" />
                     </li>
                 </ul>
-                <input type="button" value="立即绑定" onclick="BindEmployee()" class="ok middel_btn mt20 center db" />
+                <input type="button" value="立即绑定" onclick="BindEmployee()" id="btnEmpSave" class="ok middel_btn mt20 center db" />
             </div>
         </div>
         <input type="hidden" id="hidOpenId" value="@ViewBag.OpenId" />
@@ -60,7 +60,7 @@
         });
     </script>
     <script type="text/javascript">
-        var reqUrl = "@ViewBag.ServerRootAddress"+"api/services/app/WeChatUser/BindWeChatUserAsync";
+        var reqUrl = "@ViewBag.ServerRootAddress"+"/api/services/app/WeChatUser/BindWeChatUserAsync";
         var BindRetailer = function () {
             var para = {};
             para.userName = $("#txtRetailerName").val();
@@ -78,7 +78,8 @@
             para.userType = 1;
             para.nickName = $("#hidNickName").val();
             para.openId = $("#hidOpenId").val();
-
+            $("#btnSave").attr("disabled", true);
+            $("#btnSave").attr("disabled", "disabled");  
             $.ajax({
                 url: reqUrl,
                 type: "POST",
@@ -89,16 +90,20 @@
                     if (data.success) {
                         if (data.result.code == 0) {
                             alert(data.result.msg);
-                            window.location.href = "@ViewBag.Url";
+                            WeixinJSBridge.call('closeWindow');
                         } else {
                             alert(data.result.msg);
                         }
                     } else {
                         alert("保存异常！");
                     }
+                    $("#btnSave").removeAttr("disabled");
+                    $("#btnSave").attr("disabled", false); 
                 },
                 error: function () {
                     alert("提交失败！");
+                    $("#btnSave").removeAttr("disabled");
+                    $("#btnSave").attr("disabled", false); 
                 }
             });
         }
@@ -121,7 +126,8 @@
             para.userType = 2;
             para.nickName = $("#hidNickName").val();
             para.openId = $("#hidOpenId").val();
-
+            $("#btnEmpSave").attr("disabled", true);
+            $("#btnEmpSave").attr("disabled", "disabled"); 
             $.ajax({
                 url: reqUrl,
                 type: "POST",
@@ -132,16 +138,20 @@
                     if (data.success) {
                         if (data.result.code == 0) {
                             alert(data.result.msg);
-                            window.location.href = "@ViewBag.Url";
+                            WeixinJSBridge.call('closeWindow');
                         } else {
                             alert(data.result.msg);
                         }
                     } else {
                         alert("保存异常！");
                     }
+                    $("#btnEmpSave").removeAttr("disabled");
+                    $("#btnEmpSave").attr("disabled", false); 
                 },
                 error: function () {
                     alert("提交失败！");
+                    $("#btnEmpSave").removeAttr("disabled");
+                    $("#btnEmpSave").attr("disabled", false); 
                 }
             });
         }

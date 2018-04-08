@@ -236,7 +236,7 @@
             <input type="hidden" id="hidTenantId" value="@ViewBag.TenantId" />
         </div>
         <!--提交按钮-->
-        <input type="button" value="提交调查表" class="large_btn ok mt20" onclick="Save()" />
+        <input type="button" value="提交调查表" class="large_btn ok mt20" id="btnSave" onclick="Save()" />
         <p class="survey_tips mt20 mb20">感谢您对我们工作的支持!　宜宾烟草分公司</p>
     </div>
     <script type="text/javascript" src="static/js/jquery.min.js"></script>
@@ -264,7 +264,7 @@
         }
 
         var Save = function () {
-            var reqUrl = "@ViewBag.ServerRootAddress" + "api/services/app/UserQuestion/SubmitUserQuestionsAsync";
+            var reqUrl = "@ViewBag.ServerRootAddress" + "/api/services/app/UserQuestion/SubmitUserQuestionsAsync";
             var para = {};
             para.userName = $("#txtUserName").val();
             if (para.userName == "") {
@@ -314,7 +314,8 @@
             para.name = "卷烟零售户问卷调查表";
             para.tenantId = $("#hidTenantId").val();
             para.openId = $("#hidOpenId").val();
-
+            $("#btnSave").attr("disabled", true);
+            $("#btnSave").attr("disabled", "disabled");  
             $.ajax({
                 url: reqUrl,
                 type: "POST",
@@ -332,9 +333,13 @@
                     } else {
                         alert("保存异常！");
                     }
+                    $("#btnSave").removeAttr("disabled");
+                    $("#btnSave").attr("disabled", false); 
                 },
                 error: function () {
                     alert("提交失败！");
+                    $("#btnSave").removeAttr("disabled");
+                    $("#btnSave").attr("disabled", false); 
                 }
             });
         }

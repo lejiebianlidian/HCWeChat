@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.Authorization;
 using HC.WeChat.Activities;
 using HC.WeChat.ActivityGoodses;
 using HC.WeChat.Authorization.WeChatOAuth;
@@ -19,6 +20,7 @@ using Microsoft.Extensions.Options;
 
 namespace HC.WeChat.Web.Host.Controllers
 {
+    [AbpAllowAnonymous]
     public class YiBinWXController : WeChatWebControllerBase
     {
         IWeChatOAuthAppService _weChatOAuthAppService;
@@ -58,15 +60,15 @@ namespace HC.WeChat.Web.Host.Controllers
         /// <summary>
         /// 用户绑定
         /// </summary>
-        public async Task<IActionResult> BindUser(string code, string state)
+        public IActionResult BindUser(string code, string state)
         {
             Logger.InfoFormat("code:{0} state:{1}", code, state);
-            var oauth = await _weChatOAuthAppService.GetAccessTokenAsync(code);
+            var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
             var tenantId = GetTenantId();
-            var user = await _weChatUserAppService.GetWeChatUserAsync(oauth.openid, tenantId);
-            var wuser = await _weChatOAuthAppService.GetUserInfoAsync(oauth.access_token, oauth.openid);
-            user.NickName = wuser.nickname;
-            user.HeadImgUrl = wuser.headimgurl;
+            var user = _weChatUserAppService.GetWeChatUserAsync(oauth.openid, tenantId).Result;
+            //var wuser = _weChatOAuthAppService.GetUserInfoAsync(oauth.access_token, oauth.openid).Result;
+            user.NickName = user.NickName;
+            user.HeadImgUrl = "";// wuser.headimgurl;
             if (user.UserType == UserTypeEnum.零售客户 || user.UserType == UserTypeEnum.客户经理)
             {
                 return View("UserIndex", user);
@@ -77,9 +79,9 @@ namespace HC.WeChat.Web.Host.Controllers
             ViewBag.TenantId = tenantId;
             var root = _appConfiguration["App:ServerRootAddress"];
             ViewBag.ServerRootAddress = root;
-            var url = root + "YiBinWX/BindUser";
-            ViewBag.Url = _weChatOAuthAppService.GetAuthorizeUrl(url, tenantId.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
-            Logger.InfoFormat("Url:{0}", ViewBag.Url);
+            //var url = root + "YiBinWX/BindUser";
+            //ViewBag.Url = _weChatOAuthAppService.GetAuthorizeUrl(url, tenantId.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
+            //Logger.InfoFormat("Url:{0}", ViewBag.Url);
             return View();
         }
 
@@ -161,7 +163,7 @@ namespace HC.WeChat.Web.Host.Controllers
             {
                 return View("NoActivity");
             }
-            var url = _appConfiguration["App:ServerRootAddress"] + "YiBinWX/ActivityForm";
+            var url = _appConfiguration["App:ServerRootAddress"] + "/YiBinWX/ActivityForm";
             ViewBag.FormUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, activity.Id.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
             ViewBag.FlowUrl = Url.Action("ActivityFlow");
             return View();
@@ -195,7 +197,7 @@ namespace HC.WeChat.Web.Host.Controllers
             //var openid = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
             var user = _weChatUserAppService.GetWeChatUserAsync(oauth.openid, tenantId).Result;
             ViewBag.UserType = (int)user.UserType;
-            var url = _appConfiguration["App:ServerRootAddress"] + "YiBinWX/BindUser";
+            var url = _appConfiguration["App:ServerRootAddress"] + "/YiBinWX/BindUser";
             ViewBag.Url = _weChatOAuthAppService.GetAuthorizeUrl(url, tenantId.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
             ViewBag.GoodsList = _activityGoodsAppService.GetActivityGoodsByActivityId(activityId).Result;
             var root = _appConfiguration["App:ServerRootAddress"];

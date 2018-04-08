@@ -87,11 +87,7 @@ export class AppSessionService {
                     if (result.roles.includes('HostAdmin')) {
                         //alert(1);
                         this.aclService.setFull(true);
-                    } else if(result.roles.includes('Admin')) {
-                        //alert(2);
-                        this.aclService.setFull(false);
-                        this.aclService.setRole(['CustomerManager', 'Admin']);
-                    }
+                    } 
                     else {
                         //alert(3);
                         //Admin MarketingCenter CustomerManager
