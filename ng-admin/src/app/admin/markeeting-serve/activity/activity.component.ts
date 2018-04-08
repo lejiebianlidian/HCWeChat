@@ -100,6 +100,7 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
                 this.acitivityDto.beginTime = null;
                 this.acitivityDto.endTime = null;
                 this.acitivityDto.activityType = 1;
+                this.acitivityDto.publishTime = null;
                 //活动活动状态
                 this.acitivityDto.status = 1;
                 this.acitivityDto.statusName = '草稿';
@@ -137,6 +138,9 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
      * 活动保存
      */
     saveActivity() {
+        this.acitivityDto.beginTime = this.dateFormat(this.acitivityDto.beginTime);
+        this.acitivityDto.endTime = this.dateFormat(this.acitivityDto.endTime);
+        this.acitivityDto.publishTime = this.dateFormat(this.acitivityDto.publishTime);
         this.activityService.update(this.acitivityDto)
             .finally(() => { this.isConfirmLoading = false; })
             .subscribe((result: Activity) => {
@@ -203,9 +207,9 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
         var index = this.items.length - 1;
         this.addIndex = index;
         this.edit(index);
-        var result=new ActivityGoods();
-        result.maxNum=0;
-        result.minNum=10;
+        var result = new ActivityGoods();
+        result.maxNum = 0;
+        result.minNum = 10;
         this.items.at(index).patchValue(result);
     }
 
@@ -214,7 +218,7 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
      * @param i 
      */
     edit(index: number) {
-      
+
         //editIndex用于判断是否新增
         if (this.editIndex !== -1 && this.editObj) {
             this.items.at(this.editIndex).patchValue(this.editObj);
@@ -297,7 +301,7 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
                 this.activityService.isPulish().subscribe((isPulishs: boolean) => {
                     if (isPulishs) {
                         this.acitivityDto.status = status;
-                        this.acitivityDto.publishTime = new Date;
+                        this.acitivityDto.publishTime = this.dateFormat(new Date);
                         this.saveSub();
                     } else {
                         this.modal.warning({

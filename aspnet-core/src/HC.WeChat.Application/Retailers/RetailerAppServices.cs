@@ -50,11 +50,13 @@ namespace HC.WeChat.Retailers
         /// <returns></returns>
         public async Task<PagedResultDto<RetailerListDto>> GetPagedRetailers(GetRetailersInput input)
         {
-
+            var mid = UserManager.GetControlEmployeeId();
             var query = _retailerRepository.GetAll()
                 .WhereIf(!string.IsNullOrEmpty(input.Name), r => r.Name.Contains(input.Name) || r.Code.Contains(input.Name))
                 .WhereIf(input.Scale.HasValue, r => r.Scale == input.Scale)
-                .WhereIf(input.Markets.HasValue, r => r.MarketType == input.Markets);
+                .WhereIf(input.Markets.HasValue, r => r.MarketType == input.Markets)
+                .WhereIf(mid.HasValue,r=>r.EmployeeId==mid);
+
             //TODO:根据传入的参数添加过滤条件
             var retailerCount = await query.CountAsync();
 

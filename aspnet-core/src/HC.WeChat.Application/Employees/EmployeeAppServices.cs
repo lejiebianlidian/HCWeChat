@@ -51,10 +51,11 @@ namespace HC.WeChat.Employees
         /// <returns></returns>
         public async Task<PagedResultDto<EmployeeListDto>> GetPagedEmployees(GetEmployeesInput input)
         {
-
+            var mid = UserManager.GetControlEmployeeId();
             var query = _employeeRepository.GetAll()
                   .WhereIf(!string.IsNullOrEmpty(input.Filter) && input.Filter != "null", e => e.Name.Contains(input.Filter) || e.Code.Contains(input.Filter))
-                  .WhereIf(input.Position.HasValue, e => e.Position == input.Position);
+                  .WhereIf(input.Position.HasValue, e => e.Position == input.Position)
+                  .WhereIf(mid.HasValue,e=>e.Id==mid);
             //TODO:根据传入的参数添加过滤条件
             var employeeCount = await query.CountAsync();
 
