@@ -15,7 +15,7 @@ import { Http, Headers, ResponseContentType, Response } from '@angular/http';
 import { API_BASE_URL, SwaggerException } from '@shared/service-proxies/service-proxies';
 
 function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): Observable<any> {
-    if(result !== null && result !== undefined)
+    if (result !== null && result !== undefined)
         return Observable.throw(result);
     else
         return Observable.throw(new SwaggerException(message, status, response, headers, null));
@@ -26,12 +26,15 @@ export class ActivityBanquetServiceProxy {
     private baseUrl: string;
     protected jsonParseReviver: (key: string, value: any) => any = undefined;
 
-    constructor(@Inject(Http) http:Http,@Optional() @Inject(API_BASE_URL) baseUrl?:string) { 
-        this.http=http;
-        this.baseUrl=baseUrl?baseUrl:"";
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
     }
-   
-   
+
+    getBaseUrl() {
+        return this.baseUrl;
+    }
+
     /**
      * 通过id获取回传资料信息
      * @param id 消息id
@@ -39,13 +42,13 @@ export class ActivityBanquetServiceProxy {
     get(id: string): Observable<ActivityBanquetDto> {
         let url_ = this.baseUrl + "/api/services/app/ActivityBanquet/GetActivityBanquetByIdAsync?";
         if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -64,20 +67,20 @@ export class ActivityBanquetServiceProxy {
         });
     }
 
-     /**
-     * 通过formId获取回传资料信息
-     * @param formId 消息id
-     */
+    /**
+    * 通过formId获取回传资料信息
+    * @param formId 消息id
+    */
     getByFormId(formId: string): Observable<ActivityBanquetDto> {
         let url_ = this.baseUrl + "/api/services/app/ActivityBanquet/GetActivityBanquetByFormIdAsync?";
         if (formId !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + formId) + "&"; 
+            url_ += "Id=" + encodeURIComponent("" + formId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = {
             method: "get",
             headers: new Headers({
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -98,7 +101,7 @@ export class ActivityBanquetServiceProxy {
 
 
     protected processGet(response: Response): Observable<ActivityBanquetDto> {
-        const status = response.status; 
+        const status = response.status;
 
         let _headers: any = response.headers ? response.headers.toJSON() : {};
         if (status === 200) {
@@ -123,7 +126,7 @@ export class ActivityBanquetServiceProxy {
     update(input: ActivityBanquetDto): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/ActivityBanquet/CreateOrUpdateActivityBanquet";
         url_ = url_.replace(/[?&]$/, "");
-        let inputjson = { activityBanquet : input};
+        let inputjson = { activityBanquet: input };
         const content_ = JSON.stringify(inputjson);
 
         let options_ = {
@@ -312,7 +315,7 @@ export class PagedResultDtoOfActivityBanquet implements IPagedResultDtoOfActivit
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 
     clone() {
