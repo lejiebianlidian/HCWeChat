@@ -244,7 +244,7 @@ namespace HC.WeChat.Retailers
             }
             else
             {
-                return count < 0;
+                return count <= 0;
             }
         }
 

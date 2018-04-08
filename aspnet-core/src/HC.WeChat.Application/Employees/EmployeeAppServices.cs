@@ -260,7 +260,7 @@ namespace HC.WeChat.Employees
             }
             else
             {
-                return count < 0;
+                return count <= 0;
             }
         }
     }
