@@ -199,6 +199,9 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
     editBanquet(){
         this.banquet.activityFormId = this.formId;
         let b = this.banquet.clone();
+        if (b.id == null || b.id == undefined) {
+            b.banquetTime = null;
+        }
         this.editBanquetModal.show(b);
     }
 }

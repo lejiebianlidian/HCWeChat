@@ -94,6 +94,7 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
             this.form.controls[i].markAsDirty();
         }
         this.banquetDto.photoUrl = 'test.jpg';
+        this.banquetDto.banquetTime = this.dateFormat(this.banquetDto.banquetTime);
         if (this.form.valid) {
             this._activityBanquetService.update(this.banquetDto)
                 .finally(() => { this.isConfirmLoading = false; })

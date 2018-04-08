@@ -80,6 +80,11 @@
             }
         });
 
+        function checkMobile(str) {
+            var re = /^1\d{10}$/
+            return re.test(str);
+        }
+
         var Cancel = function () {
             window.location.href = "@ViewBag.JumpUrl";
         }
@@ -113,6 +118,12 @@
                 alert("联系电话不能为空！");
                 return;
             }
+
+            if (!checkMobile(para.phone)) { 
+                alert("请输入正确的联系电话！");
+                return;
+            }
+
             para.address = $("#txtAddress").val();
             if (para.address == "") {
                 alert("收货地址不能为空！");
