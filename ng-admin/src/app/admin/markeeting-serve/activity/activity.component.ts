@@ -203,7 +203,10 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
         var index = this.items.length - 1;
         this.addIndex = index;
         this.edit(index);
-        // this.items.at(index).value.minNum = 10;
+        var result=new ActivityGoods();
+        result.maxNum=0;
+        result.minNum=10;
+        this.items.at(index).patchValue(result);
     }
 
     /**
@@ -211,14 +214,7 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
      * @param i 
      */
     edit(index: number) {
-        var addIndex = this.items.length - 1;
-        if (addIndex != index) {
-            if (!this.items.at(addIndex).value.id) {
-                this.delete(addIndex);
-            }
-        }
-        console.log('editIndex:');
-        console.log(this.editIndex);
+      
         //editIndex用于判断是否新增
         if (this.editIndex !== -1 && this.editObj) {
             this.items.at(this.editIndex).patchValue(this.editObj);
@@ -226,6 +222,13 @@ export class ActivityComponent extends AppComponentBase implements OnInit {
         //editObj用于当编辑取消时将它付给编辑的行
         this.editObj = { ...this.items.at(index).value };
         this.editIndex = index;
+        var addIndex = this.items.length - 1;
+        //用于当点击新增时还未保存就点击另一行的编辑，将新增行进行删除
+        if (addIndex != index) {
+            if (!this.items.at(addIndex).value.id) {
+                this.items.removeAt(addIndex);
+            }
+        }
     }
 
     /**
