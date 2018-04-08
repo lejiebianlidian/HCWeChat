@@ -36,12 +36,6 @@ export class EditUserComponent extends AppComponentBase implements OnInit {
 
         this.user = new UserDto();
         this.user.init({ isActive: true });
-        this._userService.getRoles()
-            .subscribe((result) => {
-                this.userRoles = result.items;
-                this.roles = this.userRoles.map(i => { return { label: i.name, value: i.normalizedName, checked: true }; });
-            });
-
         this.eform = this.fb.group({
             email: [null, [Validators.email]],
             username: [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(32)])],
@@ -72,7 +66,16 @@ export class EditUserComponent extends AppComponentBase implements OnInit {
         });
     }
 
+    getRoles() {
+        this._userService.getRoles()
+            .subscribe((result) => {
+                this.userRoles = result.items;
+                this.roles = this.userRoles.map(i => { return { label: i.name, value: i.normalizedName, checked: true }; });
+            });
+    }
+
     show(id: number): void {
+        this.getRoles();
         this.modalVisible = true;
         this.loading = true;
         //用户

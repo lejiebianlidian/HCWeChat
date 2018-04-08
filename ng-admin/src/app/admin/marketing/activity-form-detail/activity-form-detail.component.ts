@@ -11,6 +11,7 @@ import { EditDeliveryComponent } from '../edit-delivery/edit-delivery.component'
 import { EditExpressComponent } from '../edit-express/edit-express.component';
 import { AppComponentBase } from '@shared/app-component-base';
 import { EditBanquetComponent } from '../edit-banquet/edit-banquet.component';
+import { AppSessionService } from '@shared/session/app-session.service';
 
 @Component({
     selector: 'activity-form-detail',
@@ -33,13 +34,15 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
 
     list: any[] = [];
     loading = true;
+    ismcenter = false;//是否是营销中心
 
     constructor(injector: Injector,
         public msg: NzMessageService, private http: _HttpClient,
         public route: ActivatedRoute,
         private activityFormService: ActivityFormServiceProxy,
         private activityBanquetService: ActivityBanquetServiceProxy,
-        private activityDeliveryService: ActivityDeliveryInfoServiceProxy
+        private activityDeliveryService: ActivityDeliveryInfoServiceProxy,
+        private appSessionService: AppSessionService
     ) {
         super(injector);
         this.formId = this.route.snapshot.params['id'];
@@ -47,6 +50,10 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
     }
 
     ngOnInit() {
+        if(this.appSessionService.roles.includes('MarketingCenter')){
+            this.ismcenter = true;
+        }
+
         this.getData();
     }
 

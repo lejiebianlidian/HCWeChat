@@ -271,7 +271,10 @@ var LoginComponent = /** @class */ (function (_super) {
             abp.multiTenancy.setTenantIdCookie(2);
         }
         else {
-            abp.multiTenancy.setTenantIdCookie(2); //默认宜宾
+            if (tid != 2) {
+                abp.multiTenancy.setTenantIdCookie(2); //默认宜宾
+                location.reload();
+            }
         }
         return _this;
         //location.reload();
