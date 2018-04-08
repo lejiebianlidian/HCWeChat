@@ -324,7 +324,7 @@ var AdviseComponent = /** @class */ (function (_super) {
     ;
     AdviseComponent.prototype.getParameter = function () {
         var parray = [];
-        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'Filter', value: this.parameters.filter }));
+        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'Filter', value: this.parameters.filter }));
         return parray;
     };
     AdviseComponent = __decorate([
@@ -397,7 +397,7 @@ var RetailCustomerDetailComponent = /** @class */ (function (_super) {
         _this.fb = fb;
         _this.router = router;
         _this.modal = modal;
-        _this.retailCustomerd = new __WEBPACK_IMPORTED_MODULE_4__shared_service_proxies_entity__["i" /* RetailCustomer */]();
+        _this.retailCustomerd = new __WEBPACK_IMPORTED_MODULE_4__shared_service_proxies_entity__["j" /* RetailCustomer */]();
         // 市场类型
         _this.marketTypes = [
             { text: '乡村', value: 1 },
@@ -640,9 +640,9 @@ var RetailCustomerComponent = /** @class */ (function (_super) {
     };
     RetailCustomerComponent.prototype.getParameter = function () {
         var arry = [];
-        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'Name', value: this.search.name }));
-        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'Scale', value: this.search.scale }));
-        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'Markets', value: this.search.market }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'Name', value: this.search.name }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'Scale', value: this.search.scale }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'Markets', value: this.search.market }));
         return arry;
     };
     RetailCustomerComponent.prototype.editRetail = function (retail) {
@@ -783,11 +783,11 @@ var ActivityListComponent = /** @class */ (function (_super) {
      */
     ActivityListComponent.prototype.getParmeter = function () {
         var arry = [];
-        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'Name', value: this.search.name }));
-        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'StartTime', value: this.dateFormat(this.search.startTime) }));
-        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'EndTime', value: this.dateFormat(this.search.endTime) }));
-        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'Type', value: this.search.type }));
-        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'Status', value: this.search.status }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'Name', value: this.search.name }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'StartTime', value: this.dateFormat(this.search.startTime) }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'EndTime', value: this.dateFormat(this.search.endTime) }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'Type', value: this.search.type }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'Status', value: this.search.status }));
         return arry;
     };
     /**
@@ -1052,8 +1052,8 @@ var ActivityComponent = /** @class */ (function (_super) {
     };
     ActivityComponent.prototype.getParameter = function () {
         var arry = [];
-        arry.push(__WEBPACK_IMPORTED_MODULE_5__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'AvtivityId', value: this.acitivityDto.id }));
-        arry.push(__WEBPACK_IMPORTED_MODULE_5__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'SearchName', value: this.searchName }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_5__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'AvtivityId', value: this.acitivityDto.id }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_5__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'SearchName', value: this.searchName }));
         return arry;
     };
     /**
@@ -1224,7 +1224,7 @@ var ActivityComponent = /** @class */ (function (_super) {
 /***/ "../../../../../src/app/admin/markeeting-serve/employees/create-employee/create-employee.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form nz-form [formGroup]=\"formc\" *ngIf=\"cmodalVisible\" id=\"frm_create_employee\" (ngSubmit)=\"savec(deleteContent)\">\r\n    <nz-modal [nzVisible]=\"cmodalVisible\" [nzTitle]=\"'创建员工'\" [nzConfirmLoading]=\"cloading\" [nzContent]=\"modalContent\" [nzFooter]=\"modalFooter\"\r\n        (nzOnCancel)=\"chandleCancel($event)\">\r\n        <ng-template #modalContent>\r\n            <ng-template #nzTabHeading>\r\n                员工信息\r\n            </ng-template>\r\n            <ng-template #deleteContent>\r\n                </ng-template>\r\n            <fieldset>\r\n                <div nz-form-item nz-row>\r\n                    <div nz-form-label nz-col [nzSm]=\"5\">\r\n                        <label for=\"code\" nz-form-item-required>员工编码</label>\r\n                    </div>\r\n                    <div nz-form-control nz-col [nzSm]=\"19\" nzHasFeedback [nzValidateStatus]=\"getFormControl('code')\">\r\n                        <nz-input formControlName=\"code\" [(ngModel)]=\"employeec.code\" [nzId]=\"'code'\"></nz-input>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('code').dirty&&getFormControl('code').hasError('maxlength')\">字符长度小于等于50</div>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('code').dirty&&getFormControl('code').hasError('required')\">请输入员工编码</div>\r\n                    </div>\r\n                </div>\r\n                <div nz-form-item nz-row>\r\n                    <div nz-form-label nz-col [nzSm]=\"5\">\r\n                        <label for=\"name\" nz-form-item-required>姓名</label>\r\n                    </div>\r\n                    <div nz-form-control nz-col [nzSm]=\"19\" nzHasFeedback [nzValidateStatus]=\"getFormControl('name')\">\r\n                        <nz-input formControlName=\"name\" [(ngModel)]=\"employeec.name\" [nzId]=\"'name'\"></nz-input>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('name').dirty&&getFormControl('name').hasError('maxlength')\">字符长度小于等于50</div>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('name').dirty&&getFormControl('name').hasError('required')\">请输入姓名</div>\r\n                    </div>\r\n                    <!--<div nz-form-label nz-col [nzSm]=\"4\">\r\n                                    <label for=\"surname\" nz-form-item-required>{{l(\"Surname\")}}</label>\r\n                                </div>\r\n                                <div nz-form-control nz-col [nzSm]=\"8\" nzHasFeedback [nzValidateStatus]=\"getFormControl('surname')\">\r\n                                    <nz-input formControlName=\"surname\" [(ngModel)]=\"user.surname\" nzPlaceHolder=\"请输入小于等于32的字符\" [nzId]=\"'surname'\"></nz-input>\r\n                                    <div nz-form-explain *ngIf=\"getFormControl('surname').dirty&&getFormControl('surname').hasError('maxlength')\">字符长度小于等于32</div>\r\n                                    <div nz-form-explain *ngIf=\"getFormControl('surname').dirty&&getFormControl('surname').hasError('required')\">请输入名</div>\r\n                                </div> -->\r\n                </div>\r\n                <div nz-form-item nz-row>\r\n                    <div nz-form-label nz-col [nzSm]=\"5\">\r\n                        <label for=\"position\" nz-form-item-required>职位</label>\r\n                    </div>\r\n                    <div nz-form-control nz-col [nzSm]=\"19\" nzHasFeedback [nzValidateStatus]=\"getFormControl('position')\">\r\n                        <nz-select formControlName=\"position\" [nzPlaceHolder]=\"'职位'\" [(ngModel)]=\"employeec.position\" [nzShowSearch]=\"true\"\r\n                            nzSize=\"large\">\r\n                            <nz-option *ngFor=\"let i of positions\" [nzLabel]=\"i.text\" [nzValue]=\"i.value\">\r\n                            </nz-option>\r\n                        </nz-select>\r\n                        <!-- <nz-input formControlName=\"position\" [(ngModel)]=\"employeec.emailAddress\" [nzId]=\"'position'\"></nz-input>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('position').dirty&&getFormControl('position').hasError('required')\">请输入职位</div> -->\r\n                    </div>\r\n                </div>\r\n                <div nz-form-item nz-row>\r\n                    <div nz-form-label nz-col [nzSm]=\"5\">\r\n                        <label for=\"phone\">电话</label>\r\n                    </div>\r\n                    <div nz-form-control nz-col [nzSm]=\"19\" nzHasFeedback [nzValidateStatus]=\"getFormControl('phone')\">\r\n                        <nz-input formControlName=\"phone\" [(ngModel)]=\"employeec.phone\" [nzType]=\"'phone'\" [nzId]=\"'phone'\"></nz-input>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('phone').dirty&&getFormControl('phone').hasError('pattern')\">请输入正确的电话号码</div>\r\n                    </div>\r\n                </div>\r\n                <div nz-form-item nz-row>\r\n                    <div nz-form-label nz-col [nzSm]=\"5\">\r\n                        <label for=\"company\" >所属公司</label>\r\n                    </div>\r\n                    <div nz-form-control nz-col [nzSm]=\"19\" nzHasFeedback [nzValidateStatus]=\"getFormControl('company')\">\r\n                        <nz-input formControlName=\"company\" [(ngModel)]=\"employeec.company\" [nzId]=\"'company'\"></nz-input>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('company').dirty&&getFormControl('company').hasError('maxlength')\">字符长度小于等于200</div>\r\n                    </div>\r\n                </div>\r\n                <div nz-form-item nz-row>\r\n                    <div nz-form-label nz-col [nzSm]=\"5\">\r\n                        <label for=\"department\" >所属市场部</label>\r\n                    </div>\r\n                    <div nz-form-control nz-col [nzSm]=\"19\" nzHasFeedback [nzValidateStatus]=\"getFormControl('department')\">\r\n                        <nz-input formControlName=\"department\" [(ngModel)]=\"employeec.department\" [nzId]=\"'department'\"></nz-input>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('department').dirty&&getFormControl('department').hasError('maxlength')\">字符长度小于等于200</div>\r\n                    </div>\r\n                </div>\r\n                <div nz-form-item nz-row>\r\n                    <div nz-form-control nz-col [nzSpan]=\"19\" [nzOffset]=\"5\">\r\n                        <label nz-checkbox formControlName=\"isactive\" [(ngModel)]=\"employeec.isAction\">\r\n                            <span>启用</span>\r\n                        </label>\r\n                    </div>\r\n                </div>\r\n            </fieldset>\r\n        </ng-template>\r\n        <ng-template #modalFooter>\r\n            <button nz-button [nzType]=\"'default'\" [nzSize]=\"'large'\" type=\"button\" (click)=\"chandleCancel($event)\">\r\n                取消\r\n            </button>\r\n            <button nz-button [nzType]=\"'primary'\" [nzSize]=\"'large'\" type=\"submit\" [nzLoading]=\"isConfirmLoading\">\r\n                保存\r\n            </button>\r\n        </ng-template>\r\n    </nz-modal>\r\n</form>"
+module.exports = "<form nz-form [formGroup]=\"formc\" *ngIf=\"cmodalVisible\" id=\"frm_create_employee\" (ngSubmit)=\"savec(deleteContent)\">\r\n    <nz-modal [nzVisible]=\"cmodalVisible\" [nzTitle]=\"'创建员工'\" [nzConfirmLoading]=\"cloading\" [nzContent]=\"modalContent\" [nzFooter]=\"modalFooter\"\r\n        (nzOnCancel)=\"chandleCancel($event)\">\r\n        <ng-template #modalContent>\r\n            <ng-template #nzTabHeading>\r\n                员工信息\r\n            </ng-template>\r\n            <ng-template #deleteContent>\r\n                </ng-template>\r\n            <fieldset>\r\n                <div nz-form-item nz-row>\r\n                    <div nz-form-label nz-col [nzSm]=\"5\">\r\n                        <label for=\"code\" nz-form-item-required>员工编码</label>\r\n                    </div>\r\n                    <div nz-form-control nz-col [nzSm]=\"19\" nzHasFeedback [nzValidateStatus]=\"getFormControl('code')\">\r\n                        <nz-input formControlName=\"code\" [(ngModel)]=\"employeec.code\" [nzId]=\"'code'\"></nz-input>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('code').dirty&&getFormControl('code').hasError('maxlength')\">字符长度小于等于50</div>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('code').dirty&&getFormControl('code').hasError('required')\">请输入员工编码</div>\r\n                        <!-- <div nz-form-explain *ngIf=\"getFormControl('code').dirty&&getFormControl('code').hasError('confirm')\">员工编码已存在</div> -->\r\n                        \r\n                    </div>\r\n                </div>\r\n                <div nz-form-item nz-row>\r\n                    <div nz-form-label nz-col [nzSm]=\"5\">\r\n                        <label for=\"name\" nz-form-item-required>姓名</label>\r\n                    </div>\r\n                    <div nz-form-control nz-col [nzSm]=\"19\" nzHasFeedback [nzValidateStatus]=\"getFormControl('name')\">\r\n                        <nz-input formControlName=\"name\" [(ngModel)]=\"employeec.name\" [nzId]=\"'name'\"></nz-input>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('name').dirty&&getFormControl('name').hasError('maxlength')\">字符长度小于等于50</div>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('name').dirty&&getFormControl('name').hasError('required')\">请输入姓名</div>\r\n                    </div>\r\n                    <!--<div nz-form-label nz-col [nzSm]=\"4\">\r\n                                    <label for=\"surname\" nz-form-item-required>{{l(\"Surname\")}}</label>\r\n                                </div>\r\n                                <div nz-form-control nz-col [nzSm]=\"8\" nzHasFeedback [nzValidateStatus]=\"getFormControl('surname')\">\r\n                                    <nz-input formControlName=\"surname\" [(ngModel)]=\"user.surname\" nzPlaceHolder=\"请输入小于等于32的字符\" [nzId]=\"'surname'\"></nz-input>\r\n                                    <div nz-form-explain *ngIf=\"getFormControl('surname').dirty&&getFormControl('surname').hasError('maxlength')\">字符长度小于等于32</div>\r\n                                    <div nz-form-explain *ngIf=\"getFormControl('surname').dirty&&getFormControl('surname').hasError('required')\">请输入名</div>\r\n                                </div> -->\r\n                </div>\r\n                <div nz-form-item nz-row>\r\n                    <div nz-form-label nz-col [nzSm]=\"5\">\r\n                        <label for=\"position\" nz-form-item-required>职位</label>\r\n                    </div>\r\n                    <div nz-form-control nz-col [nzSm]=\"19\" nzHasFeedback [nzValidateStatus]=\"getFormControl('position')\">\r\n                        <nz-select formControlName=\"position\" [nzPlaceHolder]=\"'职位'\" [(ngModel)]=\"employeec.position\" [nzShowSearch]=\"true\"\r\n                            nzSize=\"large\">\r\n                            <nz-option *ngFor=\"let i of positions\" [nzLabel]=\"i.text\" [nzValue]=\"i.value\">\r\n                            </nz-option>\r\n                        </nz-select>\r\n                        <!-- <nz-input formControlName=\"position\" [(ngModel)]=\"employeec.emailAddress\" [nzId]=\"'position'\"></nz-input>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('position').dirty&&getFormControl('position').hasError('required')\">请输入职位</div> -->\r\n                    </div>\r\n                </div>\r\n                <div nz-form-item nz-row>\r\n                    <div nz-form-label nz-col [nzSm]=\"5\">\r\n                        <label for=\"phone\">电话</label>\r\n                    </div>\r\n                    <div nz-form-control nz-col [nzSm]=\"19\" nzHasFeedback [nzValidateStatus]=\"getFormControl('phone')\">\r\n                        <nz-input formControlName=\"phone\" [(ngModel)]=\"employeec.phone\" [nzType]=\"'phone'\" [nzId]=\"'phone'\"></nz-input>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('phone').dirty&&getFormControl('phone').hasError('pattern')\">请输入正确的电话号码</div>\r\n                    </div>\r\n                </div>\r\n                <div nz-form-item nz-row>\r\n                    <div nz-form-label nz-col [nzSm]=\"5\">\r\n                        <label for=\"company\" >所属公司</label>\r\n                    </div>\r\n                    <div nz-form-control nz-col [nzSm]=\"19\" nzHasFeedback [nzValidateStatus]=\"getFormControl('company')\">\r\n                        <nz-input formControlName=\"company\" [(ngModel)]=\"employeec.company\" [nzId]=\"'company'\"></nz-input>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('company').dirty&&getFormControl('company').hasError('maxlength')\">字符长度小于等于200</div>\r\n                    </div>\r\n                </div>\r\n                <div nz-form-item nz-row>\r\n                    <div nz-form-label nz-col [nzSm]=\"5\">\r\n                        <label for=\"department\" >所属市场部</label>\r\n                    </div>\r\n                    <div nz-form-control nz-col [nzSm]=\"19\" nzHasFeedback [nzValidateStatus]=\"getFormControl('department')\">\r\n                        <nz-input formControlName=\"department\" [(ngModel)]=\"employeec.department\" [nzId]=\"'department'\"></nz-input>\r\n                        <div nz-form-explain *ngIf=\"getFormControl('department').dirty&&getFormControl('department').hasError('maxlength')\">字符长度小于等于200</div>\r\n                    </div>\r\n                </div>\r\n                <div nz-form-item nz-row>\r\n                    <div nz-form-control nz-col [nzSpan]=\"19\" [nzOffset]=\"5\">\r\n                        <label nz-checkbox formControlName=\"isactive\" [(ngModel)]=\"employeec.isAction\">\r\n                            <span>启用</span>\r\n                        </label>\r\n                    </div>\r\n                </div>\r\n            </fieldset>\r\n        </ng-template>\r\n        <ng-template #modalFooter>\r\n            <button nz-button [nzType]=\"'default'\" [nzSize]=\"'large'\" type=\"button\" (click)=\"chandleCancel($event)\">\r\n                取消\r\n            </button>\r\n            <button nz-button [nzType]=\"'primary'\" [nzSize]=\"'large'\" type=\"submit\" [nzLoading]=\"isConfirmLoading\">\r\n                保存\r\n            </button>\r\n        </ng-template>\r\n    </nz-modal>\r\n</form>"
 
 /***/ }),
 
@@ -1287,6 +1287,16 @@ var CreateEmployeeComponent = /** @class */ (function (_super) {
             _this.cmodalVisible = false;
             _this.isConfirmLoading = false;
             _this.reset(e);
+        };
+        _this.cofirmValidationCode = function (control) {
+            // var code=this.formc.controls['code'].value;
+            _this.isCodeValid();
+            if (!control.value) {
+                return { required: true };
+            }
+            else if (_this.isCodeVali) {
+                return { confirm: true, error: true };
+            }
         };
         return _this;
     }
@@ -1354,6 +1364,14 @@ var CreateEmployeeComponent = /** @class */ (function (_super) {
         for (var key in this.formc.controls) {
             this.formc.controls[key].markAsPristine();
         }
+    };
+    CreateEmployeeComponent.prototype.isCodeValid = function () {
+        var _this = this;
+        console.log('code:');
+        console.log(this.employeec.code);
+        this.employeeService.CheckCode(this.employeec.code).subscribe(function (isCode) {
+            _this.isCodeVali = isCode;
+        });
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
@@ -1679,8 +1697,8 @@ var EmployeesComponent = /** @class */ (function (_super) {
     };
     EmployeesComponent.prototype.getParameter = function () {
         var arry = [];
-        arry.push(__WEBPACK_IMPORTED_MODULE_6__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'Filter', value: this.search.name }));
-        arry.push(__WEBPACK_IMPORTED_MODULE_6__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'Position', value: this.search.position }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_6__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'Filter', value: this.search.name }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_6__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'Position', value: this.search.position }));
         return arry;
     };
     __decorate([
@@ -1834,7 +1852,7 @@ var ActivityFormDetailComponent = /** @class */ (function (_super) {
     };
     //初审
     ActivityFormDetailComponent.prototype.firstApproval = function () {
-        var formStatus = new __WEBPACK_IMPORTED_MODULE_4__shared_service_proxies_entity__["d" /* ActivityFormStatusDto */]();
+        var formStatus = new __WEBPACK_IMPORTED_MODULE_4__shared_service_proxies_entity__["e" /* ActivityFormStatusDto */]();
         formStatus.status = 2;
         formStatus.opinion = "初审通过";
         formStatus.id = this.formId;
@@ -1842,7 +1860,7 @@ var ActivityFormDetailComponent = /** @class */ (function (_super) {
     };
     //取消
     ActivityFormDetailComponent.prototype.cancel = function () {
-        var formStatus = new __WEBPACK_IMPORTED_MODULE_4__shared_service_proxies_entity__["d" /* ActivityFormStatusDto */]();
+        var formStatus = new __WEBPACK_IMPORTED_MODULE_4__shared_service_proxies_entity__["e" /* ActivityFormStatusDto */]();
         formStatus.status = 5;
         formStatus.opinion = "取消";
         formStatus.id = this.formId;
@@ -1850,7 +1868,7 @@ var ActivityFormDetailComponent = /** @class */ (function (_super) {
     };
     //拒绝
     ActivityFormDetailComponent.prototype.reject = function () {
-        var formStatus = new __WEBPACK_IMPORTED_MODULE_4__shared_service_proxies_entity__["d" /* ActivityFormStatusDto */]();
+        var formStatus = new __WEBPACK_IMPORTED_MODULE_4__shared_service_proxies_entity__["e" /* ActivityFormStatusDto */]();
         formStatus.status = 3;
         formStatus.opinion = "拒绝";
         formStatus.id = this.formId;
@@ -1866,7 +1884,7 @@ var ActivityFormDetailComponent = /** @class */ (function (_super) {
             this.notify.error('请先完善推荐人信息');
             return;
         }
-        var formStatus = new __WEBPACK_IMPORTED_MODULE_4__shared_service_proxies_entity__["d" /* ActivityFormStatusDto */]();
+        var formStatus = new __WEBPACK_IMPORTED_MODULE_4__shared_service_proxies_entity__["e" /* ActivityFormStatusDto */]();
         formStatus.status = 4;
         formStatus.opinion = "资料回传审核通过";
         formStatus.id = this.formId;
@@ -2064,11 +2082,11 @@ var ActivityFormComponent = /** @class */ (function (_super) {
     ;
     ActivityFormComponent.prototype.getParameter = function () {
         var parray = [];
-        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'FormCode', value: this.parameters.formCode }));
-        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'BeginDate', value: this.dateFormat(this.parameters.beginDate) }));
-        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'EndDate', value: this.dateFormat(this.parameters.endDate) }));
-        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'Status', value: this.parameters.status }));
-        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'Filter', value: this.parameters.filter }));
+        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'FormCode', value: this.parameters.formCode }));
+        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'BeginDate', value: this.dateFormat(this.parameters.beginDate) }));
+        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'EndDate', value: this.dateFormat(this.parameters.endDate) }));
+        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'Status', value: this.parameters.status }));
+        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'Filter', value: this.parameters.filter }));
         return parray;
     };
     ActivityFormComponent.prototype.goDetail = function (id) {
@@ -2163,11 +2181,11 @@ var ActivityViewComponent = /** @class */ (function (_super) {
     ;
     ActivityViewComponent.prototype.getParameter = function () {
         var parray = [];
-        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'BeginDate', value: this.dateFormat(this.parameters.beginDate) }));
-        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'EndDate', value: this.dateFormat(this.parameters.endDate) }));
-        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'ActivityArea', value: this.parameters.activityArea }));
-        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'ManagerName', value: this.parameters.managerName }));
-        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'GoodsSpecification', value: this.parameters.goodsSpecification }));
+        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'BeginDate', value: this.dateFormat(this.parameters.beginDate) }));
+        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'EndDate', value: this.dateFormat(this.parameters.endDate) }));
+        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'ActivityArea', value: this.parameters.activityArea }));
+        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'ManagerName', value: this.parameters.managerName }));
+        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'GoodsSpecification', value: this.parameters.goodsSpecification }));
         return parray;
     };
     ActivityViewComponent = __decorate([
@@ -3175,7 +3193,7 @@ var UserQuestionComponent = /** @class */ (function (_super) {
     ;
     UserQuestionComponent.prototype.getParameter = function () {
         var parray = [];
-        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'Filter', value: this.parameters.filter }));
+        parray.push(__WEBPACK_IMPORTED_MODULE_2__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'Filter', value: this.parameters.filter }));
         return parray;
     };
     UserQuestionComponent.prototype.goDetail = function (id) {
@@ -3198,7 +3216,7 @@ var UserQuestionComponent = /** @class */ (function (_super) {
 /***/ "../../../../../src/app/admin/roles/create-role/create-role.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form nz-form [formGroup]=\"form\" *ngIf=\"modalVisible\" id=\"frm_create_role\" (ngSubmit)=\"save()\">\r\n    <nz-modal [nzVisible]=\"modalVisible\" [nzTitle]=\"'创建角色'\" [nzConfirmLoading]=\"loading\" [nzContent]=\"modalContent\"\r\n        [nzFooter]=\"modalFooter\" (nzOnCancel)=\"handleCancel($event)\">\r\n        <ng-template #modalContent>\r\n            <div nz-form-item nz-row>\r\n                <div nz-form-label nz-col [nzSm]=\"4\">\r\n                    <label for=\"rolename\" nz-form-item-required>角色名</label>\r\n                </div>\r\n                <div nz-form-control nz-col [nzSm]=\"20\" nzHasFeedback [nzValidateStatus]=\"getFormControl('name')\">\r\n                    <nz-input formControlName=\"name\" [(ngModel)]=\"role.name\" nzPlaceHolder=\"输入大于等于2并小于等于32的字符\" [nzId]=\"'name'\"></nz-input>\r\n                    <div nz-form-explain *ngIf=\"getFormControl('name').dirty&&getFormControl('name').hasError('maxlength')\">字符长度小于等于32</div>\r\n                    <div nz-form-explain *ngIf=\"getFormControl('name').dirty&&getFormControl('name').hasError('minlength')\">字符长度大于等于2</div>\r\n                    <div nz-form-explain *ngIf=\"getFormControl('name').dirty&&getFormControl('name').hasError('required')\">请输入角色名</div>\r\n                </div>\r\n            </div>\r\n            <div nz-form-item nz-row>\r\n                <div nz-form-label nz-col [nzSm]=\"4\">\r\n                    <label for=\"displayName\" nz-form-item-required>角色显示</label>\r\n                </div>\r\n                <div nz-form-control nz-col [nzSm]=\"20\" nzHasFeedback [nzValidateStatus]=\"getFormControl('displayName')\">\r\n                    <nz-input formControlName=\"displayName\" [(ngModel)]=\"role.displayName\" nzPlaceHolder=\"请输入小于等于32的字符\" [nzId]=\"'displayName'\"></nz-input>\r\n                    <div nz-form-explain *ngIf=\"getFormControl('displayName').dirty&&getFormControl('displayName').hasError('maxlength')\">字符长度小于等于32</div>\r\n                    <div nz-form-explain *ngIf=\"getFormControl('displayName').dirty&&getFormControl('displayName').hasError('minlength')\">字符长度大于等于2</div>\r\n                    <div nz-form-explain *ngIf=\"getFormControl('displayName').dirty&&getFormControl('displayName').hasError('required')\">请输入角色显示名</div>\r\n                </div>\r\n            </div>\r\n            <div nz-form-item nz-row>\r\n                <div nz-form-label nz-col [nzSm]=\"4\">\r\n                    <label for=\"description\" nz-form-item-required>角色描述</label>\r\n                </div>\r\n                <div nz-form-control nz-col [nzSm]=\"20\" nzHasFeedback [nzValidateStatus]=\"getFormControl('description')\">\r\n                    <nz-input formControlName=\"description\" [(ngModel)]=\"role.description\" [nzId]=\"'description'\"></nz-input>\r\n                </div>\r\n            </div>\r\n            <div nz-form-item nz-row>\r\n                权限控制\r\n            </div>\r\n            <div nz-form-item nz-row>\r\n                <label nz-checkbox formControlName=\"permissiongroup\" *ngFor=\"let permission of permissions.items\" [(ngModel)]=\"permission.checked\">\r\n                    <span>{{permission.displayName}}</span>\r\n                </label>\r\n            </div>\r\n        </ng-template>\r\n        <ng-template #modalFooter>\r\n            <button nz-button [nzType]=\"'default'\" [nzSize]=\"'large'\" type=\"button\" (click)=\"handleCancel($event)\">\r\n                {{l(\"Cancel\")}}\r\n            </button>\r\n            <button nz-button [nzType]=\"'primary'\" [nzSize]=\"'large'\" type=\"submit\" [nzLoading]=\"isConfirmLoading\">\r\n                {{l(\"Save\")}}\r\n            </button>\r\n        </ng-template>\r\n    </nz-modal>\r\n</form>"
+module.exports = "<form nz-form [formGroup]=\"form\" *ngIf=\"modalVisible\" id=\"frm_create_role\" (ngSubmit)=\"save()\">\r\n    <nz-modal [nzVisible]=\"modalVisible\" [nzTitle]=\"'创建角色'\" [nzConfirmLoading]=\"loading\" [nzContent]=\"modalContent\"\r\n        [nzFooter]=\"modalFooter\" (nzOnCancel)=\"handleCancel($event)\">\r\n        <ng-template #modalContent>\r\n            <div nz-form-item nz-row>\r\n                <div nz-form-label nz-col [nzSm]=\"4\">\r\n                    <label for=\"rolename\" nz-form-item-required>角色名</label>\r\n                </div>\r\n                <div nz-form-control nz-col [nzSm]=\"20\" nzHasFeedback [nzValidateStatus]=\"getFormControl('name')\">\r\n                    <nz-input formControlName=\"name\" [(ngModel)]=\"role.name\" nzPlaceHolder=\"输入大于等于2并小于等于32的字符\" [nzId]=\"'name'\"></nz-input>\r\n                    <div nz-form-explain *ngIf=\"getFormControl('name').dirty&&getFormControl('name').hasError('maxlength')\">字符长度小于等于32</div>\r\n                    <div nz-form-explain *ngIf=\"getFormControl('name').dirty&&getFormControl('name').hasError('minlength')\">字符长度大于等于2</div>\r\n                    <div nz-form-explain *ngIf=\"getFormControl('name').dirty&&getFormControl('name').hasError('required')\">请输入角色名</div>\r\n                </div>\r\n            </div>\r\n            <div nz-form-item nz-row>\r\n                <div nz-form-label nz-col [nzSm]=\"4\">\r\n                    <label for=\"displayName\" nz-form-item-required>角色显示</label>\r\n                </div>\r\n                <div nz-form-control nz-col [nzSm]=\"20\" nzHasFeedback [nzValidateStatus]=\"getFormControl('displayName')\">\r\n                    <nz-input formControlName=\"displayName\" [(ngModel)]=\"role.displayName\" nzPlaceHolder=\"请输入小于等于32的字符\" [nzId]=\"'displayName'\"></nz-input>\r\n                    <div nz-form-explain *ngIf=\"getFormControl('displayName').dirty&&getFormControl('displayName').hasError('maxlength')\">字符长度小于等于32</div>\r\n                    <div nz-form-explain *ngIf=\"getFormControl('displayName').dirty&&getFormControl('displayName').hasError('minlength')\">字符长度大于等于2</div>\r\n                    <div nz-form-explain *ngIf=\"getFormControl('displayName').dirty&&getFormControl('displayName').hasError('required')\">请输入角色显示名</div>\r\n                </div>\r\n            </div>\r\n            <div nz-form-item nz-row>\r\n                <div nz-form-label nz-col [nzSm]=\"4\">\r\n                    <label for=\"description\" nz-form-item-required>角色描述</label>\r\n                </div>\r\n                <div nz-form-control nz-col [nzSm]=\"20\" nzHasFeedback [nzValidateStatus]=\"getFormControl('description')\">\r\n                    <nz-input formControlName=\"description\" [(ngModel)]=\"role.description\" [nzId]=\"'description'\"></nz-input>\r\n                </div>\r\n            </div>\r\n            <div nz-form-item nz-row>\r\n                权限控制\r\n            </div>\r\n            <div nz-form-item nz-row>\r\n                <label nz-checkbox formControlName=\"permissiongroup\" *ngFor=\"let permission of permissions.items\" [(ngModel)]=\"permission.checked\">\r\n                    <span>{{permission.displayName}}</span>\r\n                </label>\r\n            </div>\r\n        </ng-template>\r\n        <ng-template #modalFooter>\r\n            <button nz-button [nzType]=\"'default'\" [nzSize]=\"'large'\" type=\"button\" (click)=\"handleCancel($event)\">\r\n                {{l(\"取消\")}}\r\n            </button>\r\n            <button nz-button [nzType]=\"'primary'\" [nzSize]=\"'large'\" type=\"submit\" [nzLoading]=\"isConfirmLoading\">\r\n                {{l(\"确定\")}}\r\n            </button>\r\n        </ng-template>\r\n    </nz-modal>\r\n</form>"
 
 /***/ }),
 
@@ -3281,9 +3299,13 @@ var CreateRoleComponent = /** @class */ (function (_super) {
      *
      */
     CreateRoleComponent.prototype.show = function () {
+        this.reset();
         this.role = new __WEBPACK_IMPORTED_MODULE_1__shared_service_proxies_service_proxies__["g" /* CreateRoleDto */]();
         this.role.init({ isStatic: false });
         this.modalVisible = true;
+        this.permissions.items.forEach(function (element) {
+            element.checked = true;
+        });
     };
     /**
      * 保存角色信息
@@ -3293,7 +3315,6 @@ var CreateRoleComponent = /** @class */ (function (_super) {
         for (var i in this.form.controls) {
             this.form.controls[i].markAsDirty();
         }
-        console.log('log', this.form.value);
         if (this.form.valid) {
             var permissions = [];
             this.permissions.items.forEach(function (permission) {
@@ -4674,8 +4695,8 @@ var EmployeeModalComponent = /** @class */ (function () {
     };
     EmployeeModalComponent.prototype.getParameter = function () {
         var arry = [];
-        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'Filter', value: this.q.no }));
-        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'IsManger', value: this.isManger }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'Filter', value: this.q.no }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'IsManger', value: this.isManger }));
         return arry;
     };
     /**
@@ -4939,8 +4960,8 @@ var WechatUserComponent = /** @class */ (function (_super) {
     };
     WechatUserComponent.prototype.getParameter = function () {
         var arry = [];
-        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'Name', value: this.search.name }));
-        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["h" /* Parameter */].fromJS({ key: 'UserType', value: this.search.UserType }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'Name', value: this.search.name }));
+        arry.push(__WEBPACK_IMPORTED_MODULE_3__shared_service_proxies_entity__["i" /* Parameter */].fromJS({ key: 'UserType', value: this.search.UserType }));
         return arry;
     };
     /**
