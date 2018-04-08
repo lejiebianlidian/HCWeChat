@@ -32,7 +32,12 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
     uploading = false;
     fileList = [];
 
-    public uploader: FileUploader; 
+    public uploader: FileUploader = new FileUploader({
+        url: "http://localhost:21021/WeChatFile/UploadFile",
+        method: "POST",
+        itemAlias: "uploadedfile"
+    });
+
 
     constructor(
         injector: Injector,
@@ -41,18 +46,6 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
         private http: HttpClient, private msg: NzMessageService
     ) {
         super(injector);
-        this.uploader = new FileUploader({
-            url: _activityBanquetService.getBaseUrl() + "/WeChatFile/BanquetPhotoSave",
-            method: "POST",
-            itemAlias: "uploadedfile",
-            headers: [
-                { name: 'Content-Type', value: 'multipart/form-data' },
-                { name: 'Access-Control-Allow-Origin', value: '*' },
-                { name: 'Access-Control-Allow-Methods', value: 'POST, OPTIONS, GET'},
-                { name: 'Access-Control-Allow-Credentials', value: 'true'}
-              ]
-        
-        });
     }
 
     // C: 定义事件，选择文件

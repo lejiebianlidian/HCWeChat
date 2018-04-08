@@ -1539,8 +1539,8 @@ var ZORROMODULES = [
     // NzBackTopModule,
     // NzAffixModule,
     // NzAnchorModule,
-    __WEBPACK_IMPORTED_MODULE_2_ng_zorro_antd__["NzAvatarModule"],
-    __WEBPACK_IMPORTED_MODULE_2_ng_zorro_antd__["NzUploadModule"]
+    __WEBPACK_IMPORTED_MODULE_2_ng_zorro_antd__["NzAvatarModule"] //,
+    //NzUploadModule
 ];
 // endregion
 // region: @delon/abc modules
@@ -5294,6 +5294,9 @@ var ActivityBanquetServiceProxy = /** @class */ (function () {
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
+    ActivityBanquetServiceProxy.prototype.getBaseUrl = function () {
+        return this.baseUrl;
+    };
     /**
      * 通过id获取回传资料信息
      * @param id 消息id

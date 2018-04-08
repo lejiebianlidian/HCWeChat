@@ -82,14 +82,7 @@
                     <ng-template #nzTabHeading>
                         上传照片
                     </ng-template>
-                    <form id="uploadForm" enctype="multipart/form-data">
-                        <button nz-button class="ant-btn__block file-upload mt-sm">
-                            <input type="file" name="imgs" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" />
-                            <i class="anticon anticon-upload"></i>
-                            <span>选择文件</span>
-                        </button>
-                        <button nz-button (click)="uploadFile()" [nzType]="'primary'" [nzSize]="'small'">上传</button>
-                    </form>
+
                 </nz-tab>
             </nz-tabset>
         </ng-template>
@@ -102,4 +95,8 @@
             </button>
         </ng-template>
     </nz-modal>
+</form>
+<form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="imgs" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" />
+    <button nz-button (click)="uploadFile()" [nzType]="'primary'" [nzSize]="'small'">上传</button>
 </form>
