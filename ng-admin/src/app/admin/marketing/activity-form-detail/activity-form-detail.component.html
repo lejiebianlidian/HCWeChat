@@ -8,7 +8,7 @@
         <button nz-button [nzSize]="'large'" (click)="reject()" *ngIf="form.status == 1 || form.status == 2">拒绝</button>
         <button nz-button [nzType]="'primary'" (click)="firstApproval()" *ngIf="form.status == 1" [nzSize]="'large'">初审通过</button>
         <button nz-button [nzType]="'primary'" (click)="approval()" *ngIf="form.status == 2" [nzSize]="'large'">资料回传审核通过</button>
-        <button nz-button [nzType]="'primary'" (click)="approval()" *ngIf="form.status == 4" [nzSize]="'large'">营销中心审核通过</button>
+        <button nz-button [nzType]="'primary'" (click)="approval()" *ngIf="form.status == 4 && ismcenter" [nzSize]="'large'">营销中心审核通过</button>
     </ng-template>
     <ng-template style="display:none; width:0px;" #extra></ng-template>
     <ng-template #content>

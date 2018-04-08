@@ -41,11 +41,6 @@ export class CreateUserComponent extends AppComponentBase implements OnInit {
     }
 
     ngOnInit(): void {
-        this._userService.getRoles()
-            .subscribe((result) => {
-                this.roles = result.items.map(i => { return { label: i.name, value: i.normalizedName, checked: true }; });
-            });
-
         this.form = this.fb.group({
             email: [null, [Validators.email]],
             password: [null, [Validators.required]],
@@ -59,7 +54,15 @@ export class CreateUserComponent extends AppComponentBase implements OnInit {
         }, );
     }
 
+    getRoles(){
+        this._userService.getRoles()
+        .subscribe((result) => {
+            this.roles = result.items.map(i => { return { label: i.name, value: i.normalizedName, checked: true }; });
+        });
+    }
+
     show(): void {
+        this.getRoles();
         //this.modal.show();
         this.reset();
         this.user = new CreateUserDto();
