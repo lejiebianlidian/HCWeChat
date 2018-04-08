@@ -35,10 +35,13 @@ export class RetailCustomerComponent extends AppComponentBase implements OnInit 
         this.refreshData();
     }
 
-    refreshData(reset = false) {
+    refreshData(reset = false, search?: boolean) {
         if (reset) {
             this.query.pageIndex = 1;
             this.search = {};
+        }
+        if (search) {
+            this.query.pageIndex = 1;
         }
         this.loading = true;
         this.retailService.getAll(this.query.skipCount(), this.query.pageSize, this.getParameter()).subscribe((result: PagedResultDtoOfRetailCustomer) => {
@@ -77,7 +80,7 @@ export class RetailCustomerComponent extends AppComponentBase implements OnInit 
             cancelText: '否',
             okText: '是',
             onOk: () => {
-                this.retailService.delete(retail.id).subscribe(()=>{
+                this.retailService.delete(retail.id).subscribe(() => {
                     this.notify.info(this.l('删除成功！'));
                     this.refreshData();
                 });

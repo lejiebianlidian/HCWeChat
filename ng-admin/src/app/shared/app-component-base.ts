@@ -69,7 +69,7 @@ export abstract class AppComponentBase {
         if (date === null) {
             return null;
         }
-        let d = <Date>date;
+        let d = new Date(date);
         let y = d.getFullYear().toString();
         let m = (d.getMonth() + 1).toString();
         let day = d.getDate().toString();

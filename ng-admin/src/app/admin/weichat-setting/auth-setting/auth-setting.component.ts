@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthSetting } from '@shared/service-proxies/entity/auth-setting';
 import { AppComponentBase } from '@shared/app-component-base';
 import { AuthSettingServiceProxy } from '@shared/service-proxies/service-proxies';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
     moduleId: module.id,
@@ -19,7 +20,8 @@ export class AuthSettingComponent extends AppComponentBase implements OnInit {
         { text: '认证服务号', value: 4 },
 
     ]
-    constructor(injector: Injector, private fb: FormBuilder, private service: AuthSettingServiceProxy) {
+    constructor(injector: Injector, private fb: FormBuilder, private service: AuthSettingServiceProxy,
+        private modal: NzModalService) {
         super(injector);
     }
 
@@ -53,17 +55,29 @@ export class AuthSettingComponent extends AppComponentBase implements OnInit {
     /**
      * 更新新增微信配置
      */
-    save() {
+    save(Tplcontent) {
         for (const i in this.form.controls) {
             this.form.controls[i].markAsDirty();
         }
         if (this.form.valid) {
-            console.log('保存');
-            console.log(this.authSet);
-            this.service.update(this.authSet).subscribe(() => {
-                this.notify.info(this.l('保存成功！'));
-                this.getAuthSetByTenantId();
-            });
+            if (this.authSet.id) {
+                this.modal.confirm({
+                    content: Tplcontent,
+                    okText: '继续',
+                    cancelText: '取消',
+                    onOk: () => {
+                        this.service.update(this.authSet).subscribe(() => {
+                            this.notify.info(this.l('保存成功！'));
+                            this.getAuthSetByTenantId();
+                        });
+                    }
+                });
+            } else {
+                this.service.update(this.authSet).subscribe(() => {
+                    this.notify.info(this.l('保存成功！'));
+                    this.getAuthSetByTenantId();
+                });
+            }
         }
         abp.multiTenancy.setTenantIdCookie();
 
@@ -75,9 +89,7 @@ export class AuthSettingComponent extends AppComponentBase implements OnInit {
     getAuthSetByTenantId() {
         this.service.get().subscribe((result: AuthSetting) => {
             this.authSet = result;
-            console.log('获取');
-            console.log(this.authSet);
-            if (!this.authSet.id ) {
+            if (!this.authSet.id) {
                 this.authSet.appType = 3;
             }
         });

@@ -46,10 +46,13 @@ export class EmployeesComponent extends AppComponentBase implements OnInit {
      * 分页获取员工信息
      * @param reset 是否刷新页面
      */
-    refreshData(reset = false) {
+    refreshData(reset = false, search?: boolean) {
         if (reset) {
             this.query.pageIndex = 1;
             this.search = { position: null, name: '' }
+        }
+        if (search) {
+            this.query.pageIndex = 1;
         }
         this.loading = true;
         this.employeeService.getAll(this.query.skipCount(), this.query.pageSize, this.getParameter()).subscribe((result: PagedResultDtoOfEmployee) => {

@@ -41,11 +41,16 @@ export class ActivityListComponent extends AppComponentBase implements OnInit {
      * 获取活动列表
      * @param reset 是否重置
      */
-    refreshData(reset = false) {
+    refreshData(reset = false,search?:boolean) {
         if (reset) {
             this.query.pageIndex = 1;
             this.search={ startTime: null, endTime: null, status: null, type: null };
         }
+        if(search)
+        {
+            this.query.pageIndex = 1;
+        }
+        this.query.skipCount()
         this.loading = true;
         this.ActivityService.getAll(this.query.skipCount(), this.query.pageSize, this.getParmeter()).subscribe((result: PagedResultDtoOfActivity) => {
             this.loading = false;

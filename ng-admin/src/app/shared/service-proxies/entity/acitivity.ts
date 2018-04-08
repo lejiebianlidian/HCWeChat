@@ -1,14 +1,14 @@
 export class Activity implements IActivity{
     id: string;
     name: string;
-    beginTime: Date;
-    endTime: Date;
+    beginTime: string;
+    endTime: string;
     activityType: number;
     content: string;
     mUnfinished: number;
     rUnfinished: number;
     tenantId: number;
-    publishTime: Date;
+    publishTime: string;
     status: number;
     statusName:string;
     typeName:string;
@@ -51,12 +51,12 @@ export class Activity implements IActivity{
         data["id"] = this.id;
         data["name"] = this.name;
         data["content"] = this.content;
-        data["beginTime"] = this.beginTime;
-        data["endTime"] = this.endTime;
+        data["beginTime"] =this.beginTime ;
+        data["endTime"] =this.endTime;
         data["tenantId"] = this.tenantId;
         data["mUnfinished"] = this.mUnfinished;
         data["rUnfinished"] = this.rUnfinished;
-        data["publishTime"] = this.publishTime;
+        data["publishTime"] =this.publishTime;
         data["status"] = this.status;
         data["activityType"] = this.activityType;
         return data;
@@ -68,17 +68,29 @@ export class Activity implements IActivity{
         result.init(json);
         return result;
     }
+    dateFormat(date: any): string {
+        if (date === null) {
+            return null;
+        }
+        let d = <Date>date;
+        let y = d.getFullYear().toString();
+        let m = (d.getMonth() + 1).toString();
+        let day = d.getDate().toString();
+        return  y + '-' + m + '-' + day;
+        //let dateStr:string = this.datePipe.transform(d,'yyyy-MM-dd');
+        //return dateStr;
+    }
 }
 export interface IActivity {
     id: string;
     name: string;
-    beginTime: Date;
-    endTime: Date;
+    beginTime: string;
+    endTime: string;
     activityType: number;
     content: string;
     mUnfinished: number;
     rUnfinished: number;
     tenantId: number;
-    publishTime: Date;
+    publishTime: string;
     status: number;
 }
