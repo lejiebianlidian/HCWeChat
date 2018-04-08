@@ -1,9 +1,10 @@
 import { Component, Injector, OnInit, Output, EventEmitter } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { Employee, CreateEmployee } from '@shared/service-proxies/entity/employee';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { EmployeeServiceProxy } from '@shared/service-proxies/marketing-service';
 import { NzModalService } from 'ng-zorro-antd';
+import { Observer } from 'rxjs/Observer';
 
 @Component({
     moduleId: module.id,
@@ -22,6 +23,7 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
         { text: '客户经理', value: 2 },
         { text: '营销人员', value: 3 },
     ]
+    isCodeVali: boolean;
     constructor(injector: Injector, private fb: FormBuilder, private employeeService: EmployeeServiceProxy,
         private modal: NzModalService) {
         super(injector);
@@ -85,7 +87,7 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
                     console.log('进来了吗？');
                     this.isConfirmLoading = false;
                     this.modal.warning({
-                        content:deleteContent,
+                        content: deleteContent,
                         title: '改员工编码已存在！'
                     });
                 }
@@ -102,5 +104,26 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
         for (const key in this.formc.controls) {
             this.formc.controls[key].markAsPristine();
         }
+    }
+
+    cofirmValidationCode = (control: FormControl): { [s: string]: boolean } => {
+        // var code=this.formc.controls['code'].value;
+        this.isCodeValid();
+            if (!control.value) {
+                return { required: true }
+            } else if (this.isCodeVali) {
+                return { confirm: true, error: true };
+            }
+       
+       
+    }
+
+    isCodeValid(){
+        console.log('code:');
+        console.log(this.employeec.code);
+        this.employeeService.CheckCode(this.employeec.code).subscribe((isCode: boolean) => {
+            this.isCodeVali = isCode;
+        });
+        
     }
 }
