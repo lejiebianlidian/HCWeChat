@@ -1424,7 +1424,10 @@ var StartupService = /** @class */ (function () {
                 // 用户信息：包括姓名、头像、邮箱地址
                 //this.settingService.setUser(res.user);
                 // ACL：设置权限为全量
-                //this.aclService.setFull(true);
+                _this.aclService.setFull(true);
+                //Admin MarketingCenter CustomerManager
+                //var type = { role : ['CustomerManager']}; 
+                //this.aclService.set(type)
                 // 初始化菜单
                 _this.menuService.add(res.menu);
                 // 设置页面标题的后缀
@@ -1539,8 +1542,8 @@ var ZORROMODULES = [
     // NzBackTopModule,
     // NzAffixModule,
     // NzAnchorModule,
-    __WEBPACK_IMPORTED_MODULE_2_ng_zorro_antd__["NzAvatarModule"] //,
-    //NzUploadModule
+    __WEBPACK_IMPORTED_MODULE_2_ng_zorro_antd__["NzAvatarModule"],
+    __WEBPACK_IMPORTED_MODULE_2_ng_zorro_antd__["NzUploadModule"]
 ];
 // endregion
 // region: @delon/abc modules
@@ -2313,7 +2316,7 @@ var HeaderUserComponent = /** @class */ (function (_super) {
     HeaderUserComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'header-user',
-            template: "\n    <nz-dropdown nzPlacement=\"bottomRight\">\n        <div class=\"item d-flex align-items-center px-sm\" nz-dropdown>\n            <nz-avatar [nzSrc]=\"settings.user.avatar\" nzSize=\"small\" class=\"mr-sm\"></nz-avatar>\n            {{settings.user.name}}\n        </div>\n        <div nz-menu class=\"width-sm\">\n            <div nz-menu-item [nzDisable]=\"true\"><i class=\"anticon anticon-user mr-sm\"></i>\u4E2A\u4EBA\u4E2D\u5FC3</div>\n            <div nz-menu-item [nzDisable]=\"true\"><i class=\"anticon anticon-setting mr-sm\"></i>\u8BBE\u7F6E</div>\n            <li nz-menu-divider></li>\n            <div nz-menu-item (click)=\"logout()\"><i class=\"anticon anticon-setting mr-sm\"></i>\u9000\u51FA\u767B\u5F55</div>\n        </div>\n    </nz-dropdown>\n    "
+            template: "\n    <nz-dropdown nzPlacement=\"bottomRight\">\n        <div class=\"item d-flex align-items-center px-sm\" nz-dropdown>\n            <nz-avatar [nzSrc]=\"settings.user.avatar\" nzSize=\"small\" class=\"mr-sm\"></nz-avatar>\n            {{settings.user.name}}\n        </div>\n        <div nz-menu class=\"width-sm\">\n            <div nz-menu-item (click)=\"logout()\"><i class=\"anticon anticon-setting mr-sm\"></i>\u9000\u51FA\u767B\u5F55</div>\n        </div>\n    </nz-dropdown>\n    "
         }),
         __param(3, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_3__delon_auth__["b" /* DA_SERVICE_TOKEN */])),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injector"],
@@ -2379,7 +2382,7 @@ var HeaderComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/layout/default/sidebar/sidebar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"aside-inner\">\r\n    <nz-dropdown nzTrigger=\"click\" class=\"user-block clearfix\">\r\n        <div nz-dropdown class=\"user-block-dropdown\">\r\n            <nz-avatar class=\"avatar\" [nzIcon]=\"'user'\" [nzSize]=\"'large'\"></nz-avatar>\r\n            <div class=\"info\">\r\n                <strong>{{settings.user.name}}</strong>\r\n                <p class=\"text-truncate\">{{settings.user.email}}</p>\r\n            </div>\r\n        </div>\r\n        <ul nz-menu>\r\n            <li nz-menu-item (click)=\"msgSrv.success('profile')\">{{ 'profile' | translate }}</li>\r\n            <li nz-menu-item (click)=\"msgSrv.success('settings')\">{{ 'settings' | translate }}</li>\r\n            <li nz-menu-item (click)=\"logout()\">{{ 'logout' | translate }}</li>\r\n        </ul>\r\n    </nz-dropdown>\r\n    <sidebar-nav class=\"d-block py-lg\"></sidebar-nav>\r\n</div>\r\n"
+module.exports = "<div class=\"aside-inner\">\r\n    <nz-dropdown nzTrigger=\"click\" class=\"user-block clearfix\">\r\n        <div nz-dropdown class=\"user-block-dropdown\">\r\n            <nz-avatar class=\"avatar\" [nzIcon]=\"'user'\" [nzSize]=\"'large'\"></nz-avatar>\r\n            <div class=\"info\">\r\n                <strong>{{settings.user.name}}</strong>\r\n                <p class=\"text-truncate\">{{settings.user.email}}</p>\r\n            </div>\r\n        </div>\r\n        <ul nz-menu>\r\n            <li nz-menu-item (click)=\"logout()\">{{ 'logout' | translate }}</li>\r\n        </ul>\r\n    </nz-dropdown>\r\n    <sidebar-nav class=\"d-block py-lg\"></sidebar-nav>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -2729,7 +2732,7 @@ var AppComponentBase = /** @class */ (function () {
         if (date === null) {
             return null;
         }
-        var d = date;
+        var d = new Date(date);
         var y = d.getFullYear().toString();
         var m = (d.getMonth() + 1).toString();
         var day = d.getDate().toString();
@@ -3478,6 +3481,18 @@ var Activity = /** @class */ (function () {
         var result = new Activity();
         result.init(json);
         return result;
+    };
+    Activity.prototype.dateFormat = function (date) {
+        if (date === null) {
+            return null;
+        }
+        var d = date;
+        var y = d.getFullYear().toString();
+        var m = (d.getMonth() + 1).toString();
+        var day = d.getDate().toString();
+        return y + '-' + m + '-' + day;
+        //let dateStr:string = this.datePipe.transform(d,'yyyy-MM-dd');
+        //return dateStr;
     };
     return Activity;
 }());
@@ -9629,6 +9644,7 @@ var GetCurrentLoginInformationsOutput = /** @class */ (function () {
             this.application = data["application"] ? ApplicationInfoDto.fromJS(data["application"]) : undefined;
             this.user = data["user"] ? UserLoginInfoDto.fromJS(data["user"]) : undefined;
             this.tenant = data["tenant"] ? TenantLoginInfoDto.fromJS(data["tenant"]) : undefined;
+            this.roles = data["roles"];
         }
     };
     GetCurrentLoginInformationsOutput.fromJS = function (data) {
@@ -9641,6 +9657,7 @@ var GetCurrentLoginInformationsOutput = /** @class */ (function () {
         data["application"] = this.application ? this.application.toJSON() : undefined;
         data["user"] = this.user ? this.user.toJSON() : undefined;
         data["tenant"] = this.tenant ? this.tenant.toJSON() : undefined;
+        data["roles"] = this.roles;
         return data;
     };
     GetCurrentLoginInformationsOutput.prototype.clone = function () {
@@ -12219,6 +12236,7 @@ var PagedResultDtoOfWeChatUser = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_service_proxies_service_proxies__ = __webpack_require__("../../../../../src/app/shared/service-proxies/service-proxies.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__abp_multi_tenancy_abp_multi_tenancy_service__ = __webpack_require__("../../../../abp-ng2-module/src/multi-tenancy/abp-multi-tenancy.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__delon_theme__ = __webpack_require__("../../../../@delon/theme/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__delon_acl__ = __webpack_require__("../../../../@delon/acl/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -12233,11 +12251,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 //alain stting
 
+
 var AppSessionService = /** @class */ (function () {
-    function AppSessionService(_sessionService, _abpMultiTenancyService, settingService) {
+    function AppSessionService(_sessionService, _abpMultiTenancyService, settingService, aclService, menuSrv) {
         this._sessionService = _sessionService;
         this._abpMultiTenancyService = _abpMultiTenancyService;
         this.settingService = settingService;
+        this.aclService = aclService;
+        this.menuSrv = menuSrv;
     }
     Object.defineProperty(AppSessionService.prototype, "application", {
         get: function () {
@@ -12281,12 +12302,22 @@ var AppSessionService = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(AppSessionService.prototype, "roles", {
+        get: function () {
+            return this._roles;
+        },
+        enumerable: true,
+        configurable: true
+    });
     AppSessionService.prototype.getShownLoginName = function () {
         var userName = this._user.userName;
         if (!this._abpMultiTenancyService.isEnabled) {
             return userName;
         }
         return (this._tenant ? this._tenant.tenancyName : ".") + "\\" + userName;
+    };
+    AppSessionService.prototype.reMenu = function () {
+        this.menuSrv.resume();
     };
     AppSessionService.prototype.init = function () {
         var _this = this;
@@ -12295,10 +12326,32 @@ var AppSessionService = /** @class */ (function () {
                 _this._application = result.application;
                 _this._user = result.user;
                 _this._tenant = result.tenant;
+                _this._roles = result.roles;
                 //添加Alain框架设置user
                 if (_this._user) {
                     var user = { name: _this._user.name, email: _this._user.emailAddress };
                     _this.settingService.setUser(user); //目前abp setting和 alain setting还未整合到一起，先兼容 保留两个一起使用
+                }
+                //添加Alain框架根据角色设置菜单权限
+                if (result.roles) {
+                    //alert(JSON.stringify(result.roles))
+                    //ACL：设置权限为全量 如果是后台管理员
+                    if (result.roles.includes('HostAdmin')) {
+                        //alert(1);
+                        _this.aclService.setFull(true);
+                    }
+                    else if (result.roles.includes('Admin')) {
+                        //alert(2);
+                        _this.aclService.setFull(false);
+                        _this.aclService.setRole(['CustomerManager', 'Admin']);
+                    }
+                    else {
+                        //alert(3);
+                        //Admin MarketingCenter CustomerManager
+                        _this.aclService.setFull(false);
+                        _this.aclService.setRole(result.roles);
+                    }
+                    _this.reMenu();
                 }
                 resolve(true);
             }, function (err) {
@@ -12327,7 +12380,9 @@ var AppSessionService = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__shared_service_proxies_service_proxies__["q" /* SessionServiceProxy */],
             __WEBPACK_IMPORTED_MODULE_2__abp_multi_tenancy_abp_multi_tenancy_service__["a" /* AbpMultiTenancyService */],
-            __WEBPACK_IMPORTED_MODULE_3__delon_theme__["h" /* SettingsService */]])
+            __WEBPACK_IMPORTED_MODULE_3__delon_theme__["h" /* SettingsService */],
+            __WEBPACK_IMPORTED_MODULE_4__delon_acl__["a" /* ACLService */],
+            __WEBPACK_IMPORTED_MODULE_3__delon_theme__["d" /* MenuService */]])
     ], AppSessionService);
     return AppSessionService;
 }());

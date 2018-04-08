@@ -8,128 +8,145 @@
         "avatar": "./assets/img/zorro.svg",
         "email": "cipchk@qq.com"
     },
-    "menu": [{
-        "text": "主导航",
-        "translate": "main_navigation",
-        "group": true,
-        "children": [{
-            "text": "工作台",
-            "translate": "home",
-            "link": "/home/index",
-            "icon": "fa fa-home"
-        }]
-        }, 
+    "menu": [
         {
-        "text": "微信平台",
-        "translate": "wechat",
-        "group": true,
-        "children": [{
-            "text":"微信设置",
-            "translate":"weichat-setting" ,
-            "link": "/admin",
-            "icon": "anticon anticon-setting",
-            "children":[{
-                "text":"授权配置",
-                "link":"/admin/authsetting",
-                "translate":"wechat-configs"
-             },{
-                "text":"自动回复",
-                "link":"/admin/message",
-                "translate":"aut-res"
-             }] 
-        },{
-            "text":"微信管理",
-            "translate":"weichat-manager",
-            "icon":"fa fa-wechat",
-            "children":[{
-                "text":"微信用户",
-                "link":"/admin/wechat-user",
-                "translate":"wechat-user"
-          }]
-        },{
-
-            "text":"营销服务",
-            "translate":"market-serve",
-            "icon":"anticon anticon-shop",
-            "children":[{
-                "text":"营销人员",
-                "link":"/admin/employee",
-                "translate":"market-user"
-          },{
-                "text":"营销活动",
-                "link":"/admin/activity-list",
-                "translate":"market-active"
-          },{
-                "text":"活动申请单",
-                "link":"/admin/activity-form",
-                "translate":"activity-form"
-          },{
-                "text":"营销统计",
-                "link":"/admin/activity-query",
-                "translate":"activity-query"
-          },{
-                "text":"问卷调查",
-                "link":"/admin/user-question",
-                "translate":"user-question"
-          }]
-        },{
-            "text":"客户服务",
-            "translate":"client-serve",
-            "icon":"anticon anticon-customer-service",
-            "children":[{
-                "text":"零售客户",
-                "link":"/admin/retail-customer",
-                "translate":"retail-client"
-          }]
-        },{
-            "text":"消费服务",
-            "translate":"consume-serve",
-            "icon":"fa fa-laptop",
-            "children":[{
-                "text":"意见反馈",
-                "link":"/admin/advise",
-                "translate":"advise"
-            }]
-        }]
-    },
+            "text": "主导航",
+            "translate": "main_navigation",
+            "group": true,
+            "children": [
+                {
+                    "text": "工作台",
+                    "translate": "home",
+                    "link": "/home/index",
+                    "icon": "fa fa-home"
+                }
+            ]
+        },
         {
-        "text": "系统",
-        "translate": "system",
-        "group": true,
-        "children": [{
-            "text": "权限管理",
-            "translate": "admin",
-            "link": "/admin",
-            "icon": "fa fa-users",
-            "children": [{
-                "text": "用户",
-                "link": "/admin/users",
-                "translate": "users"
-            }, {
-                "text": "角色",
-                "link": "/admin/roles",
-                "translate": "roles"
-            }, {
-                "text": "租户",
-                "link": "/admin/tenant",
-                "translate": "tenants"
-            }]
-        },{
-            "text": "系统日志",
-            "translate": "sys-log",
-            "link": "/sys-log",
-            "icon": "fa fa-file-text-o",
-            "children": [{
-                "text": "审计日志",
-                "link": "/sys-log/audit-log",
-                "translate": "audit-log"
-            }]
-        },{
-            "text": "系统配置",
-            "translate": "sys-config",
-            "link": "/system/sys-config",
-            "icon": "fa fa-gears" 
-        }]
-    }
-]
+            "text": "微信平台",
+            "translate": "wechat",
+            "group": true,
+            "children": [
+                {
+                    "text": "微信设置",
+                    "translate": "weichat-setting",
+                    "icon": "anticon anticon-setting",
+                    "acl": "MarketingCenter",
+                    "children": [
+                        {
+                            "text": "授权配置",
+                            "link": "/admin/authsetting",
+                            "translate": "wechat-configs"
+                        },
+                        {
+                            "text": "自动回复",
+                            "link": "/admin/message",
+                            "translate": "aut-res"
+                        }
+                    ]
+                },
+                {
+                    "text": "微信管理",
+                    "translate": "weichat-manager",
+                    "icon": "fa fa-wechat",
+                    "acl": "MarketingCenter",
+                    "children": [
+                        {
+                            "text": "微信用户",
+                            "link": "/admin/wechat-user",
+                            "translate": "wechat-user"
+                        }
+                    ]
+                },
+                {
+                    "text": "营销服务",
+                    "translate": "market-serve",
+                    "icon": "anticon anticon-shop",
+                    "children": [
+                        {
+                            "text": "营销人员",
+                            "link": "/admin/employee",
+                            "translate": "market-user"
+                        },
+                        {
+                            "text": "营销活动",
+                            "link": "/admin/activity-list",
+                            "translate": "market-active"
+                        },
+                        {
+                            "text": "活动申请单",
+                            "link": "/admin/activity-form",
+                            "translate": "activity-form"
+                        },
+                        {
+                            "text": "营销统计",
+                            "link": "/admin/activity-query",
+                            "translate": "activity-query"
+                        },
+                        {
+                            "text": "问卷调查",
+                            "link": "/admin/user-question",
+                            "translate": "user-question"
+                        }
+                    ]
+                },
+                {
+                    "text": "客户服务",
+                    "translate": "client-serve",
+                    "icon": "anticon anticon-customer-service",
+                    "children": [
+                        {
+                            "text": "零售客户",
+                            "link": "/admin/retail-customer",
+                            "translate": "retail-client"
+                        }
+                    ]
+                },
+                {
+                    "text": "消费服务",
+                    "translate": "consume-serve",
+                    "icon": "fa fa-laptop",
+                    "children": [
+                        {
+                            "text": "意见反馈",
+                            "link": "/admin/advise",
+                            "translate": "advise"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "text": "系统",
+            "translate": "system",
+            "group": true,
+            "acl": "Admin",
+            "children": [
+                {
+                    "text": "权限管理",
+                    "translate": "admin",
+                    "link": "/admin",
+                    "icon": "fa fa-users",
+                    "children": [
+                        {
+                            "text": "用户",
+                            "link": "/admin/users",
+                            "translate": "users"
+                        },
+                        {
+                            "text": "角色",
+                            "link": "/admin/roles",
+                            "translate": "roles"
+                        },
+                        {
+                            "text": "租户",
+                            "link": "/admin/tenant",
+                            "translate": "tenants" ,
+                            "acl": "HostAdmin"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }

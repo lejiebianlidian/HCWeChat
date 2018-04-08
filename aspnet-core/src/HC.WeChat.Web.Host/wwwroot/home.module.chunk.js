@@ -99,7 +99,7 @@ var HomeModule = /** @class */ (function () {
 /***/ "../../../../../src/app/home/index.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content__title\">\r\n    <h1>\r\n        {{ 'homeindex.title' | translate }}\r\n        <small class=\"text-sm hidden-xs\">{{ 'homeindex.welcome' | translate }}</small>\r\n    </h1>\r\n</div>\r\n<div class=\"quick-menu\" [class.show]=\"quickMenu\" (click)=\"quickMenu=!quickMenu\">\r\n    <div class=\"quick-menu-inner\">\r\n        <div class=\"settings-ctrl\">\r\n            <i class=\"anticon anticon-question-circle-o\"></i>\r\n        </div>\r\n        <div class=\"list-group list-group-flush\">\r\n            <a (click)=\"msg.info('item 1')\" class=\"list-group-item\">How do i create account?</a>\r\n            <a (click)=\"msg.info('item 2')\" class=\"list-group-item\">How do i create account?</a>\r\n            <a (click)=\"msg.info('item 3')\" class=\"list-group-item\">How do i create account?</a>\r\n            <a (click)=\"msg.info('item 4')\" class=\"list-group-item\">How do i create account?</a>\r\n            <a (click)=\"msg.info('item 5')\" class=\"list-group-item\">How do i create account?</a>\r\n        </div>\r\n    </div>\r\n</div>\r\n<div nz-row nzGutter=\"16\">\r\n    <div nz-col nzXs=\"24\" nzSm=\"12\" nzMd=\"6\" class=\"mb-md\">\r\n        <div nz-row nzType=\"flex\" nzAlign=\"middle\" class=\"bg-primary rounded-md\">\r\n            <div nz-col nzSpan=\"12\" class=\"p-md text-white\">\r\n                <div class=\"h2 mt0\">123,456 单</div>\r\n                <p class=\"text-nowrap\">活动申请单总数</p>\r\n            </div>\r\n            <div nz-col nzSpan=\"12\">\r\n                <mini-bar height=\"35\" color=\"#fff\" borderWidth=\"3\" [padding]=\"[36, 30, 30, 30]\" [data]=\"webSite\"></mini-bar>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div nz-col nzXs=\"24\" nzSm=\"12\" nzMd=\"6\" class=\"mb-md\">\r\n        <div nz-row nzType=\"flex\" nzAlign=\"middle\" class=\"bg-success rounded-md\">\r\n            <div nz-col nzSpan=\"12\" class=\"p-md text-white\">\r\n                <div class=\"h2 mt0\">12,234,567 条</div>\r\n                <p class=\"text-nowrap\">申请商品总数</p>\r\n            </div>\r\n            <div nz-col nzSpan=\"12\">\r\n                <mini-bar height=\"35\" color=\"#fff\" borderWidth=\"3\" [padding]=\"[36, 30, 30, 30]\" [data]=\"webSite\"></mini-bar>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div nz-col nzXs=\"24\" nzSm=\"12\" nzMd=\"6\" class=\"mb-md\">\r\n        <div nz-row nzType=\"flex\" nzAlign=\"middle\" class=\"bg-orange rounded-md\">\r\n            <div nz-col nzSpan=\"12\" class=\"p-md text-white\">\r\n                <div class=\"h2 mt0\">458,778 单</div>\r\n                <p class=\"text-nowrap\">待审批申请单</p>\r\n            </div>\r\n            <div nz-col nzSpan=\"12\">\r\n                <mini-bar height=\"35\" color=\"#fff\" borderWidth=\"3\" [padding]=\"[36, 30, 30, 30]\" [data]=\"webSite\"></mini-bar>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div nz-col nzXs=\"24\" nzSm=\"12\" nzMd=\"6\" class=\"mb-md\">\r\n        <div nz-row nzType=\"flex\" nzAlign=\"middle\" class=\"bg-pink rounded-md\">\r\n            <div nz-col nzSpan=\"12\" class=\"p-md text-white\">\r\n                <div class=\"h2 mt0\">456 人</div>\r\n                <p class=\"text-nowrap\">微信关注用户数</p>\r\n            </div>\r\n            <div nz-col nzSpan=\"12\">\r\n                <mini-bar height=\"35\" color=\"#fff\" borderWidth=\"3\" [padding]=\"[36, 30, 30, 30]\" [data]=\"webSite\"></mini-bar>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<div nz-row nzGutter=\"16\">\r\n    <div nz-col nzXs=\"24\" nzMd=\"12\">\r\n        <nz-card [nzBordered]=\"false\">\r\n            <ng-template #title>\r\n                近12个月申请单数\r\n            </ng-template>\r\n            <bar height=\"275\" [data]=\"salesData\"></bar>\r\n        </nz-card>\r\n    </div>\r\n    <div nz-col nzXs=\"24\" nzMd=\"12\">\r\n        <nz-card [nzTitle]=\"nzTitle1\" [nzBordered]=\"false\">\r\n            <ng-template #nzTitle1>\r\n                24小时网站访问量和活动申请单笔数\r\n            </ng-template>\r\n            <timeline [data]=\"offlineChartData\" [height]=\"239\" [padding]=\"[0, 0, 0, 0]\" [titleMap]=\"{ y1: '网站访问量', y2: '申请单笔数' }\"></timeline>\r\n        </nz-card>\r\n    </div>\r\n</div>\r\n<div nz-row nzGutter=\"16\">\r\n    <div nz-col nzXs=\"24\" nzMd=\"6\">\r\n        <nz-card [nzBordered]=\"false\"  [nzTitle]=\"nzTitle2\" class=\"ant-card__img\">\r\n            <ng-template #nzTitle2>\r\n                宜宾微信公众号\r\n            </ng-template>\r\n            <img class=\"img\" src=\"./assets/img/weixin.jpg\">\r\n        </nz-card>\r\n    </div>\r\n    <div nz-col nzXs=\"24\" nzMd=\"18\">\r\n        <nz-card [nzTitle]=\"nzTitle3\" [nzBordered]=\"false\" nzNoPadding>\r\n            <ng-template #nzTitle3>\r\n                最新用户建议反馈\r\n            </ng-template>\r\n            <div nz-row [nzType]=\"'flex'\" [nzJustify]=\"'center'\" [nzAlign]=\"'middle'\" class=\"py-sm bg-grey-lighter-h point\" *ngFor=\"let item of todoData\">\r\n                <div nz-col [nzSpan]=\"4\" class=\"text-center\">\r\n                    <nz-avatar [nzSrc]=\"'./assets/img/' + item.avatar + '.png'\" [nzSize]=\"'large'\"></nz-avatar>\r\n                </div>\r\n                <div nz-col [nzSpan]=\"20\">\r\n                    <strong>{{item.name}}</strong>\r\n                    <p>{{item.content}}</p>\r\n                </div>\r\n            </div>\r\n        </nz-card>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"content__title\">\r\n    <h1>\r\n        {{ 'homeindex.title' | translate }}\r\n        <small class=\"text-sm hidden-xs\">{{ 'homeindex.welcome' | translate }}</small>\r\n    </h1>\r\n    <div style=\" float:right;\">我的角色：{{roleName}}</div>\r\n</div>\r\n<div nz-row nzGutter=\"16\">\r\n    <div nz-col nzXs=\"24\" nzSm=\"12\" nzMd=\"6\" class=\"mb-md\">\r\n        <div nz-row nzType=\"flex\" nzAlign=\"middle\" class=\"bg-primary rounded-md\">\r\n            <div nz-col nzSpan=\"12\" class=\"p-md text-white\">\r\n                <div class=\"h2 mt0\">123,456 单</div>\r\n                <p class=\"text-nowrap\">活动申请单</p>\r\n            </div>\r\n            <div nz-col nzSpan=\"12\">\r\n                <mini-bar height=\"35\" color=\"#fff\" borderWidth=\"3\" [padding]=\"[36, 30, 30, 30]\" [data]=\"webSite\"></mini-bar>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div nz-col nzXs=\"24\" nzSm=\"12\" nzMd=\"6\" class=\"mb-md\">\r\n        <div nz-row nzType=\"flex\" nzAlign=\"middle\" class=\"bg-success rounded-md\">\r\n            <div nz-col nzSpan=\"12\" class=\"p-md text-white\">\r\n                <div class=\"h2 mt0\">12,234,567 条</div>\r\n                <p class=\"text-nowrap\">申请商品</p>\r\n            </div>\r\n            <div nz-col nzSpan=\"12\">\r\n                <mini-bar height=\"35\" color=\"#fff\" borderWidth=\"3\" [padding]=\"[36, 30, 30, 30]\" [data]=\"webSite\"></mini-bar>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div nz-col nzXs=\"24\" nzSm=\"12\" nzMd=\"6\" class=\"mb-md\">\r\n        <div nz-row nzType=\"flex\" nzAlign=\"middle\" class=\"bg-orange rounded-md\">\r\n            <div nz-col nzSpan=\"12\" class=\"p-md text-white\">\r\n                <div class=\"h2 mt0\">458,778 单</div>\r\n                <p class=\"text-nowrap\">待审批申请单</p>\r\n            </div>\r\n            <div nz-col nzSpan=\"12\">\r\n                <mini-bar height=\"35\" color=\"#fff\" borderWidth=\"3\" [padding]=\"[36, 30, 30, 30]\" [data]=\"webSite\"></mini-bar>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div nz-col nzXs=\"24\" nzSm=\"12\" nzMd=\"6\" class=\"mb-md\">\r\n        <div nz-row nzType=\"flex\" nzAlign=\"middle\" class=\"bg-pink rounded-md\">\r\n            <div nz-col nzSpan=\"12\" class=\"p-md text-white\">\r\n                <div class=\"h2 mt0\">456 人</div>\r\n                <p class=\"text-nowrap\">微信关注</p>\r\n            </div>\r\n            <div nz-col nzSpan=\"12\">\r\n                <mini-bar height=\"35\" color=\"#fff\" borderWidth=\"3\" [padding]=\"[36, 30, 30, 30]\" [data]=\"webSite\"></mini-bar>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<div nz-row nzGutter=\"16\">\r\n    <div nz-col nzXs=\"24\" nzMd=\"12\">\r\n        <nz-card [nzBordered]=\"false\">\r\n            <ng-template #title>\r\n                近12个月申请单数\r\n            </ng-template>\r\n            <bar height=\"275\" [data]=\"salesData\"></bar>\r\n        </nz-card>\r\n    </div>\r\n    <div nz-col nzXs=\"24\" nzMd=\"12\">\r\n        <nz-card [nzTitle]=\"nzTitle1\" [nzBordered]=\"false\">\r\n            <ng-template #nzTitle1>\r\n                24小时网站访问量和活动申请单笔数\r\n            </ng-template>\r\n            <timeline [data]=\"offlineChartData\" [height]=\"239\" [padding]=\"[0, 0, 0, 0]\" [titleMap]=\"{ y1: '网站访问量', y2: '申请单笔数' }\"></timeline>\r\n        </nz-card>\r\n    </div>\r\n</div>\r\n<div nz-row nzGutter=\"16\">\r\n    <div nz-col nzXs=\"24\" nzMd=\"6\">\r\n        <nz-card [nzBordered]=\"false\"  [nzTitle]=\"nzTitle2\" class=\"ant-card__img\">\r\n            <ng-template #nzTitle2>\r\n                宜宾微信公众号\r\n            </ng-template>\r\n            <img class=\"img\" src=\"./assets/img/weixin.jpg\">\r\n        </nz-card>\r\n    </div>\r\n    <div nz-col nzXs=\"24\" nzMd=\"18\">\r\n        <nz-card [nzTitle]=\"nzTitle3\" [nzBordered]=\"false\" nzNoPadding>\r\n            <ng-template #nzTitle3>\r\n                最新用户建议反馈\r\n            </ng-template>\r\n            <div nz-row [nzType]=\"'flex'\" [nzJustify]=\"'center'\" [nzAlign]=\"'middle'\" class=\"py-sm bg-grey-lighter-h point\" *ngFor=\"let item of todoData\">\r\n                <div nz-col [nzSpan]=\"4\" class=\"text-center\">\r\n                    <nz-avatar [nzSrc]=\"'./assets/img/' + item.avatar + '.png'\" [nzSize]=\"'large'\"></nz-avatar>\r\n                </div>\r\n                <div nz-col [nzSpan]=\"20\">\r\n                    <strong>{{item.name}}</strong>\r\n                    <p>{{item.content}}</p>\r\n                </div>\r\n            </div>\r\n        </nz-card>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -111,6 +111,7 @@ module.exports = "<div class=\"content__title\">\r\n    <h1>\r\n        {{ 'home
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ng_zorro_antd__ = __webpack_require__("../../../../ng-zorro-antd/esm5/antd.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__delon_theme__ = __webpack_require__("../../../../@delon/theme/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_session_app_session_service__ = __webpack_require__("../../../../../src/app/shared/session/app-session.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -123,22 +124,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var IndexComponent = /** @class */ (function () {
-    function IndexComponent(http, msg) {
+    function IndexComponent(http, msg, _appSessionService) {
         this.http = http;
         this.msg = msg;
+        this._appSessionService = _appSessionService;
         this.todoData = [
-            { completed: true, avatar: '1', name: '苏先生', content: "\u8BF7\u544A\u8BC9\u6211\uFF0C\u6211\u5E94\u8BE5\u8BF4\u70B9\u4EC0\u4E48\u597D\uFF1F" },
-            { completed: false, avatar: '2', name: 'はなさき', content: "\u30CF\u30EB\u30AB\u30BD\u30E9\u30C8\u30AD\u30D8\u30C0\u30C4\u30D2\u30AB\u30EA" },
-            { completed: false, avatar: '3', name: 'cipchk', content: "this world was never meant for one as beautiful as you." },
-            { completed: false, avatar: '4', name: 'Kent', content: "my heart is beating with hers" },
-            { completed: false, avatar: '5', name: 'Are you', content: "They always said that I love beautiful girl than my friends" },
-            { completed: false, avatar: '6', name: 'Forever', content: "Walking through green fields \uFF0Csunshine in my eyes." }
+            { completed: true, avatar: '1', name: '苏者名', content: "\u8BA2\u8D27\u6D41\u7A0B\u662F\u4EC0\u4E48\u6837\u7684\uFF1F" },
+            { completed: false, avatar: '2', name: '杨太', content: "\u6211\u60F3\u54A8\u8BE2\u5982\u4F55\u8BA2\u8D27" },
+            { completed: false, avatar: '3', name: '李红', content: "\u6211\u60F3\u54A8\u8BE2\u5982\u4F55\u53C2\u52A0\u672C\u6B21\u6D3B\u52A8" },
+            { completed: false, avatar: '4', name: '曾开', content: "\u4F60\u4EEC\u7684\u8425\u9500\u7535\u8BDD\u662F\u591A\u5C11" }
         ];
         this.quickMenu = false;
         this.webSite = [];
         this.salesData = [];
         this.offlineChartData = [];
+        this.roleName = '';
     }
     IndexComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -147,13 +149,26 @@ var IndexComponent = /** @class */ (function () {
             _this.salesData = res.salesData;
             _this.offlineChartData = res.offlineChartData;
         });
+        var roles = this._appSessionService.roles;
+        if (roles.includes('HostAdmin')) {
+            this.roleName += '系统管理员';
+        }
+        if (roles.includes('Admin')) {
+            this.roleName += '管理员';
+        }
+        if (roles.includes('MarketingCenter')) {
+            this.roleName += ' 营销中心';
+        }
+        if (roles.includes('CustomerManager')) {
+            this.roleName += ' 客户经理';
+        }
     };
     IndexComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Component"])({
             selector: 'app-home-index',
             template: __webpack_require__("../../../../../src/app/home/index.component.html")
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__delon_theme__["l" /* _HttpClient */], __WEBPACK_IMPORTED_MODULE_0_ng_zorro_antd__["NzMessageService"]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__delon_theme__["l" /* _HttpClient */], __WEBPACK_IMPORTED_MODULE_0_ng_zorro_antd__["NzMessageService"], __WEBPACK_IMPORTED_MODULE_3__shared_session_app_session_service__["a" /* AppSessionService */]])
     ], IndexComponent);
     return IndexComponent;
 }());
