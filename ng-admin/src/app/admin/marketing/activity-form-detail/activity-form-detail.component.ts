@@ -14,8 +14,7 @@ import { EditBanquetComponent } from '../edit-banquet/edit-banquet.component';
 
 @Component({
     selector: 'activity-form-detail',
-    templateUrl: './activity-form-detail.component.html',
-    styleUrls: ['./activity-form-detail.component.scss']
+    templateUrl: './activity-form-detail.component.html'
 })
 export class ActivityFormDetailComponent extends AppComponentBase implements OnInit {
 

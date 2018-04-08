@@ -12,7 +12,7 @@ import { ActivityBanquetServiceProxy } from '@shared/service-proxies/marketing-s
 import { filter } from 'rxjs/operators/filter';
 import { HttpRequest, HttpClient, HttpResponse } from '@angular/common/http';
 
-import {FileUploader} from "ng2-file-upload";
+import { FileUploader } from "ng2-file-upload";
 
 @Component({
     selector: 'edit-banquet-modal',
@@ -32,11 +32,7 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
     uploading = false;
     fileList = [];
 
-    public uploader:FileUploader = new FileUploader({
-        url: "http://localhost:21021/WeChatFile/UploadFile",
-        method: "POST",
-        itemAlias: "uploadedfile"
-    });
+    public uploader: FileUploader; 
 
     constructor(
         injector: Injector,
@@ -45,10 +41,22 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
         private http: HttpClient, private msg: NzMessageService
     ) {
         super(injector);
+        this.uploader = new FileUploader({
+            url: _activityBanquetService.getBaseUrl() + "/WeChatFile/BanquetPhotoSave",
+            method: "POST",
+            itemAlias: "uploadedfile",
+            headers: [
+                { name: 'Content-Type', value: 'multipart/form-data' },
+                { name: 'Access-Control-Allow-Origin', value: '*' },
+                { name: 'Access-Control-Allow-Methods', value: 'POST, OPTIONS, GET'},
+                { name: 'Access-Control-Allow-Credentials', value: 'true'}
+              ]
+        
+        });
     }
 
-      // C: 定义事件，选择文件
-    selectedFileOnChanged(event:any) {
+    // C: 定义事件，选择文件
+    selectedFileOnChanged(event: any) {
         // 打印文件选择名称
         console.log(event.target.value);
     }
@@ -79,7 +87,7 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
             desc: [null, [Validators.required, Validators.maxLength(500)]],
         });
     }
-    
+
     show(delivery: ActivityBanquetDto): void {
         this.reset();
         this.banquetDto = delivery;
@@ -131,31 +139,31 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
 
     handleChange(info: { file: UploadFile }): void {
         this._activityBanquetService.uploadBase64(info.file).subscribe(result => {
-            
+
         });
     }
 
     beforeUpload = (file: UploadFile): boolean => {
         this.fileList.push(file);
         return false;
-      }
+    }
 
-      handleUpload() {
+    handleUpload() {
         const formData = new FormData();
         this.fileList.forEach((file: any) => {
-          formData.append('files[]', file);
+            formData.append('files[]', file);
         });
         this.uploading = true;
         // You can use any AJAX library you like
         const req = new HttpRequest('POST', 'https://jsonplaceholder.typicode.com/posts/', formData, {
-          // reportProgress: true
+            // reportProgress: true
         });
         this.http.request(req).pipe(filter(e => e instanceof HttpResponse)).subscribe((event: any) => {
-          this.uploading = false;
-          this.msg.success('upload successfully.');
+            this.uploading = false;
+            this.msg.success('upload successfully.');
         }, (err) => {
-          this.uploading = false;
-          this.msg.error('upload failed.');
+            this.uploading = false;
+            this.msg.error('upload failed.');
         });
-      }
+    }
 }
