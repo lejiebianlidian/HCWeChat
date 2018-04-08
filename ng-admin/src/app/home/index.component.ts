@@ -50,6 +50,7 @@ export class IndexComponent implements OnInit {
         if (roles.includes('CustomerManager')) {
             this.roleName += ' 客户经理';
         }
+        this.getFormInfo();
     }
 
     getFormInfo() {
