@@ -66,5 +66,11 @@ namespace HC.WeChat.ActivityForms
         /// 获取ActivityView的分页列表信息
         /// </summary>
         Task<PagedResultDto<ActivityViewDto>> GetPagedActivityView(GetActivityViewInput input);
+
+        /// <summary>
+        /// 获取首页的数据
+        /// </summary>
+        /// <returns></returns>
+        Task<ActivityFormCountInfoDto> GetHomeInfo();
     }
 }

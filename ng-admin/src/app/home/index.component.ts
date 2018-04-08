@@ -2,6 +2,8 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { Component, OnInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { AppSessionService } from '@shared/session/app-session.service';
+import { ActivityFormServiceProxy } from '@shared/service-proxies/marketing-service';
+import { ActivityFormInfo } from '@shared/service-proxies/entity';
 
 @Component({
     selector: 'app-home-index',
@@ -9,7 +11,9 @@ import { AppSessionService } from '@shared/session/app-session.service';
 })
 export class IndexComponent implements OnInit {
 
-    constructor(private http: _HttpClient, public msg: NzMessageService, private _appSessionService: AppSessionService) { }
+    activityFormInfo: ActivityFormInfo=new ActivityFormInfo();
+    constructor(private http: _HttpClient, public msg: NzMessageService, private _appSessionService: AppSessionService,
+        private activityFormHomeService: ActivityFormServiceProxy) { }
 
     todoData: any[] = [
         { completed: true, avatar: '1', name: '苏者名', content: `订货流程是什么样的？` },
@@ -20,8 +24,8 @@ export class IndexComponent implements OnInit {
 
     quickMenu = false;
 
-    webSite: any[] = [ ];
-    salesData: any[] =  [ ];
+    webSite: any[] = [];
+    salesData: any[] = [];
     offlineChartData: any[] = [];
     roleName: string = '';
 
@@ -46,5 +50,11 @@ export class IndexComponent implements OnInit {
         if (roles.includes('CustomerManager')) {
             this.roleName += ' 客户经理';
         }
+    }
+
+    getFormInfo() {
+        this.activityFormHomeService.getFormHomeInfo().subscribe((result: ActivityFormInfo) => {
+            this.activityFormInfo = result;
+        })
     }
 }

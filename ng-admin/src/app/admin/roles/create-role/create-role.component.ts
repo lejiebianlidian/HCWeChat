@@ -55,9 +55,13 @@ export class CreateRoleComponent extends AppComponentBase implements OnInit {
      * 
      */
     show(): void {
+        this.reset();
         this.role = new CreateRoleDto();
         this.role.init({ isStatic: false });
         this.modalVisible = true;
+        this.permissions.items.forEach(element => {
+            element.checked = true;
+        });
     }
     /**
      * 保存角色信息
@@ -66,7 +70,6 @@ export class CreateRoleComponent extends AppComponentBase implements OnInit {
         for (const i in this.form.controls) {
             this.form.controls[i].markAsDirty();
         }
-        console.log('log', this.form.value);
         if (this.form.valid) {
             var permissions = [];
 
