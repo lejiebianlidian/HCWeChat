@@ -486,9 +486,11 @@ namespace HC.WeChat.ActivityForms
             var dto = new ActivityFormCountInfoDto();
             var query = _activityformRepository.GetAll();
             var WeiChatquery = _wechatuserRepository.GetAll();
-            dto.CheckCount = await query.Where(f => f.Status == FormStatusEnum.提交申请 || f.Status == FormStatusEnum.初审通过 || f.Status == FormStatusEnum.资料回传已审核).CountAsync();
+            var mid = UserManager.GetControlEmployeeId();
+
+            dto.CheckCount = await query.WhereIf(mid.HasValue, q => q.ManagerId == mid).Where(f => f.Status == FormStatusEnum.提交申请 || f.Status == FormStatusEnum.初审通过 || f.Status == FormStatusEnum.资料回传已审核).CountAsync();
             dto.IsCheckedCount = query.Count();
-            dto.GoodsCount = await query.Where(f => f.Status == FormStatusEnum.营销中心已审核).SumAsync(s => s.Num);
+            dto.GoodsCount = await query.WhereIf(mid.HasValue, q => q.ManagerId == mid).Where(f => f.Status == FormStatusEnum.提交申请 || f.Status == FormStatusEnum.初审通过 || f.Status == FormStatusEnum.资料回传已审核).SumAsync(s => s.Num);
             dto.WeiChatAttention = await WeiChatquery.Where(w => w.UserType != UserTypeEnum.取消关注).CountAsync();
             return dto;
         }
