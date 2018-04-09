@@ -314,6 +314,7 @@ namespace HC.WeChat.ActivityForms
                         .Where(a => a.RetailerId == user.UserId
                         && a.Status == FormStatusEnum.提交申请
                         && a.Status == FormStatusEnum.初审通过
+                        && a.Status == FormStatusEnum.资料回传已审核
                         && a.CreationUser == user.UserName).Count();
                     if (rcount >= activity.RUnfinished)
                     {
@@ -333,6 +334,7 @@ namespace HC.WeChat.ActivityForms
                         .Where(a => a.ManagerId == user.UserId
                         && a.Status == FormStatusEnum.提交申请
                         && a.Status == FormStatusEnum.初审通过
+                        && a.Status == FormStatusEnum.资料回传已审核
                         && a.CreationUser == user.UserName).Count();
 
                     if (mcount >= activity.MUnfinished)
