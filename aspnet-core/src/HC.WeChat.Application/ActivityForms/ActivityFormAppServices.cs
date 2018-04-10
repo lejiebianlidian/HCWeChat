@@ -26,6 +26,7 @@ using HC.WeChat.Authorization.Users;
 using HC.WeChat.ActivityBanquets;
 using HC.WeChat.Authorization.Roles;
 using HC.WeChat.WeChatUsers;
+using HC.WeChat.WeChatUsers.Dtos;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -533,6 +534,40 @@ namespace HC.WeChat.ActivityForms
             dto.WeiChatAttention = await WeiChatquery.Where(w => w.UserType != UserTypeEnum.取消关注).CountAsync();
             return dto;
         }
+
+        /// <summary>
+        /// 获取活动申请单列表以及单数
+        /// </summary>
+        /// <returns></returns>
+        public ActivityFormForWechat GetActivityFormList(bool check, WeChatUserListDto user, int? tenantId)
+        {
+            using (CurrentUnitOfWork.SetTenantId(tenantId))
+            {
+                var query = _activityformRepository.GetAll()
+                .WhereIf(user.UserType!= UserTypeEnum.客户经理, a => a.ManagerId == user.UserId)
+                //.WhereIf(user.UserType != UserTypeEnum.零售客户, a => a.CreationUserId == user.UserId)
+                .WhereIf(check, a => a.Status == FormStatusEnum.营销中心已审核)
+                .WhereIf(!check, a => a.Status == FormStatusEnum.初审通过 || a.Status == FormStatusEnum.提交申请 || a.Status == FormStatusEnum.资料回传已审核)
+                .OrderBy(a => a.CreationTime);
+                ActivityFormForWechat result = new ActivityFormForWechat();
+                result.ActivityFormListDtos = query.MapTo<List<ActivityFormListDto>>();
+                result.Count = query.Count();
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// 获取单条活动申请单数据
+        /// </summary>
+        /// <param name="id">活动申请单id</param>
+        /// <returns></returns>
+        public ActivityFormListDto GetSingleFormDto(Guid id)
+        {
+            var query = _activityformRepository.GetAll().Where(a => a.Id == id).FirstOrDefault();
+            return query.MapTo<ActivityFormListDto>();
+        }
+
+        
     }
 }
 

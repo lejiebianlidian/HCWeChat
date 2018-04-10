@@ -1,0 +1,46 @@
+﻿@model HC.WeChat.ActivityForms.Dtos.ActivityFormForWechat
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>活动申请表</title>
+    <link rel="stylesheet" href="static/css/base.css" />
+    <link rel="stylesheet" href="static/css/commons.css" />
+    <link rel="stylesheet" href="static/css/tobacco.css" />
+</head>
+<body>
+    <div class="all_width mt10">
+        <h1 class="warp_title">@ViewBag.activityTitle</h1>
+        <!--信息列表-->
+        <ul class="all_width info_list">
+            
+           @foreach (var item in Model.ActivityFormListDtos)
+           {
+              <li onclick="javascript:window.location.href='/YiBinWX/ActivityFromApplyDetail?entity='@item.Id">
+                  <a class="large_btn ok mt30" href="@Url.Action("ActivityFromApplyDetail", "YiBinWX", item)">单号：@item.Id</a>
+                  <a  href="~/YiBinWX/ActivityFromApplyDetail?entity=@item.Id">未完结办事用烟查询</a>
+                  <p class="fl hot_news">单号：@item.Id</p>
+                  <img src="static/img/trend/more.png" class="more_icon fr" />
+              </li>
+           }
+        </ul>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="static/js/jquery.min.js"></script>
+<script type="text/javascript">
+   
+    function goDetail(id) { 
+        window.location.href = '~/YiBinWX/ActivityFromApplyDetail?id=' + id;
+    }
+    //$('ul').on('click', 'li', function () {
+    //    var id = $(this).attr("data-id");
+    //    window.location.href = "/YiBinWX/ActivityFromApply/id";
+    //}) 
+
+</script>

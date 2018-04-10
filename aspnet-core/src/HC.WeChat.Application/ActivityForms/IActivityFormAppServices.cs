@@ -6,6 +6,7 @@ using HC.WeChat.ActivityForms.Dtos;
 using HC.WeChat.ActivityForms;
 using System;
 using HC.WeChat.Dto;
+using HC.WeChat.WeChatUsers.Dtos;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -72,5 +73,19 @@ namespace HC.WeChat.ActivityForms
         /// </summary>
         /// <returns></returns>
         Task<ActivityFormCountInfoDto> GetHomeInfo();
+
+        /// <summary>
+        /// 获取活动申请单列表以及单数
+        /// </summary>
+        /// <param name="check"></param>
+        /// <returns></returns>
+        ActivityFormForWechat GetActivityFormList(bool check, WeChatUserListDto userId, int? tenantId);
+
+        /// <summary>
+        /// 获取单条活动申请单数据
+        /// </summary>
+        /// <param name="id">活动申请单id</param>
+        /// <returns></returns>
+        ActivityFormListDto GetSingleFormDto(Guid id);
     }
 }
