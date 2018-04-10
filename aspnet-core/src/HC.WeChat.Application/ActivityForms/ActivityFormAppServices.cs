@@ -326,6 +326,7 @@ namespace HC.WeChat.ActivityForms
                     var retailer = await _retailerAppService.GetRetailerByIdAsync(new EntityDto<Guid> { Id = user.UserId.Value });
                     form.ManagerName = retailer.Manager;
                     form.ManagerId = retailer.EmployeeId;
+                    form.Status = FormStatusEnum.提交申请;
                 }
                 else if (user.UserType == UserTypeEnum.客户经理)
                 {
@@ -343,10 +344,10 @@ namespace HC.WeChat.ActivityForms
                     }
                     form.ManagerName = user.UserName;
                     form.ManagerId = user.UserId;
+                    form.Status = FormStatusEnum.初审通过;
                 }
 
                 form.FormCode = GetFormCode();
-                form.Status = FormStatusEnum.提交申请;
 
                 form.ActivityName = activity.Name;
                 //1、保存表单
@@ -371,7 +372,30 @@ namespace HC.WeChat.ActivityForms
 
                 await _activityFormLogRepository.InsertAsync(log);
 
-                return new APIResultDto() { Code = 0, Msg = "活动申请成功，待客户经理审核" };
+                //如果是客户经理提交 为初审通过 2018-4-10
+                if (form.Status == FormStatusEnum.初审通过)
+                {
+                    var log2 = new ActivityFormLog();
+                    log2.ActionTime = DateTime.Now.AddSeconds(5);
+                    log2.ActivityFormId = formId;
+                    log2.Opinion = "初审通过";
+                    log2.Status = FormStatusEnum.初审通过;
+                    log2.StatusName = log2.Status.ToString();
+                    log2.UserId = user.UserId.Value;
+                    log2.UserName = user.UserName;
+                    log2.UserType = user.UserType;
+
+                    await _activityFormLogRepository.InsertAsync(log2);
+                }
+
+                if (user.UserType == UserTypeEnum.零售客户)
+                {
+                    return new APIResultDto() { Code = 0, Msg = "活动申请成功，待客户经理审核" };
+                }
+                else
+                {
+                    return new APIResultDto() { Code = 0, Msg = "活动申请成功" };
+                }
             }
         }
 
@@ -396,8 +420,19 @@ namespace HC.WeChat.ActivityForms
             log.Status = input.Status;
             log.StatusName = input.Status.ToString();
             log.UserId = user.EmployeeId;
-            log.UserName = user.UserName;
-            log.UserType = user.EmployeeId.HasValue ? UserTypeEnum.客户经理 : UserTypeEnum.后台;
+            log.UserName = user.Name;
+
+            var roles = await UserManager.GetRolesAsync(user);
+            if (roles.Contains("CustomerManager"))
+            {
+                log.UserType = UserTypeEnum.客户经理;
+            }
+            else
+            {
+                log.UserType = UserTypeEnum.营销中心;
+            }
+
+            //log.UserType = user.EmployeeId.HasValue ? UserTypeEnum.客户经理 : UserTypeEnum.营销中心;
 
             await _activityformRepository.UpdateAsync(form);
             await _activityFormLogRepository.InsertAsync(log);

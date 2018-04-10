@@ -192,6 +192,7 @@ namespace HC.WeChat.Web.Host.Controllers
         /// </summary>
         public IActionResult ActivityForm(string code, string state)
         {
+            //state = "BD889174-D22A-4F2E-8C8F-08D599CF4F79";
             var activityId = Guid.Parse(state);
             var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
             var tenantId = GetTenantId();
@@ -202,7 +203,8 @@ namespace HC.WeChat.Web.Host.Controllers
             var root = _appConfiguration["App:ServerRootAddress"];
             var url = root + "/YiBinWX/BindUser";
             ViewBag.Url = _weChatOAuthAppService.GetAuthorizeUrl(url, tenantId.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
-            ViewBag.GoodsList = _activityGoodsAppService.GetActivityGoodsByActivityId(activityId).Result;
+            var goodsList = _activityGoodsAppService.GetActivityGoodsByActivityId(activityId).Result;
+            ViewBag.GoodsList = goodsList;
             ViewBag.ServerRootAddress = root;
             ViewBag.OpenId = oauth.openid;
             ViewBag.TenantId = tenantId;

@@ -38,15 +38,13 @@ namespace HC.WeChat.ActivityForms
         public Guid? RetailerId { get; set; }
 
         /// <summary>
-        /// 申请商品Id，外键
+        /// 申请商品Id，外键 当选择其他的时候 可以为null
         /// </summary>
-        [Required]
-        public Guid ActivityGoodsId { get; set; }
+        public Guid? ActivityGoodsId { get; set; }
 
         /// <summary>
         /// 申请商品规格 快照
         /// </summary>
-        [Required]
         [StringLength(200)]
         public string GoodsSpecification { get; set; }
 

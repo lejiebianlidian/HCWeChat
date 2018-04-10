@@ -61,7 +61,7 @@ namespace HC.WeChat.WechatEnums
         营销人员 = 3,
         消费者 = 4,
         取消关注 = 5,
-        后台 = 6
+        营销中心 = 6
     }
 
     /// <summary>
@@ -101,6 +101,7 @@ namespace HC.WeChat.WechatEnums
     /// </summary>
     public enum MarketTypeEnum
     {
+        无 = 0,
         乡村 = 1,
         城镇 = 2
     }

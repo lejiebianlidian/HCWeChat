@@ -33,6 +33,15 @@
                     <div nz-form-explain *ngIf="getFormControl('address').dirty&&getFormControl('address').hasError('maxlength')">字符长度小于等于200</div>
                 </div>
             </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="4">
+                    <label for="deliveryRemark">收货备注</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="20" nzHasFeedback [nzValidateStatus]="getFormControl('deliveryRemark')">
+                    <nz-input [nzType]="'textarea'" [nzRows]="'4'" formControlName="deliveryRemark" [(ngModel)]="deliveryDto.deliveryRemark" nzPlaceHolder="输入备注"></nz-input>
+                    <div nz-form-explain *ngIf="getFormControl('deliveryRemark').dirty&&getFormControl('deliveryRemark').hasError('maxlength')">字符长度小于等于500</div>
+                </div>
+            </div>
         </ng-template>
         <ng-template #modalFooter>
             <button nz-button [nzType]="'default'" [nzSize]="'large'" type="button" (click)="handleCancel($event)">

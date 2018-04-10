@@ -13,6 +13,26 @@ namespace HC.WeChat.Migrations
                 name: "ManagerId",
                 table: "ActivityForms",
                 nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+              name: "DeliveryRemark",
+              table: "ActivityDeliveryInfos",
+               maxLength: 500,
+              nullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+               name: "ActivityGoodsId",
+               table: "ActivityForms",
+               nullable: true,
+               oldClrType: typeof(string),
+               oldNullable: false);
+
+            migrationBuilder.AlterColumn<string>(
+               name: "GoodsSpecification",
+               table: "ActivityForms",
+               nullable: true,
+               oldClrType: typeof(string),
+               oldNullable: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -20,6 +40,24 @@ namespace HC.WeChat.Migrations
             migrationBuilder.DropColumn(
                 name: "ManagerId",
                 table: "ActivityForms");
+
+            migrationBuilder.DropColumn(
+               name: "DeliveryRemark",
+               table: "ActivityDeliveryInfos");
+
+            migrationBuilder.AlterColumn<string>(
+             name: "ActivityGoodsId",
+             table: "ActivityForms",
+             nullable: false,
+             oldClrType: typeof(string),
+             oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+               name: "GoodsSpecification",
+               table: "ActivityForms",
+               nullable: false,
+               oldClrType: typeof(string),
+               oldNullable: true);
         }
     }
 }
