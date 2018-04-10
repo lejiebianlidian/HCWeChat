@@ -14,6 +14,11 @@ namespace HC.WeChat.Migrations
                 table: "ActivityForms",
                 nullable: true);
 
+            migrationBuilder.AddColumn<Guid?>(
+               name: "CreationId",
+               table: "ActivityForms",
+               nullable: true);
+
             migrationBuilder.AddColumn<string>(
               name: "DeliveryRemark",
               table: "ActivityDeliveryInfos",
@@ -40,6 +45,10 @@ namespace HC.WeChat.Migrations
             migrationBuilder.DropColumn(
                 name: "ManagerId",
                 table: "ActivityForms");
+
+            migrationBuilder.DropColumn(
+               name: "CreationId",
+               table: "ActivityForms");
 
             migrationBuilder.DropColumn(
                name: "DeliveryRemark",

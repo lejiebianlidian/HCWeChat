@@ -303,6 +303,7 @@ namespace HC.WeChat.ActivityForms
             }
 
             form.CreationUser = user.UserName;
+            form.CreationId = user.UserId;
             using (CurrentUnitOfWork.SetTenantId(input.TenantId))
             {
                 var activity = await _activityRepository.GetAsync(input.ActivityId);

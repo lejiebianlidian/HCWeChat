@@ -1324,6 +1324,7 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("RetailerName").HasMaxLength(50);
                 b.Property<string>("ManagerName").HasMaxLength(50);
                 b.Property<Guid?>("ManagerId");
+                b.Property<Guid?>("CreationId");
                 b.Property<string>("CreationUser").HasMaxLength(50);
 
                 b.HasKey("Id");

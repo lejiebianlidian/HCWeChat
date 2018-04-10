@@ -112,9 +112,11 @@ namespace HC.WeChat.ActivityForms
         /// 客户经理名称 快照
         /// </summary>
         [StringLength(50)]
-        public string ManagerName { get; set; }
+        public virtual string ManagerName { get; set; }
 
-        public Guid? ManagerId { get; set; }
+        public virtual Guid? ManagerId { get; set; }
+
+        public virtual Guid? CreationId { get; set; }
 
         /// <summary>
         /// 申请用户

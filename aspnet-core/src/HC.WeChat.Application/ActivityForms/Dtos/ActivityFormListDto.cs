@@ -64,6 +64,8 @@ namespace HC.WeChat.ActivityForms.Dtos
 
         public string CreationUser { get; set; }
 
+        public Guid? CreationId { get; set; }
+
         public List<ActivityFormLogDto> FormLogList { get; set; }
 
         public int CurrentStep { get; set; }
