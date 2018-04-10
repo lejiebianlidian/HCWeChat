@@ -60,7 +60,7 @@ namespace HC.WeChat.ActivityBanquets
         /// </summary>
         Task BatchDeleteActivityBanquetsAsync(List<Guid> input);
 
-        Task<APIResultDto> SubmitActivityBanquetFromWeChatAsync(ActivityBanquetWeChatDto input);
+        Task<APIResultDto> SubmitActivityBanquetWeChatAsync(ActivityBanquetWeChatDto input);
 
     }
 }

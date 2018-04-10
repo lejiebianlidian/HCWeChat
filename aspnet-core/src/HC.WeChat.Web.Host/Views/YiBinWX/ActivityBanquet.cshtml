@@ -17,7 +17,7 @@
     <div class="all_width">
         <!--通用头部-->
         <div class="header bg_green tc">
-            活动申请
+            宴席信息完善
         </div>
         <!--banner展示-->
         <img src="static/img/activity/banner.jpg" class="img_width" />
@@ -27,8 +27,8 @@
             <div class="opacity_bg all_width">
                 <!--选其它需要输入商品规格-->
                 <div class="advise_warp pt5 pb5">
-                    <span class="entry_key fl">区县</span>
-                    <input type="text" maxlength="500" id="txtGoodsSpecification" class="fl ml10 entry_value" placeholder="请输入区县" />
+                    <span class="entry_key fl">区    县</span>
+                    <input type="text" maxlength="500" id="txtArea" class="fl ml10 entry_value" placeholder="请输入区县" />
                 </div>
                 <!--申请数量-->
                 <div class="advise_warp pt5 pb5">
@@ -37,7 +37,7 @@
                 </div>
                 <div class="advise_warp pt5 pb5">
                     <span class="entry_key fl">宴席地点</span>
-                    <input type="date" id="txtBanquetTime" class="fl ml10 entry_value" placeholder="请输入宴席地点" />
+                    <input type="text" id="txtPosition" class="fl ml10 entry_value" placeholder="请输入宴席地点" />
                 </div>
                 <div class="advise_warp pt5 pb5">
                     <span class="entry_key fl">现场人数</span>
@@ -69,7 +69,7 @@
                 </div>
                 <input type="hidden" id="hidOpenId" value="@ViewBag.OpenId" />
                 <input type="hidden" id="hidTenantId" value="@ViewBag.TenantId" />
-                <input type="hidden" id="hidActivityId" value="@ViewBag.ActivityId" />
+                <input type="hidden" id="hidActivityFormId" value="@ViewBag.ActivityFormId" />
             </div>
         </div>
         <!--用户操作按钮-->
@@ -90,63 +90,66 @@
         }
 
         var Save = function () {
-            var reqUrl = "@ViewBag.ServerRootAddress" + "/api/services/app/ActivityForm/SubmitActivityFormAsync";
+            var reqUrl = "@ViewBag.ServerRootAddress" + "/api/services/app/ActivityBanquet/SubmitActivityBanquetWeChatAsync";
             var para = {};
-            para.activityGoodsId = $("#dllSpecification").val();
-            if (para.activityGoodsId == "") {
-                alert("商品规格不能为空！");
+            para.area = $("#txtArea").val();
+            if (para.area == "") {
+                alert("区县不能为空！");
                 return;
             }
-            //其它商品规格处理
-            if (para.activityGoodsId == "other") {
-                para.goodsSpecification = $("#txtGoodsSpecification").val();
 
-                if (para.goodsSpecification == "") {
-                    alert("其它商品规格不能为空！");
-                    return;
-                }
-                para.activityGoodsId = "";
-            } else {
-                para.goodsSpecification = $("#dllSpecification").find("option:selected").text();
+            para.banquetTime = $("#txtBanquetTime").val();
+            if (para.banquetTime == "") {
+                alert("宴席时间不能为空！");
+                return;
+            }
+            para.position = $("#txtPosition").val();
+            if (para.reason == "") {
+                alert("宴席地点不能为空！");
+                return;
             }
 
             para.num = $("#txtNum").val();
             if (para.num == "") {
-                alert("申请数量不能为空！");
+                alert("现场人数不能为空！");
                 return;
             }
-            para.reason = $("#txtReason").val();
-            if (para.reason == "") {
-                alert("申请理由不能为空！");
+
+            para.desc = $("#txtDesc").val();
+            if (para.desc == "") {
+                alert("现场简述不能为空！");
                 return;
             }
+
             para.userName = $("#txtUserNaem").val();
             if (para.userName == "") {
-                alert("收货人姓名不能为空！");
+                alert("推荐人姓名不能为空！");
                 return;
             }
             para.phone = $("#txtPhone").val();
             if (para.phone == "") {
-                alert("联系电话不能为空！");
+                alert("推荐人电话不能为空！");
                 return;
             }
 
             if (!checkMobile(para.phone)) {
-                alert("请输入正确的联系电话！");
+                alert("请输入正确的推荐人电话！");
                 return;
             }
 
             para.address = $("#txtAddress").val();
             if (para.address == "") {
-                alert("收货地址不能为空！");
+                alert("推荐地址不能为空！");
                 return;
             }
+
+            para.photoUrl = "test.jpg";
 
             para.deliveryRemark = $("#txtDeliveryRemark").val();
 
             para.tenantId = $("#hidTenantId").val();
             para.openId = $("#hidOpenId").val();
-            para.activityId = $("#hidActivityId").val();
+            para.activityFormId = $("#hidActivityFormId").val();
             if (confirm("请确认信息填写无误，提交后不可更改")) {
                 $("#btnSave").attr("disabled", true);
                 $("#btnSave").attr("disabled", "disabled");

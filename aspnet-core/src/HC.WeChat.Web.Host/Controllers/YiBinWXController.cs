@@ -260,10 +260,12 @@ namespace HC.WeChat.Web.Host.Controllers
         /// <returns></returns>
         public IActionResult ActivityBanquet(string actId, string openid)
         {
+            actId = "E6200916-552A-44A4-FFD4-08D59A3C0EB3";
+            openid = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
             var tenantId = GetTenantId();
             ViewBag.OpenId = openid;
             ViewBag.TenantId = tenantId;
-            ViewBag.ActivityId = actId;
+            ViewBag.ActivityFormId = actId;
             var root = _appConfiguration["App:ServerRootAddress"];
             ViewBag.ServerRootAddress = root;
             return View();
