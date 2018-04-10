@@ -86,6 +86,7 @@
                             <desc-list-item term="姓名">{{delivery.userName}}</desc-list-item>
                             <desc-list-item term="地址">{{delivery.address}}</desc-list-item>
                             <desc-list-item term="联系电话">{{delivery.phone}}</desc-list-item>
+                            <desc-list-item term="收货备注">{{delivery.deliveryRemark}}</desc-list-item>
                         </desc-list>
                         <div *ngIf="!delivery" style="text-align: center;">
                             没有数据
@@ -126,6 +127,7 @@
                             <desc-list-item term="姓名">{{rdelivery.userName}}</desc-list-item>
                             <desc-list-item term="地址">{{rdelivery.address}}</desc-list-item>
                             <desc-list-item term="联系电话">{{rdelivery.phone}}</desc-list-item>
+                            <desc-list-item term="收货备注">{{rdelivery.deliveryRemark}}</desc-list-item>
                         </desc-list>
                         <div *ngIf="!rdelivery" style="text-align: center;">
                             没有数据

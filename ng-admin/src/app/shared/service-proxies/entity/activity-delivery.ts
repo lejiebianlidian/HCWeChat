@@ -10,6 +10,7 @@ export class ActivityDeliveryInfoDto implements IActivityDeliveryInfoDto {
     remark: string;
     sendTime: Date;
     creationTime: Date;
+    deliveryRemark: string;
     constructor(data?: IActivityDeliveryInfoDto) {
         if (data) {
             for (var property in data) {
@@ -32,6 +33,7 @@ export class ActivityDeliveryInfoDto implements IActivityDeliveryInfoDto {
             this.remark = data["remark"];
             this.sendTime = data["sendTime"];
             this.creationTime = data["creationTime"];
+            this.deliveryRemark = data["deliveryRemark"];
         }
     }
 
@@ -65,6 +67,7 @@ export class ActivityDeliveryInfoDto implements IActivityDeliveryInfoDto {
         data["remark"] = this.remark;
         data["sendTime"] = this.sendTime;
         data["creationTime"] = this.creationTime;
+        data["deliveryRemark"] = this.deliveryRemark;
         return data;
     }
 
@@ -87,4 +90,5 @@ export interface IActivityDeliveryInfoDto {
     remark: string;
     sendTime: Date;
     creationTime: Date;
+    deliveryRemark: string;
 }

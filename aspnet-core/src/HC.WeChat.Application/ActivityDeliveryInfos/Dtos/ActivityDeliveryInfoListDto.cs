@@ -44,5 +44,7 @@ namespace HC.WeChat.ActivityDeliveryInfos.Dtos
         /// 创建时间
         /// </summary>
         public DateTime CreationTime { get; set; }
+
+        public string DeliveryRemark { get; set; }
     }
 }

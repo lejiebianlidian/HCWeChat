@@ -75,5 +75,11 @@ namespace HC.WeChat.ActivityDeliveryInfos
         /// </summary>
         [Required]
         public virtual DateTime CreationTime { get; set; }
+
+        /// <summary>
+        /// 收货备注
+        /// </summary>
+        [StringLength(500)]
+        public virtual string DeliveryRemark { get; set; }
     }
 }

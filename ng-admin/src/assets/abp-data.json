@@ -31,7 +31,7 @@
                     "text": "微信设置",
                     "translate": "weichat-setting",
                     "icon": "anticon anticon-setting",
-                    "acl": "MarketingCenter",
+                    "acl": "Admin",
                     "children": [
                         {
                             "text": "授权配置",

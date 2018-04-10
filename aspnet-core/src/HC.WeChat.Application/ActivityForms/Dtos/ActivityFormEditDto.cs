@@ -37,14 +37,12 @@ namespace HC.WeChat.ActivityForms.Dtos
         /// <summary>
         /// 申请商品Id，外键
         /// </summary>
-        [Required]
-        public Guid ActivityGoodsId { get; set; }
+        public Guid? ActivityGoodsId { get; set; }
 
 
         /// <summary>
         /// 申请商品规格 快照
         /// </summary>
-        [Required]
         [StringLength(200)]
         public string GoodsSpecification { get; set; }
 
@@ -87,6 +85,8 @@ namespace HC.WeChat.ActivityForms.Dtos
 
         public Guid? ManagerId { get; set; }
 
+        public Guid? CreationId { get; set; }
+
         [StringLength(50)]
         public string CreationUser { get; set; }
 
@@ -115,14 +115,12 @@ namespace HC.WeChat.ActivityForms.Dtos
         /// <summary>
         /// 申请商品Id，外键
         /// </summary>
-        [Required]
-        public Guid ActivityGoodsId { get; set; }
+        public Guid? ActivityGoodsId { get; set; }
 
 
         /// <summary>
         /// 申请商品规格 快照
         /// </summary>
-        [Required]
         [StringLength(200)]
         public string GoodsSpecification { get; set; }
 
@@ -147,6 +145,7 @@ namespace HC.WeChat.ActivityForms.Dtos
         public string UserName { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
+        public string DeliveryRemark { get; set; }
     }
 
     [AutoMapTo(typeof(ActivityForm))]

@@ -204,19 +204,21 @@ namespace HC.WeChat.Web.Host.Controllers
         /// </summary>
         public IActionResult ActivityForm(string code, string state)
         {
+            state = "BD889174-D22A-4F2E-8C8F-08D599CF4F79";
             var activityId = Guid.Parse(state);
-            var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
+            //var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
             var tenantId = GetTenantId();
             //var user = _weChatUserAppService.GetWeChatUserAsync(oauth.openid, tenantId).Result;
-            //var openid = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
-            var user = _weChatUserAppService.GetWeChatUserAsync(oauth.openid, tenantId).Result;
+            var openid = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
+            var user = _weChatUserAppService.GetWeChatUserAsync(openid, tenantId).Result;
             ViewBag.UserType = (int)user.UserType;
             var root = _appConfiguration["App:ServerRootAddress"];
             var url = root + "/YiBinWX/BindUser";
             ViewBag.Url = _weChatOAuthAppService.GetAuthorizeUrl(url, tenantId.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
-            ViewBag.GoodsList = _activityGoodsAppService.GetActivityGoodsByActivityId(activityId).Result;
+            var goodsList = _activityGoodsAppService.GetActivityGoodsByActivityId(activityId).Result;
+            ViewBag.GoodsList = goodsList;
             ViewBag.ServerRootAddress = root;
-            ViewBag.OpenId = oauth.openid;
+            ViewBag.OpenId = openid;
             ViewBag.TenantId = tenantId;
             ViewBag.ActivityId = activityId;
             ViewBag.JumpUrl = Url.Action("Activity");
@@ -251,6 +253,16 @@ namespace HC.WeChat.Web.Host.Controllers
         {
             var entity = _activityFormAppService.GetSingleFormDto(id);
             return View(entity);
+        }
+        
+        /// <summary>   
+        /// 活动宴席
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ActivityBanquet(string code, string state)
+        {
+            
+            return View();
         }
     }
 }

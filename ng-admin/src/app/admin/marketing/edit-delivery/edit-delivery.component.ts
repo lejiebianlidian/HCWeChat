@@ -35,7 +35,8 @@ export class EditDeliveryComponent extends AppComponentBase implements OnInit {
         this.form = this.fb.group({
             userName: [null, [Validators.required, Validators.maxLength(50)]],
             address: [null, [Validators.required, Validators.maxLength(200)]],
-            phone: [null, [Validators.required, Validators.maxLength(20)]]
+            phone: [null, [Validators.required, Validators.maxLength(20)]],
+            deliveryRemark: [null, [Validators.maxLength(500)]]
         });
     }
 

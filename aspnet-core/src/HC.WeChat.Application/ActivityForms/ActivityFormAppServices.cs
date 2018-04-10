@@ -304,6 +304,7 @@ namespace HC.WeChat.ActivityForms
             }
 
             form.CreationUser = user.UserName;
+            form.CreationId = user.UserId;
             using (CurrentUnitOfWork.SetTenantId(input.TenantId))
             {
                 var activity = await _activityRepository.GetAsync(input.ActivityId);
@@ -315,6 +316,7 @@ namespace HC.WeChat.ActivityForms
                         .Where(a => a.RetailerId == user.UserId
                         && a.Status == FormStatusEnum.提交申请
                         && a.Status == FormStatusEnum.初审通过
+                        && a.Status == FormStatusEnum.资料回传已审核
                         && a.CreationUser == user.UserName).Count();
                     if (rcount >= activity.RUnfinished)
                     {
@@ -326,6 +328,7 @@ namespace HC.WeChat.ActivityForms
                     var retailer = await _retailerAppService.GetRetailerByIdAsync(new EntityDto<Guid> { Id = user.UserId.Value });
                     form.ManagerName = retailer.Manager;
                     form.ManagerId = retailer.EmployeeId;
+                    form.Status = FormStatusEnum.提交申请;
                 }
                 else if (user.UserType == UserTypeEnum.客户经理)
                 {
@@ -334,6 +337,7 @@ namespace HC.WeChat.ActivityForms
                         .Where(a => a.ManagerId == user.UserId
                         && a.Status == FormStatusEnum.提交申请
                         && a.Status == FormStatusEnum.初审通过
+                        && a.Status == FormStatusEnum.资料回传已审核
                         && a.CreationUser == user.UserName).Count();
 
                     if (mcount >= activity.MUnfinished)
@@ -342,10 +346,10 @@ namespace HC.WeChat.ActivityForms
                     }
                     form.ManagerName = user.UserName;
                     form.ManagerId = user.UserId;
+                    form.Status = FormStatusEnum.初审通过;
                 }
 
                 form.FormCode = GetFormCode();
-                form.Status = FormStatusEnum.提交申请;
 
                 form.ActivityName = activity.Name;
                 //1、保存表单
@@ -370,7 +374,30 @@ namespace HC.WeChat.ActivityForms
 
                 await _activityFormLogRepository.InsertAsync(log);
 
-                return new APIResultDto() { Code = 0, Msg = "活动申请成功，待客户经理审核" };
+                //如果是客户经理提交 为初审通过 2018-4-10
+                if (form.Status == FormStatusEnum.初审通过)
+                {
+                    var log2 = new ActivityFormLog();
+                    log2.ActionTime = DateTime.Now.AddSeconds(5);
+                    log2.ActivityFormId = formId;
+                    log2.Opinion = "初审通过";
+                    log2.Status = FormStatusEnum.初审通过;
+                    log2.StatusName = log2.Status.ToString();
+                    log2.UserId = user.UserId.Value;
+                    log2.UserName = user.UserName;
+                    log2.UserType = user.UserType;
+
+                    await _activityFormLogRepository.InsertAsync(log2);
+                }
+
+                if (user.UserType == UserTypeEnum.零售客户)
+                {
+                    return new APIResultDto() { Code = 0, Msg = "活动申请成功，待客户经理审核" };
+                }
+                else
+                {
+                    return new APIResultDto() { Code = 0, Msg = "活动申请成功" };
+                }
             }
         }
 
@@ -395,8 +422,19 @@ namespace HC.WeChat.ActivityForms
             log.Status = input.Status;
             log.StatusName = input.Status.ToString();
             log.UserId = user.EmployeeId;
-            log.UserName = user.UserName;
-            log.UserType = user.EmployeeId.HasValue ? UserTypeEnum.客户经理 : UserTypeEnum.后台;
+            log.UserName = user.Name;
+
+            var roles = await UserManager.GetRolesAsync(user);
+            if (roles.Contains("CustomerManager"))
+            {
+                log.UserType = UserTypeEnum.客户经理;
+            }
+            else
+            {
+                log.UserType = UserTypeEnum.营销中心;
+            }
+
+            //log.UserType = user.EmployeeId.HasValue ? UserTypeEnum.客户经理 : UserTypeEnum.营销中心;
 
             await _activityformRepository.UpdateAsync(form);
             await _activityFormLogRepository.InsertAsync(log);
@@ -487,9 +525,11 @@ namespace HC.WeChat.ActivityForms
             var dto = new ActivityFormCountInfoDto();
             var query = _activityformRepository.GetAll();
             var WeiChatquery = _wechatuserRepository.GetAll();
-            dto.CheckCount = await query.Where(f => f.Status == FormStatusEnum.提交申请 || f.Status == FormStatusEnum.初审通过 || f.Status == FormStatusEnum.资料回传已审核).CountAsync();
+            var mid = UserManager.GetControlEmployeeId();
+
+            dto.CheckCount = await query.WhereIf(mid.HasValue, q => q.ManagerId == mid).Where(f => f.Status == FormStatusEnum.提交申请 || f.Status == FormStatusEnum.初审通过 || f.Status == FormStatusEnum.资料回传已审核).CountAsync();
             dto.IsCheckedCount = query.Count();
-            dto.GoodsCount = await query.Where(f => f.Status == FormStatusEnum.营销中心已审核).SumAsync(s => s.Num);
+            dto.GoodsCount = await query.WhereIf(mid.HasValue, q => q.ManagerId == mid).Where(f => f.Status == FormStatusEnum.提交申请 || f.Status == FormStatusEnum.初审通过 || f.Status == FormStatusEnum.资料回传已审核).SumAsync(s => s.Num);
             dto.WeiChatAttention = await WeiChatquery.Where(w => w.UserType != UserTypeEnum.取消关注).CountAsync();
             return dto;
         }

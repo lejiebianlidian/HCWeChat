@@ -1314,8 +1314,8 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("FormCode").IsRequired().HasMaxLength(50);
                 b.Property<Guid>("ActivityId").IsRequired();
                 b.Property<Guid?>("RetailerId");
-                b.Property<Guid>("ActivityGoodsId").IsRequired();
-                b.Property<string>("GoodsSpecification").IsRequired().HasMaxLength(200);
+                b.Property<Guid?>("ActivityGoodsId");
+                b.Property<string>("GoodsSpecification").HasMaxLength(200);
                 b.Property<int>("Num").IsRequired();
                 b.Property<string>("Reason").IsRequired();
                 b.Property<int>("Status").IsRequired();
@@ -1324,6 +1324,7 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("RetailerName").HasMaxLength(50);
                 b.Property<string>("ManagerName").HasMaxLength(50);
                 b.Property<Guid?>("ManagerId");
+                b.Property<Guid?>("CreationId");
                 b.Property<string>("CreationUser").HasMaxLength(50);
 
                 b.HasKey("Id");
@@ -1366,6 +1367,7 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("ExpressCompany ").HasMaxLength(200);
                 b.Property<string>("ExpressNo").HasMaxLength(200);
                 b.Property<string>("Remark").HasMaxLength(500);
+                b.Property<string>("DeliveryRemark").HasMaxLength(500);
                 b.Property<DateTime?>("SendTime");
                 b.Property<DateTime>("CreationTime").IsRequired();
 
