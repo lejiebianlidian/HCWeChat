@@ -1,0 +1,75 @@
+﻿@model HC.WeChat.ActivityForms.Dtos.ActivityFormListDto
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>活动申请单详细</title>
+    <link href="~/YiBinWX/static/css/base.css" rel="stylesheet" />
+    <link href="~/YiBinWX/static/css/commons.css" rel="stylesheet" />
+    <link href="~/YiBinWX/static/css/personal.css" rel="stylesheet" />
+</head>
+<body class="bg_gary">
+    <div class="all_width">
+        <div class="header bg_green tc">
+            活动申请单详细
+        </div>
+        <ul class="personal_link all_width">
+            <li>
+                <label class="fl main_green">
+                    活动名称
+                </label>
+                <label class="fl  ml20">@Model.ActivityName</label>
+            </li>
+            <li>
+                <label class="fl main_green">
+                    零售客户
+                </label>
+                <label class="fl  ml20">@Model.RetailerName</label>
+            </li>
+            <li>
+                <label class="fl main_green">
+                    客户经理
+                </label>
+                <label class="fl  ml20">@Model.ManagerName</label>
+            </li>
+            <li>
+                <label class="fl main_green">
+                    商品规格
+                </label>
+                <label class="fl  ml20">@Model.GoodsSpecification</label>
+            </li>
+            <li>
+                <label class="fl main_green">
+                    申请数量
+                </label>
+                <label class="fl  ml20">@Model.Num</label>
+            </li>
+            <li>
+                <label class="fl main_green">
+                    申请人
+                </label>
+                <label class="fl  ml20">@Model.CreationUser</label>
+            </li>
+            <li>
+                <label class="fl main_green">
+                    申请时间
+                </label>
+                <label class="fl  ml20">@Model.CreationTime</label>
+            </li>
+            <li>
+                <label class="fl main_green">
+                    申请理由
+                </label>
+                <label class="fl  ml20">@Model.Reason</label>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

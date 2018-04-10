@@ -17,6 +17,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using Abp.Domain.Repositories;
+using Abp.AutoMapper;
+using HC.WeChat.WeChatUsers.Dtos;
+using HC.WeChat.ActivityForms;
+using HC.WeChat.ActivityForms.Dtos;
 
 namespace HC.WeChat.Web.Host.Controllers
 {
@@ -29,7 +34,8 @@ namespace HC.WeChat.Web.Host.Controllers
         private WeChatTenantSetting _settings;
         IActivityAppService _activityAppService;
         IActivityGoodsAppService _activityGoodsAppService;
-
+        private readonly IRepository<WeChatUser, Guid> _wechatuserRepository;
+        IActivityFormAppService _activityFormAppService;
         private int? tenantId;
         public YiBinWXController(IWechatAppConfigAppService wechatAppConfigAppService,
            IOptions<WeChatTenantSetting> settings,
@@ -37,7 +43,10 @@ namespace HC.WeChat.Web.Host.Controllers
            IWeChatUserAppService weChatUserAppService,
            IActivityAppService activityAppService,
            IActivityGoodsAppService activityGoodsAppService,
-           IHostingEnvironment env) : base(wechatAppConfigAppService)
+           IRepository<WeChatUser, Guid> wechatuserRepository,
+           IActivityFormAppService activityFormAppService,
+
+        IHostingEnvironment env) : base(wechatAppConfigAppService)
         {
             _settings = settings.Value;
             tenantId = _settings.YiBin;
@@ -49,6 +58,8 @@ namespace HC.WeChat.Web.Host.Controllers
             _activityGoodsAppService = activityGoodsAppService;
             _weChatOAuthAppService.WechatAppConfig = WechatAppConfig;//注入配置
             _appConfiguration = env.GetAppConfiguration();
+            _wechatuserRepository = wechatuserRepository;
+            _activityFormAppService = activityFormAppService;
 
         }
 
@@ -91,7 +102,8 @@ namespace HC.WeChat.Web.Host.Controllers
         /// </summary>
         public IActionResult UserIndex()
         {
-            return View();
+            var user = _wechatuserRepository.GetAll().Where(r=>r.TenantId== AbpSession.TenantId).FirstOrDefault();
+            return View(user.MapTo<WeChatUserListDto>());
         }
 
         /// <summary>
@@ -209,6 +221,36 @@ namespace HC.WeChat.Web.Host.Controllers
             ViewBag.ActivityId = activityId;
             ViewBag.JumpUrl = Url.Action("Activity");
             return View();
+        }
+
+        /// <summary>
+        /// 活动申请单
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ActivityFromApply(bool check,string openId)
+        {
+            var tenantId = GetTenantId();
+            openId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
+            var user = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
+            var result =  _activityFormAppService.GetActivityFormList(check,user,tenantId); 
+            if (check) {
+                ViewBag.activityTitle = "未完结办事用烟列表";
+            }
+            else {
+                ViewBag.activityTitle = "已完结办事用烟列表";
+            }
+            return View(result);
+        }
+
+        /// <summary>
+        /// 活动申请单详细
+        /// </summary>
+        /// <param name="entity">活动申请单实体</param>
+        /// <returns></returns>
+        public IActionResult ActivityFromApplyDetail(Guid id)
+        {
+            var entity = _activityFormAppService.GetSingleFormDto(id);
+            return View(entity);
         }
     }
 }
