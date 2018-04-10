@@ -2,13 +2,14 @@
 using HC.WeChat.ActivityBanquets.Dtos.LTMAutoMapper;
 using HC.WeChat.ActivityBanquets;
 using System;
+using Abp.AutoMapper;
+using HC.WeChat.ActivityDeliveryInfos;
+using HC.WeChat.Dto;
 
 namespace HC.WeChat.ActivityBanquets.Dtos
 {
     public class ActivityBanquetEditDto
     {
-        ////BCC/ BEGIN CUSTOM CODE SECTION
-        ////ECC/ END CUSTOM CODE SECTION
         public Guid? Id { get; set; }
 
         /// <summary>
@@ -88,6 +89,70 @@ namespace HC.WeChat.ActivityBanquets.Dtos
         /// </summary>
         [StringLength(50)]
         public string UserName { get; set; }
+
+    }
+
+    [AutoMapTo(typeof(ActivityBanquet), typeof(ActivityDeliveryInfo))]
+    public class ActivityBanquetWeChatDto : WeChatInputDto
+    {
+        /// <summary>
+        /// 外键 申请表单Id
+        /// </summary>
+        [Required]
+        public Guid ActivityFormId { get; set; }
+
+
+        /// <summary>
+        /// 区县
+        /// </summary>
+        [Required]
+        public string Area { get; set; }
+
+
+        /// <summary>
+        /// 宴席时间
+        /// </summary>
+        [Required]
+        public DateTime BanquetTime { get; set; }
+
+
+        /// <summary>
+        /// 宴席地点
+        /// </summary>
+        [Required]
+        [StringLength(500)]
+        public string Position { get; set; }
+
+
+        /// <summary>
+        /// 现场人数
+        /// </summary>
+        [Required]
+        public int Num { get; set; }
+
+
+        /// <summary>
+        /// 现场简述
+        /// </summary>
+        [Required]
+        [StringLength(500)]
+        public string Desc { get; set; }
+
+
+        /// <summary>
+        /// 现场图片不得少于4张
+        /// </summary>
+        public string PhotoUrl { get; set; }
+
+
+        public string UserName { get; set; }
+
+        public string Phone { get; set; }
+
+        public string Address { get; set; }
+
+        public string DeliveryRemark { get; set; }
+
 
     }
 }

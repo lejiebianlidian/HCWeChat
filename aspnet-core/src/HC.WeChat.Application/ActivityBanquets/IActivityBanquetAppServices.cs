@@ -5,6 +5,7 @@ using Abp.Application.Services.Dto;
 using HC.WeChat.ActivityBanquets.Dtos;
 using HC.WeChat.ActivityBanquets;
 using System;
+using HC.WeChat.Dto;
 
 namespace HC.WeChat.ActivityBanquets
 {
@@ -58,5 +59,8 @@ namespace HC.WeChat.ActivityBanquets
         /// 批量删除ActivityBanquet
         /// </summary>
         Task BatchDeleteActivityBanquetsAsync(List<Guid> input);
+
+        Task<APIResultDto> SubmitActivityBanquetFromWeChatAsync(ActivityBanquetWeChatDto input);
+
     }
 }

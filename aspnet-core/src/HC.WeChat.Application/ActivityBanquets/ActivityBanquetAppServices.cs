@@ -16,6 +16,11 @@ using System;
 using System.Linq;
 using HC.WeChat.Authorization;
 using HC.WeChat.Authorization.Users;
+using HC.WeChat.Dto;
+using HC.WeChat.ActivityDeliveryInfos;
+using HC.WeChat.WeChatUsers.DomainServices;
+using HC.WeChat.WechatEnums;
+using HC.WeChat.ActivityForms;
 
 namespace HC.WeChat.ActivityBanquets
 {
@@ -29,6 +34,8 @@ namespace HC.WeChat.ActivityBanquets
         private readonly IRepository<ActivityBanquet, Guid> _activitybanquetRepository;
         private readonly IRepository<User, long> _userRepository;
         private readonly IActivityBanquetManager _activitybanquetManager;
+        private readonly IWeChatUserManager _wechatuserManager;
+        private readonly IRepository<ActivityForm, Guid> _activityFormRepository;
 
         /// <summary>
         /// 构造函数
@@ -36,11 +43,15 @@ namespace HC.WeChat.ActivityBanquets
         public ActivityBanquetAppService(IRepository<ActivityBanquet, Guid> activitybanquetRepository
         , IActivityBanquetManager activitybanquetManager
         , IRepository<User, long> userRepository
+        , IWeChatUserManager wechatuserManager
+        , IRepository<ActivityForm, Guid> activityFormRepository
         )
         {
             _activitybanquetRepository = activitybanquetRepository;
             _activitybanquetManager = activitybanquetManager;
             _userRepository = userRepository;
+            _wechatuserManager = wechatuserManager;
+            _activityFormRepository = activityFormRepository;
         }
 
         /// <summary>
@@ -194,6 +205,57 @@ namespace HC.WeChat.ActivityBanquets
             await _activitybanquetRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        [AbpAllowAnonymous]
+        public async Task<APIResultDto> SubmitActivityBanquetFromWeChatAsync(ActivityBanquetWeChatDto input)
+        {
+            var banquest = input.MapTo<ActivityBanquet>();
+            var delivery = input.MapTo<ActivityDeliveryInfo>();//收货信息
+
+            var user = await _wechatuserManager.GetWeChatUserAsync(input.OpenId, input.TenantId);
+
+            if (user == null)
+            {
+                return new APIResultDto() { Code = 701, Msg = "当前用户无效" };
+            }
+
+            if (user.UserType != UserTypeEnum.零售客户 && user.UserType != UserTypeEnum.客户经理)
+            {
+                return new APIResultDto() { Code = 702, Msg = "当前用户类型不支持" };
+            }
+
+            using (CurrentUnitOfWork.SetTenantId(input.TenantId))
+            {
+                var activityForm = await _activityFormRepository.GetAsync(input.ActivityFormId);
+                if (user.UserType == UserTypeEnum.零售客户)
+                {
+                    banquest.Responsible = activityForm.ManagerName;
+                    banquest.Executor = activityForm.RetailerName;
+                }
+                else
+                {
+                    activityForm.Status = FormStatusEnum.资料回传已审核;
+                    //记录审核日志
+
+                    banquest.Responsible = activityForm.ManagerName;
+                    banquest.Executor = activityForm.ManagerName;
+                }
+
+                banquest.UserName = user.UserName;
+                banquest.CreationTime = DateTime.Now;
+
+                await _activitybanquetRepository.InsertAsync(banquest);
+            }
+
+            if (user.UserType == UserTypeEnum.零售客户)
+            {
+                return new APIResultDto() { Code = 0, Msg = "资料提交成功，待客户经理审核" };
+            }
+            else
+            {
+                return new APIResultDto() { Code = 0, Msg = "资料提交成功，待营销中心审核" };
+            }
+
+        }
     }
 }
 
