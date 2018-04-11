@@ -67,5 +67,11 @@ namespace HC.WeChat.WeChatUsers
         /// 解绑时间
         /// </summary>
         public DateTime? UnBindTime { get; set; }
+
+        /// <summary>
+        /// 用户微信头像
+        /// </summary>
+        [StringLength(500)]
+        public virtual string HeadImgUrl { get; set; }
     }
 }

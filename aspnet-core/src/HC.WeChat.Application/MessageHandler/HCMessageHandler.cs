@@ -90,10 +90,10 @@ namespace HC.WeChat.MessageHandler
             Logger.InfoFormat("关注:{0}", requestMessage);
             //获取微信用户信息
             var wechatUser = Senparc.Weixin.MP.AdvancedAPIs.UserApi.Info(appId, requestMessage.FromUserName);
-            //wechatUser.headimgurl
+
             Logger.InfoFormat("关注用户:{0}", wechatUser);
             //关注公众号
-            _wechatUserManager.SubscribeAsync(requestMessage.FromUserName, wechatUser.nickname, _tenantId);
+            _wechatUserManager.SubscribeAsync(requestMessage.FromUserName, wechatUser.nickname, wechatUser.headimgurl, _tenantId);
         }
     }
 }
