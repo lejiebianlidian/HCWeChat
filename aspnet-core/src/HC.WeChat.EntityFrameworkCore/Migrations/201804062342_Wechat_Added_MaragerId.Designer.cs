@@ -1496,6 +1496,7 @@ namespace HC.WeChat.Migrations
                 b.Property<DateTime?>("BindTime");
                 b.Property<int?>("TenantId");
                 b.Property<DateTime?>("UnBindTime");
+                b.Property<string>("HeadImgUrl").HasMaxLength(500);
 
                 b.HasKey("Id");
 

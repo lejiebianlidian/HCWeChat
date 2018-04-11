@@ -45,6 +45,7 @@ namespace HC.WeChat.MessageHandler
 
         private List<WechatMessage> GetWechatMessageList()
         {
+            
             //先处理文字消息
             return _wechatmessageRepository.GetAll().Where(w => w.TenantId == _tenantId && w.MsgType == WechatEnums.MsgTypeEnum.文字消息).ToList();
         }
@@ -89,9 +90,10 @@ namespace HC.WeChat.MessageHandler
             Logger.InfoFormat("关注:{0}", requestMessage);
             //获取微信用户信息
             var wechatUser = Senparc.Weixin.MP.AdvancedAPIs.UserApi.Info(appId, requestMessage.FromUserName);
+
             Logger.InfoFormat("关注用户:{0}", wechatUser);
             //关注公众号
-            _wechatUserManager.SubscribeAsync(requestMessage.FromUserName, wechatUser.nickname, _tenantId);
+            _wechatUserManager.SubscribeAsync(requestMessage.FromUserName, wechatUser.nickname, wechatUser.headimgurl, _tenantId);
         }
     }
 }

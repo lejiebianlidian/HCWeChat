@@ -25,6 +25,12 @@ namespace HC.WeChat.Migrations
                maxLength: 500,
               nullable: true);
 
+            migrationBuilder.AddColumn<string>(
+            name: "HeadImgUrl",
+            table: "WeChatUsers",
+             maxLength: 500,
+            nullable: true);
+
             migrationBuilder.AlterColumn<string>(
                name: "ActivityGoodsId",
                table: "ActivityForms",
@@ -53,6 +59,10 @@ namespace HC.WeChat.Migrations
             migrationBuilder.DropColumn(
                name: "DeliveryRemark",
                table: "ActivityDeliveryInfos");
+
+            migrationBuilder.DropColumn(
+              name: "HeadImgUrl",
+              table: "WeChatUsers");
 
             migrationBuilder.AlterColumn<string>(
              name: "ActivityGoodsId",

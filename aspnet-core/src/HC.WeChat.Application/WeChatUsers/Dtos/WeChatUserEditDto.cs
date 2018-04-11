@@ -58,6 +58,9 @@ namespace HC.WeChat.WeChatUsers.Dtos
         public DateTime? BindTime { get; set; }
         public int? TenantId { get; set; }
         public DateTime? UnBindTime { get; set; }
+
+        [StringLength(500)]
+        public string HeadImgUrl { get; set; }
     }
 
     [AutoMapTo(typeof(WeChatUser))]
@@ -76,5 +79,7 @@ namespace HC.WeChat.WeChatUsers.Dtos
         public int? TenantId { get; set; }
 
         public string NickName { get; set; }
+
+        public string HeadImgUrl { get; set; }
     }
 }

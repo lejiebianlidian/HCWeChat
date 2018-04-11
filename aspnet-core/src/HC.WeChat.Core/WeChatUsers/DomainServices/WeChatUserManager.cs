@@ -67,7 +67,7 @@ namespace HC.WeChat.WeChatUsers.DomainServices
         /// 微信关注
         /// </summary>
         [UnitOfWork]
-        public async Task SubscribeAsync(string openId, string nickName, int? tenantId)
+        public async Task SubscribeAsync(string openId, string nickName, string headImgUrl, int? tenantId)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -80,6 +80,7 @@ namespace HC.WeChat.WeChatUsers.DomainServices
                     user.UserId = null;
                     user.UserName = user.NickName;
                     user.BindTime = DateTime.Now;
+                    user.HeadImgUrl = headImgUrl;
                     await _wechatuserRepository.UpdateAsync(user);
                 }
                 else
@@ -90,6 +91,7 @@ namespace HC.WeChat.WeChatUsers.DomainServices
                     user.TenantId = tenantId;
                     user.UserType = WechatEnums.UserTypeEnum.消费者;
                     user.UserName = nickName;
+                    user.HeadImgUrl = headImgUrl;
                     user.BindStatus = WechatEnums.BindStatusEnum.未绑定;
                     await _wechatuserRepository.InsertAsync(user);
                 }

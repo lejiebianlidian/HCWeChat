@@ -34,7 +34,7 @@ namespace HC.WeChat.ActivityForms
     /// ActivityForm应用层服务的接口实现方法
     /// </summary>
     //[AbpAuthorize(ActivityFormAppPermissions.ActivityForm)]
-    //[AbpAuthorize(AppPermissions.Pages)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class ActivityFormAppService : WeChatAppServiceBase, IActivityFormAppService
     {
         private readonly IRepository<ActivityForm, Guid> _activityformRepository;
@@ -286,6 +286,7 @@ namespace HC.WeChat.ActivityForms
             await _activityformRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        [AbpAllowAnonymous]
         public async Task<APIResultDto> SubmitActivityFormAsync(ActivityFormInputDto input)
         {
             var form = input.MapTo<ActivityForm>();//表单信息
@@ -408,6 +409,7 @@ namespace HC.WeChat.ActivityForms
             return code;
         }
 
+        [AbpAllowAnonymous]
         public async Task<APIResultDto> ChangeActivityFormStatusAsync(ActivityFormStatusDto input)
         {
             var form = await _activityformRepository.GetAsync(input.Id);
@@ -519,7 +521,6 @@ namespace HC.WeChat.ActivityForms
         /// <summary>
         /// 获取首页的数据
         /// </summary>
-        /// <returns></returns>
         public async Task<ActivityFormCountInfoDto> GetHomeInfo()
         {
             var dto = new ActivityFormCountInfoDto();

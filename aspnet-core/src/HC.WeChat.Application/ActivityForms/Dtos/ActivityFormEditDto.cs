@@ -6,6 +6,7 @@ using HC.WeChat.WechatEnums;
 using Abp.AutoMapper;
 using HC.WeChat.ActivityDeliveryInfos;
 using Abp.Application.Services.Dto;
+using HC.WeChat.Dto;
 
 namespace HC.WeChat.ActivityForms.Dtos
 {
@@ -104,7 +105,7 @@ namespace HC.WeChat.ActivityForms.Dtos
     }
 
     [AutoMapTo(typeof(ActivityForm), typeof(ActivityDeliveryInfo))]
-    public class ActivityFormInputDto
+    public class ActivityFormInputDto : WeChatInputDto
     {
         /// <summary>
         /// 活动Id，外键
@@ -137,10 +138,6 @@ namespace HC.WeChat.ActivityForms.Dtos
         /// </summary>
         [Required]
         public string Reason { get; set; }
-
-        public string OpenId { get; set; }
-
-        public int? TenantId { get; set; }
 
         public string UserName { get; set; }
         public string Phone { get; set; }

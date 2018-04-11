@@ -26,6 +26,9 @@ using HC.WeChat.ActivityBanquets;
 using HC.WeChat.ActivityDeliveryInfos;
 using Abp.Application.Services.Dto;
 using HC.WeChat.ActivityDeliveryInfos.Dtos;
+using Senparc.Weixin.MP.Helpers;
+using Microsoft.AspNetCore.Http;
+using HC.WeChat.ActivityBanquets;
 
 namespace HC.WeChat.Web.Host.Controllers
 {
@@ -40,6 +43,7 @@ namespace HC.WeChat.Web.Host.Controllers
         IActivityGoodsAppService _activityGoodsAppService;
         private readonly IRepository<WeChatUser, Guid> _wechatuserRepository;
         IActivityFormAppService _activityFormAppService;
+        IActivityBanquetAppService _activityBanquetAppService;
         private int? tenantId;
         IActivityBanquetAppService _activityBanquetAppService;
         IActivityDeliveryInfoAppService _activityDeliveryInfoAppService;
@@ -213,13 +217,13 @@ namespace HC.WeChat.Web.Host.Controllers
         /// </summary>
         public IActionResult ActivityForm(string code, string state)
         {
-            state = "BD889174-D22A-4F2E-8C8F-08D599CF4F79";
+            //state = "BD889174-D22A-4F2E-8C8F-08D599CF4F79";
             var activityId = Guid.Parse(state);
-            //var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
+            var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
             var tenantId = GetTenantId();
             //var user = _weChatUserAppService.GetWeChatUserAsync(oauth.openid, tenantId).Result;
-            var openid = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
-            var user = _weChatUserAppService.GetWeChatUserAsync(openid, tenantId).Result;
+            //var openid = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
+            var user = _weChatUserAppService.GetWeChatUserAsync(oauth.openid, tenantId).Result;
             ViewBag.UserType = (int)user.UserType;
             var root = _appConfiguration["App:ServerRootAddress"];
             var url = root + "/YiBinWX/BindUser";
@@ -227,14 +231,13 @@ namespace HC.WeChat.Web.Host.Controllers
             var goodsList = _activityGoodsAppService.GetActivityGoodsByActivityId(activityId).Result;
             ViewBag.GoodsList = goodsList;
             ViewBag.ServerRootAddress = root;
-            ViewBag.OpenId = openid;
+            ViewBag.OpenId = oauth.openid;
             ViewBag.TenantId = tenantId;
             ViewBag.ActivityId = activityId;
             ViewBag.JumpUrl = Url.Action("Activity");
             return View();
         }
 
-        /// <summary>
         /// 活动申请单
         /// </summary>
         /// <returns></returns>
@@ -290,15 +293,39 @@ namespace HC.WeChat.Web.Host.Controllers
             ViewBag.ServerRootAddress = root;
             return View(entity);
         }
-        
+
         /// <summary>   
         /// 活动宴席
         /// </summary>
         /// <returns></returns>
-        public IActionResult ActivityBanquet(string code, string state)
+        public IActionResult ActivityBanquet(string actFormId, int? actFormStatus, string openid, int? userType)
         {
+            //actId = "E6200916-552A-44A4-FFD4-08D59A3C0EB3";
+            //actFormId = "73DF4187-AF25-422D-5601-08D59EB66341";
+            //openid = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
+            //actFormStatus = 2;
+            //userType = 2;
+            var tenantId = GetTenantId();
+            //var user = _weChatUserAppService.GetWeChatUserAsync(openid, tenantId).Result;
+            var activityBanquet = _activityBanquetAppService.GetActivityBanquetWeChatByFormIdAsync(Guid.Parse(actFormId), tenantId).Result;
+            if (activityBanquet == null)
+            {
+                activityBanquet = new ActivityBanquets.Dtos.ActivityBanquetWeChatDto();
+            }
+            var url = Request.GetAbsoluteUri();
+            var jsApiConfig = JSSDKHelper.GetJsSdkUiPackageAsync(WechatAppConfig.AppId, WechatAppConfig.AppSecret, url).Result;
+            ViewBag.OpenId = openid;
+            ViewBag.TenantId = tenantId;
+            ViewBag.ActivityFormId = actFormId;
+            ViewBag.UserType = userType;
+            ViewBag.ActivityFormStatus = actFormStatus;
+            var root = _appConfiguration["App:ServerRootAddress"];
+            ViewBag.ServerRootAddress = root; 
             
-            return View();
+            ActivityBanquetModel model = new ActivityBanquetModel();
+            model.JsSdkApiConfig = jsApiConfig;
+            model.BanquetWeChat = activityBanquet;
+            return View(model);
         }
         /// <summary>
         /// 商品修改页面
