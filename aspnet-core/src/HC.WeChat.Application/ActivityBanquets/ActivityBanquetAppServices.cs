@@ -21,6 +21,7 @@ using HC.WeChat.ActivityDeliveryInfos;
 using HC.WeChat.WeChatUsers.DomainServices;
 using HC.WeChat.WechatEnums;
 using HC.WeChat.ActivityForms;
+using HC.WeChat.ActivityFormLogs;
 
 namespace HC.WeChat.ActivityBanquets
 {
@@ -36,6 +37,7 @@ namespace HC.WeChat.ActivityBanquets
         private readonly IActivityBanquetManager _activitybanquetManager;
         private readonly IWeChatUserManager _wechatuserManager;
         private readonly IRepository<ActivityForm, Guid> _activityFormRepository;
+        private readonly IRepository<ActivityFormLog, Guid> _activityFormLogRepository;
 
         /// <summary>
         /// 构造函数
@@ -45,6 +47,7 @@ namespace HC.WeChat.ActivityBanquets
         , IRepository<User, long> userRepository
         , IWeChatUserManager wechatuserManager
         , IRepository<ActivityForm, Guid> activityFormRepository
+        , IRepository<ActivityFormLog, Guid> activityFormLogRepository
         )
         {
             _activitybanquetRepository = activitybanquetRepository;
@@ -52,6 +55,7 @@ namespace HC.WeChat.ActivityBanquets
             _userRepository = userRepository;
             _wechatuserManager = wechatuserManager;
             _activityFormRepository = activityFormRepository;
+            _activityFormLogRepository = activityFormLogRepository;
         }
 
         /// <summary>
@@ -206,7 +210,7 @@ namespace HC.WeChat.ActivityBanquets
         }
 
         [AbpAllowAnonymous]
-        public async Task<APIResultDto> SubmitActivityBanquetFromWeChatAsync(ActivityBanquetWeChatDto input)
+        public async Task<APIResultDto> SubmitActivityBanquetWeChatAsync(ActivityBanquetWeChatDto input)
         {
             var banquest = input.MapTo<ActivityBanquet>();
             var delivery = input.MapTo<ActivityDeliveryInfo>();//收货信息
@@ -231,10 +235,21 @@ namespace HC.WeChat.ActivityBanquets
                     banquest.Responsible = activityForm.ManagerName;
                     banquest.Executor = activityForm.RetailerName;
                 }
-                else
+                else//客户经理更新状态
                 {
                     activityForm.Status = FormStatusEnum.资料回传已审核;
                     //记录审核日志
+                    var log = new ActivityFormLog();
+                    log.ActionTime = DateTime.Now;
+                    log.ActivityFormId = activityForm.Id;
+                    log.Opinion = activityForm.Status.ToString();
+                    log.Status = activityForm.Status;
+                    log.StatusName = activityForm.Status.ToString();
+                    log.UserId = user.Id;
+                    log.UserName = user.UserName;
+
+                    await _activityFormRepository.UpdateAsync(activityForm);
+                    await _activityFormLogRepository.InsertAsync(log);
 
                     banquest.Responsible = activityForm.ManagerName;
                     banquest.Executor = activityForm.ManagerName;
