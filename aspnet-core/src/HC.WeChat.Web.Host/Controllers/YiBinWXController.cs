@@ -45,7 +45,6 @@ namespace HC.WeChat.Web.Host.Controllers
         IActivityFormAppService _activityFormAppService;
         IActivityBanquetAppService _activityBanquetAppService;
         private int? tenantId;
-        IActivityBanquetAppService _activityBanquetAppService;
         IActivityDeliveryInfoAppService _activityDeliveryInfoAppService;
         public YiBinWXController(IWechatAppConfigAppService wechatAppConfigAppService,
            IOptions<WeChatTenantSetting> settings,

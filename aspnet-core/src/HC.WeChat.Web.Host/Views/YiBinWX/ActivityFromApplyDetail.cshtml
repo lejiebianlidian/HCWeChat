@@ -86,7 +86,7 @@
         <input type="button" id="returnCheckBtn" style="display:none" class="middel_btn fr ok" value="资料完善" onclick="javascript:window.location.href='@Url.Action("ActivityBanquet", "YiBinWX", new { actFormId = Model.Id,actFormStatus=Model.Status, openid = ViewBag.OpenId , userType = ViewBag.UserType })'" />
         <input type="button" id="marketingBtn" style="display:none" class="middel_btn fr ok" value="资料回传审核" onclick="javascript:window.location.href='@Url.Action("ActivityBanquet", "YiBinWX", new { actFormId = Model.Id,actFormStatus=Model.Status, openid = ViewBag.OpenId, userType= ViewBag.UserType })'" />
     </div>
-    <script src="~/YiBinWX/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="~/YiBinWX/static/js/jquery.min.js"></script>
     <script type="text/javascript">
         $(function () {
             //申请单状态
