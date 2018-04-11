@@ -15,32 +15,36 @@
 </head>
 <body>
     <div class="all_width mt10">
-        <h1 class="warp_title">@ViewBag.activityTitle</h1>
-        <!--信息列表-->
-        <ul class="all_width info_list">
-            
-           @foreach (var item in Model.ActivityFormListDtos)
-           {
-              <li onclick="javascript:window.location.href='/YiBinWX/ActivityFromApplyDetail?entity='@item.Id">
-                  <a class="large_btn ok mt30" href="@Url.Action("ActivityFromApplyDetail", "YiBinWX", item)">单号：@item.Id</a>
-                  <a  href="~/YiBinWX/ActivityFromApplyDetail?entity=@item.Id">未完结办事用烟查询</a>
-                  <p class="fl hot_news">单号：@item.Id</p>
-                  <img src="static/img/trend/more.png" class="more_icon fr" />
-              </li>
-           }
-        </ul>
+        <div class="all_width">
+            <div class="header bg_green tc">
+                @ViewBag.activityTitle
+            </div>
+            <!--信息列表-->
+
+            <ul class="all_width info_list">
+
+                @foreach (var item in Model.ActivityFormListDtos)
+                {
+                    <li onclick="javascript:window.location.href='@Url.Action("ActivityFromApplyDetail", "YiBinWX", new { id = item.Id, openId = Model.OpenId })'">
+                        <p class="fl hot_news">单号：@item.FormCode 状态：@item.StatusName</p>
+                        <img src="static/img/trend/more.png" class="more_icon fr" />
+                    </li>
+                }
+           </ul>
+        </div>
     </div>
 </body>
 </html>
 <script type="text/javascript" src="static/js/jquery.min.js"></script>
 <script type="text/javascript">
-   
-    function goDetail(id) { 
-        window.location.href = '~/YiBinWX/ActivityFromApplyDetail?id=' + id;
+
+    function goDetail(id) {
+        window.location.href = '/YiBinWX/ActivityFromApplyDetail?id=' + id;
     }
     //$('ul').on('click', 'li', function () {
     //    var id = $(this).attr("data-id");
     //    window.location.href = "/YiBinWX/ActivityFromApply/id";
-    //}) 
+    @*<a class="large_btn ok mt30" href="@Url.Action("ActivityFromApplyDetail", "YiBinWX", new { id = item.Id })">单号：@item.Id</a>*@
+    //})
 
 </script>

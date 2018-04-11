@@ -22,6 +22,10 @@ using Abp.AutoMapper;
 using HC.WeChat.WeChatUsers.Dtos;
 using HC.WeChat.ActivityForms;
 using HC.WeChat.ActivityForms.Dtos;
+using HC.WeChat.ActivityBanquets;
+using HC.WeChat.ActivityDeliveryInfos;
+using Abp.Application.Services.Dto;
+using HC.WeChat.ActivityDeliveryInfos.Dtos;
 
 namespace HC.WeChat.Web.Host.Controllers
 {
@@ -37,6 +41,8 @@ namespace HC.WeChat.Web.Host.Controllers
         private readonly IRepository<WeChatUser, Guid> _wechatuserRepository;
         IActivityFormAppService _activityFormAppService;
         private int? tenantId;
+        IActivityBanquetAppService _activityBanquetAppService;
+        IActivityDeliveryInfoAppService _activityDeliveryInfoAppService;
         public YiBinWXController(IWechatAppConfigAppService wechatAppConfigAppService,
            IOptions<WeChatTenantSetting> settings,
            IWeChatOAuthAppService weChatOAuthAppService,
@@ -45,7 +51,8 @@ namespace HC.WeChat.Web.Host.Controllers
            IActivityGoodsAppService activityGoodsAppService,
            IRepository<WeChatUser, Guid> wechatuserRepository,
            IActivityFormAppService activityFormAppService,
-
+           IActivityBanquetAppService activityBanquetAppService,
+           IActivityDeliveryInfoAppService activityDeliveryInfoAppService,
         IHostingEnvironment env) : base(wechatAppConfigAppService)
         {
             _settings = settings.Value;
@@ -60,6 +67,8 @@ namespace HC.WeChat.Web.Host.Controllers
             _appConfiguration = env.GetAppConfiguration();
             _wechatuserRepository = wechatuserRepository;
             _activityFormAppService = activityFormAppService;
+            _activityBanquetAppService = activityBanquetAppService;
+            _activityDeliveryInfoAppService = activityDeliveryInfoAppService;
 
         }
 
@@ -241,6 +250,7 @@ namespace HC.WeChat.Web.Host.Controllers
             else {
                 ViewBag.activityTitle = "已完结办事用烟列表";
             }
+            result.OpenId = openId;
             return View(result);
         }
 
@@ -248,10 +258,36 @@ namespace HC.WeChat.Web.Host.Controllers
         /// 活动申请单详细
         /// </summary>
         /// <param name="entity">活动申请单实体</param>
+        /// <param name="openId">openId</param>
         /// <returns></returns>
-        public IActionResult ActivityFromApplyDetail(Guid id)
+        public IActionResult ActivityFromApplyDetail(Guid id,string openId)
         {
             var entity = _activityFormAppService.GetSingleFormDto(id);
+            openId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
+            var tenantId = GetTenantId();
+            var user = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
+            //var ids = entity.MapTo<EntityDto<Guid>>();
+            EntityDto<Guid> ids=new EntityDto<Guid>{ Id= entity.Id};
+            var banquent =_activityBanquetAppService.GetActivityBanquetByFormIdAsync(ids).Result;
+            var deliveryList = _activityDeliveryInfoAppService.GetActivityDeliveryInfoByFormIdAsync(ids).Result;
+            ActivityDeliveryInfoListDto delivery = new ActivityDeliveryInfoListDto();
+            if (deliveryList!= null)
+            {
+                foreach (var item in deliveryList)
+                {
+                    if (item.Type == DeliveryUserTypeEnum.推荐人)
+                    {
+                        delivery = item;
+                    }
+                }
+            }
+            ViewBag.BanquentId = banquent== null ? Guid.Empty : banquent.Id;
+            ViewBag.DeliveryId = delivery == null ? Guid.Empty : delivery.Id;
+            ViewBag.UserType = user.UserType;
+            ViewBag.OpenId = openId;
+            ViewBag.TenantId = tenantId;
+            var root = _appConfiguration["App:ServerRootAddress"];
+            ViewBag.ServerRootAddress = root;
             return View(entity);
         }
         
@@ -262,6 +298,32 @@ namespace HC.WeChat.Web.Host.Controllers
         public IActionResult ActivityBanquet(string code, string state)
         {
             
+            return View();
+        }
+        /// <summary>
+        /// 商品修改页面
+        /// </summary>
+        /// <param name="id">活动申请单id</param>
+        /// <returns></returns>
+        public IActionResult ActivityGoods(Guid id)
+        {
+            var entity = _activityFormAppService.GetSingleFormDto(id);
+            var goodsList = _activityGoodsAppService.GetActivityGoodsByActivityId(entity.ActivityId).Result;
+            ViewBag.GoodsList = goodsList;
+            return View();
+        }
+
+        /// <summary>
+        /// 取消，初审通过
+        /// </summary>
+        /// <param name="input">状态，审批意见，申请单id</param>
+        /// <param name="openId">openId</param>
+        /// <returns></returns>
+        public IActionResult SaveStatus(ActivityFormStatusDto input,string openId )
+        {
+            var tenantId = GetTenantId();
+            var user = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
+
             return View();
         }
     }

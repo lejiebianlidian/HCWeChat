@@ -538,13 +538,14 @@ namespace HC.WeChat.ActivityForms
         /// 获取活动申请单列表以及单数
         /// </summary>
         /// <returns></returns>
+        [AbpAllowAnonymous]
         public ActivityFormForWechat GetActivityFormList(bool check, WeChatUserListDto user, int? tenantId)
         {
             using (CurrentUnitOfWork.SetTenantId(tenantId))
             {
                 var query = _activityformRepository.GetAll()
                 .WhereIf(user.UserType!= UserTypeEnum.客户经理, a => a.ManagerId == user.UserId)
-                //.WhereIf(user.UserType != UserTypeEnum.零售客户, a => a.CreationUserId == user.UserId)
+                .WhereIf(user.UserType != UserTypeEnum.零售客户, a => a.CreationId == user.UserId)
                 .WhereIf(check, a => a.Status == FormStatusEnum.营销中心已审核)
                 .WhereIf(!check, a => a.Status == FormStatusEnum.初审通过 || a.Status == FormStatusEnum.提交申请 || a.Status == FormStatusEnum.资料回传已审核)
                 .OrderBy(a => a.CreationTime);
@@ -560,13 +561,57 @@ namespace HC.WeChat.ActivityForms
         /// </summary>
         /// <param name="id">活动申请单id</param>
         /// <returns></returns>
+        [AbpAllowAnonymous]
         public ActivityFormListDto GetSingleFormDto(Guid id)
         {
             var query = _activityformRepository.GetAll().Where(a => a.Id == id).FirstOrDefault();
             return query.MapTo<ActivityFormListDto>();
         }
 
-        
+        /// <summary>
+        /// 针对微信端的取消，初审通过
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="tenantId"></param>
+        /// <returns></returns>
+        public async Task<APIResultDto> ChangeActivityFormStatusAsync(ActivityFromStatusDtoss input)
+        {
+            using (CurrentUnitOfWork.SetTenantId(input.TenantId))
+            {
+                var form = await _activityformRepository.GetAsync(input.Id);
+                var user = await _wechatuserManager.GetWeChatUserAsync(input.OpenId, input.TenantId);
+                //var user = await _userRepository.GetAsync(AbpSession.UserId.Value);
+                //更新状态
+                form.Status = input.Status;
+                //更新日志
+                var log = new ActivityFormLog();
+                log.ActionTime = DateTime.Now;
+                log.ActivityFormId = form.Id;
+                log.Opinion = input.Opinion;
+                log.Status = input.Status;
+                log.StatusName = input.Status.ToString();
+                log.UserId = user.UserId;
+                log.UserName = user.UserName;
+
+                //var roles = await UserManager.GetRolesAsync(user);
+                //if (roles.Contains("CustomerManager"))
+                //{
+                //    log.UserType = UserTypeEnum.客户经理;
+                //}
+                //else
+                //{
+                //    log.UserType = UserTypeEnum.营销中心;
+                //}
+                log.UserType = user.UserType;
+
+                await _activityformRepository.UpdateAsync(form);
+                await _activityFormLogRepository.InsertAsync(log);
+
+                return new APIResultDto() { Code = 0, Msg = "操作成功" };
+            }
+        }
+
+       
     }
 }
 

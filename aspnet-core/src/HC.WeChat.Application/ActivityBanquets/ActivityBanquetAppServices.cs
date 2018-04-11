@@ -79,7 +79,7 @@ namespace HC.WeChat.ActivityBanquets
 
             return entity.MapTo<ActivityBanquetListDto>();
         }
-
+        [AbpAllowAnonymous]
         public async Task<ActivityBanquetListDto> GetActivityBanquetByFormIdAsync(EntityDto<Guid> input)
         {
             var entity = await _activitybanquetRepository.GetAll().Where(a => a.ActivityFormId == input.Id).FirstOrDefaultAsync();

@@ -14,5 +14,9 @@ namespace HC.WeChat.ActivityForms.Dtos
         ///单数
         /// </summary>
         public int Count { get; set; }
+        /// <summary>
+        /// OpenId
+        /// </summary>
+        public string OpenId { get; set; }
     }
 }

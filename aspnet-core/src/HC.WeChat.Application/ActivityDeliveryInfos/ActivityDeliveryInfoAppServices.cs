@@ -77,7 +77,7 @@ namespace HC.WeChat.ActivityDeliveryInfos
 
             return entity.MapTo<ActivityDeliveryInfoListDto>();
         }
-
+        [AbpAllowAnonymous]
         public async Task<List<ActivityDeliveryInfoListDto>> GetActivityDeliveryInfoByFormIdAsync(EntityDto<Guid> input)
         {
             var entityList = await _activitydeliveryinfoRepository.GetAll().Where(a => a.ActivityFormId == input.Id).ToListAsync();

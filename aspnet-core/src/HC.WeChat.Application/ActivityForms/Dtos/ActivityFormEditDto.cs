@@ -155,4 +155,14 @@ namespace HC.WeChat.ActivityForms.Dtos
 
         public string Opinion { get; set; }
     }
+    [AutoMapTo(typeof(ActivityForm))]
+    public class ActivityFromStatusDtoss : EntityDto<Guid>
+    {
+        public FormStatusEnum Status { get; set; }
+
+        public string Opinion { get; set; }
+        public string OpenId { get; set; }
+
+        public int? TenantId { get; set; }
+    }
 }

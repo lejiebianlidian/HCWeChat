@@ -1,5 +1,5 @@
-﻿@model HC.WeChat.ActivityForms.Dtos.ActivityFormListDto
-
+﻿ @model HC.WeChat.ActivityForms.Dtos.ActivityFormListDto
+ 
 @{
     Layout = null;
 }
@@ -20,7 +20,7 @@
         <div class="header bg_green tc">
             活动申请单详细
         </div>
-        <ul class="personal_link all_width">
+        <ul class="personal_link all_width">            
             <li>
                 <label class="fl main_green">
                     活动名称
@@ -69,7 +69,96 @@
                 </label>
                 <label class="fl  ml20">@Model.Reason</label>
             </li>
+            <li style="display:none" id="message">
+                <label class="fl main_green">
+                    审批意见
+                </label>
+                @*<label class="fl  ml20"></label>*@
+                <textarea class="contain_entry" placeholder="请输入审批意见"></textarea>
+            </li>
         </ul>
+        <input type="hidden" id="hidOpenId" value="@ViewBag.OpenId" />
     </div>
+    <div class="width_90 mt30 mb20">
+        @*<input type="button" id="updateBtn" style="display:none" class="middel_btn fr ok" value="修改商品信息" onclick="javascript:window.location.href='@Url.Action("ActivityGoods", "YiBinWX", new { id = Model.Id })'" />*@
+        <input type="button" id="cancelBtn"  class="middel_btn fl cancel" value="取消申请" onclick="StatusCheck(5)"/>
+        <input type="button" id="firstCheckBtn" style="display:none" class="middel_btn fr ok" value="初审通过" onclick="StatusCheck(2)" />
+        <input type="button" id="returnCheckBtn" style="display:none" class="middel_btn fr ok" value="资料完善" onclick="javascript:window.location.href='@Url.Action("ActivityBanquet", "YiBinWX", new { actFormId = Model.Id,actFormStatus=Model.Status, openid = ViewBag.OpenId , userType = ViewBag.UserType })'" />
+        <input type="button" id="marketingBtn" style="display:none" class="middel_btn fr ok" value="资料回传审核" onclick="javascript:window.location.href='@Url.Action("ActivityBanquet", "YiBinWX", new { actFormId = Model.Id,actFormStatus=Model.Status, openid = ViewBag.OpenId, userType= ViewBag.UserType })'" />
+    </div>
+    <script src="~/YiBinWX/static/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //申请单状态
+            var status =@Model.Status;
+            //用户类型
+            var userType =@ViewBag.UserType;
+            //宴席id
+            var banquentId =@ViewBag.BanquentId;
+            //推荐人信息id
+            var deliveryId=@ViewBag.DeliveryId;
+            //登录用户为零售户时
+            if (userType==1) {
+                if (status==1) {
+                    $("#cancelBtn").show();
+                } else if (status==2) {
+                    $("#returnCheckBtn").show();
+                }
+            }
+            //登录用户为客户经理时
+            else if (userType==2) {
+                $("#cancelBtn").hide();
+
+                //初审通过时
+                if (status==2) {
+                    console.log(banquentId);
+                    if (banquentId!="00000000-0000-0000-0000-000000000000" && deliveryId != "00000000-0000-0000-0000-000000000000") {
+                        $("#marketingBtn").show();
+                        $("#returnCheckBtn").hide();
+                    } else {
+                        $("#marketingBtn").hide();
+                        $("#returnCheckBtn").show();
+                    }
+                }//提交申请时，还未进行初审时
+                else if (status==1) {
+                    $("#firstCheckBtn").show();
+                    $("#message").show();
+                }
+            }
+        });
+        //取消、初审通过按钮
+        function StatusCheck(status) {
+            var para = {};
+            if (status = 2) {
+                para.Opinion = $("#message").val();
+            }
+            para.Status = status;
+            para.Id = '@Model.Id';
+            para.OpenId = $("#hidOpenId").val();
+            para.TenantId ="@ViewBag.TenantId" ;
+            var reqUrl = "@ViewBag.ServerRootAddress" + "/api/services/app/ActivityForm/ChangeActivityFormStatusAsync";
+            $.ajax({
+                url: reqUrl,
+                type: "POST",
+                dataType: "JSON",
+                contenType: "application/json;charset=utf-8",
+                data:JSON.stringify(para) ,
+                success: function (data) {
+                    if (data.success) {
+                        if (data.result.code == 0) {
+                            alert(data.result.msg);
+                        } else {
+                            alert(data.result.msg);
+                        }
+                    } else {
+                        alert("保存异常！");
+                    }
+                },
+                error: function () {
+                    alert("提交失败！");
+                }
+            });
+        }
+    </script>
 </body>
 </html>

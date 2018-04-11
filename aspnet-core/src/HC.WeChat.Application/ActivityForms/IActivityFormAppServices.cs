@@ -87,5 +87,14 @@ namespace HC.WeChat.ActivityForms
         /// <param name="id">活动申请单id</param>
         /// <returns></returns>
         ActivityFormListDto GetSingleFormDto(Guid id);
+
+        /// <summary>
+        /// 针对微信端的取消，初审通过
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="user"></param>
+        /// <param name="tenantId"></param>
+        /// <returns></returns>
+        Task<APIResultDto> ChangeActivityFormStatusAsync(ActivityFromStatusDtoss input);
     }
 }
