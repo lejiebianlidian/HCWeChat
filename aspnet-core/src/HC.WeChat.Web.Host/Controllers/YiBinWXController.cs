@@ -22,6 +22,9 @@ using Abp.AutoMapper;
 using HC.WeChat.WeChatUsers.Dtos;
 using HC.WeChat.ActivityForms;
 using HC.WeChat.ActivityForms.Dtos;
+using Senparc.Weixin.MP.Helpers;
+using Microsoft.AspNetCore.Http;
+using HC.WeChat.ActivityBanquets;
 
 namespace HC.WeChat.Web.Host.Controllers
 {
@@ -36,6 +39,7 @@ namespace HC.WeChat.Web.Host.Controllers
         IActivityGoodsAppService _activityGoodsAppService;
         private readonly IRepository<WeChatUser, Guid> _wechatuserRepository;
         IActivityFormAppService _activityFormAppService;
+        IActivityBanquetAppService _activityBanquetAppService;
         private int? tenantId;
         public YiBinWXController(IWechatAppConfigAppService wechatAppConfigAppService,
            IOptions<WeChatTenantSetting> settings,
@@ -45,7 +49,7 @@ namespace HC.WeChat.Web.Host.Controllers
            IActivityGoodsAppService activityGoodsAppService,
            IRepository<WeChatUser, Guid> wechatuserRepository,
            IActivityFormAppService activityFormAppService,
-
+           IActivityBanquetAppService activityBanquetAppService,
         IHostingEnvironment env) : base(wechatAppConfigAppService)
         {
             _settings = settings.Value;
@@ -60,6 +64,7 @@ namespace HC.WeChat.Web.Host.Controllers
             _appConfiguration = env.GetAppConfiguration();
             _wechatuserRepository = wechatuserRepository;
             _activityFormAppService = activityFormAppService;
+            _activityBanquetAppService = activityBanquetAppService;
 
         }
 
@@ -258,17 +263,34 @@ namespace HC.WeChat.Web.Host.Controllers
         /// 活动宴席
         /// </summary>
         /// <returns></returns>
-        public IActionResult ActivityBanquet(string actId, string openid)
+        public IActionResult ActivityBanquet(string actFormId, int? actFormStatus, string openid, int? userType)
         {
-            actId = "E6200916-552A-44A4-FFD4-08D59A3C0EB3";
-            openid = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
+            //actId = "E6200916-552A-44A4-FFD4-08D59A3C0EB3";
+            //actFormId = "73DF4187-AF25-422D-5601-08D59EB66341";
+            //openid = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
+            //actFormStatus = 2;
+            //userType = 2;
             var tenantId = GetTenantId();
+            //var user = _weChatUserAppService.GetWeChatUserAsync(openid, tenantId).Result;
+            var activityBanquet = _activityBanquetAppService.GetActivityBanquetWeChatByFormIdAsync(Guid.Parse(actFormId), tenantId).Result;
+            if (activityBanquet == null)
+            {
+                activityBanquet = new ActivityBanquets.Dtos.ActivityBanquetWeChatDto();
+            }
+            var url = Request.GetAbsoluteUri();
+            var jsApiConfig = JSSDKHelper.GetJsSdkUiPackageAsync(WechatAppConfig.AppId, WechatAppConfig.AppSecret, url).Result;
             ViewBag.OpenId = openid;
             ViewBag.TenantId = tenantId;
-            ViewBag.ActivityFormId = actId;
+            ViewBag.ActivityFormId = actFormId;
+            ViewBag.UserType = userType;
+            ViewBag.ActivityFormStatus = actFormStatus;
             var root = _appConfiguration["App:ServerRootAddress"];
-            ViewBag.ServerRootAddress = root;
-            return View();
+            ViewBag.ServerRootAddress = root; 
+            
+            ActivityBanquetModel model = new ActivityBanquetModel();
+            model.JsSdkApiConfig = jsApiConfig;
+            model.BanquetWeChat = activityBanquet;
+            return View(model);
         }
     }
 }

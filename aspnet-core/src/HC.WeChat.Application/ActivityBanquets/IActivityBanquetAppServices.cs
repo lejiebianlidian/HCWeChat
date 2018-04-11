@@ -62,5 +62,7 @@ namespace HC.WeChat.ActivityBanquets
 
         Task<APIResultDto> SubmitActivityBanquetWeChatAsync(ActivityBanquetWeChatDto input);
 
+        Task<ActivityBanquetWeChatDto> GetActivityBanquetWeChatByFormIdAsync(Guid formId, int? tenantId);
+
     }
 }

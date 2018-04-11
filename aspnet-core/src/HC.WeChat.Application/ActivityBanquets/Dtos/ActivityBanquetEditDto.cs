@@ -92,9 +92,19 @@ namespace HC.WeChat.ActivityBanquets.Dtos
 
     }
 
-    [AutoMapTo(typeof(ActivityBanquet), typeof(ActivityDeliveryInfo))]
+    [AutoMap(typeof(ActivityBanquet), typeof(ActivityDeliveryInfo))]
     public class ActivityBanquetWeChatDto : WeChatInputDto
     {
+        /// <summary>
+        /// 宴席资料Id
+        /// </summary>
+        public Guid? BanquetId { get; set; }
+
+        /// <summary>
+        /// 推荐人信息Id
+        /// </summary>
+        public Guid? DeliveryId { get; set; }
+
         /// <summary>
         /// 外键 申请表单Id
         /// </summary>
@@ -112,9 +122,19 @@ namespace HC.WeChat.ActivityBanquets.Dtos
         /// <summary>
         /// 宴席时间
         /// </summary>
-        [Required]
         public DateTime BanquetTime { get; set; }
 
+        public string ShowBanquetTime
+        {
+            get
+            {
+                if (BanquetId.HasValue)
+                {
+                    return BanquetTime.ToString("yyyy-MM-dd");
+                }
+                return null;
+            }
+        }
 
         /// <summary>
         /// 宴席地点
@@ -152,6 +172,8 @@ namespace HC.WeChat.ActivityBanquets.Dtos
         public string Address { get; set; }
 
         public string DeliveryRemark { get; set; }
+
+        public string AppId { get; set; }
 
 
     }

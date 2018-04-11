@@ -22,6 +22,9 @@ using HC.WeChat.WeChatUsers.DomainServices;
 using HC.WeChat.WechatEnums;
 using HC.WeChat.ActivityForms;
 using HC.WeChat.ActivityFormLogs;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Senparc.Weixin.MP.AdvancedAPIs;
 
 namespace HC.WeChat.ActivityBanquets
 {
@@ -38,6 +41,8 @@ namespace HC.WeChat.ActivityBanquets
         private readonly IWeChatUserManager _wechatuserManager;
         private readonly IRepository<ActivityForm, Guid> _activityFormRepository;
         private readonly IRepository<ActivityFormLog, Guid> _activityFormLogRepository;
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IRepository<ActivityDeliveryInfo, Guid> _activityDeliveryInfoRepository;
 
         /// <summary>
         /// 构造函数
@@ -48,6 +53,8 @@ namespace HC.WeChat.ActivityBanquets
         , IWeChatUserManager wechatuserManager
         , IRepository<ActivityForm, Guid> activityFormRepository
         , IRepository<ActivityFormLog, Guid> activityFormLogRepository
+        , IHostingEnvironment hostingEnvironment
+        , IRepository<ActivityDeliveryInfo, Guid> activityDeliveryInfoRepository
         )
         {
             _activitybanquetRepository = activitybanquetRepository;
@@ -56,6 +63,8 @@ namespace HC.WeChat.ActivityBanquets
             _wechatuserManager = wechatuserManager;
             _activityFormRepository = activityFormRepository;
             _activityFormLogRepository = activityFormLogRepository;
+            _hostingEnvironment = hostingEnvironment;
+            _activityDeliveryInfoRepository = activityDeliveryInfoRepository;
         }
 
         /// <summary>
@@ -209,9 +218,43 @@ namespace HC.WeChat.ActivityBanquets
             await _activitybanquetRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        private string GetFullUpLoadPath()
+        {
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            var fileDire = webRootPath + "/upload/BanquetPhotos/";
+            if (!Directory.Exists(fileDire))
+            {
+                Directory.CreateDirectory(fileDire);
+            }
+            return fileDire + DateTime.Today.ToString("yyyyMM") + "/" + DateTime.Today.ToString("dd") + "/";
+        }
+
+        private async Task<string> DownloadWechatImgs(string imgs, string appId)
+        {
+            if (string.IsNullOrEmpty(imgs))
+            {
+                return string.Empty;
+            }
+            string localImgs = string.Empty;
+            string[] serverIds = imgs.Split(',').Where(s => !string.IsNullOrEmpty(s)).ToArray();
+            string fullUpLoadPath = GetFullUpLoadPath();
+            foreach (var id in serverIds)
+            {
+                var msg = await MediaApi.GetAsync(appId, id, fullUpLoadPath);
+                Logger.InfoFormat("serverId:{0} msg:{1}", id, msg);
+                localImgs = localImgs + "/upload/BanquetPhotos/" + id + ".jpg,";
+            }
+            if (localImgs.Length > 0)
+            {
+                localImgs = localImgs.Substring(0, localImgs.Length - 1);
+            }
+            return localImgs;
+        }
+
         [AbpAllowAnonymous]
         public async Task<APIResultDto> SubmitActivityBanquetWeChatAsync(ActivityBanquetWeChatDto input)
         {
+            Logger.InfoFormat("ActivityBanquetWeChatDto:{0}", Newtonsoft.Json.Linq.JObject.FromObject(input).ToString());
             var banquest = input.MapTo<ActivityBanquet>();
             var delivery = input.MapTo<ActivityDeliveryInfo>();//收货信息
 
@@ -227,8 +270,12 @@ namespace HC.WeChat.ActivityBanquets
                 return new APIResultDto() { Code = 702, Msg = "当前用户类型不支持" };
             }
 
+            //微信服务器下载图片
+            banquest.PhotoUrl = await DownloadWechatImgs(input.PhotoUrl, input.AppId);
+
             using (CurrentUnitOfWork.SetTenantId(input.TenantId))
             {
+                //1、保存宴席信息
                 var activityForm = await _activityFormRepository.GetAsync(input.ActivityFormId);
                 if (user.UserType == UserTypeEnum.零售客户)
                 {
@@ -257,8 +304,34 @@ namespace HC.WeChat.ActivityBanquets
 
                 banquest.UserName = user.UserName;
                 banquest.CreationTime = DateTime.Now;
+                if (input.BanquetId.HasValue)
+                {
+                    banquest.Id = input.BanquetId.Value;
+                    await _activitybanquetRepository.UpdateAsync(banquest);
+                }
+                else
+                {
+                    await _activitybanquetRepository.InsertAsync(banquest);
+                }
+                
+                //2、保存推荐人信息
+                delivery.Type = DeliveryUserTypeEnum.推荐人;
+                delivery.CreationTime = DateTime.Now;
 
-                await _activitybanquetRepository.InsertAsync(banquest);
+                if (input.DeliveryId.HasValue)
+                {
+                    //delivery.Id = input.DeliveryId.Value;
+                    var orgDelivery = await _activityDeliveryInfoRepository.GetAsync(input.DeliveryId.Value);
+                    orgDelivery.UserName = delivery.UserName;
+                    orgDelivery.Phone = delivery.Phone;
+                    orgDelivery.DeliveryRemark = delivery.DeliveryRemark;
+                    orgDelivery.Address = delivery.Address;
+                    await _activityDeliveryInfoRepository.UpdateAsync(orgDelivery);
+                }
+                else
+                {
+                    await _activityDeliveryInfoRepository.InsertAsync(delivery);
+                }
             }
 
             if (user.UserType == UserTypeEnum.零售客户)
@@ -270,6 +343,32 @@ namespace HC.WeChat.ActivityBanquets
                 return new APIResultDto() { Code = 0, Msg = "资料提交成功，待营销中心审核" };
             }
 
+        }
+
+        [AbpAllowAnonymous]
+        public async Task<ActivityBanquetWeChatDto> GetActivityBanquetWeChatByFormIdAsync(Guid formId, int? tenantId)
+        {
+            using (CurrentUnitOfWork.SetTenantId(tenantId))
+            {
+                var banquet = await _activitybanquetRepository.GetAll().Where(a => a.ActivityFormId == formId).FirstOrDefaultAsync();
+                var delivery = await _activityDeliveryInfoRepository.GetAll().Where(a => a.ActivityFormId == formId && a.Type == DeliveryUserTypeEnum.推荐人).FirstOrDefaultAsync();
+
+                var bwdto = banquet.MapTo<ActivityBanquetWeChatDto>();
+                if (bwdto != null)
+                {
+                    bwdto.BanquetId = banquet.Id;
+                    if (delivery != null)
+                    {
+                        bwdto.DeliveryId = delivery.Id;
+                        bwdto.Phone = delivery.Phone;
+                        bwdto.UserName = delivery.UserName;
+                        bwdto.Address = delivery.Address;
+                        bwdto.DeliveryRemark = delivery.DeliveryRemark;
+                    }
+                }
+             
+                return bwdto;
+            }
         }
     }
 }
