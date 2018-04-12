@@ -218,10 +218,9 @@ namespace HC.WeChat.ActivityBanquets
             await _activitybanquetRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
-        private string GetFullUpLoadPath()
+        private string GetUploadPath()
         {
-            string webRootPath = _hostingEnvironment.WebRootPath;
-            var fileDire = webRootPath + "/upload/BanquetPhotos/";
+            var fileDire =  "/upload/BanquetPhotos/";
             if (!Directory.Exists(fileDire))
             {
                 Directory.CreateDirectory(fileDire);
@@ -237,7 +236,8 @@ namespace HC.WeChat.ActivityBanquets
             }
             string localImgs = string.Empty;
             string[] serverIds = imgs.Split(',').Where(s => !string.IsNullOrEmpty(s)).ToArray();
-            string fullUpLoadPath = GetFullUpLoadPath();
+            string uploadPath = GetUploadPath();//获取相对路径
+            string fullUpLoadPath = _hostingEnvironment.WebRootPath + uploadPath;
             foreach (var id in serverIds)
             {
                 if (id.IndexOf("BanquetPhotos") > 0)
@@ -248,7 +248,7 @@ namespace HC.WeChat.ActivityBanquets
                 {
                     var msg = await MediaApi.GetAsync(appId, id, fullUpLoadPath);
                     Logger.InfoFormat("serverId:{0} msg:{1}", id, msg);
-                    localImgs = localImgs + "/upload/BanquetPhotos/" + id + ".jpg,";
+                    localImgs = localImgs + uploadPath + id + ".jpg,"; //保存相对路径
                 }
                
             }
