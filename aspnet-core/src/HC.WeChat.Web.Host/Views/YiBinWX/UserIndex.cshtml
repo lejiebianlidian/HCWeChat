@@ -61,16 +61,16 @@
                 </label>
 
                 <label class="fl ml20">@ViewBag.OutstandingCount</label>单
-                <a class="fr" style="color:yellowgreen" href="~/YiBinWX/ActivityFromApply?check=false">查询</a>
-                @*<a class="fr" style="color:yellowgreen" href="@Url.Action("ActivityFromApply","YiBinWX",new {check=false,openId=ViewBag.OpenId })">查询</a>*@
+                @*<a class="fr" style="color:yellowgreen" href="~/YiBinWX/ActivityFromApply?check=false">查询</a>*@
+                <a class="fr" style="color:yellowgreen" href="@Url.Action("ActivityFromApply","YiBinWX",new {check=false,openId=ViewBag.OpenId })">查询</a>
             </li>
             <li>
                 <label class="fl main_green">
                     已完成
                 </label>
                 <label class="fl ml20">@ViewBag.CompletedCount</label>单
-                <a class="fr" style="color:yellowgreen" href="~/YiBinWX/ActivityFromApply?check=true">查询</a>
-                @*<a class="fr" style="color:yellowgreen" href="@Url.Action("ActivityFromApply","YiBinWX",new {check=true,openId=ViewBag.OpenId })">查询</a>*@
+                @*<a class="fr" style="color:yellowgreen" href="~/YiBinWX/ActivityFromApply?check=true">查询</a>*@
+                <a class="fr" style="color:yellowgreen" href="@Url.Action("ActivityFromApply","YiBinWX",new {check=true,openId=ViewBag.OpenId })">查询</a>
             </li>
         </ul>
         @*<div class="advise_warp">

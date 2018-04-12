@@ -245,7 +245,7 @@ namespace HC.WeChat.Web.Host.Controllers
         public IActionResult ActivityFromApply(bool check,string openId)
         {
             var tenantId = GetTenantId();
-            openId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
+            //openId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
             var user = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
             var result =  _activityFormAppService.GetActivityFormList(check,user); 
             if (check) {
@@ -267,7 +267,7 @@ namespace HC.WeChat.Web.Host.Controllers
         public IActionResult ActivityFromApplyDetail(Guid id,string openId)
         {
             var entity = _activityFormAppService.GetSingleFormDto(id);
-            openId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
+            //openId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
             var tenantId = GetTenantId();
             var user = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
             var banquent =_activityBanquetAppService.GetActivityBanquetByFormIdWechatAsync(entity.Id).Result;
