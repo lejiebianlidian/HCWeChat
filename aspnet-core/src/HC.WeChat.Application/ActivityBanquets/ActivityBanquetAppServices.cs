@@ -378,6 +378,13 @@ namespace HC.WeChat.ActivityBanquets
                 return bwdto;
             }
         }
+        [AbpAllowAnonymous]
+        public async Task<ActivityBanquetListDto> GetActivityBanquetByFormIdWechatAsync(Guid id)
+        {
+            var entity = await _activitybanquetRepository.GetAll().Where(a => a.ActivityFormId == id).FirstOrDefaultAsync();
+
+            return entity.MapTo<ActivityBanquetListDto>();
+        }
     }
 }
 

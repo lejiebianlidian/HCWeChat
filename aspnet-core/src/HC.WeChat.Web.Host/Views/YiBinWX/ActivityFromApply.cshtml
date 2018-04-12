@@ -4,47 +4,101 @@
 }
 
 <!DOCTYPE html>
-
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>活动申请表</title>
-    <link rel="stylesheet" href="static/css/base.css" />
-    <link rel="stylesheet" href="static/css/commons.css" />
-    <link rel="stylesheet" href="static/css/tobacco.css" />
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>活动申请列表</title>
+    <link href="~/YiBinWX/static/css/base.css" rel="stylesheet" />
+    <link href="~/YiBinWX/static/css/commons.css" rel="stylesheet" />
+    <link href="~/YiBinWX/static/css/layer.css" rel="stylesheet" />
+    <link href="~/YiBinWX/static/css/tobacco.css" rel="stylesheet" />
+    <link href="~/YiBinWX/static/css/swiper.3.1.2.min.css" rel="stylesheet" />
+    <style>
+        .swiper-wrapper {
+            padding: 10px;
+        }
+
+        .swiper-slide {
+            background: #cacaca none repeat scroll 0 0;
+            border-radius: 8px;
+            color: #fff;
+            font-family: "幼圆";
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            /*padding: 1px 4px;*/
+        }
+
+        .slide-active {
+            background: #3cb0e4;
+        }
+    </style>
 </head>
-<body>
-    <div class="all_width mt10">
-        <div class="all_width">
-            <div class="header bg_green tc">
-                @ViewBag.activityTitle
-            </div>
-            <!--信息列表-->
-
-            <ul class="all_width info_list">
-
-                @foreach (var item in Model.ActivityFormListDtos)
-                {
-                    <li onclick="javascript:window.location.href='@Url.Action("ActivityFromApplyDetail", "YiBinWX", new { id = item.Id, openId = Model.OpenId })'">
-                        <p class="fl hot_news">单号：@item.FormCode 状态：@item.StatusName</p>
-                        <img src="static/img/trend/more.png" class="more_icon fr" />
-                    </li>
-                }
-           </ul>
+<body style="background:#cce8ec;">
+    <!--页面整体-->
+    <div class="all_width">
+        <div class="header bg_green tc">
+            @ViewBag.activityTitle
         </div>
+        <!--列表-->
+        <ul class="all_width tobacco_list mt10">
+           @foreach (var item in Model.ActivityFormListDtos)
+            {
+            <li style="width:90%;padding:15px 0px 15px 0px" onclick="javascript:window.location.href='@Url.Action("ActivityFromApplyDetail", "YiBinWX", new { id = item.Id, openId = Model.OpenId })'">
+                <div class="fl ml20 tobacco_detail">
+                    <span style="width:200px;" class="tobacco_name">YA981451150542766080</span>
+                    <!--参数-->
+                    <ul class="tobacco_param">
+                        <li>
+                            规格：<span>@item.GoodsSpecification</span>
+                        </li>
+                        <li>
+                            数量：<span>@item.Num</span>条
+                        </li>
+                        <li>
+                            状态：<span>@item.StatusName</span>
+                        </li>
+                        <li>
+                            申请日期：<span>@item.CreationTime.ToString("yyyy-MM-dd")</span>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            }
+        </ul>
+       
     </div>
+    <!--搜索框-->
+    @*<div class="search_layer none">
+        <input type="text" class="fl layer_entry" />
+        <img class="fr search_icon" src="static/img/brand/search_icon.png" />
+    </div>*@
+    <script src="~/YiBinWX/static/js/jquery.min.js"></script>
+    <script src="~/YiBinWX/static/js/swiper.3.1.2.min.js"></script>
+    <script src="~/YiBinWX/static/js/layer.js"></script>
+
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+            slidesPerView: 7,
+            paginationClickable: true,
+            spaceBetween: 12,
+        });
+        $(".swiper-wrapper>div").click(function () {
+            $(this).addClass("slide-active").siblings().removeClass("slide-active");
+        });
+        $(".search_result").click(function () {
+            layer.open({
+                type: 1,
+                area: ["100%", ""],
+                title: "",
+                shade: 0.8,
+                shadeClose: true,
+                content: $('.search_layer')
+            });
+        });
+
+    </script>
 </body>
 </html>
-<script type="text/javascript" src="static/js/jquery.min.js"></script>
-<script type="text/javascript">
-
-    function goDetail(id) {
-        window.location.href = '/YiBinWX/ActivityFromApplyDetail?id=' + id;
-    }
-    //$('ul').on('click', 'li', function () {
-    //    var id = $(this).attr("data-id");
-    //    window.location.href = "/YiBinWX/ActivityFromApply/id";
-    @*<a class="large_btn ok mt30" href="@Url.Action("ActivityFromApplyDetail", "YiBinWX", new { id = item.Id })">单号：@item.Id</a>*@
-    //})
-
-</script>

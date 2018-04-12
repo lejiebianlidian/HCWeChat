@@ -64,5 +64,12 @@ namespace HC.WeChat.ActivityBanquets
 
         Task<ActivityBanquetWeChatDto> GetActivityBanquetWeChatByFormIdAsync(Guid formId, int? tenantId);
 
+        /// <summary>
+        /// 根据活动申请id获取宴席信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<ActivityBanquetListDto> GetActivityBanquetByFormIdWechatAsync(Guid id);
+
     }
 }
