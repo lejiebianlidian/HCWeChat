@@ -133,8 +133,10 @@
                 alert("上传图片不能超过8张");
                 return;
             }
+            var clen = $("img[name='photo']").length;
+            var mlen = 8 - clen;
             wx.chooseImage({
-                count: 8 - wximgIds.length, // 默认9
+                count: mlen, // 默认9
                 sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                 sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                 success: function (res) {

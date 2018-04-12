@@ -43,6 +43,7 @@ export class ChangePasswordComponent extends AppComponentBase implements OnInit 
 
     show(): void {
         this.reset();
+        this.changePassword = new ChangePasswordDto();
         this.modalVisible = true;
          //对isDisablec做初始化
          this.isDisablec = false;

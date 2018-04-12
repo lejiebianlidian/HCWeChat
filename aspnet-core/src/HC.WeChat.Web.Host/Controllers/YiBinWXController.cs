@@ -242,7 +242,7 @@ namespace HC.WeChat.Web.Host.Controllers
         /// 活动申请单
         /// </summary>
         /// <returns></returns>
-        public IActionResult ActivityFromApply(bool check,string openId)
+        public IActionResult ActivityFromApply(bool check, string openId)
         {
             var tenantId = GetTenantId();
             //openId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
