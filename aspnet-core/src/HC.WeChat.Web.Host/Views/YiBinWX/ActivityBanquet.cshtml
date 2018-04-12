@@ -70,7 +70,10 @@
                 <!--上传图片-->
                 <div class="file_upload pr">
                     <input type="hidden" id="Images" name="Images" value="" />
-
+                    @foreach (var url in Model.PhotoUrls)
+                    {
+                        <img name="photo" src="@(ViewBag.ServerRootAddress + url)" orgsrc="@url" />
+                    }
                     @*<input id="Photos" name="Photos" multiple type="file"  class="none pa">*@
                     <img id="add" src="~/YiBinWX/static/img/advise/add.png">
                 </div>
@@ -145,8 +148,9 @@
 
                         //wxlocalIds.push(localIds[i]);
 
-                        var img = $('<img name="photo"/>');
+                        var img = $('<img name="photo" />');
                         img[0].src = localIds[i];
+                        //$(img[0]).attr('orgsrc', localIds[i]);
                         $("#add").before(img);
                         //img.click(function (e) {
                             //deletId($(this).attr("src"));
@@ -162,7 +166,7 @@
                     syncUpload(localIds);
                 }
             });
-        }    
+        }
 
         var deletId = function (localId) {
             for (var i = 0; i < wximgIds.length; i++) {
@@ -260,7 +264,7 @@
         });
     </script>
     <script type="text/javascript">
-        $(function () { 
+        $(function () {
             var userType = $("#hidUserType").val();
             var status = $("#hidActivityFormStatus").val();
             if (userType == 1) {
@@ -282,7 +286,7 @@
                     if (banquetId == "") {
                         $("#btnSave").show();
                         $("#btnAudit").hide();
-                    } else { 
+                    } else {
                         $("#btnSave").hide();
                         $("#btnAudit").show();
                     }
@@ -372,13 +376,21 @@
                 return;
             }
 
-            if (wximgIds.length < 4) {
+            var imgobjs = $("img[name='photo']");
+
+            if (imgobjs.length < 4) {
                 alert("上传图片不能少于4张！");
                 return;
             }
 
             //img 回传
             var imgs = '';
+            $(imgobjs).each(function () {
+                if ($(this).attr('orgsrc') != '' && $(this).attr('orgsrc') != null && $(this).attr('orgsrc') != undefined) {
+                    imgs = imgs + $(this).attr('orgsrc') + ',';
+                }
+            });
+
             for (var i = 0; i < wximgIds.length; i++) {
                 imgs = imgs + wximgIds[i].sid + ',';
             }

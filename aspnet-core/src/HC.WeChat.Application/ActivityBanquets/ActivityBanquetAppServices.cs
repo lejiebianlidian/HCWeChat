@@ -240,9 +240,17 @@ namespace HC.WeChat.ActivityBanquets
             string fullUpLoadPath = GetFullUpLoadPath();
             foreach (var id in serverIds)
             {
-                var msg = await MediaApi.GetAsync(appId, id, fullUpLoadPath);
-                Logger.InfoFormat("serverId:{0} msg:{1}", id, msg);
-                localImgs = localImgs + "/upload/BanquetPhotos/" + id + ".jpg,";
+                if (id.IndexOf("BanquetPhotos") > 0)
+                {
+                    localImgs = localImgs + id + ",";
+                }
+                else
+                {
+                    var msg = await MediaApi.GetAsync(appId, id, fullUpLoadPath);
+                    Logger.InfoFormat("serverId:{0} msg:{1}", id, msg);
+                    localImgs = localImgs + "/upload/BanquetPhotos/" + id + ".jpg,";
+                }
+               
             }
             if (localImgs.Length > 0)
             {
