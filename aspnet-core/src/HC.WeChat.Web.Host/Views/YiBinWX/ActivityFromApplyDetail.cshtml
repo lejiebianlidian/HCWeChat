@@ -81,7 +81,7 @@
         <input type="hidden" id="hidStatus" value="@ViewBag.Status" />
         <input type="hidden" id="hidUserType" value="@ViewBag.UserType" />
     </div>
-    <div class="width_90 mt30 mb20">
+    <div class="width_90 mt30 mb20" id="devButton">
         @*<input type="button" id="updateBtn" style="display:none" class="middel_btn fr ok" value="修改商品信息" onclick="javascript:window.location.href='@Url.Action("ActivityGoods", "YiBinWX", new { id = Model.Id })'" />*@
         <input type="button" id="cancelBtn" style="display:none" class="middel_btn fl cancel" value="取消申请" onclick="StatusCheck(5)"/>
         <input type="button" id="firstCheckBtn" style="display:none" class="middel_btn fr ok" value="初审通过" onclick="StatusCheck(2)" />
@@ -109,9 +109,13 @@
                     if (status == 1) {
                         $("#cancelBtn").show();
                         $("#returnCheckBtn").hide();
+                        $("#cancelBtn").removeClass("fl");
+                        $("#devButton").css({ 'text-align': 'center' });
                     } else if (status == 2) {
                         $("#cancelBtn").hide();
                         $("#returnCheckBtn").show();
+                        $("#returnCheckBtn").removeClass("fl");
+                        $("#devButton").css({ 'text-align': 'center' });
                     } else if (status == 5) {
                         $("#cancelBtn").hide();
                         $("#returnCheckBtn").hide();
@@ -152,6 +156,8 @@
                         $("#marketingBtn").hide();
                         $("#returnCheckBtn").hide();
                         $("#cancelBtn").show();
+                        $("#cancelBtn").removeClass("fl");
+                        $("#devButton").css({ 'text-align': 'center' });
                     }
                 }
             //}
