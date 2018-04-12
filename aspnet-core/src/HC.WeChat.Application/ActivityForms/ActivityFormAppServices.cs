@@ -321,7 +321,7 @@ namespace HC.WeChat.ActivityForms
                         && a.CreationUser == user.UserName).Count();
                     if (rcount >= activity.RUnfinished)
                     {
-                        return new APIResultDto() { Code = 703, Msg = "未完成单数已超过零售户限制，不能再申请" };
+                        return new APIResultDto() { Code = 703, Msg = string.Format("零售客户未完成单数不能超过{0}单，不能再申请", activity.RUnfinished) };
                     }
 
                     form.RetailerId = user.UserId.Value;
@@ -343,7 +343,7 @@ namespace HC.WeChat.ActivityForms
 
                     if (mcount >= activity.MUnfinished)
                     {
-                        return new APIResultDto() { Code = 704, Msg = "未完成单数已超过客户经理限制，不能再申请" };
+                        return new APIResultDto() { Code = 704, Msg = string.Format("客户经理未完成单数不能超过{0}单，不能再申请", activity.MUnfinished) };
                     }
                     form.ManagerName = user.UserName;
                     form.ManagerId = user.UserId;

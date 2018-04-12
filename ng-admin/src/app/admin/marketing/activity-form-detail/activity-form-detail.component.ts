@@ -15,7 +15,17 @@ import { AppSessionService } from '@shared/session/app-session.service';
 
 @Component({
     selector: 'activity-form-detail',
-    templateUrl: './activity-form-detail.component.html'
+    templateUrl: './activity-form-detail.component.html',
+    styles: [`
+  :host ::ng-deep i {
+    font-size: 32px;
+    color: #999;
+  }
+  :host ::ng-deep .ant-upload-text {
+    margin-top: 8px;
+    color: #666;
+  }
+  `]
 })
 export class ActivityFormDetailComponent extends AppComponentBase implements OnInit {
 
@@ -32,9 +42,15 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
     delivery: ActivityDeliveryInfoDto;//消费者
     rdelivery: ActivityDeliveryInfoDto;//推荐人
 
-    list: any[] = [];
+    //list: any[] = [];
     loading = false;
     ismcenter = false;//是否是营销中心
+
+    previewImage = '';
+    previewVisible = false;
+
+    imgWidth: number = 750;
+    photoUrls: string[];
 
     constructor(injector: Injector,
         public msg: NzMessageService, private http: _HttpClient,
@@ -57,6 +73,11 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         this.getData();
     }
 
+    handlePreview = (url: string) => {
+        this.previewImage = url;
+        this.previewVisible = true;
+      }
+
     getData() {
         //表单
         this.getFormData();
@@ -64,22 +85,25 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         //宴席信息
         this.getBanquetData();
 
-        //this.loading = true;
-        //this.http.get('/api/list', { count: 4 }).subscribe((res: any) => {
-            //this.list = this.list.concat(res).map(item => {
-            //    return item;
-            //});
+        /*this.loading = true;
+        this.http.get('/api/list', { count: 4 }).subscribe((res: any) => {
+            this.list = this.list.concat(res).map(item => {
+                return item;
+            });
             //this.list = [];
-            //this.loading = false;
-        //});
+            this.loading = false;
+        });*/
 
         //收货信息
         this.getDeliveryData();
     }
 
     getBanquetData() {
+        this.loading = true;
         this.activityBanquetService.getByFormId(this.formId).subscribe(result => {
             this.banquet = result;
+            this.photoUrls = this.banquet.getPhotoUrls();
+            this.loading = false;
         });
     }
 
