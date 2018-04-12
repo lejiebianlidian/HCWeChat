@@ -545,8 +545,8 @@ namespace HC.WeChat.ActivityForms
             using (CurrentUnitOfWork.SetTenantId(tenantId))
             {
                 var query = _activityformRepository.GetAll()
-                .WhereIf(user.UserType!= UserTypeEnum.客户经理, a => a.ManagerId == user.UserId)
-                .WhereIf(user.UserType != UserTypeEnum.零售客户, a => a.CreationId == user.UserId)
+                .WhereIf(user.UserType == UserTypeEnum.客户经理, a => a.ManagerId == user.UserId)
+                .WhereIf(user.UserType == UserTypeEnum.零售客户, a => a.CreationId == user.UserId)
                 .WhereIf(check, a => a.Status == FormStatusEnum.营销中心已审核)
                 .WhereIf(!check, a => a.Status == FormStatusEnum.初审通过 || a.Status == FormStatusEnum.提交申请 || a.Status == FormStatusEnum.资料回传已审核)
                 .OrderBy(a => a.CreationTime);
@@ -575,6 +575,7 @@ namespace HC.WeChat.ActivityForms
         /// <param name="input"></param>
         /// <param name="tenantId"></param>
         /// <returns></returns>
+        [AbpAllowAnonymous]
         public async Task<APIResultDto> ChangeActivityFormStatusAsync(ActivityFromStatusDtoss input)
         {
             using (CurrentUnitOfWork.SetTenantId(input.TenantId))

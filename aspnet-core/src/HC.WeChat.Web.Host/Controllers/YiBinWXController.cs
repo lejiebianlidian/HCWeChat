@@ -28,7 +28,6 @@ using Abp.Application.Services.Dto;
 using HC.WeChat.ActivityDeliveryInfos.Dtos;
 using Senparc.Weixin.MP.Helpers;
 using Microsoft.AspNetCore.Http;
-using HC.WeChat.ActivityBanquets;
 
 namespace HC.WeChat.Web.Host.Controllers
 {
@@ -285,7 +284,8 @@ namespace HC.WeChat.Web.Host.Controllers
             }
             ViewBag.BanquentId = banquent== null ? Guid.Empty : banquent.Id;
             ViewBag.DeliveryId = delivery == null ? Guid.Empty : delivery.Id;
-            ViewBag.UserType = user.UserType;
+            ViewBag.UserType =(int)user.UserType;
+            ViewBag.Status = (int)entity.Status;
             ViewBag.OpenId = openId;
             ViewBag.TenantId = tenantId;
             var root = _appConfiguration["App:ServerRootAddress"];
