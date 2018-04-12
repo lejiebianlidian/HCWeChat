@@ -247,12 +247,12 @@ namespace HC.WeChat.Web.Host.Controllers
             var tenantId = GetTenantId();
             //openId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
             var user = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
-            var result =  _activityFormAppService.GetActivityFormList(check,user); 
+            var result =  _activityFormAppService.GetActivityFormList(check,user).Result; 
             if (check) {
-                ViewBag.activityTitle = "已完结办事用烟列表";
+                ViewBag.activityTitle = "已完成活动申请单列表";
             }
             else {
-                ViewBag.activityTitle = "未完结办事用烟列表";
+                ViewBag.activityTitle = "未完成活动申请单列表";
             }
             result.OpenId = openId;
             return View(result);
@@ -337,20 +337,6 @@ namespace HC.WeChat.Web.Host.Controllers
             var entity = _activityFormAppService.GetSingleFormDto(id);
             var goodsList = _activityGoodsAppService.GetActivityGoodsByActivityId(entity.ActivityId).Result;
             ViewBag.GoodsList = goodsList;
-            return View();
-        }
-
-        /// <summary>
-        /// 取消，初审通过
-        /// </summary>
-        /// <param name="input">状态，审批意见，申请单id</param>
-        /// <param name="openId">openId</param>
-        /// <returns></returns>
-        public IActionResult SaveStatus(ActivityFormStatusDto input,string openId )
-        {
-            var tenantId = GetTenantId();
-            var user = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
-
             return View();
         }
     }

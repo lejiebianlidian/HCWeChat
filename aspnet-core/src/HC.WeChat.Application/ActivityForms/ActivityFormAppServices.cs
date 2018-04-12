@@ -540,20 +540,27 @@ namespace HC.WeChat.ActivityForms
         /// </summary>
         /// <returns></returns>
         [AbpAllowAnonymous]
-        public ActivityFormForWechat GetActivityFormList(bool check, WeChatUserListDto user)
+        public async Task<ActivityFormForWechat> GetActivityFormList(bool check, WeChatUserListDto user)
         {
             using (CurrentUnitOfWork.SetTenantId(user.TenantId))
             {
                 var query = _activityformRepository.GetAll()
                 .WhereIf(user.UserType == UserTypeEnum.客户经理, a => a.ManagerId == user.UserId)
                 .WhereIf(user.UserType == UserTypeEnum.零售客户, a => a.CreationId == user.UserId)
-                .WhereIf(check, a => a.Status == FormStatusEnum.营销中心已审核||a.Status== FormStatusEnum.拒绝)
+                .WhereIf(check, a => a.Status == FormStatusEnum.营销中心已审核 || a.Status == FormStatusEnum.拒绝)
                 .WhereIf(!check, a => a.Status == FormStatusEnum.初审通过 || a.Status == FormStatusEnum.提交申请 || a.Status == FormStatusEnum.资料回传已审核)
-                .OrderBy(a => a.CreationTime);
+                .OrderByDescending(a => a.CreationTime);
                 ActivityFormForWechat result = new ActivityFormForWechat();
-                result.ActivityFormListDtos = query.MapTo<List<ActivityFormListDto>>();
-                result.Count = query.Count();
-                return result;
+                if (check)
+                {
+                    result.ActivityFormListDtos = query.Take(30).MapTo<List<ActivityFormListDto>>();
+                }
+                else
+                {
+                    result.ActivityFormListDtos = query.MapTo<List<ActivityFormListDto>>();
+                }
+                result.Count = await query.CountAsync();
+                return result.MapTo<ActivityFormForWechat>();
             }
         }
 
