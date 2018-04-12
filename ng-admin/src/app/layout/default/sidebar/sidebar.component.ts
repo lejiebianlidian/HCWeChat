@@ -8,22 +8,26 @@ import { AppAuthService } from '@shared/auth/app-auth.service';
 import { ChangePasswordComponent } from '../change-password/change-password.component';
 
 @Component({
-  selector   : 'app-sidebar',
+  selector: 'app-sidebar',
   templateUrl: './sidebar.component.html'
 })
 export class SidebarComponent extends AppComponentBase {
-    constructor(injector: Injector, public settings: SettingsService, public msgSrv: NzMessageService, private _authService: AppAuthService) {
-      super(injector);
-      //alert(JSON.stringify(settings.user))
-    }
+  constructor(injector: Injector, public settings: SettingsService, public msgSrv: NzMessageService, private _authService: AppAuthService) {
+    super(injector);
+    //alert(JSON.stringify(settings.user))
+  }
 
-    @ViewChild('changePasswordModal') changePasswordModal: ChangePasswordComponent;
+  @ViewChild('changePasswordModal') changePasswordModal: ChangePasswordComponent;
 
-    logout(): void {
-      this._authService.logout();
-    }
+  logout(): void {
+    this._authService.logout();
+  }
 
-    changePassword(): void {
-      this.changePasswordModal.show();
-    }
+  changePassword(): void {
+    this.changePasswordModal.show();
+  }
+
+  callBack(): void {
+
+  }
 }
