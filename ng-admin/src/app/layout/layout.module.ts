@@ -17,11 +17,14 @@ import { HeaderUserComponent } from './default/header/components/user.component'
 //集成abp 2018-1-4
 import { AppAuthService } from '@shared/auth/app-auth.service';
 
+import { ChangePasswordComponent } from './default/change-password/change-password.component';
+
 const COMPONENTS = [
     LayoutDefaultComponent,
     LayoutFullScreenComponent,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    ChangePasswordComponent
 ];
 
 const HEADERCOMPONENTS = [

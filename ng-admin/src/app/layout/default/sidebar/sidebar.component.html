@@ -8,8 +8,10 @@
             </div>
         </div>
         <ul nz-menu>
+            <li nz-menu-item (click)="changePassword()">修改密码</li>
             <li nz-menu-item (click)="logout()">{{ 'logout' | translate }}</li>
         </ul>
     </nz-dropdown>
     <sidebar-nav class="d-block py-lg"></sidebar-nav>
 </div>
+<change-password-modal #changePasswordModal (modalSave)="callBack()"></change-password-modal>
