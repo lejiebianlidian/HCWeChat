@@ -244,12 +244,12 @@ namespace HC.WeChat.Web.Host.Controllers
             var tenantId = GetTenantId();
             openId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
             var user = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
-            var result =  _activityFormAppService.GetActivityFormList(check,user,tenantId); 
+            var result =  _activityFormAppService.GetActivityFormList(check,user); 
             if (check) {
-                ViewBag.activityTitle = "未完结办事用烟列表";
+                ViewBag.activityTitle = "已完结办事用烟列表";
             }
             else {
-                ViewBag.activityTitle = "已完结办事用烟列表";
+                ViewBag.activityTitle = "未完结办事用烟列表";
             }
             result.OpenId = openId;
             return View(result);
@@ -267,23 +267,21 @@ namespace HC.WeChat.Web.Host.Controllers
             openId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
             var tenantId = GetTenantId();
             var user = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
-            //var ids = entity.MapTo<EntityDto<Guid>>();
-            EntityDto<Guid> ids=new EntityDto<Guid>{ Id= entity.Id};
-            var banquent =_activityBanquetAppService.GetActivityBanquetByFormIdAsync(ids).Result;
-            var deliveryList = _activityDeliveryInfoAppService.GetActivityDeliveryInfoByFormIdAsync(ids).Result;
-            ActivityDeliveryInfoListDto delivery = new ActivityDeliveryInfoListDto();
-            if (deliveryList!= null)
-            {
-                foreach (var item in deliveryList)
-                {
-                    if (item.Type == DeliveryUserTypeEnum.推荐人)
-                    {
-                        delivery = item;
-                    }
-                }
-            }
-            ViewBag.BanquentId = banquent== null ? Guid.Empty : banquent.Id;
-            ViewBag.DeliveryId = delivery == null ? Guid.Empty : delivery.Id;
+            var banquent =_activityBanquetAppService.GetActivityBanquetByFormIdWechatAsync(entity.Id).Result;
+            //var deliveryList = _activityDeliveryInfoAppService.GetActivityDeliveryInfoByFormIdAsync(entity.Id).Result;
+            //ActivityDeliveryInfoListDto delivery = new ActivityDeliveryInfoListDto();
+            //if (deliveryList!= null)
+            //{
+            //    foreach (var item in deliveryList)
+            //    {
+            //        if (item.Type == DeliveryUserTypeEnum.推荐人)
+            //        {
+            //            delivery = item;
+            //        }
+            //    }
+            //}
+            ViewBag.IsBanquent = banquent== null ? false :  true;
+            //ViewBag.DeliveryId = delivery == null ? Guid.Empty : delivery.Id;
             ViewBag.UserType =(int)user.UserType;
             ViewBag.Status = (int)entity.Status;
             ViewBag.OpenId = openId;

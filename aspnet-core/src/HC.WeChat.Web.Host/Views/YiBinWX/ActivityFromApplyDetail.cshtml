@@ -55,13 +55,13 @@
                 <label class="fl main_green">
                     申请人
                 </label>
-                <label class="fl  ml20">@Model.CreationUser</label>
+                <label class="fl  ml20">&nbsp;&nbsp;&nbsp;@Model.CreationUser</label>
             </li>
             <li>
                 <label class="fl main_green">
                     申请时间
                 </label>
-                <label class="fl  ml20">@Model.CreationTime</label>
+                <label class="fl  ml20">@Model.CreationTime.ToString("yyyy-MM-dd")</label>
             </li>
             <li>
                 <label class="fl main_green">
@@ -69,12 +69,12 @@
                 </label>
                 <label class="fl  ml20">@Model.Reason</label>
             </li>
-            <li style="display:none" id="message">
+            <li style="display:none;height:90px;" id="message" class="advise_warp">
                 <label class="fl main_green">
                     审批意见
                 </label>
                 @*<label class="fl  ml20"></label>*@
-                <textarea class="fl  ml20 contain_entry" placeholder="请输入审批意见"></textarea>
+                <textarea id="checkMessage"style="width:66%;height:100%;" class="fl  ml20 contain_entry" placeholder="请输入审批意见"></textarea>
             </li>
         </ul>
         <input type="hidden" id="hidOpenId" value="@ViewBag.OpenId" />
@@ -87,6 +87,8 @@
         <input type="button" id="firstCheckBtn" style="display:none" class="middel_btn fr ok" value="初审通过" onclick="StatusCheck(2)" />
         <input type="button" id="returnCheckBtn" style="display:none" class="middel_btn fr ok" value="资料完善" onclick="javascript:window.location.href='@Url.Action("ActivityBanquet", "YiBinWX", new { actFormId = Model.Id,actFormStatus=ViewBag.Status, openid = ViewBag.OpenId , userType = ViewBag.UserType })'" />
         <input type="button" id="marketingBtn" style="display:none" class="middel_btn fr ok" value="资料回传审核" onclick="javascript:window.location.href='@Url.Action("ActivityBanquet", "YiBinWX", new { actFormId = Model.Id,actFormStatus=ViewBag.Status, openid = ViewBag.OpenId, userType= ViewBag.UserType })'" />
+        <input type="button" id="lookOverBtn" style="display:none" class="middel_btn fr ok" value="查看资料" onclick="javascript:window.location.href='@Url.Action("ActivityBanquet", "YiBinWX", new { actFormId = Model.Id,actFormStatus=ViewBag.Status, openid = ViewBag.OpenId, userType= ViewBag.UserType })'" />
+
     </div>
     <script type="text/javascript" src="~/YiBinWX/static/js/jquery.min.js"></script>
     <script type="text/javascript">
@@ -96,70 +98,101 @@
             //用户类型
             var userType = $("#hidUserType").val();
             //宴席id
-            var banquentId ='@ViewBag.BanquentId';
+            var isBanquent ='@ViewBag.IsBanquent';
             //推荐人信息id
-            var deliveryId='@ViewBag.DeliveryId';
-            //登录用户为零售户时
-            if (userType==1) {
-                if (status==1) {
-                    $("#cancelBtn").show();
-                } else if (status==2) {
-                    $("#returnCheckBtn").show();
-                }
-            }
-            //登录用户为客户经理时
-            else if (userType==2) {
-                $("#cancelBtn").show();
-
-                //初审通过时
-                if (status==2) {
-                    console.log(banquentId);
-                    if (banquentId!="00000000-0000-0000-0000-000000000000" && deliveryId != "00000000-0000-0000-0000-000000000000") {
-                        $("#marketingBtn").show();
+            var deliveryId = '@ViewBag.DeliveryId';
+            //if (status == 6) {
+            //    $("#lookOverBtn").show();
+            //} else {
+                //登录用户为零售户时
+                if (userType == 1) {
+                    if (status == 1) {
+                        $("#cancelBtn").show();
                         $("#returnCheckBtn").hide();
-                    } else {
-                        $("#marketingBtn").hide();
+                    } else if (status == 2) {
+                        $("#cancelBtn").hide();
                         $("#returnCheckBtn").show();
+                    } else if (status == 5) {
+                        $("#cancelBtn").hide();
+                        $("#returnCheckBtn").hide();
                     }
-                }//提交申请时，还未进行初审时
-                else if (status==1) {
-                    $("#firstCheckBtn").show();
-                    $("#message").show();
                 }
-            }
+                //登录用户为客户经理时
+                else if (userType == 2) {
+                    $("#cancelBtn").show();
+
+                    //初审通过时
+                    if (status == 2) {
+                        if (isBanquent) {
+                            $("#marketingBtn").show();
+                            $("#returnCheckBtn").hide();
+                            $("#firstCheckBtn").hide();
+                            $("#message").hide();
+                        } else {
+                            $("#marketingBtn").hide();
+                            $("#returnCheckBtn").show();
+                            $("#firstCheckBtn").hide();
+                            $("#message").hide();
+                        }
+                    }//提交申请时，还未进行初审时
+                    else if (status == 1) {
+                        $("#firstCheckBtn").show();
+                        $("#message").show();
+                        $("#marketingBtn").hide();
+                        $("#returnCheckBtn").hide();
+                    } else if (status == 5) {
+                        $("#firstCheckBtn").hide();
+                        $("#message").hide();
+                        $("#marketingBtn").hide();
+                        $("#returnCheckBtn").hide();
+                        $("#cancelBtn").hide();
+                    } else if (status == 3) {
+                        $("#firstCheckBtn").hide();
+                        $("#message").hide();
+                        $("#marketingBtn").hide();
+                        $("#returnCheckBtn").hide();
+                        $("#cancelBtn").show();
+                    }
+                }
+            //}
         });
         //取消、初审通过按钮
         function StatusCheck(status) {
-            var para = {};
-            if (status = 2) {
-                para.Opinion = $("#message").val();
-            }
-            para.Status = status;
-            para.Id = '@Model.Id';
-            para.OpenId = $("#hidOpenId").val();
-            para.TenantId ="@ViewBag.TenantId" ;
-            var reqUrl = "@ViewBag.ServerRootAddress" + "/api/services/app/ActivityForm/ChangeActivityFormStatusAsync";
-            $.ajax({
-                url: reqUrl,
-                type: "POST",
-                dataType: "JSON",
-                contenType: "application/json;charset=utf-8",
-                data: { "input": JSON.stringify(para)} ,
-                success: function (data) {
-                    if (data.success) {
-                        if (data.result.code == 0) {
-                            alert(data.result.msg);
-                        } else {
-                            alert(data.result.msg);
-                        }
-                    } else {
-                        alert("保存异常！");
-                    }
-                },
-                error: function () {
-                    alert("提交失败！");
+            var content = status==2?"是否初审通过？":"是否取消申请？"
+            if (confirm(content)) {
+                var para = {};
+                if (status == 2) {
+                    para.Opinion = $("#checkMessage").val();
                 }
-            });
+                para.Status = status;
+                para.Id = '@Model.Id';
+                para.OpenId = $("#hidOpenId").val();
+                para.TenantId = "@ViewBag.TenantId";
+                var reqUrl = "@ViewBag.ServerRootAddress" + "/api/services/app/ActivityForm/ChangeActivityFormStatusWeChatAsync";
+                $.ajax({
+                    url: reqUrl,
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(para),
+                    success: function (data) {
+                        if (data.success) {
+                            if (data.result.code == 0) {
+                                alert(data.result.msg);
+                                location.reload();
+                                parent.location.reload();
+                            } else {
+                                alert(data.result.msg);
+                            }
+                        } else {
+                            alert("保存异常！");
+                        }
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
+            }
         }
     </script>
 </body>

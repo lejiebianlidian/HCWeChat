@@ -26,9 +26,16 @@
         </div>
         <!--个人信息功能链接-->
         <ul class="personal_link all_width">
+            <li style=" margin-bottom:0px; padding-bottom:0px;">
+                <div style="color:darkgray">个人信息</div>
+                <hr style="color:darkgray; margin-bottom:0px;" />
+            </li>
+        </ul>
+
+        <ul class="personal_link all_width">
             <li>
                 <label class="fl main_green">
-                    姓名
+                    用户姓名
                 </label>
                 <label class="fl  ml20">@Model.UserName</label>
             </li>
@@ -38,16 +45,40 @@
                 </label>
                 <label class="fl  ml20">@Model.UserType.ToString()</label>
             </li>
-        </ul>
-    </div>
-    @*<a class="large_btn ok mt30 border_radius" href="~/YiBinWX/ActivityFromApply?check=false,@ViewBag.OpenId">未完结办事用烟查询</a>
-    <a class="large_btn ok mt30 border_radius" href="~/YiBinWX/ActivityFromApply?check=true,@ViewBag.OpenId">已完结办事用烟查询</a>*@
 
-        <a class="large_btn ok mt30 border_radius" href="~/YiBinWX/ActivityFromApply?check=false">未完结办事用烟查询</a>
-        <a class="large_btn ok mt30 border_radius" href="~/YiBinWX/ActivityFromApply?check=true">已完结办事用烟查询</a>
-   
-    @*<input type="button" class="middel_btn fl cancel" onclick="Cancel()" value="已完结办事用烟查询" />
-    <input type="button" class="middel_btn fr ok" id="btnSave" value="未完结办事用烟查询" onclick="Save()" />*@
+        </ul>
+        @*<hr style="color:#148363;" />*@
+        <ul class="personal_link all_width">
+            <li style=" margin-bottom:0px; padding-bottom:0px;">
+                <div style="color:darkgray">活动申请单</div>
+                <hr style="color:darkgray; margin-bottom:0px;" />
+            </li>
+        </ul>
+        <ul class="personal_link all_width">
+            <li>
+                <label class="fl main_green">
+                    未完成
+                </label>
+
+                <label class="fl ml20">@ViewBag.OutStandingCount</label>单
+                <a class="fr" style="color:yellowgreen" href="~/YiBinWX/ActivityFromApply?check=false">查询</a>
+                @*<a class="fr" style="color:yellowgreen" href="@Url.Action("ActivityFromApply","YiBinWX",new {check=false,openId=ViewBag.OpenId })">查询</a>*@
+            </li>
+            <li>
+                <label class="fl main_green">
+                    已完成
+                </label>
+                <label class="fl ml20">@ViewBag.CompletedCount</label>单
+                <a class="fr" style="color:yellowgreen" href="~/YiBinWX/ActivityFromApply?check=true">查询</a>
+                @*<a class="fr" style="color:yellowgreen" href="@Url.Action("ActivityFromApply","YiBinWX",new {check=true,openId=ViewBag.OpenId })">查询</a>*@
+            </li>
+        </ul>
+        @*<div class="advise_warp">
+                <a class=" fl  ml20 large_btn ok mt30 border_radius " href="@Url.Action("ActivityFromApply","YiBinWX",new {check=false,openId=@ViewBag.OpenId })">未完结办事用烟查询</a>
+                <a class="fl  ml20 large_btn ok mt30 border_radius " href="@Url.Action("ActivityFromApply","YiBinWX",new {check=true,openId=@ViewBag.OpenId })">已完结办事用烟查询</a>
+            </div>*@
+    </div>
+
 </body>
 </html>
 <script type="text/javascript">

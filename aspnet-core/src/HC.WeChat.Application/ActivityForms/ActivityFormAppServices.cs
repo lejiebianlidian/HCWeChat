@@ -540,14 +540,14 @@ namespace HC.WeChat.ActivityForms
         /// </summary>
         /// <returns></returns>
         [AbpAllowAnonymous]
-        public ActivityFormForWechat GetActivityFormList(bool check, WeChatUserListDto user, int? tenantId)
+        public ActivityFormForWechat GetActivityFormList(bool check, WeChatUserListDto user)
         {
-            using (CurrentUnitOfWork.SetTenantId(tenantId))
+            using (CurrentUnitOfWork.SetTenantId(user.TenantId))
             {
                 var query = _activityformRepository.GetAll()
                 .WhereIf(user.UserType == UserTypeEnum.客户经理, a => a.ManagerId == user.UserId)
                 .WhereIf(user.UserType == UserTypeEnum.零售客户, a => a.CreationId == user.UserId)
-                .WhereIf(check, a => a.Status == FormStatusEnum.营销中心已审核)
+                .WhereIf(check, a => a.Status == FormStatusEnum.营销中心已审核||a.Status== FormStatusEnum.拒绝)
                 .WhereIf(!check, a => a.Status == FormStatusEnum.初审通过 || a.Status == FormStatusEnum.提交申请 || a.Status == FormStatusEnum.资料回传已审核)
                 .OrderBy(a => a.CreationTime);
                 ActivityFormForWechat result = new ActivityFormForWechat();
@@ -576,7 +576,7 @@ namespace HC.WeChat.ActivityForms
         /// <param name="tenantId"></param>
         /// <returns></returns>
         [AbpAllowAnonymous]
-        public async Task<APIResultDto> ChangeActivityFormStatusAsync(ActivityFromStatusDtoss input)
+        public async Task<APIResultDto> ChangeActivityFormStatusWeChatAsync(ActivityFromStatusDtoss input)
         {
             using (CurrentUnitOfWork.SetTenantId(input.TenantId))
             {
@@ -589,7 +589,7 @@ namespace HC.WeChat.ActivityForms
                 var log = new ActivityFormLog();
                 log.ActionTime = DateTime.Now;
                 log.ActivityFormId = form.Id;
-                log.Opinion = input.Opinion;
+                log.Opinion =string.IsNullOrEmpty(input.Opinion)?input.Status.ToString():input.Opinion ;
                 log.Status = input.Status;
                 log.StatusName = input.Status.ToString();
                 log.UserId = user.UserId;

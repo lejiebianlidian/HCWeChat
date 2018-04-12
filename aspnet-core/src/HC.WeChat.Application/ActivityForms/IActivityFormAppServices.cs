@@ -79,7 +79,7 @@ namespace HC.WeChat.ActivityForms
         /// </summary>
         /// <param name="check"></param>
         /// <returns></returns>
-        ActivityFormForWechat GetActivityFormList(bool check, WeChatUserListDto userId, int? tenantId);
+        ActivityFormForWechat GetActivityFormList(bool check, WeChatUserListDto user);
 
         /// <summary>
         /// 获取单条活动申请单数据
@@ -95,6 +95,6 @@ namespace HC.WeChat.ActivityForms
         /// <param name="user"></param>
         /// <param name="tenantId"></param>
         /// <returns></returns>
-        Task<APIResultDto> ChangeActivityFormStatusAsync(ActivityFromStatusDtoss input);
+        Task<APIResultDto> ChangeActivityFormStatusWeChatAsync(ActivityFromStatusDtoss input);
     }
 }
