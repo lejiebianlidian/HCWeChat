@@ -1,8 +1,8 @@
 {
-  "name": "ng-alain",
-  "version": "0.6.0-rc.3",
+  "name": "ng-wechat-admin",
+  "version": "1.0.0",
   "description": "ng-zorro-antd admin panel front-end framework",
-  "author": "cipchk",
+  "author": "donald",
   "homepage": "https://cipchk.github.io/ng-alain/",
   "bugs": {
     "url": "https://github.com/cipchk/ng-alain/issues"
