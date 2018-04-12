@@ -12,6 +12,7 @@ import { EditExpressComponent } from '../edit-express/edit-express.component';
 import { AppComponentBase } from '@shared/app-component-base';
 import { EditBanquetComponent } from '../edit-banquet/edit-banquet.component';
 import { AppSessionService } from '@shared/session/app-session.service';
+import { AppConsts } from '@shared/AppConsts';
 
 @Component({
     selector: 'activity-form-detail',

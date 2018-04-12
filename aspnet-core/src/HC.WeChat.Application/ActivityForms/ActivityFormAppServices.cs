@@ -620,6 +620,7 @@ namespace HC.WeChat.ActivityForms
             }
         }
 
+        [AbpAllowAnonymous]
         public async Task<ActivityFormCountDto> GetActivityFormCountByUserAsync(WeChatUserListDto user)
         {
             using (CurrentUnitOfWork.SetTenantId(user.TenantId))
