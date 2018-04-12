@@ -60,7 +60,7 @@
                     未完成
                 </label>
 
-                <label class="fl ml20">@ViewBag.OutstandingCount</label>单
+                <label class="fl ml20">@ViewBag.OutstandingCount 单</label>
                 @*<a class="fr" style="color:yellowgreen" href="~/YiBinWX/ActivityFromApply?check=false">查询</a>*@
                 <a class="fr" style="color:yellowgreen" href="@Url.Action("ActivityFromApply","YiBinWX",new { check = false , openId = Model.OpenId })">查看</a>
             </li>
@@ -68,7 +68,7 @@
                 <label class="fl main_green">
                     已完成
                 </label>
-                <label class="fl ml20">@ViewBag.CompletedCount</label>单
+                <label class="fl ml20">@ViewBag.CompletedCount 单</label>
                 @*<a class="fr" style="color:yellowgreen" href="~/YiBinWX/ActivityFromApply?check=true">查询</a>*@
                 <a class="fr" style="color:yellowgreen" href="@Url.Action("ActivityFromApply","YiBinWX",new { check = true,openId = Model.OpenId })">查看</a>
             </li>
