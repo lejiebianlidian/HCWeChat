@@ -5,6 +5,8 @@ import { AppSessionService } from '@shared/session/app-session.service';
 import { ActivityFormServiceProxy } from '@shared/service-proxies/marketing-service';
 import { ActivityFormInfo } from '@shared/service-proxies/entity';
 
+import { UploadFile } from 'ng-zorro-antd';
+
 @Component({
     selector: 'app-home-index',
     templateUrl: './index.component.html'
@@ -28,6 +30,11 @@ export class IndexComponent implements OnInit {
     salesData: any[] = [];
     offlineChartData: any[] = [];
     roleName: string = '';
+
+    previewImage = '';
+    previewVisible = false;
+
+    fileList = [];
 
     ngOnInit() {
         this.http.get('/chart').subscribe((res: any) => {
@@ -58,4 +65,9 @@ export class IndexComponent implements OnInit {
             this.activityFormInfo = result;
         })
     }
+
+    handlePreview = (file: UploadFile) => {
+        this.previewImage = file.url || file.thumbUrl;
+        this.previewVisible = true;
+      }
 }

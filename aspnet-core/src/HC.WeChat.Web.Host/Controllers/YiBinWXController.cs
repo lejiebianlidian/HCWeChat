@@ -94,6 +94,9 @@ namespace HC.WeChat.Web.Host.Controllers
             user.HeadImgUrl = "";// wuser.headimgurl;
             if (user.UserType == UserTypeEnum.零售客户 || user.UserType == UserTypeEnum.客户经理)
             {
+                var formCount = _activityFormAppService.GetActivityFormCountByUserAsync(user).Result;
+                ViewBag.OutstandingCount = formCount.OutstandingCount;
+                ViewBag.CompletedCount = formCount.CompletedCount;
                 return View("UserIndex", user);
             }
 

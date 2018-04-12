@@ -613,7 +613,40 @@ namespace HC.WeChat.ActivityForms
             }
         }
 
-       
+        public async Task<ActivityFormCountDto> GetActivityFormCountByUserAsync(WeChatUserListDto user)
+        {
+            using (CurrentUnitOfWork.SetTenantId(user.TenantId))
+            {
+                ActivityFormCountDto countDto = new ActivityFormCountDto();
+                switch (user.UserType)
+                {
+                    case UserTypeEnum.零售客户:
+                        {
+                            countDto.OutstandingCount = await _activityformRepository.GetAll()
+                                                            .Where(a => a.CreationId == user.UserId)
+                                                            .Where(a => a.Status == FormStatusEnum.提交申请
+                                                            || a.Status == FormStatusEnum.初审通过
+                                                            || a.Status == FormStatusEnum.资料回传已审核).CountAsync();
+                            countDto.CompletedCount = await _activityformRepository.GetAll().Where(a => a.CreationId == user.UserId && a.Status == FormStatusEnum.营销中心已审核).CountAsync();
+                        }
+                        break;
+                    case UserTypeEnum.客户经理:
+                        {
+                            countDto.OutstandingCount = await _activityformRepository.GetAll()
+                                                            .Where(a => a.ManagerId == user.UserId)
+                                                            .Where(a => a.Status == FormStatusEnum.提交申请
+                                                            || a.Status == FormStatusEnum.初审通过
+                                                            || a.Status == FormStatusEnum.资料回传已审核).CountAsync();
+                            countDto.CompletedCount = await _activityformRepository.GetAll().Where(a => a.ManagerId == user.UserId && a.Status == FormStatusEnum.营销中心已审核).CountAsync();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                return countDto;
+            }
+        }
     }
 }
 
