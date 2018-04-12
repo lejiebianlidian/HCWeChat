@@ -46,7 +46,7 @@
                             宴席信息
                         </ng-template>
                         <ng-template #extra>
-                            <a (click)="editBanquet()">上传/修改</a>
+                            <a *ngIf="form.status != 5 && form.status != 6" (click)="editBanquet()">上传/修改</a>
                         </ng-template>
                         <ng-template #body>
                             <desc-list class="mb-lg" *ngIf="banquet">
@@ -61,10 +61,10 @@
                                 <desc-list-item term="现场简述">{{banquet.desc}}</desc-list-item>
                             </desc-list>
                             <h4 class="mb-md">现场照片</h4>
-                            <nz-list [nzLoading]="loading" class="imgList" [nzDataSource]="list" [nzGrid]="{gutter: 24, lg: 6, md: 8, sm: 12, xs: 24 }">
+                            <nz-list [nzLoading]="loading" class="imgList" [nzDataSource]="photoUrls" [nzGrid]="{gutter: 24, lg: 6, md: 8, sm: 12, xs: 24 }">
                                 <ng-template #item let-item>
                                     <nz-list-item>
-                                        <img alt="{{item.title}}" src="{{item.cover}}">
+                                        <img alt="" src="{{item}}" (click)="handlePreview(item)" style="width: 98%;">
                                     </nz-list-item>
                                 </ng-template>
                             </nz-list>
@@ -79,7 +79,7 @@
                         基本信息
                     </ng-template>
                     <ng-template #extra>
-                        <a (click)="editDelivery()" >修改</a>
+                        <a (click)="editDelivery()" *ngIf="form.status != 5 && form.status != 6" >修改</a>
                     </ng-template>
                     <ng-template #body>
                         <desc-list class="mb-lg" *ngIf="delivery">
@@ -120,7 +120,7 @@
                         基本信息
                     </ng-template>
                     <ng-template #extra>
-                        <a (click)="editRDelivery()" >添加/修改</a>
+                        <a (click)="editRDelivery()" *ngIf="form.status != 5 && form.status != 6" >添加/修改</a>
                     </ng-template>
                     <ng-template #body>
                         <desc-list class="mb-lg" *ngIf="rdelivery">
@@ -139,7 +139,7 @@
                         物流信息
                     </ng-template>
                     <ng-template #extra>
-                        <a (click)="editRExpress()" >添加/修改</a>
+                        <a (click)="editRExpress()">添加/修改</a>
                     </ng-template>
                     <ng-template #body>
                         <desc-list class="mb-lg" *ngIf="rdelivery">
@@ -157,8 +157,13 @@
         </nz-tabset>
     </ng-template>
 </pro-header>
+<nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" [nzWidth]="imgWidth" (nzOnCancel)="previewVisible=false">
+    <ng-template #modalContent>
+        <img [src]="previewImage" [ngStyle]="{ 'width': '100%' }" />
+    </ng-template>
+</nz-modal>
 <approval-modal #approvalModal (modalSave)="getFormData()"></approval-modal>
 <edit-form-modal #editFormModal (modalSave)="getFormData()"></edit-form-modal>
-<edit-delivery-modal #editDeliveryModal (modalSave)="getDeliveryData()" ></edit-delivery-modal>
-<edit-express-modal #editExpressModal (modalSave)="getDeliveryData()" ></edit-express-modal>
+<edit-delivery-modal #editDeliveryModal (modalSave)="getDeliveryData()"></edit-delivery-modal>
+<edit-express-modal #editExpressModal (modalSave)="getDeliveryData()"></edit-express-modal>
 <edit-banquet-modal #editBanquetModal (modalSave)="getBanquetData()"></edit-banquet-modal>

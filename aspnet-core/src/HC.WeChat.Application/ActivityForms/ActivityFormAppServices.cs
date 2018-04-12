@@ -321,7 +321,7 @@ namespace HC.WeChat.ActivityForms
                         && a.CreationUser == user.UserName).Count();
                     if (rcount >= activity.RUnfinished)
                     {
-                        return new APIResultDto() { Code = 703, Msg = "未完成单数已超过零售户限制，不能再申请" };
+                        return new APIResultDto() { Code = 703, Msg = string.Format("零售客户未完成单数不能超过{0}单，不能再申请", activity.RUnfinished) };
                     }
 
                     form.RetailerId = user.UserId.Value;
@@ -343,7 +343,7 @@ namespace HC.WeChat.ActivityForms
 
                     if (mcount >= activity.MUnfinished)
                     {
-                        return new APIResultDto() { Code = 704, Msg = "未完成单数已超过客户经理限制，不能再申请" };
+                        return new APIResultDto() { Code = 704, Msg = string.Format("客户经理未完成单数不能超过{0}单，不能再申请", activity.MUnfinished) };
                     }
                     form.ManagerName = user.UserName;
                     form.ManagerId = user.UserId;
@@ -613,7 +613,40 @@ namespace HC.WeChat.ActivityForms
             }
         }
 
-       
+        public async Task<ActivityFormCountDto> GetActivityFormCountByUserAsync(WeChatUserListDto user)
+        {
+            using (CurrentUnitOfWork.SetTenantId(user.TenantId))
+            {
+                ActivityFormCountDto countDto = new ActivityFormCountDto();
+                switch (user.UserType)
+                {
+                    case UserTypeEnum.零售客户:
+                        {
+                            countDto.OutstandingCount = await _activityformRepository.GetAll()
+                                                            .Where(a => a.CreationId == user.UserId)
+                                                            .Where(a => a.Status == FormStatusEnum.提交申请
+                                                            || a.Status == FormStatusEnum.初审通过
+                                                            || a.Status == FormStatusEnum.资料回传已审核).CountAsync();
+                            countDto.CompletedCount = await _activityformRepository.GetAll().Where(a => a.CreationId == user.UserId && a.Status == FormStatusEnum.营销中心已审核).CountAsync();
+                        }
+                        break;
+                    case UserTypeEnum.客户经理:
+                        {
+                            countDto.OutstandingCount = await _activityformRepository.GetAll()
+                                                            .Where(a => a.ManagerId == user.UserId)
+                                                            .Where(a => a.Status == FormStatusEnum.提交申请
+                                                            || a.Status == FormStatusEnum.初审通过
+                                                            || a.Status == FormStatusEnum.资料回传已审核).CountAsync();
+                            countDto.CompletedCount = await _activityformRepository.GetAll().Where(a => a.ManagerId == user.UserId && a.Status == FormStatusEnum.营销中心已审核).CountAsync();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                return countDto;
+            }
+        }
     }
 }
 

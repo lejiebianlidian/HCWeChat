@@ -96,5 +96,10 @@ namespace HC.WeChat.ActivityForms
         /// <param name="tenantId"></param>
         /// <returns></returns>
         Task<APIResultDto> ChangeActivityFormStatusWeChatAsync(ActivityFromStatusDtoss input);
+
+        /// <summary>
+        /// 获取未完成 和 已完成单数
+        /// </summary>
+        Task<ActivityFormCountDto> GetActivityFormCountByUserAsync(WeChatUserListDto user);
     }
 }

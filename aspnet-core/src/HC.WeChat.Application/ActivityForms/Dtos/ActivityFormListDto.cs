@@ -145,4 +145,17 @@ namespace HC.WeChat.ActivityForms.Dtos
         /// </summary>
         public int GoodsNum { get; set; }
     }
+
+    public class ActivityFormCountDto
+    {
+        /// <summary>
+        /// 未完成
+        /// </summary>
+        public int OutstandingCount { get; set; }
+
+        /// <summary>
+        /// 已完成
+        /// </summary>
+        public int CompletedCount { get; set; }
+    }
 }

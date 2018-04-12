@@ -66,6 +66,13 @@ export class ActivityBanquetDto implements IActivityBanquetDto {
         result.init(json);
         return result;
     }
+
+    getPhotoUrls(): string[]{
+        if (this.photoUrl == '' || this.photoUrl == null || this.photoUrl == undefined) {
+            return [];
+        }
+        return this.photoUrl.split(',');
+    }
 }
 export interface IActivityBanquetDto {
     id: string;
