@@ -2,11 +2,11 @@
     <nz-modal [nzVisible]="modalVisible" [nzTitle]="title" [nzConfirmLoading]="loading" [nzContent]="modalContent" [nzFooter]="modalFooter"
         (nzOnCancel)="handleCancel($event)">
         <ng-template #modalContent>
-            <nz-tabset>
+            <!-- <nz-tabset>
                 <nz-tab>
                     <ng-template #nzTabHeading>
                         宴席信息
-                    </ng-template>
+                    </ng-template> -->
                     <fieldset>
                         <div nz-form-item nz-row>
                             <div nz-form-label nz-col [nzSm]="4">
@@ -77,7 +77,7 @@
                             </div>
                         </div>
                     </fieldset>
-                </nz-tab>
+                <!-- </nz-tab>
                 <nz-tab>
                     <ng-template #nzTabHeading>
                         上传照片
@@ -99,7 +99,7 @@
                         </nz-modal>
                       </div>
                 </nz-tab>
-            </nz-tabset>
+            </nz-tabset> -->
         </ng-template>
         <ng-template #modalFooter>
             <button nz-button [nzType]="'default'" [nzSize]="'large'" type="button" (click)="handleCancel($event)">

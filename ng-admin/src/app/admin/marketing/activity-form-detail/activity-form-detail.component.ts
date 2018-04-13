@@ -103,6 +103,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         this.loading = true;
         this.activityBanquetService.getByFormId(this.formId).subscribe(result => {
             this.banquet = result;
+            //this.photoUrls = ['./assets/img/bg2.jpg', './assets/img/bg3.jpg', './assets/img/bg4.jpg', './assets/img/bg6.jpg'];
             this.photoUrls = this.banquet.getPhotoUrls();
             this.loading = false;
         });
