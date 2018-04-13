@@ -20,7 +20,8 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit {
     positions = [
         { text: '客户经理', value: 2 },
         { text: '营销人员', value: 3 },
-    ]
+    ];
+    isCodeEValid: boolean = false;
     constructor(injector: Injector, private employeeService: EmployeeServiceProxy, private fb: FormBuilder,
         private modal: NzModalService
     ) {
@@ -94,7 +95,7 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit {
         }
         if (this.forme.valid) {
             this.iseConfirmLoading = true;
-            this.employeeService.CheckCode(this.employeee.code,this.employeee.id).subscribe((isCode: boolean) => {
+            this.employeeService.CheckCode(this.employeee.code, this.employeee.id).subscribe((isCode: boolean) => {
                 if (isCode) {
                     this.employeeService.update(this.employeee)
                         .finally(() => {
@@ -107,9 +108,7 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit {
                         });
                 } else {
                     this.iseConfirmLoading = false;
-                    this.modal.warning({
-                        title: '改员工编码已存在！'
-                    });
+                    this.isCodeEValid = true;
                 }
             });
         }

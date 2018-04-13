@@ -103,10 +103,10 @@
     </div>
     <div class="width_90 mt30 mb20" id="devButton">
         @*<input type="button" id="updateBtn" style="display:none" class="middel_btn fr ok" value="修改商品信息" onclick="javascript:window.location.href='@Url.Action("ActivityGoods", "YiBinWX", new { id = Model.Id })'" />*@
-        <input type="button" id="cancelBtn"  class="middel_btn fl cancel" value="取消申请" onclick="Cancel()"/>
+        <input type="button" id="cancelBtn"  class="middel_btn fl cancel" value="取消" onclick="Cancel()"/>
         <input type="button" id="firstCheckBtn" style="display:none" class="middel_btn fr ok" value="初审通过" onclick="StatusCheck(2)" />
         <input type="button" id="returnCheckBtn" style="display:none" class="middel_btn fr ok" value="资料完善" onclick="javascript:window.location.href='@Url.Action("ActivityBanquet", "YiBinWX", new { actFormId = Model.Id,actFormStatus=ViewBag.Status, openid = ViewBag.OpenId , userType = ViewBag.UserType })'" />
-        <input type="button" id="marketingBtn" style="display:none" class="middel_btn fr ok" value="资料回传审核" onclick="javascript:window.location.href='@Url.Action("ActivityBanquet", "YiBinWX", new { actFormId = Model.Id,actFormStatus=ViewBag.Status, openid = ViewBag.OpenId, userType= ViewBag.UserType })'" />
+        <input type="button" id="marketingBtn" style="display:none" class="middel_btn fr ok" value="资料审核" onclick="javascript:window.location.href='@Url.Action("ActivityBanquet", "YiBinWX", new { actFormId = Model.Id,actFormStatus=ViewBag.Status, openid = ViewBag.OpenId, userType= ViewBag.UserType })'" />
         <input type="button" id="lookOverBtn" style="display:none" class="middel_btn fr ok" value="查看资料" onclick="javascript:window.location.href='@Url.Action("ActivityBanquet", "YiBinWX", new { actFormId = Model.Id,actFormStatus=ViewBag.Status, openid = ViewBag.OpenId, userType= ViewBag.UserType })'" />
 
     </div>

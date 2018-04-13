@@ -23,7 +23,7 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
         { text: '客户经理', value: 2 },
         { text: '营销人员', value: 3 },
     ]
-    isCodeVali: boolean;
+    isCodeCValid: boolean=false;
     constructor(injector: Injector, private fb: FormBuilder, private employeeService: EmployeeServiceProxy,
         private modal: NzModalService) {
         super(injector);
@@ -84,12 +84,8 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
                             this.modalSave.emit(null);
                         });
                 } else {
-                    console.log('进来了吗？');
                     this.isConfirmLoading = false;
-                    this.modal.warning({
-                        content: deleteContent,
-                        title: '改员工编码已存在！'
-                    });
+                    this.isCodeCValid=true;
                 }
             })
 
@@ -106,24 +102,24 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
         }
     }
 
-    cofirmValidationCode = (control: FormControl): { [s: string]: boolean } => {
-        // var code=this.formc.controls['code'].value;
-        this.isCodeValid();
-            if (!control.value) {
-                return { required: true }
-            } else if (this.isCodeVali) {
-                return { confirm: true, error: true };
-            }
+    // cofirmValidationCode = (control: FormControl): { [s: string]: boolean } => {
+    //     // var code=this.formc.controls['code'].value;
+    //     this.isCodeValid();
+    //         if (!control.value) {
+    //             return { required: true }
+    //         } else if (this.isCodeVali) {
+    //             return { confirm: true, error: true };
+    //         }
        
        
-    }
+    // }
 
-    isCodeValid(){
-        console.log('code:');
-        console.log(this.employeec.code);
-        this.employeeService.CheckCode(this.employeec.code).subscribe((isCode: boolean) => {
-            this.isCodeVali = isCode;
-        });
+    // isCodeValid(){
+    //     console.log('code:');
+    //     console.log(this.employeec.code);
+    //     this.employeeService.CheckCode(this.employeec.code).subscribe((isCode: boolean) => {
+    //         this.isCodeVali = isCode;
+    //     });
         
-    }
+    // }
 }
