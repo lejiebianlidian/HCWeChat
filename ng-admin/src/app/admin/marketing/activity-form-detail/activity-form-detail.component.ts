@@ -164,7 +164,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         }
         let formStatus = new ActivityFormStatusDto();
         formStatus.status = 4;
-        formStatus.opinion = "资料回传审核通过";
+        formStatus.opinion = "审核通过";
         formStatus.id = this.formId;
         this.approvalModal.show(formStatus);
     }
@@ -172,7 +172,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
     approvalEnd(){
         let formStatus = new ActivityFormStatusDto();
         formStatus.status = 6;
-        formStatus.opinion = "营销中心审核通过";
+        formStatus.opinion = "审核通过";
         formStatus.id = this.formId;
         this.approvalModal.show(formStatus);
     }

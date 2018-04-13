@@ -44,6 +44,13 @@ namespace HC.WeChat.Migrations
                nullable: true,
                oldClrType: typeof(string),
                oldNullable: false);
+
+            migrationBuilder.AlterColumn<string>(
+              name: "PhotoUrl",
+              table: "ActivityBanquets",
+              nullable: true,
+              oldClrType: typeof(string),
+              oldNullable: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -77,6 +84,13 @@ namespace HC.WeChat.Migrations
                nullable: false,
                oldClrType: typeof(string),
                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+              name: "PhotoUrl",
+              table: "ActivityBanquets",
+              nullable: false,
+              oldClrType: typeof(string),
+              oldNullable: true);
         }
     }
 }

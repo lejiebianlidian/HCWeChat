@@ -1345,7 +1345,7 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("Position").IsRequired().HasMaxLength(500);
                 b.Property<int>("Num").IsRequired();
                 b.Property<string>("Desc").IsRequired().HasMaxLength(500);
-                b.Property<string>("PhotoUrl").IsRequired();
+                b.Property<string>("PhotoUrl");
                 b.Property<DateTime>("CreationTime").IsRequired();
                 b.Property<string>("UserName").IsRequired().HasMaxLength(50);
 

@@ -73,7 +73,6 @@ namespace HC.WeChat.ActivityBanquets.Dtos
         /// <summary>
         /// 现场图片不得少于4张
         /// </summary>
-        [Required]
         public string PhotoUrl { get; set; }
 
 

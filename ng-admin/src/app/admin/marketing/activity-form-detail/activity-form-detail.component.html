@@ -5,7 +5,7 @@
     <ng-template *ngIf="form" #action>
         <button nz-button *ngIf="form.status == 1" [nzSize]="'large'" (click)="editForm()">修改商品信息</button>
         <button nz-button [nzSize]="'large'" (click)="cancel()" *ngIf="form.status == 1 || form.status == 2 || form.status == 3 || form.status == 4">取消</button>
-        <button nz-button [nzSize]="'large'" (click)="reject()" *ngIf="form.status == 1 || form.status == 2 || form.status == 4">拒绝</button>
+        <button nz-button [nzSize]="'large'" (click)="reject()" *ngIf="form.status == 1 || form.status == 2">拒绝</button>
         <button nz-button [nzType]="'primary'" (click)="firstApproval()" *ngIf="form.status == 1" [nzSize]="'large'">初审通过</button>
         <button nz-button [nzType]="'primary'" (click)="approval()" *ngIf="form.status == 2" [nzSize]="'large'">资料回传审核通过</button>
         <button nz-button [nzType]="'primary'" (click)="approvalEnd()" *ngIf="form.status == 4 && ismcenter" [nzSize]="'large'">营销中心审核通过</button>
@@ -29,7 +29,7 @@
                 <ng-template #nzTabHeading>详情</ng-template>
                 <span>
                     <nz-card *ngIf="form" class="mb-lg">
-                        <nz-steps [nzCurrent]="form.currentStep">
+                        <nz-steps [nzCurrent]="form.currentStep" [nzSize]="'small'" >
                             <nz-step *ngFor="let log of form.formLogList" [nzTitle]="log.statusName" [nzDescription]="showDesc">
                                 <ng-template #showDesc>
                                     <p>{{log.desc}}</p>
@@ -46,7 +46,7 @@
                             宴席信息
                         </ng-template>
                         <ng-template #extra>
-                            <a *ngIf="form.status != 5 && form.status != 6" (click)="editBanquet()">修改</a>
+                            <a *ngIf="form && form.status != 5 && form.status != 6" (click)="editBanquet()">修改</a>
                         </ng-template>
                         <ng-template #body>
                             <desc-list class="mb-lg" *ngIf="banquet">
@@ -79,7 +79,7 @@
                         基本信息
                     </ng-template>
                     <ng-template #extra>
-                        <a (click)="editDelivery()" *ngIf="form.status != 5 && form.status != 6" >修改</a>
+                        <a (click)="editDelivery()" *ngIf="form && form.status != 5 && form.status != 6">修改</a>
                     </ng-template>
                     <ng-template #body>
                         <desc-list class="mb-lg" *ngIf="delivery">
@@ -120,7 +120,7 @@
                         基本信息
                     </ng-template>
                     <ng-template #extra>
-                        <a (click)="editRDelivery()" *ngIf="form.status != 5 && form.status != 6" >添加/修改</a>
+                        <a (click)="editRDelivery()" *ngIf="form && form.status != 5 && form.status != 6">添加/修改</a>
                     </ng-template>
                     <ng-template #body>
                         <desc-list class="mb-lg" *ngIf="rdelivery">

@@ -78,7 +78,8 @@
                         {
                             "text": "活动申请单",
                             "link": "/admin/activity-form",
-                            "translate": "activity-form"
+                            "translate": "activity-form",
+                            "reuse": false
                         },
                         {
                             "text": "营销统计",
