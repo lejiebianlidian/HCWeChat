@@ -60,7 +60,7 @@
                                 <desc-list-item term="上传人">{{banquet.userName}}</desc-list-item>
                                 <desc-list-item term="现场简述">{{banquet.desc}}</desc-list-item>
                             </desc-list>
-                            <h4 class="mb-md">现场照片</h4>
+                            <h4 class="mb-md">现场照片（点击图片可查看原图）</h4>
                             <nz-list [nzLoading]="loading" class="imgList" [nzDataSource]="photoUrls" [nzGrid]="{gutter: 24, lg: 6, md: 8, sm: 12, xs: 24 }">
                                 <ng-template #item let-item>
                                     <nz-list-item>

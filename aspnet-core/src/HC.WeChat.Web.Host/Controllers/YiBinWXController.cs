@@ -95,12 +95,13 @@ namespace HC.WeChat.Web.Host.Controllers
             var user = _weChatUserAppService.GetWeChatUserAsync(oauth.openid, tenantId).Result;
             //var wuser = _weChatOAuthAppService.GetUserInfoAsync(oauth.access_token, oauth.openid).Result;
             user.NickName = user.NickName;
-            user.HeadImgUrl = "";// wuser.headimgurl;
+            //user.HeadImgUrl = wuser.headimgurl;
             if (user.UserType == UserTypeEnum.零售客户 || user.UserType == UserTypeEnum.客户经理)
             {
                 var formCount = _activityFormAppService.GetActivityFormCountByUserAsync(user).Result;
                 ViewBag.OutstandingCount = formCount.OutstandingCount;
                 ViewBag.CompletedCount = formCount.CompletedCount;
+                user.HeadImgUrl = user.HeadImgUrl ?? "static/img/index/timg-4.jpeg";
                 return View("UserIndex", user);
             }
 
