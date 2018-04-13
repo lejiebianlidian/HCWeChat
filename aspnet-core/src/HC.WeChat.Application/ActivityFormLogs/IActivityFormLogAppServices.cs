@@ -56,5 +56,12 @@ namespace HC.WeChat.ActivityFormLogs
         /// 批量删除ActivityFormLog
         /// </summary>
         Task BatchDeleteActivityFormLogsAsync(List<Guid> input);
+
+        /// <summary>
+        /// 获取活动申请日志
+        /// </summary>
+        /// <param name="formId">活动申请id</param>
+        /// <returns></returns>
+        Task<ActivityFormLogListDto> GetActivityFormLogByFormIdAsync(Guid formId);
     }
 }
