@@ -547,7 +547,7 @@ namespace HC.WeChat.ActivityForms
                 var query = _activityformRepository.GetAll()
                 .WhereIf(user.UserType == UserTypeEnum.客户经理, a => a.ManagerId == user.UserId)
                 .WhereIf(user.UserType == UserTypeEnum.零售客户, a => a.CreationId == user.UserId)
-                .WhereIf(check, a => a.Status == FormStatusEnum.营销中心已审核 || a.Status == FormStatusEnum.拒绝)
+                .WhereIf(check, a => a.Status == FormStatusEnum.营销中心已审核)
                 .WhereIf(!check, a => a.Status == FormStatusEnum.初审通过 || a.Status == FormStatusEnum.提交申请 || a.Status == FormStatusEnum.资料回传已审核)
                 .OrderByDescending(a => a.CreationTime);
                 ActivityFormForWechat result = new ActivityFormForWechat();
