@@ -13,7 +13,7 @@ import { UploadFile } from 'ng-zorro-antd';
 })
 export class IndexComponent implements OnInit {
 
-    activityFormInfo: ActivityFormInfo=new ActivityFormInfo();
+    activityFormInfo: ActivityFormInfo = new ActivityFormInfo();
     constructor(private http: _HttpClient, public msg: NzMessageService, private _appSessionService: AppSessionService,
         private activityFormHomeService: ActivityFormServiceProxy) { }
 
@@ -37,11 +37,29 @@ export class IndexComponent implements OnInit {
     fileList = [];
 
     ngOnInit() {
-        this.http.get('/chart').subscribe((res: any) => {
-            this.webSite = res.visitData.slice(0, 10);
-            this.salesData = res.salesData;
-            this.offlineChartData = res.offlineChartData;
-        });
+        //近12个月申请单数 (模拟数据)
+        const sd = [];
+        for (let i = 0; i < 12; i += 1) {
+            sd.push({
+                x: `${i + 1}月`,
+                y: Math.floor(Math.random() * 1000) + 200
+            });
+        }
+
+        this.salesData = sd;
+        //24小时网站访问量和活动申请单笔数 (模拟数据)
+        const od = [];
+        for (let i = 0; i < 20; i += 1) {
+            od.push({
+                x: new Date().getTime() + 1000 * 60 * 30 * i,
+                y1: Math.floor(Math.random() * 100) + 10,
+                y2: Math.floor(Math.random() * 100) + 10
+            });
+        }
+
+        this.offlineChartData = od;
+
+
         let roles = this._appSessionService.roles;
         if (roles.includes('HostAdmin')) {
             this.roleName += '系统管理员';
@@ -69,5 +87,5 @@ export class IndexComponent implements OnInit {
     handlePreview = (file: UploadFile) => {
         this.previewImage = file.url || file.thumbUrl;
         this.previewVisible = true;
-      }
+    }
 }

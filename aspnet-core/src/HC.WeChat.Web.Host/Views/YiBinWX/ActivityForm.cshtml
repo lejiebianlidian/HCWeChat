@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="static/css/tobacco.css" />
 </head>
 <body class="bg_gary">
+    <div id="background" class="background" style="display: none; "></div>
+    <div id="progressBar" class="progressBar" style="display: none; ">正在提交中，请稍等...</div>
     <!--页面整体-->
     <div class="all_width">
         <!--通用头部-->
@@ -30,14 +32,14 @@
                 <div class="advise_warp pt5 pb5">
                     <select id="dllSpecification" class="fl entry_value" placeholder="请选择申请商品规格">
                         @foreach (var item in GoodsList)
-            {
-                <option value="@item.Id">@item.Specification</option>
-}
-                <option value="other">其它</option>
+                        {
+                            <option value="@item.Id">@item.Specification</option>
+                        }
+                        <option value="other">其它</option>
                     </select>
                 </div>
                 <!--选其它需要输入商品规格-->
-                <div id="divGoodsSpecification" class="advise_warp pt5 pb5" >
+                <div id="divGoodsSpecification" class="advise_warp pt5 pb5">
                     <span class="entry_key fl">商品规格</span>
                     <input type="text" maxlength="50" id="txtGoodsSpecification" class="fl ml10 entry_value" placeholder="请输入其它商品规格" />
                 </div>
@@ -96,7 +98,7 @@
 
             $("#divGoodsSpecification").hide();
 
-            $("#dllSpecification").change(function () { 
+            $("#dllSpecification").change(function () {
                 if ($("#dllSpecification").val() == 'other') {
                     $("#divGoodsSpecification").show();
                 } else {
@@ -134,7 +136,7 @@
             } else {
                 para.goodsSpecification = $("#dllSpecification").find("option:selected").text();
             }
-           
+
             para.num = $("#txtNum").val();
             if (para.num == "") {
                 alert("申请数量不能为空！");
@@ -175,6 +177,8 @@
             if (confirm("请确认信息填写无误，提交后不可更改")) {
                 $("#btnSave").attr("disabled", true);
                 $("#btnSave").attr("disabled", "disabled");
+                var ajaxbg = $("#background, #progressBar");
+                ajaxbg.show();
                 $.ajax({
                     url: reqUrl,
                     type: "POST",
@@ -182,6 +186,7 @@
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(para),
                     success: function (data) {
+                        ajaxbg.hide();
                         if (data.success) {
                             if (data.result.code == 0) {
                                 alert(data.result.msg);
@@ -196,7 +201,8 @@
                         $("#btnSave").attr("disabled", false);
                     },
                     error: function () {
-                        alert("提交失败！");
+                        ajaxbg.hide();
+                        alert("提交失败，稍后请重试！");
                         $("#btnSave").removeAttr("disabled");
                         $("#btnSave").attr("disabled", false);
                     }

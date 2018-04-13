@@ -16,6 +16,8 @@
     <link href="~/YiBinWX/static/css/personal.css" rel="stylesheet" />
 </head>
 <body class="bg_gary">
+    <div id="background" class="background" style="display: none; "></div>
+    <div id="progressBar" class="progressBar" style="display: none; ">正在提交中，请稍等...</div>
     <div class="all_width">
         <div class="header bg_green tc">
             活动申请单详情
@@ -92,7 +94,7 @@
                     审批意见
                 </label>
                 @*<label class="fl  ml20"></label>*@
-                <textarea id="checkMessage"style="width:66%;height:100%;" class="fl  ml20 contain_entry" placeholder="请输入审批意见"></textarea>
+                <textarea id="checkMessage" style="width:66%;height:100%;" class="fl  ml20 contain_entry" placeholder="请输入审批意见"></textarea>
             </li>
         </ul>
         <input type="hidden" id="hidOpenId" value="@ViewBag.OpenId" />
@@ -212,6 +214,8 @@
                 para.OpenId = $("#hidOpenId").val();
                 para.TenantId = "@ViewBag.TenantId";
                 var reqUrl = "@ViewBag.ServerRootAddress" + "/api/services/app/ActivityForm/ChangeActivityFormStatusWeChatAsync";
+                var ajaxbg = $("#background, #progressBar");
+                ajaxbg.show();
                 $.ajax({
                     url: reqUrl,
                     type: "POST",
@@ -219,6 +223,7 @@
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(para),
                     success: function (data) {
+                        ajaxbg.hide();
                         if (data.success) {
                             if (data.result.code == 0) {
                                 alert(data.result.msg);
@@ -232,7 +237,8 @@
                         }
                     },
                     error: function () {
-                        alert("提交失败！");
+                        ajaxbg.hide();
+                        alert("提交失败，稍后请重试！");
                     }
                 });
             }

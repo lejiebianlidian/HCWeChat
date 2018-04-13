@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="static/css/tobacco.css" />
 </head>
 <body class="bg_gary">
+    <div id="background" class="background" style="display: none; "></div>
+    <div id="progressBar" class="progressBar" style="display: none; ">正在提交中，请稍等...</div>
     <!--页面整体-->
     <div class="all_width">
         <!--通用头部-->
@@ -75,10 +77,13 @@
                         <img name="photo" src="@(ViewBag.ServerRootAddress + url)" orgsrc="@url" />
                     }
                     @*<input id="Photos" name="Photos" multiple type="file"  class="none pa">*@
+                    @*<img name="photo" src="~/YiBinWX/static/img/advise/add.png">
+                    <img name="photo" src="~/YiBinWX/static/img/advise/add1.png">
+                    <img name="photo" src="~/YiBinWX/static/img/advise/add3.png">*@
                     <img id="add" src="~/YiBinWX/static/img/advise/add.png">
                 </div>
                 <!--上传图片限制提示-->
-                <span class="upload_tips">最多可上传8张图片</span>
+                <span id="spanTips" class="upload_tips">最多可上传8张图片，长按图片可删除</span>
                 <input type="hidden" id="hidOpenId" value="@ViewBag.OpenId" />
                 <input type="hidden" id="hidTenantId" value="@ViewBag.TenantId" />
                 <input type="hidden" id="hidActivityFormId" value="@ViewBag.ActivityFormId" />
@@ -108,9 +113,55 @@
             jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage'] // 必填，需要使用的JS接口列表
         });
 
+        //window.ontouchstart = function (e) {
+        //    e.preventDefault();
+        //};
+
+        function fnImgDelete(obj) {
+            //alert(666)
+            //alert($(obj).attr("src"))
+            if (confirm("确认要删除该图片吗？")) {
+                deletId($(obj).attr("src"));
+                $(obj).remove();
+            }
+        }
+
+        $.fn.longPress = function () {
+            var $this = this;
+            var timeout = undefined;
+            for (var i = 0; i < $this.length; i++) {
+                //var timeout = 0;
+                //$($this[i]).on({
+                //    touchstart: function (e) {
+                //        timeout = setTimeout(fn($this[i], timeout), 800);
+                //        e.preventDefault();
+                //    },
+                //    touchmove: function () {
+                //        clearTimeout(timeout);
+                //        timeout = 0;
+                //    },
+                //    touchend: function () {
+                //        clearTimeout(timeout);
+                //        if (timeout != 0) {
+                //            alert("你这是点击，不是长按");
+                //        }
+                //        return false;
+                //    }
+                //})
+                $this[i].addEventListener('touchstart', function (event) {
+                    timeout = setTimeout(fnImgDelete, 800, this);
+                    event.preventDefault();
+                }, false);
+                $this[i].addEventListener('touchend', function (event) {
+                    clearTimeout(timeout);
+                    funcSetReadImgInfo(this);
+                }, false);
+            }
+
+        }
+
         var wximgIds = [];
         var wxlocalIds = [];
-
 
         /*调用微信预览图片的方法*/
         function funcReadImgInfo() {
@@ -126,6 +177,20 @@
                     });
                 });
             }
+        }
+        //设置预览图片
+        function funcSetReadImgInfo(obj) {
+            var imgs = [];
+            var imgObj = $("img[name='photo']");//这里改成相应的对象
+            for (var i = 0; i < imgObj.length; i++) {
+                imgs.push(imgObj.eq(i).attr('src')); 
+            }
+            var nowImgurl = $(obj).attr('src');
+            //alert("预览了")
+            WeixinJSBridge.invoke("imagePreview", {
+                "urls": imgs,
+                "current": nowImgurl
+            });
         }
 
         function wxchooseImage() {
@@ -154,6 +219,16 @@
                         img[0].src = localIds[i];
                         //$(img[0]).attr('orgsrc', localIds[i]);
                         $("#add").before(img);
+                        //添加长按删除
+                        img.each(function () {
+                            $(this).longPress(function (obj) {
+                                if (confirm("确认要删除该图片吗？")) {
+                                    deletId($(obj).attr("src"));
+                                    $(obj).remove();
+                                }
+                            });
+                        });
+
                         //img.click(function (e) {
                             //deletId($(this).attr("src"));
                             //deletwxlocalId($(this).attr("src"));
@@ -163,7 +238,7 @@
                         //});
                     }
                     //点击图片预览
-                    funcReadImgInfo();
+                    //funcReadImgInfo();
 
                     syncUpload(localIds);
                 }
@@ -230,48 +305,18 @@
             //$("#Photos").click();
         });
 
-        $("#Photos").change(function (e) {
-            $("img[name='photo']").remove();
-            var files = $(this)[0].files;
-            for (var i = 0; i < files.length; i++) {
-                //已经添加过了
-                var found = false;
-                var imgs = $("img[name='photo']");
-                //var imgs = $("input[name='photo']");
-                /*for(var ii = 0; ii < imgs.length; ii++) {
-                    if($(imgs[ii]).prop("file").name == files[i].name) {
-                        found = true;
-                        break;
-                    }
-                }*/
-                if (found)
-                    continue;
-
-                //数量限制
-                if (imgs.length >= 8)
-                    break;
-
-                var src = window.URL.createObjectURL(files[i]);
-                var img = $('<img name="photo"/>');
-                //var img = $('<input class="uploadImg" type="image" name="photo"/>');
-                img[0].src = src;
-                img.prop("file", files[i]);
-                $("#add").before(img);
-                img.click(function (e) {
-                    $(this).remove();
-                });
-            }
-
-            //$(this).val("");
-        });
     </script>
     <script type="text/javascript">
         $(function () {
             var userType = $("#hidUserType").val();
             var status = $("#hidActivityFormStatus").val();
-            if (userType == 1) {
-                if (status == 1) {//提交申请通过
+            $("#spanTips").hide();//提示信息显示控制
+            if (userType == 1) {//零售客户
+                if (status == 2) {//初审通过
                     $("#add").show();
+                    $("#spanTips").show();
+                    //长按图片删除
+                    funcLongPress();
                     $("#btnSave").show();
                     $("#btnAudit").hide();
                 } else {
@@ -281,10 +326,13 @@
                     $("#btnCancel").removeClass("fl");
                     $("#divButton").css({ 'text-align': 'center'});
                 }
-            } else if (userType == 2) {
+            } else if (userType == 2) {//客户经理
                 if (status == 1 || status == 2) {//提交申请 或 初审通过
                     var banquetId = $("#hidBanquetId").val();
                     $("#add").show();
+                    $("#spanTips").show();
+                    //长按图片删除
+                    funcLongPress();
                     if (banquetId == "") {
                         $("#btnSave").show();
                         $("#btnAudit").hide();
@@ -307,8 +355,35 @@
                 $("#divButton").css({ 'text-align': 'center' });
             }
             //点击图片预览
-            funcReadImgInfo();
+            //funcReadImgInfo();
         });
+
+
+        function funcLongPress() {
+            //$("img[name='photo']")
+            //$("img[name='photo']").each(function () {
+            //    $(this).on({
+            //        touchstart: function (e) {
+            //            timeOutEvent = setTimeout(imgLongPress, 800, $(this));
+            //            e.preventDefault();
+            //        },
+            //        touchmove: function () {
+            //            clearTimeout(timeOutEvent);
+            //            timeOutEvent = 0;
+            //        },
+            //        touchend: function () {
+            //            clearTimeout(timeOutEvent);
+            //            if (timeOutEvent != 0) {
+            //                alert("你这是点击，不是长按");
+            //            }
+            //            return false;
+            //        }
+            //    });
+            //});
+            $("img[name='photo']").each(function () {
+                $(this).longPress();
+            });
+         }
 
         function checkMobile(str) {
             var re = /^1\d{10}$/
@@ -410,6 +485,8 @@
             if (confirm("请确认信息填写无误，提交后不可更改")) {
                 $("#btnSave").attr("disabled", true);
                 $("#btnSave").attr("disabled", "disabled");
+                var ajaxbg = $("#background, #progressBar");
+                ajaxbg.show();
                 $.ajax({
                     url: reqUrl,
                     type: "POST",
@@ -417,6 +494,7 @@
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(para),
                     success: function (data) {
+                        ajaxbg.hide();
                         if (data.success) {
                             if (data.result.code == 0) {
                                 alert(data.result.msg);
@@ -431,7 +509,8 @@
                         $("#btnSave").attr("disabled", false);
                     },
                     error: function () {
-                        alert("提交失败！");
+                        ajaxbg.hide();
+                        alert("提交失败，稍后请重试！");
                         $("#btnSave").removeAttr("disabled");
                         $("#btnSave").attr("disabled", false);
                     }
