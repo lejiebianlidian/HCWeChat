@@ -73,9 +73,9 @@
                 <div class="file_upload pr">
                     <input type="hidden" id="Images" name="Images" value="" />
                     @foreach (var url in Model.PhotoUrls)
-    {
-                <img name="photo" src="@(ViewBag.ServerRootAddress + url)" orgsrc="@url" />
-}
+                    {
+                        <img name="photo" src="@(ViewBag.ServerRootAddress + url)" orgsrc="@url" />
+                    }
                     @*<input id="Photos" name="Photos" multiple type="file"  class="none pa">*@
                     @*<img name="photo" src="~/YiBinWX/static/img/advise/add.png">
                     <img name="photo" src="~/YiBinWX/static/img/advise/add1.png">
@@ -118,7 +118,8 @@
         //};
 
         function fnImgDelete(obj) {
-            alert($(obj).attr("src"))
+            //alert(666)
+            //alert($(obj).attr("src"))
             if (confirm("确认要删除该图片吗？")) {
                 deletId($(obj).attr("src"));
                 $(obj).remove();
@@ -153,6 +154,7 @@
                 }, false);
                 $this[i].addEventListener('touchend', function (event) {
                     clearTimeout(timeout);
+                    funcSetReadImgInfo(this);
                 }, false);
             }
 
@@ -176,8 +178,20 @@
                 });
             }
         }
-
-
+        //设置预览图片
+        function funcSetReadImgInfo(obj) {
+            var imgs = [];
+            var imgObj = $("img[name='photo']");//这里改成相应的对象
+            for (var i = 0; i < imgObj.length; i++) {
+                imgs.push(imgObj.eq(i).attr('src')); 
+            }
+            var nowImgurl = $(obj).attr('src');
+            //alert("预览了")
+            WeixinJSBridge.invoke("imagePreview", {
+                "urls": imgs,
+                "current": nowImgurl
+            });
+        }
 
         function wxchooseImage() {
             if (wximgIds.length == 8) {
@@ -224,7 +238,7 @@
                         //});
                     }
                     //点击图片预览
-                    funcReadImgInfo();
+                    //funcReadImgInfo();
 
                     syncUpload(localIds);
                 }
@@ -298,7 +312,7 @@
             var status = $("#hidActivityFormStatus").val();
             $("#spanTips").hide();//提示信息显示控制
             if (userType == 1) {//零售客户
-                if (status == 1) {//提交申请通过
+                if (status == 2) {//初审通过
                     $("#add").show();
                     $("#spanTips").show();
                     //长按图片删除
@@ -341,7 +355,7 @@
                 $("#divButton").css({ 'text-align': 'center' });
             }
             //点击图片预览
-            funcReadImgInfo();
+            //funcReadImgInfo();
         });
 
 

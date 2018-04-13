@@ -78,6 +78,7 @@ namespace HC.WeChat.Retailers
         /// <summary>
         /// 通过指定id获取RetailerListDto信息
         /// </summary>
+        [AbpAllowAnonymous]
         public async Task<RetailerListDto> GetRetailerByIdAsync(EntityDto<Guid> input)
         {
             var entity = await _retailerRepository.GetAsync(input.Id);
