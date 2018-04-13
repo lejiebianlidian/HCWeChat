@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="static/css/shop.css" />
 </head>
 <body class="bg_gary">
+    <div id="background" class="background" style="display: none; "></div>
+    <div id="progressBar" class="progressBar" style="display: none; ">正在提交中，请稍等...</div>
     <!--页面整体-->
     <div class="all_width">
         <!--用户类型选择-->
@@ -79,7 +81,9 @@
             para.nickName = $("#hidNickName").val();
             para.openId = $("#hidOpenId").val();
             $("#btnSave").attr("disabled", true);
-            $("#btnSave").attr("disabled", "disabled");  
+            $("#btnSave").attr("disabled", "disabled");
+            var ajaxbg = $("#background, #progressBar");
+            ajaxbg.show();
             $.ajax({
                 url: reqUrl,
                 type: "POST",
@@ -87,6 +91,7 @@
                 contentType: "application/json;charset=utf-8",
                 data: JSON.stringify(para),
                 success: function (data) {
+                    ajaxbg.hide();
                     if (data.success) {
                         if (data.result.code == 0) {
                             alert(data.result.msg);
@@ -98,12 +103,13 @@
                         alert("保存异常！");
                     }
                     $("#btnSave").removeAttr("disabled");
-                    $("#btnSave").attr("disabled", false); 
+                    $("#btnSave").attr("disabled", false);
                 },
                 error: function () {
-                    alert("提交失败！");
+                    ajaxbg.hide();
+                    alert("提交失败，稍后请重试！");
                     $("#btnSave").removeAttr("disabled");
-                    $("#btnSave").attr("disabled", false); 
+                    $("#btnSave").attr("disabled", false);
                 }
             });
         }
@@ -127,7 +133,7 @@
             para.nickName = $("#hidNickName").val();
             para.openId = $("#hidOpenId").val();
             $("#btnEmpSave").attr("disabled", true);
-            $("#btnEmpSave").attr("disabled", "disabled"); 
+            $("#btnEmpSave").attr("disabled", "disabled");
             $.ajax({
                 url: reqUrl,
                 type: "POST",
@@ -146,12 +152,12 @@
                         alert("保存异常！");
                     }
                     $("#btnEmpSave").removeAttr("disabled");
-                    $("#btnEmpSave").attr("disabled", false); 
+                    $("#btnEmpSave").attr("disabled", false);
                 },
                 error: function () {
                     alert("提交失败！");
                     $("#btnEmpSave").removeAttr("disabled");
-                    $("#btnEmpSave").attr("disabled", false); 
+                    $("#btnEmpSave").attr("disabled", false);
                 }
             });
         }

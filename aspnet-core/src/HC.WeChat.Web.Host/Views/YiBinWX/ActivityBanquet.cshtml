@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="static/css/tobacco.css" />
 </head>
 <body class="bg_gary">
+    <div id="background" class="background" style="display: none; "></div>
+    <div id="progressBar" class="progressBar" style="display: none; ">正在提交中，请稍等...</div>
     <!--页面整体-->
     <div class="all_width">
         <!--通用头部-->
@@ -269,7 +271,7 @@
         $(function () {
             var userType = $("#hidUserType").val();
             var status = $("#hidActivityFormStatus").val();
-            if (userType == 1) {
+            if (userType == 1) {//零售客户
                 if (status == 1) {//提交申请通过
                     $("#add").show();
                     $("#btnSave").show();
@@ -281,7 +283,7 @@
                     $("#btnCancel").removeClass("fl");
                     $("#divButton").css({ 'text-align': 'center'});
                 }
-            } else if (userType == 2) {
+            } else if (userType == 2) {//客户经理
                 if (status == 1 || status == 2) {//提交申请 或 初审通过
                     var banquetId = $("#hidBanquetId").val();
                     $("#add").show();
@@ -410,6 +412,8 @@
             if (confirm("请确认信息填写无误，提交后不可更改")) {
                 $("#btnSave").attr("disabled", true);
                 $("#btnSave").attr("disabled", "disabled");
+                var ajaxbg = $("#background, #progressBar");
+                ajaxbg.show();
                 $.ajax({
                     url: reqUrl,
                     type: "POST",
@@ -417,6 +421,7 @@
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify(para),
                     success: function (data) {
+                        ajaxbg.hide();
                         if (data.success) {
                             if (data.result.code == 0) {
                                 alert(data.result.msg);
@@ -431,7 +436,8 @@
                         $("#btnSave").attr("disabled", false);
                     },
                     error: function () {
-                        alert("提交失败！");
+                        ajaxbg.hide();
+                        alert("提交失败，稍后请重试！");
                         $("#btnSave").removeAttr("disabled");
                         $("#btnSave").attr("disabled", false);
                     }

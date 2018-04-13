@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="static/css/tobacco.css" />
 </head>
 <body class="bg_gary">
+    <div id="background" class="background" style="display: none; "></div>
+    <div id="progressBar" class="progressBar" style="display: none; ">正在提交中，请稍等...</div>
     <!--页面整体-->
     <div class="all_width">
         <!--通用头部-->
@@ -101,7 +103,9 @@
             para.tenantId = $("#hidTenantId").val();
             para.openId = $("#hidOpenId").val();
            $("#btnSave").attr("disabled", true);
-           $("#btnSave").attr("disabled", "disabled");  
+           $("#btnSave").attr("disabled", "disabled");
+           var ajaxbg = $("#background, #progressBar");
+           ajaxbg.show();
             $.ajax({
                 url: reqUrl,
                 type: "POST",
@@ -109,6 +113,7 @@
                 contentType: "application/json;charset=utf-8",
                 data: JSON.stringify(para),
                 success: function (data) {
+                    ajaxbg.hide();
                     if (data.success) {
                         if (data.result.code == 0) {
                             alert(data.result.msg);
@@ -120,12 +125,13 @@
                         alert("保存异常！");
                     }
                     $("#btnSave").removeAttr("disabled");
-                    $("#btnSave").attr("disabled", false); 
+                    $("#btnSave").attr("disabled", false);
                 },
                 error: function () {
-                    alert("提交失败！");
+                    ajaxbg.hide();
+                    alert("提交失败，稍后请重试！");
                     $("#btnSave").removeAttr("disabled");
-                    $("#btnSave").attr("disabled", false); 
+                    $("#btnSave").attr("disabled", false);
                 }
             });
         }
