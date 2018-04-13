@@ -4,8 +4,8 @@
     </ng-template>
     <ng-template *ngIf="form" #action>
         <button nz-button *ngIf="form.status == 1" [nzSize]="'large'" (click)="editForm()">修改商品信息</button>
-        <button nz-button [nzSize]="'large'" (click)="cancel()" *ngIf="form.status == 1 || form.status == 2 || form.status == 3">取消</button>
-        <button nz-button [nzSize]="'large'" (click)="reject()" *ngIf="form.status == 1 || form.status == 2">拒绝</button>
+        <button nz-button [nzSize]="'large'" (click)="cancel()" *ngIf="form.status == 1 || form.status == 2 || form.status == 3 || form.status == 4">取消</button>
+        <button nz-button [nzSize]="'large'" (click)="reject()" *ngIf="form.status == 1 || form.status == 2 || form.status == 4">拒绝</button>
         <button nz-button [nzType]="'primary'" (click)="firstApproval()" *ngIf="form.status == 1" [nzSize]="'large'">初审通过</button>
         <button nz-button [nzType]="'primary'" (click)="approval()" *ngIf="form.status == 2" [nzSize]="'large'">资料回传审核通过</button>
         <button nz-button [nzType]="'primary'" (click)="approvalEnd()" *ngIf="form.status == 4 && ismcenter" [nzSize]="'large'">营销中心审核通过</button>
@@ -64,7 +64,7 @@
                             <nz-list [nzLoading]="loading" class="imgList" [nzDataSource]="photoUrls" [nzGrid]="{gutter: 24, lg: 6, md: 8, sm: 12, xs: 24 }">
                                 <ng-template #item let-item>
                                     <nz-list-item>
-                                        <img alt="" src="{{item}}" (click)="handlePreview(item)" style="width: 98%;">
+                                        <img alt="" src="{{item}}" (click)="handlePreview(item)" style="width: 98%; height: 250px;">
                                     </nz-list-item>
                                 </ng-template>
                             </nz-list>
