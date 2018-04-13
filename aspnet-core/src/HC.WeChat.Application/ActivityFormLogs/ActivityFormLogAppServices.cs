@@ -5,6 +5,7 @@ using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
+using System.Linq;
 
 using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ using HC.WeChat.ActivityFormLogs.DomainServices;
 using HC.WeChat.ActivityFormLogs;
 using System;
 using HC.WeChat.Authorization;
+using HC.WeChat.WechatEnums;
 
 namespace HC.WeChat.ActivityFormLogs
 {
@@ -181,6 +183,18 @@ namespace HC.WeChat.ActivityFormLogs
         {
             //TODO:批量删除前的逻辑判断，是否允许删除
             await _activityformlogRepository.DeleteAsync(s => input.Contains(s.Id));
+        }
+
+        /// <summary>
+        /// 获取活动申请日志
+        /// </summary>
+        /// <param name="formId">活动申请id</param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        public async Task<ActivityFormLogListDto> GetActivityFormLogByFormIdAsync(Guid formId)
+        {
+            var entity = await _activityformlogRepository.GetAll().Where(l => l.ActivityFormId == formId && l.Status == FormStatusEnum.营销中心已审核).FirstOrDefaultAsync();
+            return entity.MapTo<ActivityFormLogListDto>();
         }
 
     }

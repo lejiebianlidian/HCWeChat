@@ -28,6 +28,7 @@ using Abp.Application.Services.Dto;
 using HC.WeChat.ActivityDeliveryInfos.Dtos;
 using Senparc.Weixin.MP.Helpers;
 using Microsoft.AspNetCore.Http;
+using HC.WeChat.ActivityFormLogs;
 
 namespace HC.WeChat.Web.Host.Controllers
 {
@@ -45,6 +46,8 @@ namespace HC.WeChat.Web.Host.Controllers
         IActivityBanquetAppService _activityBanquetAppService;
         private int? tenantId;
         IActivityDeliveryInfoAppService _activityDeliveryInfoAppService;
+        IActivityFormLogAppService _activityFormLogAppService;
+
         public YiBinWXController(IWechatAppConfigAppService wechatAppConfigAppService,
            IOptions<WeChatTenantSetting> settings,
            IWeChatOAuthAppService weChatOAuthAppService,
@@ -55,6 +58,7 @@ namespace HC.WeChat.Web.Host.Controllers
            IActivityFormAppService activityFormAppService,
            IActivityBanquetAppService activityBanquetAppService,
            IActivityDeliveryInfoAppService activityDeliveryInfoAppService,
+           IActivityFormLogAppService activityFormLogAppService,
         IHostingEnvironment env) : base(wechatAppConfigAppService)
         {
             _settings = settings.Value;
@@ -71,7 +75,7 @@ namespace HC.WeChat.Web.Host.Controllers
             _activityFormAppService = activityFormAppService;
             _activityBanquetAppService = activityBanquetAppService;
             _activityDeliveryInfoAppService = activityDeliveryInfoAppService;
-
+            _activityFormLogAppService = activityFormLogAppService;
         }
 
         protected override int? GetTenantId()
@@ -271,6 +275,7 @@ namespace HC.WeChat.Web.Host.Controllers
             var tenantId = GetTenantId();
             var user = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
             var banquent =_activityBanquetAppService.GetActivityBanquetByFormIdWechatAsync(entity.Id).Result;
+            var formLog = _activityFormLogAppService.GetActivityFormLogByFormIdAsync(entity.Id).Result;
             //var deliveryList = _activityDeliveryInfoAppService.GetActivityDeliveryInfoByFormIdAsync(entity.Id).Result;
             //ActivityDeliveryInfoListDto delivery = new ActivityDeliveryInfoListDto();
             //if (deliveryList!= null)
@@ -283,6 +288,13 @@ namespace HC.WeChat.Web.Host.Controllers
             //        }
             //    }
             //}
+            if (formLog == null)
+            {
+                ViewBag.CompleteTime = null;
+            }
+            else {
+                ViewBag.CompleteTime = formLog.ActionTime.ToString("yyyy-MM-dd");
+            }
             ViewBag.IsBanquent = banquent== null ? false :  true;
             //ViewBag.DeliveryId = delivery == null ? Guid.Empty : delivery.Id;
             ViewBag.UserType =(int)user.UserType;
