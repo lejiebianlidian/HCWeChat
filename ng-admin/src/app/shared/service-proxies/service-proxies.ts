@@ -1144,6 +1144,60 @@ export class UserServiceProxy {
         return Observable.of<UserDto>(<any>null);
     }
 
+    updatePassword(password: string): Observable<UserDto> {
+        let url_ = this.baseUrl + "/api/services/app/User/UpdatePassword?";
+        if (password !== undefined)
+        url_ += "password=" + encodeURIComponent("" + password) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        // const content_ = JSON.stringify(password);
+
+        let options_ = {
+            // body: content_,
+            method: "put",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processUpdatePassword(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processUpdatePassword(response_);
+                } catch (e) {
+                    return <Observable<UserDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<UserDto>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processUpdatePassword(response: Response): Observable<UserDto> {
+        const status = response.status;
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? UserDto.fromJS(resultData200) : new UserDto();
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<UserDto>(<any>null);
+    }
+
     /**
      * @return Success
      */
@@ -1249,6 +1303,59 @@ export class UserServiceProxy {
     /**
      * @return Success
      */
+    checkOldPassword(oldPassword:string): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/User/CheckOldPassword?";
+        if (oldPassword !== undefined)
+            url_ += "oldPassword=" + encodeURIComponent("" + oldPassword) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(oldPassword);
+
+        let options_ = {
+            // body: content_,
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processcheckOldPassword(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processcheckOldPassword(response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<boolean>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processcheckOldPassword(response: Response): Observable<boolean> {
+        const status = response.status;
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? resultData200 : false;
+            return Observable.of(result200);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<boolean>(<any>null);
+    }
+
     get(id: number): Observable<UserDto> {
         let url_ = this.baseUrl + "/api/services/app/User/Get?";
         if (id !== undefined)

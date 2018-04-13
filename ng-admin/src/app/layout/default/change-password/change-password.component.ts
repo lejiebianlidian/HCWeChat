@@ -1,5 +1,5 @@
 import { Component, ViewChild, Injector, Output, EventEmitter, ElementRef, OnInit } from '@angular/core';
-import { UserServiceProxy, ChangePasswordDto } from '@shared/service-proxies/service-proxies';
+import { UserServiceProxy, ChangePasswordDto, UserDto, CreateUserDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/app-component-base';
 import { FormGroup, FormBuilder, Validators, FormControl, AsyncValidatorFn, AbstractControl } from '@angular/forms';
 
@@ -19,6 +19,8 @@ export class ChangePasswordComponent extends AppComponentBase implements OnInit 
     isConfirmLoading = false;
     isDisablec = false;
     changePassword: ChangePasswordDto = null;
+    oldUser: CreateUserDto = new CreateUserDto();
+    isOldPasswordValid = false;
     //roles: RoleDto[] = null;
 
     form: FormGroup;
@@ -39,14 +41,15 @@ export class ChangePasswordComponent extends AppComponentBase implements OnInit 
             newPassword: [null, [Validators.required]],
             checkPassword: [null, Validators.compose([Validators.required, this.confirmationValidator])]
         }, );
+
     }
 
     show(): void {
         this.reset();
         this.changePassword = new ChangePasswordDto();
         this.modalVisible = true;
-         //对isDisablec做初始化
-         this.isDisablec = false;
+        //对isDisablec做初始化
+        this.isDisablec = false;
     }
 
     save(isSave = false): void {
@@ -55,11 +58,24 @@ export class ChangePasswordComponent extends AppComponentBase implements OnInit 
             this.form.controls[i].markAsDirty();
         }
         console.log('log', this.form.value);
+        this.isConfirmLoading = true
         if (this.form.valid) {
-            
-           
+            console.log(this.changePassword.orgPassword);
+            this._userService.checkOldPassword(this.changePassword.orgPassword).subscribe((isValid: boolean) => {
+                if(isValid){
+                    this._userService.updatePassword(this.changePassword.newPassword)
+                    .finally(() => { this.isConfirmLoading = false; })
+                    .subscribe(() => {
+                        this.notify.info(this.l('修改成功！'));
+                        this.close();
+                        this.modalSave.emit(null);
+                    });
+                }else{
+                    this.isConfirmLoading = false;
+                    this.isOldPasswordValid=true;
+                }
+            });
         }
-
     }
 
     close(): void {
@@ -74,13 +90,17 @@ export class ChangePasswordComponent extends AppComponentBase implements OnInit 
     }
 
 
+    /**
+     * 新密码确认验证
+     */
     confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
         if (!control.value) {
             return { required: true };
-        } else if (control.value !== this.form.controls['password'].value) {
+        } else if (control.value !== this.form.controls['newPassword'].value) {
             return { confirm: true, error: true };
         }
     }
+  
 
     getFormControl(name: string) {
         return this.form.controls[name];
@@ -96,4 +116,5 @@ export class ChangePasswordComponent extends AppComponentBase implements OnInit 
         }
     }
 
+  
 }

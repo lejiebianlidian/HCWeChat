@@ -49,7 +49,7 @@
         <thead nz-thead>
             <tr>
                 <th nz-th>
-                    <span>编码</span>
+                    <span>客户编码</span>
                 </th>
                 <th nz-th>
                     <span>姓名</span>
@@ -78,12 +78,12 @@
                 <th nz-th>
                     <span>客户经理</span>
                 </th>
-                <th nz-th>
+                <!-- <th nz-th>
                     <span>订货方式</span>
-                </th>
-                <th nz-th>
+                </th> -->
+                <!-- <th nz-th>
                     <span>终端类型</span>
-                </th>
+                </th> -->
                 <!-- <th nz-th>
                     <span>商圈类型</span>
                 </th> -->
@@ -96,9 +96,9 @@
                 <!-- <th nz-th>
                     <span>送货线路</span>
                 </th> -->
-                <!-- <th nz-th>
+                <th nz-th>
                     <span>专卖证号</span>
-                </th> -->
+                </th>
                 <th nz-th>
                         <span>状态</span>
                     </th>
@@ -119,13 +119,13 @@
                 <!-- <td nz-td>{{retail.branchCompany}}</td> -->
                 <td nz-td>{{retail.department}}</td>
                 <td nz-td>{{retail.manager}}</td>
-                <td nz-td>{{retail.orderModeName}}</td>
-                <td nz-td>{{retail.terminalTypeName}}</td>
+                <!-- <td nz-td>{{retail.orderModeName}}</td> -->
+                <!-- <td nz-td>{{retail.terminalTypeName}}</td> -->
                 <!-- <td nz-td>{{retail.businessType}}</td> -->
                 <td nz-td>{{retail.scaleName}}</td>
                 <td nz-td>{{retail.marketTypeName}}</td>
                 <!-- <td nz-td>{{retail.deliveryLine}}</td> -->
-                <!-- <td nz-td>{{retail.licenseKey}}</td> -->
+                <td nz-td>{{retail.licenseKey}}</td>
                 <td nz-td>
                     <nz-badge [nzStatus]="retail.activeType" [nzText]="retail.activeText"></nz-badge>
                 </td>

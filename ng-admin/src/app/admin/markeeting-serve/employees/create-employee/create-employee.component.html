@@ -6,7 +6,7 @@
                 员工信息
             </ng-template>
             <ng-template #deleteContent>
-                </ng-template>
+            </ng-template>
             <fieldset>
                 <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSm]="5">
@@ -16,8 +16,6 @@
                         <nz-input formControlName="code" [(ngModel)]="employeec.code" [nzId]="'code'"></nz-input>
                         <div nz-form-explain *ngIf="getFormControl('code').dirty&&getFormControl('code').hasError('maxlength')">字符长度小于等于50</div>
                         <div nz-form-explain *ngIf="getFormControl('code').dirty&&getFormControl('code').hasError('required')">请输入员工编码</div>
-                        <!-- <div nz-form-explain *ngIf="getFormControl('code').dirty&&getFormControl('code').hasError('confirm')">员工编码已存在</div> -->
-                        
                     </div>
                 </div>
                 <div nz-form-item nz-row>
@@ -43,8 +41,7 @@
                         <label for="position" nz-form-item-required>职位</label>
                     </div>
                     <div nz-form-control nz-col [nzSm]="19" nzHasFeedback [nzValidateStatus]="getFormControl('position')">
-                        <nz-select formControlName="position" [nzPlaceHolder]="'职位'" [(ngModel)]="employeec.position" [nzShowSearch]="true"
-                            nzSize="large">
+                        <nz-select formControlName="position" [nzPlaceHolder]="'职位'" [(ngModel)]="employeec.position" [nzShowSearch]="true" nzSize="large">
                             <nz-option *ngFor="let i of positions" [nzLabel]="i.text" [nzValue]="i.value">
                             </nz-option>
                         </nz-select>
@@ -63,7 +60,7 @@
                 </div>
                 <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSm]="5">
-                        <label for="company" >所属公司</label>
+                        <label for="company">所属公司</label>
                     </div>
                     <div nz-form-control nz-col [nzSm]="19" nzHasFeedback [nzValidateStatus]="getFormControl('company')">
                         <nz-input formControlName="company" [(ngModel)]="employeec.company" [nzId]="'company'"></nz-input>
@@ -72,7 +69,7 @@
                 </div>
                 <div nz-form-item nz-row>
                     <div nz-form-label nz-col [nzSm]="5">
-                        <label for="department" >所属市场部</label>
+                        <label for="department">所属市场部</label>
                     </div>
                     <div nz-form-control nz-col [nzSm]="19" nzHasFeedback [nzValidateStatus]="getFormControl('department')">
                         <nz-input formControlName="department" [(ngModel)]="employeec.department" [nzId]="'department'"></nz-input>
@@ -84,6 +81,11 @@
                         <label nz-checkbox formControlName="isactive" [(ngModel)]="employeec.isAction">
                             <span>启用</span>
                         </label>
+                    </div>
+                </div>
+                <div>
+                    <div nz-form-label nz-col [nzSm]="8" [nzOffset]="16">
+                        <p *ngIf="isCodeCValid" style="color:red;">员工编码已存在</p>
                     </div>
                 </div>
             </fieldset>

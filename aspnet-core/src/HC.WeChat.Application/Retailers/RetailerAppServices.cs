@@ -61,7 +61,7 @@ namespace HC.WeChat.Retailers
             var retailerCount = await query.CountAsync();
 
             var retailers = await query
-                .OrderBy(input.Sorting)
+                .OrderByDescending(r=>r.CreationTime)
                 .PageBy(input)
                 .ToListAsync();
 
