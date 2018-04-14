@@ -29,13 +29,25 @@
             <div class="opacity_bg all_width">
                 <!--选其它需要输入商品规格-->
                 <div class="advise_warp pt5 pb5">
-                    <span class="entry_key fl">区    县</span>
-                    <input type="text" maxlength="500" id="txtArea" class="fl ml10 entry_value" value="@Model.BanquetWeChat.Area" placeholder="请输入区县" />
+                    <span class="entry_key">选择区县</span>
+                    <select id="ddlArea" class="ml10 entry_value" value="@Model.BanquetWeChat.Area" placeholder="请输入选择区县">
+                        <option value="翠屏区">翠屏区</option>
+                        <option value="南溪区">南溪区</option>
+                        <option value="宜宾县">宜宾县</option>
+                        <option value="江安县">江安县</option>
+                        <option value="长宁县">长宁县</option>
+                        <option value="高县">高县</option>
+                        <option value="筠连县">筠连县</option>
+                        <option value="珙县">珙县</option>
+                        <option value="兴文县">兴文县</option>
+                        <option value="屏山县">屏山县</option>
+                    </select>
+                    @*<input type="text" maxlength="500" id="txtArea" class="fl ml10 entry_value" value="@Model.BanquetWeChat.Area" placeholder="请输入区县" />*@
                 </div>
                 <!--申请数量-->
                 <div class="advise_warp pt5 pb5">
-                    <span class="entry_key fl">宴席时间</span>
-                    <input type="date" id="txtBanquetTime" maxlength="20" class="fl ml10 entry_value" value="@Model.BanquetWeChat.ShowBanquetTime" placeholder="请输入宴席时间" />
+                    <span class="entry_key">宴席时间</span>
+                    <input type="date" id="txtBanquetTime" maxlength="20" value="@Model.BanquetWeChat.ShowBanquetTime" placeholder="请输入宴席时间" />
                 </div>
                 <div class="advise_warp pt5 pb5">
                     <span class="entry_key fl">宴席地点</span>
@@ -73,13 +85,13 @@
                 <div class="file_upload pr">
                     <input type="hidden" id="Images" name="Images" value="" />
                     @foreach (var url in Model.PhotoUrls)
-                    {
-                        <img name="photo" src="@(ViewBag.ServerRootAddress + url)" orgsrc="@url" />
-                    }
+        {
+            <img name="photo" src="@(ViewBag.ServerRootAddress + url)" orgsrc="@url" />
+}
                     @*<input id="Photos" name="Photos" multiple type="file"  class="none pa">*@
                     @*<img name="photo" src="~/YiBinWX/static/img/advise/add.png">
-                    <img name="photo" src="~/YiBinWX/static/img/advise/add1.png">
-                    <img name="photo" src="~/YiBinWX/static/img/advise/add3.png">*@
+            <img name="photo" src="~/YiBinWX/static/img/advise/add1.png">
+            <img name="photo" src="~/YiBinWX/static/img/advise/add3.png">*@
                     <img id="add" src="~/YiBinWX/static/img/advise/add.png">
                 </div>
                 <!--上传图片限制提示-->
@@ -183,7 +195,7 @@
             var imgs = [];
             var imgObj = $("img[name='photo']");//这里改成相应的对象
             for (var i = 0; i < imgObj.length; i++) {
-                imgs.push(imgObj.eq(i).attr('src')); 
+                imgs.push(imgObj.eq(i).attr('src'));
             }
             var nowImgurl = $(obj).attr('src');
             //alert("预览了")
@@ -397,7 +409,7 @@
         var Save = function () {
             var reqUrl = "@ViewBag.ServerRootAddress" + "/api/services/app/ActivityBanquet/SubmitActivityBanquetWeChatAsync";
             var para = {};
-            para.area = $("#txtArea").val();
+            para.area = $("#ddlArea").val();
             if (para.area == "") {
                 alert("区县不能为空！");
                 return;

@@ -313,7 +313,7 @@ namespace HC.WeChat.Web.Host.Controllers
         /// <returns></returns>
         public IActionResult ActivityBanquet(string actFormId, int? actFormStatus, string openid, int? userType)
         {
-            //actId = "E6200916-552A-44A4-FFD4-08D59A3C0EB3";
+            //actFormId = "E6200916-552A-44A4-FFD4-08D59A3C0EB3";
             //actFormId = "73DF4187-AF25-422D-5601-08D59EB66341";
             //openid = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
             //actFormStatus = 2;
