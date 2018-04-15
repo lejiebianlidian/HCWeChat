@@ -18,7 +18,7 @@ namespace HC.WeChat.WeChatMenu
 
         GetMenuResult GetMenuFromJson(string jsonString);
 
-        GetMenuResult GetMenu(string accessTokenOrAppId);
+        GetMenuResult GetMenu();
 
         WxJsonResult DeleteMenu(string accessTokenOrAppId);
     }

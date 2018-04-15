@@ -56,9 +56,9 @@ namespace HC.WeChat.WeChatMenu
             throw new NotImplementedException();
         }
 
-        public GetMenuResult GetMenu(string accessTokenOrAppId)
+        public GetMenuResult GetMenu()
         {
-            throw new NotImplementedException();
+            return CommonApi.GetMenu(AppConfig.AppId);
         }
 
         public GetMenuResult GetMenuFromJson(string jsonString)

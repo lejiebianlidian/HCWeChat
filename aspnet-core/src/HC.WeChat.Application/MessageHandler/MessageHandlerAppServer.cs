@@ -49,6 +49,10 @@ namespace HC.WeChat.MessageHandler
 
                 await MessageHandlerLogAsync(messageHandler);
 
+                if (messageHandler.ResponseDocument == null)
+                {
+                    return string.Empty;
+                }
                 return messageHandler.ResponseDocument.ToString();
             }
         }
