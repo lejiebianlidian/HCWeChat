@@ -109,9 +109,15 @@ namespace HC.WeChat.Web.Host.Controllers
             //如果userId为null 则需要通过code重新获取
             if (string.IsNullOrEmpty(UserOpenId))
             {
-                var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
-                UserOpenId = oauth.openid;
-
+                try
+                {
+                    var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
+                    UserOpenId = oauth.openid;
+                }
+                catch (Exception ex)
+                {
+                    Logger.ErrorFormat("GetAccessTokenAsync Exception:{0}", ex.Message);
+                }
                 //UserOpenId = code;
             }
         }
@@ -162,7 +168,7 @@ namespace HC.WeChat.Web.Host.Controllers
         /// </summary>
         public IActionResult UserIndex()
         {
-            var user = _wechatuserRepository.GetAll().Where(r=>r.TenantId== AbpSession.TenantId).FirstOrDefault();
+            var user = _wechatuserRepository.GetAll().Where(r => r.TenantId == AbpSession.TenantId).FirstOrDefault();
             return View(user.MapTo<WeChatUserListDto>());
         }
 
@@ -302,11 +308,13 @@ namespace HC.WeChat.Web.Host.Controllers
             var tenantId = GetTenantId();
             //openId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
             var user = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
-            var result =  _activityFormAppService.GetActivityFormList(check,user).Result; 
-            if (check) {
+            var result = _activityFormAppService.GetActivityFormList(check, user).Result;
+            if (check)
+            {
                 ViewBag.activityTitle = "已完成活动申请单列表";
             }
-            else {
+            else
+            {
                 ViewBag.activityTitle = "未完成活动申请单列表";
             }
             result.OpenId = openId;
@@ -319,13 +327,13 @@ namespace HC.WeChat.Web.Host.Controllers
         /// <param name="entity">活动申请单实体</param>
         /// <param name="openId">openId</param>
         /// <returns></returns>
-        public IActionResult ActivityFromApplyDetail(Guid id,string openId)
+        public IActionResult ActivityFromApplyDetail(Guid id, string openId)
         {
             var entity = _activityFormAppService.GetSingleFormDto(id);
             //openId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
             var tenantId = GetTenantId();
             var user = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
-            var banquent =_activityBanquetAppService.GetActivityBanquetByFormIdWechatAsync(entity.Id).Result;
+            var banquent = _activityBanquetAppService.GetActivityBanquetByFormIdWechatAsync(entity.Id).Result;
             var formLog = _activityFormLogAppService.GetActivityFormLogByFormIdAsync(entity.Id).Result;
             //var deliveryList = _activityDeliveryInfoAppService.GetActivityDeliveryInfoByFormIdAsync(entity.Id).Result;
             //ActivityDeliveryInfoListDto delivery = new ActivityDeliveryInfoListDto();
@@ -343,12 +351,13 @@ namespace HC.WeChat.Web.Host.Controllers
             {
                 ViewBag.CompleteTime = null;
             }
-            else {
+            else
+            {
                 ViewBag.CompleteTime = formLog.ActionTime.ToString("yyyy-MM-dd");
             }
-            ViewBag.IsBanquent = banquent== null ? false :  true;
+            ViewBag.IsBanquent = banquent == null ? false : true;
             //ViewBag.DeliveryId = delivery == null ? Guid.Empty : delivery.Id;
-            ViewBag.UserType =(int)user.UserType;
+            ViewBag.UserType = (int)user.UserType;
             ViewBag.Status = (int)entity.Status;
             ViewBag.OpenId = openId;
             ViewBag.TenantId = tenantId;
@@ -383,8 +392,8 @@ namespace HC.WeChat.Web.Host.Controllers
             ViewBag.UserType = userType;
             ViewBag.ActivityFormStatus = actFormStatus;
             var root = _appConfiguration["App:ServerRootAddress"];
-            ViewBag.ServerRootAddress = root; 
-            
+            ViewBag.ServerRootAddress = root;
+
             ActivityBanquetModel model = new ActivityBanquetModel();
             model.JsSdkApiConfig = jsApiConfig;
             model.BanquetWeChat = activityBanquet;
@@ -402,5 +411,43 @@ namespace HC.WeChat.Web.Host.Controllers
             ViewBag.GoodsList = goodsList;
             return View();
         }
+
+        public IActionResult Authorization(AuthorizationPageEnum page)
+        {
+            var host = _appConfiguration["App:ServerRootAddress"];
+            switch (page)
+            {
+                case AuthorizationPageEnum.BindUser:
+                    {
+                        var url = host + "/YiBinWX/BindUser";
+                        ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
+                    }
+                    break;
+                case AuthorizationPageEnum.Question:
+                    {
+                        var url = host + "/YiBinWX/Question";
+                        ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
+                    }
+                    break;
+                case AuthorizationPageEnum.AdviseBack:
+                    {
+                        var url = host + "/YiBinWX/AdviseBack";
+                        ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return View();
+        }
     }
+
+    public enum AuthorizationPageEnum
+    {
+        BindUser = 1,
+        Question = 2,
+        AdviseBack = 3
+    }
+
+
 }
