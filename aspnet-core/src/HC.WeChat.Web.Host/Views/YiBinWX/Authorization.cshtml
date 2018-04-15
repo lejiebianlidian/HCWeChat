@@ -34,13 +34,16 @@
     </style>
 </head>
 <body class="bg_gary">
-    <div id="background" class="background" ></div>
+    <div id="background" class="background"></div>
     <div id="progressBar" class="progressBar">
         <img src="~/YiBinWX/static/img/await.gif" /><br />
         页面正在加载，请稍等...
     </div>
+    <a style="display:none" href="@ViewBag.PageUrl">
+        <input type="button" id="btnGoPageUrl" />
+    </a>
     <script language="javascript" type="text/javascript">
-    window.location.href = '@ViewBag.PageUrl';
+        document.getElementById("btnGoPageUrl").click();
     </script>
 </body>
 </html>
