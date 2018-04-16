@@ -101,5 +101,12 @@ namespace HC.WeChat.ActivityForms
         /// 获取未完成 和 已完成单数
         /// </summary>
         Task<ActivityFormCountDto> GetActivityFormCountByUserAsync(WeChatUserListDto user);
+
+        /// <summary>
+        /// 获取邮寄信息
+        /// </summary>
+        /// <param name="input">查询条件</param>
+        /// <returns></returns>
+        Task<PagedResultDto<PostInfoDto>> GetPostInfo(GetActivityFormsInput input);
     }
 }

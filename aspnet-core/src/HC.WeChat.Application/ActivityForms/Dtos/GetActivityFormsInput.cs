@@ -43,6 +43,26 @@ namespace HC.WeChat.ActivityForms.Dtos
                 Sorting = "CreationTime Desc";
             }
         }
+
+        /// <summary>
+        /// 商品规格
+        /// </summary>
+        public string ProductSpecification { get; set; }
+
+        /// <summary>
+        /// 收货人类型（枚举：消费者、推荐人）
+        /// </summary>
+        public DeliveryUserTypeEnum? UserType { get; set; }
+
+        /// <summary>
+        /// 联系方式
+        /// </summary>
+        public string Phone { get; set; }
+
+        /// <summary>
+        /// 是否邮寄
+        /// </summary>
+        public bool? IsSend { get; set; }
     }
 
     public class GetActivityViewInput : PagedAndSortedInputDto, IShouldNormalize
