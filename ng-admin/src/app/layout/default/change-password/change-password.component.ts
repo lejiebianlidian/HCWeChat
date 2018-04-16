@@ -72,7 +72,9 @@ export class ChangePasswordComponent extends AppComponentBase implements OnInit 
                     });
                 }else{
                     this.isConfirmLoading = false;
-                    this.isOldPasswordValid=true;
+                    // this.isOldPasswordValid=true;
+                    this.notify.error('原密码错误');
+                    
                 }
             });
         }

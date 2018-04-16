@@ -86,6 +86,7 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
                 } else {
                     this.isConfirmLoading = false;
                     this.isCodeCValid=true;
+                    this.notify.error('员工编码已存在');
                 }
             })
 
