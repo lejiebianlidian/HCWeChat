@@ -1364,12 +1364,13 @@ namespace HC.WeChat.Migrations
                 b.Property<string>("Phone").IsRequired().HasMaxLength(20);
                 b.Property<string>("Address").IsRequired().HasMaxLength(500);
                 b.Property<int?>("Type");
-                b.Property<string>("ExpressCompany ").HasMaxLength(200);
+                b.Property<string>("ExpressCompany").HasMaxLength(200);
                 b.Property<string>("ExpressNo").HasMaxLength(200);
                 b.Property<string>("Remark").HasMaxLength(500);
                 b.Property<string>("DeliveryRemark").HasMaxLength(500);
                 b.Property<DateTime?>("SendTime");
                 b.Property<DateTime>("CreationTime").IsRequired();
+                b.Property<bool>("IsSend");
 
                 b.HasKey("Id");
 

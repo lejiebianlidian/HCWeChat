@@ -81,5 +81,10 @@ namespace HC.WeChat.ActivityDeliveryInfos
         /// </summary>
         [StringLength(500)]
         public virtual string DeliveryRemark { get; set; }
+
+        /// <summary>
+        /// 是否邮寄
+        /// </summary>
+        public virtual bool IsSend { get; set; }
     }
 }
