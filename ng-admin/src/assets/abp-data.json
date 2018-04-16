@@ -89,7 +89,7 @@
                         },
                         {
                             "text": "邮寄查询",
-                            "link": "/admin/activity-query",
+                            "link": "/admin/post-query",
                             "translate": "post-query",
                             "reuse": false
                         },

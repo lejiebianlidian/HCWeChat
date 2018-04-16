@@ -703,6 +703,9 @@ namespace HC.WeChat.ActivityForms
 
             //TODO:根据传入的参数添加过滤条件
             var activityformCount = await query.CountAsync();
+            //if (activityformCount>0) {
+            //    query = query.OrderByDescending(q => q.ApplyTime);
+            //}
             var activityforms = await query
                 .OrderByDescending(q => q.ApplyTime)
                 .OrderBy(q=>q.FormCode)

@@ -375,7 +375,7 @@ export class ActivityFormServiceProxy {
      * @return Success
      */
     getAllPostInfo(skipCount: number, maxResultCount: number, parameter: Parameter[]): Observable<PagedResultDtoOfPostInfo> {
-        let url_ = this.baseUrl + "/api/services/app/ActivityForm/GetPoatInfo?";
+        let url_ = this.baseUrl + "/api/services/app/ActivityForm/GetPostInfo?";
         if (skipCount !== undefined)
             url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
         if (maxResultCount !== undefined)
