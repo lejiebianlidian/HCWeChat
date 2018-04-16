@@ -18,9 +18,10 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
     statusList = [
         { text: '提交申请', value: 1, type: 'error' },
         { text: '初审通过', value: 2, type: 'processing' },
+        { text: '资料回传已审核', value: 4, type: 'processing' },
         { text: '拒绝', value: 3, type: 'default' },
-        { text: '取消', value: 3, type: 'default' },
-        { text: '完成', value: 4, type: 'success' }
+        { text: '取消', value: 5, type: 'default' },
+        { text: '营销中心已审核', value: 6, type: 'success' }
     ];
 
     constructor(injector: Injector, public msg: NzMessageService, private _ActivityFormService: ActivityFormServiceProxy, private _router: Router) {

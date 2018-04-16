@@ -77,5 +77,7 @@ namespace HC.WeChat.ActivityDeliveryInfos.Dtos
         public DateTime CreationTime { get; set; }
 
         public string DeliveryRemark { get; set; }
+
+        public bool IsSend { get; set; }
     }
 }

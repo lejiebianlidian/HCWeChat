@@ -297,10 +297,11 @@ namespace HC.WeChat.ActivityBanquets
                     var log = new ActivityFormLog();
                     log.ActionTime = DateTime.Now;
                     log.ActivityFormId = activityForm.Id;
-                    log.Opinion = activityForm.Status.ToString();
+                    log.Opinion = "审核通过";// activityForm.Status.ToString();
                     log.Status = activityForm.Status;
                     log.StatusName = activityForm.Status.ToString();
-                    log.UserId = user.Id;
+                    log.UserType = user.UserType;
+                    log.UserId = user.UserId;
                     log.UserName = user.UserName;
 
                     await _activityFormRepository.UpdateAsync(activityForm);

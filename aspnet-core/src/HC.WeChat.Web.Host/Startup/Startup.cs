@@ -53,6 +53,9 @@ namespace HC.WeChat.Web.Host.Startup
                 {
                     options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm";
                 });
+            //添加session
+            services.AddSession();
+
             //设置文件上传大小限制
             services.Configure<FormOptions>(x => {
                 x.MemoryBufferThreshold = int.MaxValue;
@@ -122,6 +125,8 @@ namespace HC.WeChat.Web.Host.Startup
             app.UseCors(_defaultCorsPolicyName); // Enable CORS!
 
             app.UseStaticFiles();
+            //使用session
+            app.UseSession();
 
             app.UseAuthentication();
 

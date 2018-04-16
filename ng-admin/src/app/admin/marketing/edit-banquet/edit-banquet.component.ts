@@ -99,9 +99,9 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
         });
     }
 
-    show(delivery: ActivityBanquetDto): void {
+    show(banquet: ActivityBanquetDto): void {
         this.reset();
-        this.banquetDto = delivery;
+        this.banquetDto = banquet;
         this.modalVisible = true;
         //对isDisablec做初始化
         this.isDisablec = false;
@@ -111,7 +111,6 @@ export class EditBanquetComponent extends AppComponentBase implements OnInit {
         for (const i in this.form.controls) {
             this.form.controls[i].markAsDirty();
         }
-        this.banquetDto.photoUrl = 'test.jpg';
         this.banquetDto.banquetTime = this.dateFormat(this.banquetDto.banquetTime);
         if (this.form.valid) {
             this._activityBanquetService.update(this.banquetDto)

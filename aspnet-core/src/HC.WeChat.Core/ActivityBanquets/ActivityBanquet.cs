@@ -68,7 +68,6 @@ namespace HC.WeChat.ActivityBanquets
         /// <summary>
         /// 现场图片不得少于4张
         /// </summary>
-        [Required]
         public string PhotoUrl { get; set; }
 
         /// <summary>

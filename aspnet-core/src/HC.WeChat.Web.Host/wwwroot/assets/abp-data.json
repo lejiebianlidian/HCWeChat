@@ -18,7 +18,8 @@
                     "text": "工作台",
                     "translate": "home",
                     "link": "/home/index",
-                    "icon": "fa fa-home"
+                    "icon": "fa fa-home",
+                    "reuse": false
                 }
             ]
         },
@@ -71,17 +72,20 @@
                         {
                             "text": "营销活动",
                             "link": "/admin/activity-list",
-                            "translate": "market-active"
+                            "translate": "market-active",
+                            "reuse": false
                         },
                         {
                             "text": "活动申请单",
                             "link": "/admin/activity-form",
-                            "translate": "activity-form"
+                            "translate": "activity-form",
+                            "reuse": false
                         },
                         {
                             "text": "营销统计",
                             "link": "/admin/activity-query",
-                            "translate": "activity-query"
+                            "translate": "activity-query",
+                            "reuse": false
                         },
                         {
                             "text": "问卷调查",
@@ -98,7 +102,8 @@
                         {
                             "text": "零售客户",
                             "link": "/admin/retail-customer",
-                            "translate": "retail-client"
+                            "translate": "retail-client",
+                            "reuse": false
                         }
                     ]
                 },

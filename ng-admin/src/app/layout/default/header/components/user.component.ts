@@ -1,10 +1,11 @@
-import { Component, OnInit, Inject, Injector } from '@angular/core';
+import { Component, OnInit, Inject, Injector, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { SettingsService } from '@delon/theme';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 //abp集成 2018-1-14
 import { AppAuthService } from '@shared/auth/app-auth.service';
 import { AppComponentBase } from '@shared/app-component-base';
+import { ChangePasswordComponent } from '../../change-password/change-password.component';
 
 @Component({
     selector: 'header-user',
@@ -15,12 +16,17 @@ import { AppComponentBase } from '@shared/app-component-base';
             {{settings.user.name}}
         </div>
         <div nz-menu class="width-sm">
+            <div nz-menu-item (click)="changePassword()"><i class="anticon anticon-setting mr-sm"></i>修改密码</div>
             <div nz-menu-item (click)="logout()"><i class="anticon anticon-setting mr-sm"></i>退出登录</div>
         </div>
     </nz-dropdown>
+    <change-password-modal #changePasswordModal1 (modalSave)="callBack()"></change-password-modal>
     `
 })
 export class HeaderUserComponent extends AppComponentBase implements OnInit  {
+
+    @ViewChild('changePasswordModal1') changePasswordModal: ChangePasswordComponent;
+
     constructor(injector: Injector, 
         public settings: SettingsService,
         private router: Router,
@@ -46,5 +52,13 @@ export class HeaderUserComponent extends AppComponentBase implements OnInit  {
         //this.tokenService.clear();
         //this.router.navigateByUrl(this.tokenService.login_url);
         this._authService.logout();
+    }
+
+    changePassword(){
+        this.changePasswordModal.show();
+    }
+  
+    callBack(): void {
+  
     }
 }
