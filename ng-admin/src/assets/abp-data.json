@@ -87,6 +87,12 @@
                             "reuse": false
                         },
                         {
+                            "text": "邮寄查询",
+                            "link": "/admin/activity-query",
+                            "translate": "post-query",
+                            "reuse": false
+                        },
+                        {
                             "text": "问卷调查",
                             "link": "/admin/user-question",
                             "translate": "user-question"
