@@ -20,7 +20,7 @@ export class PostInfo implements IPostInfo {
     typeName: string;
     isSendName: string;
     disabled: boolean;
-    checked: boolean;
+    // checked: boolean;
     constructor(data?: IPostInfo) {
         if (data) {
             for (var property in data) {

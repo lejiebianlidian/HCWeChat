@@ -49,7 +49,7 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
             this.postInfos = result.items.map(i => {
                 i.isSendName = i.isSend == false ? '否' : '是';
                 i.disabled = i.isSend == true ? true : false;
-                i.checked = false;
+                // i.checked = false;
                 return i;
             });
             this.query.total = result.totalCount;
@@ -78,19 +78,25 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
     refreshCheckStatus() {
         // const allChecked = this.curRows.every(value => value.disabled || value.checked);
         // const allUnChecked = this.curRows.every(value => value.disabled || !value.checked);
-        const allChecked = this.curRows.filter(value => !value.disabled).every(value => value.checked === true);
+        var length = this.curRows.filter(value => !value.disabled).length;
+        const allChecked = length > 0 ? this.curRows.filter(value => !value.disabled).every(value => value.checked === true) : false;
         const allUnChecked = this.curRows.filter(value => !value.disabled).every(value => !value.checked);
         this.allChecked = allChecked;
         this.indeterminate = (!allChecked) && (!allUnChecked);
+        console.log('refreshCheckStatus:allChecked');
+        console.log(this.allChecked);
     }
     /**
      * 标记为已邮寄
      */
     markIsSend() {
 
-        // $("#nzTable input[type=checkbox]:checked").map(function (i) {
-
-        // })
+        //     $("table input[type=checkbox]:checked").map(function (i) {
+        //     //    var ss= $(i.target).parents('tr').children("td").eq(i).text()
+        //    var ss= $("table tr").eq(i).find("td").eq(1).text();
+        //          console.log('checkbox');
+        //          console.log(ss);
+        //     })
         this.idList = [];
         this.curRows.forEach(i => {
             if (i.checked) {
@@ -100,8 +106,8 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
                 if (this.idList.length > 0) {
                     this.activityFormDeliveryService.updateIsSend(this.idList).subscribe(() => {
                         this.notify.info(this.l('标记成功！'));
-                        this.allChecked = false;
-                        this.refreshCheckStatus();
+                        // this.allChecked = false;
+                        // this.refreshCheckStatus();
                         this.refreshData();
                     });
                 } else {

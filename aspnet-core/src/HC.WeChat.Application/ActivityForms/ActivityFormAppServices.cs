@@ -676,6 +676,7 @@ namespace HC.WeChat.ActivityForms
                 .Where(q => q.Status != FormStatusEnum.取消 && q.Status != FormStatusEnum.拒绝)
                 .WhereIf(mid.HasValue, q => q.ManagerId == mid) //数据权限过滤
                 .WhereIf(!string.IsNullOrEmpty(input.ProductSpecification), q => q.GoodsSpecification.Contains(input.ProductSpecification));
+                //.OrderByDescending(q=>q.CreationTime);
             var queryDelivery = _activitydeliveryinfoRepository.GetAll()
                 .WhereIf(input.UserType.HasValue, d => d.Type == input.UserType)
                 .WhereIf(!string.IsNullOrEmpty(input.Filter), d => d.UserName.Contains(input.Filter))
@@ -707,8 +708,8 @@ namespace HC.WeChat.ActivityForms
             //    query = query.OrderByDescending(q => q.ApplyTime);
             //}
             var activityforms = await query
-                .OrderByDescending(q => q.ApplyTime)
-                .OrderBy(q=>q.FormCode)
+                //.OrderByDescending(q => q.ApplyTime)
+                .OrderBy(q => q.FormCode)
                 .OrderBy(q=>q.Type)
                 .PageBy(input)
                 .ToListAsync();

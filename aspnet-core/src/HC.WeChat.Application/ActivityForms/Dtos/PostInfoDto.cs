@@ -30,7 +30,7 @@ namespace HC.WeChat.ActivityForms.Dtos
         /// <summary>
         /// 活动申请单申请时间
         /// </summary>
-        public DateTime? ApplyTime { get; set; }
+        public DateTime ApplyTime { get; set; }
 
         /// <summary>
         /// 用户类型中文显示
