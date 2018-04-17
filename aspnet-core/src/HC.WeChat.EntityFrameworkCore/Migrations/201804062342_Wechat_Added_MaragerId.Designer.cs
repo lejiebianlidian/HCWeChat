@@ -1360,9 +1360,9 @@ namespace HC.WeChat.Migrations
             {
                 b.Property<Guid>("Id").ValueGeneratedOnAdd();
                 b.Property<Guid>("ActivityFormId").IsRequired();
-                b.Property<string>("UserName").IsRequired().HasMaxLength(50);
-                b.Property<string>("Phone").IsRequired().HasMaxLength(20);
-                b.Property<string>("Address").IsRequired().HasMaxLength(500);
+                b.Property<string>("UserName").HasMaxLength(50);
+                b.Property<string>("Phone").HasMaxLength(20);
+                b.Property<string>("Address").HasMaxLength(500);
                 b.Property<int?>("Type");
                 b.Property<string>("ExpressCompany ").HasMaxLength(200);
                 b.Property<string>("ExpressNo").HasMaxLength(200);
