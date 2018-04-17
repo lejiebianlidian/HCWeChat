@@ -58,5 +58,12 @@ namespace HC.WeChat.ActivityDeliveryInfos
         /// 批量删除ActivityDeliveryInfo
         /// </summary>
         Task BatchDeleteActivityDeliveryInfosAsync(List<Guid> input);
+
+        /// <summary>
+        /// 批量标注未邮寄为已邮寄
+        /// </summary>
+        /// <param name="idList">邮寄信息idList</param>
+        /// <returns></returns>
+        Task UpdateIsSend(List<Guid> idList);
     }
 }

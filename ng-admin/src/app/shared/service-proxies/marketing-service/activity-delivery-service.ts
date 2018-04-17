@@ -190,6 +190,58 @@ export class ActivityDeliveryInfoServiceProxy {
         }
         return Observable.of<void>(<any>null);
     }
+
+    /**
+     * 标记为已邮寄
+     */
+    updateIsSend(idList: any[]): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ActivityDeliveryInfo/UpdateIsSend";
+        url_ = url_.replace(/[?&]$/, "");
+        let inputjson = { idList : idList};
+        const content_ = JSON.stringify(idList);
+
+        let options_ = {
+            body: content_,
+            method: "put",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request(url_, options_).flatMap((response_) => {
+            return this.processIsSend(response_);
+        }).catch((response_: any) => {
+            if (response_ instanceof Response) {
+                try {
+                    return this.processIsSend(response_);
+                } catch (e) {
+                    return <Observable<void>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<void>><any>Observable.throw(response_);
+        });
+    }
+
+    protected processIsSend(response: Response): Observable<void> {
+        const status = response.status;
+
+        let _headers: any = response.headers ? response.headers.toJSON() : {};
+        if (status === 200) {
+            const _responseText = response.text();
+            return Observable.of<void>(<any>null);
+        } else if (status === 401) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status === 403) {
+            const _responseText = response.text();
+            return throwException("A server error occurred.", status, _responseText, _headers);
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.text();
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Observable.of<void>(<any>null);
+    }
 }
 export class PagedResultDtoOfActivityDeliveryInfo implements IPagedResultDtoOfActivityDeliveryInfo {
     totalCount: number;

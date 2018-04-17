@@ -191,6 +191,22 @@ namespace HC.WeChat.ActivityDeliveryInfos
             await _activitydeliveryinfoRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        /// <summary>
+        /// 批量标注未邮寄为已邮寄
+        /// </summary>
+        /// <param name="idList">邮寄信息idList</param>
+        /// <returns></returns>
+        public async Task UpdateIsSend(List<Guid> idList)
+        {
+            foreach (var item in idList) {
+                var entity = await _activitydeliveryinfoRepository.GetAsync(item);
+                entity.IsSend = true;
+                entity.SendTime = DateTime.Now;
+
+                await _activitydeliveryinfoRepository.UpdateAsync(entity);
+            }
+        }
+
     }
 }
 

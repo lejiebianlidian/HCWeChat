@@ -660,6 +660,68 @@ namespace HC.WeChat.ActivityForms
                 return countDto;
             }
         }
+
+        /// <summary>
+        /// 邮寄信息
+        /// </summary>
+        /// <param name="input">查询条件</param>
+        /// <returns></returns>
+        public async Task<PagedResultDto<PostInfoDto>> GetPostInfo(GetActivityFormsInput input)
+        {
+            var mid = UserManager.GetControlEmployeeId();
+            var queryForm = _activityformRepository.GetAll()
+                .WhereIf(!string.IsNullOrEmpty(input.FormCode), q => q.FormCode == input.FormCode)
+                .WhereIf(input.BeginDate.HasValue, q => q.CreationTime >= input.BeginDate)
+                .WhereIf(input.EndDate.HasValue, q => q.CreationTime < input.EndDateOne)
+                .Where(q => q.Status != FormStatusEnum.取消 && q.Status != FormStatusEnum.拒绝)
+                .WhereIf(mid.HasValue, q => q.ManagerId == mid) //数据权限过滤
+                .WhereIf(!string.IsNullOrEmpty(input.ProductSpecification), q => q.GoodsSpecification.Contains(input.ProductSpecification));
+                //.OrderByDescending(q=>q.CreationTime);
+            var queryDelivery = _activitydeliveryinfoRepository.GetAll()
+                .WhereIf(input.UserType.HasValue, d => d.Type == input.UserType)
+                .WhereIf(!string.IsNullOrEmpty(input.Filter), d => d.UserName.Contains(input.Filter))
+                .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
+                .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
+            var queryBanquet = _activityBanquetRepository.GetAll();
+            var query = from f in queryForm
+                        join d in queryDelivery on f.Id equals d.ActivityFormId
+                        join b in queryBanquet on f.Id equals b.ActivityFormId
+                        select new PostInfoDto()
+                        {
+                            FormCode = f.FormCode,
+                            ApplyTime = f.CreationTime,
+                            Area = b.Area,
+                            GoodsSpecification = f.GoodsSpecification,
+                            Num = f.Num,
+                            UserName = d.UserName,
+                            Type = d.Type,
+                            Address = d.Address,
+                            Phone = d.Phone,
+                            IsSend = d.IsSend,
+                            Id = d.Id,
+                            SendTime = d.SendTime
+                        };
+
+            //TODO:根据传入的参数添加过滤条件
+            var activityformCount = await query.CountAsync();
+            //if (activityformCount>0) {
+            //    query = query.OrderByDescending(q => q.ApplyTime);
+            //}
+            var activityforms = await query
+                //.OrderByDescending(q => q.ApplyTime)
+                .OrderBy(q => q.FormCode)
+                .OrderBy(q=>q.Type)
+                .PageBy(input)
+                .ToListAsync();
+
+            //var activityformListDtos = ObjectMapper.Map<List <ActivityFormListDto>>(activityforms);
+            var activityformListDtos = activityforms.MapTo<List<PostInfoDto>>();
+
+            return new PagedResultDto<PostInfoDto>(
+                activityformCount,
+                activityformListDtos
+                );
+        }
     }
 }
 

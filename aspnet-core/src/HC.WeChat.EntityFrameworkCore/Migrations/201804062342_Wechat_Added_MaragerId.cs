@@ -72,6 +72,13 @@ namespace HC.WeChat.Migrations
              nullable: true,
              oldClrType: typeof(string),
              oldNullable: false);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "IsSend",
+                table: "ActivityDeliveryInfos",
+                defaultValue: false,
+                nullable: false);
+
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -133,6 +140,10 @@ namespace HC.WeChat.Migrations
              nullable: false,
              oldClrType: typeof(string),
              oldNullable: true);
+
+            migrationBuilder.DropColumn(
+                name: "IsSend",
+                table: "ActivityDeliveryInfos");
         }
     }
 }

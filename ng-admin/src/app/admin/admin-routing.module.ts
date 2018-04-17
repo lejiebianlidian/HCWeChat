@@ -21,6 +21,7 @@ import { UserQuestionComponent } from './marketing/user-question/user-question.c
 import { UserAnswerComponent } from './marketing/user-answer/user-answer.component';
 import { AdviseComponent } from './consumer/advise/advise.component';
 import { ActivityViewComponent } from './marketing/activity-view/activity-view.component';
+import { PostInfoComponent } from './markeeting-serve/post-info/post-info.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,8 @@ const routes: Routes = [
       { path: 'user-question-detail/:id', component: UserAnswerComponent, data: { translate: 'user-question-detail', permission: 'Pages',title:'问卷调查详细'}, canActivate: [AppRouteGuard] },
       { path: 'advise', component: AdviseComponent, data: { translate: 'advise', permission: 'Pages' }, canActivate: [AppRouteGuard] },
       { path: 'activity-query', component: ActivityViewComponent, data: { translate: 'activity-query', permission: 'Pages' }, canActivate: [AppRouteGuard] },
+      { path: 'post-query', component: PostInfoComponent, data: { translate: 'post-query', permission: 'Pages' }, canActivate: [AppRouteGuard] },
+      
     ]
   }
 ];
