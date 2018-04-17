@@ -17,9 +17,10 @@ export class PostInfo implements IPostInfo {
     deliveryRemark: string;
     isSend: boolean;
     id: string;
-    typeName:string;
-    isSendName:string;
-    disabled:boolean;
+    typeName: string;
+    isSendName: string;
+    disabled: boolean;
+    checked: boolean;
     constructor(data?: IPostInfo) {
         if (data) {
             for (var property in data) {
@@ -50,7 +51,7 @@ export class PostInfo implements IPostInfo {
             this.deliveryRemark = data["deliveryRemark"];
             this.isSend = data["isSend"];
             this.typeName = data["typeName"];
-            
+
         }
     }
 
@@ -80,7 +81,7 @@ export class PostInfo implements IPostInfo {
         data["sendTime"] = this.sendTime;
         data["deliveryRemark"] = this.deliveryRemark;
         data["isSend"] = this.isSend;
-        
+
         return data;
     }
 
@@ -92,7 +93,7 @@ export class PostInfo implements IPostInfo {
     }
 }
 
-export interface IPostInfo{
+export interface IPostInfo {
     formCode: string;
     area: string;
     goodsSpecification: string;
@@ -111,6 +112,6 @@ export interface IPostInfo{
     deliveryRemark: string;
     isSend: boolean;
     id: string;
-    typeName:string;
-    
+    typeName: string;
+
 }

@@ -201,6 +201,7 @@ namespace HC.WeChat.ActivityDeliveryInfos
             foreach (var item in idList) {
                 var entity = await _activitydeliveryinfoRepository.GetAsync(item);
                 entity.IsSend = true;
+                entity.SendTime = DateTime.Now;
 
                 await _activitydeliveryinfoRepository.UpdateAsync(entity);
             }

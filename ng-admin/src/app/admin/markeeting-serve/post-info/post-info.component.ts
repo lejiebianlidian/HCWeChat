@@ -49,6 +49,7 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
             this.postInfos = result.items.map(i => {
                 i.isSendName = i.isSend == false ? '否' : '是';
                 i.disabled = i.isSend == true ? true : false;
+                i.checked = false;
                 return i;
             });
             this.query.total = result.totalCount;
@@ -60,14 +61,14 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
         arry.push(Parameter.fromJS({ key: 'BeginDate', value: this.dateFormat(this.search.startTime) }));
         arry.push(Parameter.fromJS({ key: 'EndDate', value: this.dateFormat(this.search.endTime) }));
         arry.push(Parameter.fromJS({ key: 'ProductSpecification', value: this.search.specification }));
-        arry.push(Parameter.fromJS({ key: 'UserType', value: this.search.userType==0?null: this.search.userType}));
+        arry.push(Parameter.fromJS({ key: 'UserType', value: this.search.userType == 0 ? null : this.search.userType }));
         arry.push(Parameter.fromJS({ key: 'Filter', value: this.search.name }));
         arry.push(Parameter.fromJS({ key: 'Phone', value: this.search.phone }));
         arry.push(Parameter.fromJS({ key: 'IsSend', value: this.search.isSend == 0 ? null : this.search.isSend }));
         return arry;
     }
 
-    dataChanges(res: any) {
+    dataChanges(res) {
         console.log('res');
         console.log(res);
         this.curRows = res;
@@ -75,8 +76,10 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
     }
 
     refreshCheckStatus() {
-        const allChecked = this.curRows.every(value => value.disabled || value.checked);
-        const allUnChecked = this.curRows.every(value => value.disabled || !value.checked);
+        // const allChecked = this.curRows.every(value => value.disabled || value.checked);
+        // const allUnChecked = this.curRows.every(value => value.disabled || !value.checked);
+        const allChecked = this.curRows.filter(value => !value.disabled).every(value => value.checked === true);
+        const allUnChecked = this.curRows.filter(value => !value.disabled).every(value => !value.checked);
         this.allChecked = allChecked;
         this.indeterminate = (!allChecked) && (!allUnChecked);
     }
@@ -84,18 +87,33 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
      * 标记为已邮寄
      */
     markIsSend() {
+
+        // $("#nzTable input[type=checkbox]:checked").map(function (i) {
+
+        // })
+        this.idList = [];
         this.curRows.forEach(i => {
-            if (i.isSend) {
+            if (i.checked) {
                 this.idList.push(i.id);
-                if (this.idList) {
+                console.log('idList');
+                console.log(this.idList);
+                if (this.idList.length > 0) {
                     this.activityFormDeliveryService.updateIsSend(this.idList).subscribe(() => {
                         this.notify.info(this.l('标记成功！'));
+                        this.allChecked = false;
+                        this.refreshCheckStatus();
+                        this.refreshData();
                     });
                 } else {
                     this.notify.warn('请选择需要标记的邮寄信息');
                 }
             }
         });
+        if (this.idList.length <= 0) {
+            this.notify.warn('请选择需要标记的邮寄信息');
+        }
+
+
         // this.idList.push('8aa761de-9646-4fe2-4337-08d5a046601a');
         // this.activityFormDeliveryService.updateIsSend(this.idList).subscribe(() => {
         //     this.notify.info(this.l('标记成功！'));
@@ -111,7 +129,9 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
         //     i.isSend = value;
         // });
         this.curRows.forEach(i => {
-            if (!i.disabled) i.isSend = value;
+            if (!i.disabled) {
+                i.checked = value;
+            }
         });
         this.refreshCheckStatus();
     }

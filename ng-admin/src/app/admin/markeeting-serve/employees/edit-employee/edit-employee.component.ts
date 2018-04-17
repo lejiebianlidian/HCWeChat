@@ -108,7 +108,8 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit {
                         });
                 } else {
                     this.iseConfirmLoading = false;
-                    this.isCodeEValid = true;
+                    // this.isCodeEValid = true;
+                    this.notify.error('员工编码已存在');
                 }
             });
         }
