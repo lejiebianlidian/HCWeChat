@@ -35,8 +35,12 @@ export class ActivityViewComponent extends AppComponentBase implements OnInit {
         this.refreshData();
     }
 
-    refreshData(reset = false) {
+    refreshData(reset = false, search?: boolean) {
         if (reset) {
+            this.query.pageIndex = 1;
+            this.parameters = { beginDate: null, endDate: null, activityArea: '0' };
+        }
+        if (search) {
             this.query.pageIndex = 1;
         }
         this.loading = true;
