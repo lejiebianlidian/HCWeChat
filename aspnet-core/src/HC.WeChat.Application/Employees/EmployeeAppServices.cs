@@ -25,7 +25,7 @@ namespace HC.WeChat.Employees
     /// Employee应用层服务的接口实现方法
     /// </summary>
     //[AbpAuthorize(EmployeeAppPermissions.Employee)]
-    //[AbpAuthorize(AppPermissions.Pages)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class EmployeeAppService : WeChatAppServiceBase, IEmployeeAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION

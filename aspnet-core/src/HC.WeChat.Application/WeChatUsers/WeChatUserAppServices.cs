@@ -26,7 +26,7 @@ namespace HC.WeChat.WeChatUsers
     /// WeChatUser应用层服务的接口实现方法
     /// </summary>
     //[AbpAuthorize(WeChatUserAppPermissions.WeChatUser)]
-    //[AbpAuthorize(AppPermissions.Pages)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class WeChatUserAppService : WeChatAppServiceBase, IWeChatUserAppService
     {
         private readonly IRepository<WeChatUser, Guid> _wechatuserRepository;
