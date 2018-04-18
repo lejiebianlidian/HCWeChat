@@ -27,6 +27,13 @@ using HC.WeChat.ActivityBanquets;
 using HC.WeChat.Authorization.Roles;
 using HC.WeChat.WeChatUsers;
 using HC.WeChat.WeChatUsers.Dtos;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using NPOI.XSSF.UserModel;
+using NPOI.SS.UserModel;
+using NPOI.SS.Util;
+using NPOI.HSSF.Util;
+using Microsoft.Extensions.Configuration;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -48,6 +55,8 @@ namespace HC.WeChat.ActivityForms
         private readonly IRepository<ActivityBanquet, Guid> _activityBanquetRepository;
         private readonly IRepository<Retailer, Guid> _retailerRepository;
         private readonly IRepository<WeChatUser, Guid> _wechatuserRepository;
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IConfigurationRoot _appConfiguration;
 
         /// <summary>
         /// 构造函数
@@ -63,6 +72,7 @@ namespace HC.WeChat.ActivityForms
             , IRepository<ActivityBanquet, Guid> activityBanquetRepository
             , IRepository<Retailer, Guid> retailerRepository
             , IRepository<WeChatUser, Guid> wechatuserRepository
+            , IHostingEnvironment hostingEnvironment
         )
         {
             _activityformRepository = activityformRepository;
@@ -76,6 +86,7 @@ namespace HC.WeChat.ActivityForms
             _activityBanquetRepository = activityBanquetRepository;
             _retailerRepository = retailerRepository;
             _wechatuserRepository = wechatuserRepository;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         /// <summary>
@@ -729,6 +740,51 @@ namespace HC.WeChat.ActivityForms
                 activityformCount,
                 activityformListDtos
                 ));
+        }
+
+        public Task<APIResultDto> ExportPostInfoExcel(GetActivityFormsSentInput input)
+        {
+            var result = new APIResultDto();
+            result.Code = 0;
+            result.Data = SavePostInfoExcel("邮寄信息.xlsx");
+            return Task.FromResult(result);
+        }
+
+        private string GetSavePath()
+        {
+            var fileDire = _hostingEnvironment.WebRootPath + @"\files\downloadtemp\";
+            if (!Directory.Exists(fileDire))
+            {
+                Directory.CreateDirectory(fileDire);
+            }
+            return fileDire;
+        }
+
+
+        private string SavePostInfoExcel(string fileName)
+        {
+            var fullPath = GetSavePath() + fileName;
+            using (var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
+            {
+                IWorkbook workbook = new XSSFWorkbook();
+                ISheet sheet = workbook.CreateSheet("邮寄信息");
+                var rowIndex = 0;
+                IRow row = sheet.CreateRow(rowIndex);
+                string[] titles = { "序号", "活动单号", "活动名称", "零售客户", "客户经理", "用烟规格", "申请数量", "申请理由", "状态", "申请时间", "区县", "消费者姓名", "邮寄地址", "联系方式", "消费者奖品是否邮寄", "推荐人姓名", "邮寄地址", "联系方式", "推荐人奖品是否邮寄" };
+                var fontTitle = workbook.CreateFont();
+                fontTitle.IsBold = true;
+                for (int i = 0; i < titles.Length; i++)
+                {
+                    var cell = row.CreateCell(i);
+                    cell.CellStyle.SetFont(fontTitle);
+                    cell.SetCellValue(titles[i]);
+                }
+                rowIndex++;
+                var font = workbook.CreateFont();
+
+                workbook.Write(fs);
+            }
+            return "/files/downloadtemp/"+ fileName;
         }
     }
 }

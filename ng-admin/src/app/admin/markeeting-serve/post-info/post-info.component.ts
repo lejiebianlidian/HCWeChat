@@ -4,6 +4,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { ActivityFormServiceProxy, PagedResultDtoOfPostInfo, ActivityDeliveryInfoServiceProxy } from '@shared/service-proxies/marketing-service';
 import { PostInfo, Parameter } from '@shared/service-proxies/entity';
 import { NzModalService } from 'ng-zorro-antd';
+import { AppConsts } from '@shared/AppConsts';
 
 @Component({
     moduleId: module.id,
@@ -18,6 +19,9 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
     curRows: any[] = [];
     indeterminate = false;
     idList = [];
+    loading = false;
+    exportLoading = false;
+    exportExcelUrl: string;
     userTypeS = [
         { text: '全部', value: 0 },
         { text: '消费者', value: 1 },
@@ -45,6 +49,7 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
         if (search) {
             this.query.pageIndex = 1;
         }
+        this.loading = true;
         this.activityFormServie.getAllPostInfo(this.query.skipCount(), this.query.pageSize, this.getParameter()).subscribe((result: PagedResultDtoOfPostInfo) => {
             this.postInfos = result.items.map(i => {
                 i.isSendName = i.isSend == false ? '否' : '是';
@@ -53,6 +58,7 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
                 return i;
             });
             this.query.total = result.totalCount;
+            this.loading = false;
         });
     }
     getParameter(): Parameter[] {
@@ -145,6 +151,18 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
      * 导出Excel
      */
     exportExcel() {
-
+        this.exportLoading = true;
+        this.activityFormServie.exportPostInfoExcel(this.search).subscribe(result => {
+            if (result.code == 0) {
+                //var url = 'http://localhost:21021/files/测试客户经理.xlsx';
+                var url = AppConsts.remoteServiceBaseUrl + result.data;
+                //alert(url)
+                document.getElementById('aExcelUrl').setAttribute('href', url);
+                document.getElementById('btnHref').click();
+            } else {
+                this.notify.error(result.msg);
+            }
+            this.exportLoading = false;
+        });
     }
 }
