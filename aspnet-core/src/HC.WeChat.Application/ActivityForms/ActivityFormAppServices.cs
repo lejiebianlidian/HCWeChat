@@ -814,7 +814,7 @@ namespace HC.WeChat.ActivityForms
                     SetCell(row.CreateCell(7), font, item.Num);
                     SetCell(row.CreateCell(8), font, item.Reason);
                     SetCell(row.CreateCell(9), font, item.StatusName);
-                    SetCell(row.CreateCell(10), font, item.CreationTime);
+                    SetCell(row.CreateCell(10), font, item.CreationTime.ToString("yyyy-MM-dd"));
                     SetCell(row.CreateCell(11), font, item.UserName);
                     SetCell(row.CreateCell(12), font, item.Address);
                     SetCell(row.CreateCell(13), font, item.Phone);
