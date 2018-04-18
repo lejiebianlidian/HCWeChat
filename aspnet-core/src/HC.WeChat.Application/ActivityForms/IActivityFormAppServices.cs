@@ -108,5 +108,10 @@ namespace HC.WeChat.ActivityForms
         /// <param name="input">查询条件</param>
         /// <returns></returns>
         Task<PagedResultDto<PostInfoDto>> GetPostInfo(GetActivityFormsSentInput input);
+        
+        /// <summary>
+        /// 导出Excel
+        /// </summary>
+        Task<APIResultDto> ExportPostInfoExcel(GetActivityFormsSentInput input);
     }
 }

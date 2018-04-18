@@ -37,8 +37,8 @@ export class ApiResult {
         }
     }
 
-    static fromJS(data: any): Parameter {
-        let result = new Parameter();
+    static fromJS(data: any): ApiResult {
+        let result = new ApiResult();
         result.init(data);
         return result;
     }
