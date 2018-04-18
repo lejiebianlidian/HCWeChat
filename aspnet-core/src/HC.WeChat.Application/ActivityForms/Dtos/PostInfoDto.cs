@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
 using HC.WeChat.ActivityDeliveryInfos.Dtos;
 using HC.WeChat.WechatEnums;
 using System;
@@ -60,4 +61,20 @@ namespace HC.WeChat.ActivityForms.Dtos
         public DateTime? SendTime { get; set; }
         public bool IsSend { get; set; }
     }
+    [AutoMapFrom(typeof(PostInfoDto))]
+    public class PostInfoDtoToExcel : PostInfoDto
+    {
+        public Guid TId { get; set; }
+        public string TUserName { get; set; }
+        public string TPhone { get; set; }
+        public string TAddress { get; set; }
+        /// <summary>
+        /// 收货人类型（推荐人）
+        /// </summary>
+        public DeliveryUserTypeEnum? TType { get; set; }
+        public bool TIsSend { get; set; }
+        public string TIsSendName { get { return TIsSend == true ? "是" : "否"; } }
+        public string IsSendName { get { return IsSend == true ? "是" : "否"; } }
+    }
+
 }

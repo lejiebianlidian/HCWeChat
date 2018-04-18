@@ -5,7 +5,6 @@ using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
-
 using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
 using HC.WeChat.ActivityForms.Authorization;
@@ -729,6 +728,94 @@ namespace HC.WeChat.ActivityForms
                 activityformCount,
                 activityformListDtos
                 ));
+        }
+
+        public async Task< List<PostInfoDtoToExcel>> GetPostInfoToExcel(GetActivityFormsSentInput input)
+        {
+            var mid = UserManager.GetControlEmployeeId();
+            var queryForm = _activityformRepository.GetAll()
+                .WhereIf(!string.IsNullOrEmpty(input.FormCode), q => q.FormCode == input.FormCode)
+                .WhereIf(input.BeginDate.HasValue, q => q.CreationTime >= input.BeginDate)
+                .WhereIf(input.EndDate.HasValue, q => q.CreationTime < input.EndDateOne)
+                .Where(q => q.Status != FormStatusEnum.取消 && q.Status != FormStatusEnum.拒绝)
+                .WhereIf(mid.HasValue, q => q.ManagerId == mid) //数据权限过滤
+                .WhereIf(!string.IsNullOrEmpty(input.ProductSpecification), q => q.GoodsSpecification.Contains(input.ProductSpecification));
+
+            //.OrderByDescending(q=>q.CreationTime);
+            var queryDelivery = _activitydeliveryinfoRepository.GetAll()
+                .WhereIf(input.UserType.HasValue, d => d.Type == input.UserType)
+                .WhereIf(!string.IsNullOrEmpty(input.Filter), d => d.UserName.Contains(input.Filter))
+                .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
+                .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
+
+
+            //var queryDeliverynew = (from a in queryDelivery
+            //                        where a.Type == DeliveryUserTypeEnum.消费者
+            //                        select new
+            //                        {
+            //                            a.UserName,
+            //                            a.Address,
+            //                            a.Phone,
+            //                            a.IsSend
+            //                        }
+            //                      ).Union(
+            //                        from m in queryDelivery
+            //                        where m.Type == DeliveryUserTypeEnum.推荐人
+            //                        select new
+            //                        {
+            //                            m.UserName,
+            //                            m.Address,
+            //                            m.Phone,
+            //                            m.IsSend
+            //                        }
+            //                     );
+            var queryBanquet = _activityBanquetRepository.GetAll();
+
+            var query = from f in queryForm
+                        join d in queryDelivery on f.Id equals d.ActivityFormId
+                        //from fd in queryF.DefaultIfEmpty()
+                        join b in queryBanquet on f.Id equals b.ActivityFormId into queryB
+                        from fb in queryB.DefaultIfEmpty()
+                        select new PostInfoDto()
+                        {
+                            FormCode = f.FormCode,
+                            CreationTime = f.CreationTime,
+                            Area = fb.Area,
+                            GoodsSpecification = f.GoodsSpecification,
+                            Num = f.Num,
+                            UserName = d.UserName,
+                            Type = d.Type,
+                            Address = d.Address,
+                            Phone = d.Phone,
+                            IsSend = d.IsSend,
+                            Id = d.Id,
+                            SendTime = d.SendTime,
+                            ActivityFormId = d.ActivityFormId
+                        };
+            var activityforms =await query
+               .OrderByDescending(q => q.CreationTime)
+               .ThenBy(q => q.FormCode)
+               .ThenBy(q => q.Type)
+               .ToListAsync();
+            var queryDeliveryX = activityforms.Where(q => q.Type == DeliveryUserTypeEnum.消费者).MapTo<List<PostInfoDtoToExcel>>();
+            var queryDeliveryT = activityforms.Where(q => q.Type == DeliveryUserTypeEnum.推荐人).MapTo<List<PostInfoDtoToExcel>>();
+
+            List<PostInfoDtoToExcel> result = new List<PostInfoDtoToExcel>();
+            foreach (var item in queryDeliveryX)
+            {
+                foreach (var itemt in queryDeliveryT)
+                {
+                    if (item.ActivityFormId == itemt.ActivityFormId)
+                    {
+                        item.TUserName = itemt.UserName;
+                        item.TAddress = itemt.Address;
+                        item.TPhone = itemt.Phone;
+                        item.TIsSend = itemt.IsSend;
+                    }
+                }
+                result.Add(item);
+            }
+            return result;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace HC.WeChat.ActivityGoodses
     /// ActivityGoods应用层服务的接口实现方法
     /// </summary>
     //[AbpAuthorize(ActivityGoodsAppPermissions.ActivityGoods)]
-    //[AbpAuthorize(AppPermissions.Pages)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class ActivityGoodsAppService : WeChatAppServiceBase, IActivityGoodsAppService
     {
         ////BCC/ BEGIN CUSTOM CODE SECTION
