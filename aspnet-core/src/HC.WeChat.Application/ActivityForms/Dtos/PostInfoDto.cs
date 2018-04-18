@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
 using HC.WeChat.ActivityDeliveryInfos.Dtos;
 using HC.WeChat.WechatEnums;
 using System;
@@ -60,4 +61,74 @@ namespace HC.WeChat.ActivityForms.Dtos
         public DateTime? SendTime { get; set; }
         public bool IsSend { get; set; }
     }
+
+    public class PostInfoDtoToExcel 
+    {
+        /// <summary>
+        /// 单号
+        /// </summary>
+        public string FormCode { get; set; }
+        /// <summary>
+        /// 区、县
+        /// </summary>
+        public string Area { get; set; }
+
+        /// <summary>
+        /// 申请商品规格 快照
+        /// </summary>
+        public string GoodsSpecification { get; set; }
+
+        /// <summary>
+        /// 申请数量（需要做最大最小限制）
+        /// </summary>
+        public int Num { get; set; }
+
+
+        public DateTime CreationTime { get; set; }
+
+        /// <summary>
+        /// 用户类型中文显示
+        /// </summary>
+        public string TypeName
+        {
+            get
+            {
+                return Type.ToString();
+            }
+        }
+
+        public string UserName { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
+
+        public DeliveryUserTypeEnum? Type { get; set; }
+
+        public bool IsSend { get; set; }
+ 
+        public string IsSendName { get { return IsSend == true ? "是" : "否"; } }
+
+        public string TUserName { get; set; }
+        public string TPhone { get; set; }
+        public string TAddress { get; set; }
+
+        public bool TIsSend { get; set; }
+        public string TIsSendName { get { return TIsSend == true ? "是" : "否"; } }
+     
+        public string Reason { get; set; }
+        public FormStatusEnum Status { get; set; }
+
+        public string StatusName
+        {
+            get
+            {
+                return Status.ToString();
+            }
+        }
+        public string ActivityName { get; set; }
+
+        public string RetailerName { get; set; }
+
+        public string ManagerName { get; set; }
+    }
+
 }

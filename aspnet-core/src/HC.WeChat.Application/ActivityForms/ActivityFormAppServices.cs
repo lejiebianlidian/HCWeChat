@@ -5,7 +5,6 @@ using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
-
 using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
 using HC.WeChat.ActivityForms.Authorization;
@@ -539,12 +538,12 @@ namespace HC.WeChat.ActivityForms
             var WeiChatquery = _wechatuserRepository.GetAll();
             var mid = UserManager.GetControlEmployeeId();
 
-            dto.CheckCount = await query.WhereIf(mid.HasValue, q => q.ManagerId == mid).Where(f => f.Status == FormStatusEnum.提交申请 
-            || f.Status == FormStatusEnum.初审通过 
+            dto.CheckCount = await query.WhereIf(mid.HasValue, q => q.ManagerId == mid).Where(f => f.Status == FormStatusEnum.提交申请
+            || f.Status == FormStatusEnum.初审通过
             || f.Status == FormStatusEnum.资料回传已审核).CountAsync();
             dto.IsCheckedCount = query.Count();
-            dto.GoodsCount = await query.WhereIf(mid.HasValue, q => q.ManagerId == mid).Where(f => f.Status == FormStatusEnum.提交申请 
-            || f.Status == FormStatusEnum.初审通过 
+            dto.GoodsCount = await query.WhereIf(mid.HasValue, q => q.ManagerId == mid).Where(f => f.Status == FormStatusEnum.提交申请
+            || f.Status == FormStatusEnum.初审通过
             || f.Status == FormStatusEnum.资料回传已审核
             || f.Status == FormStatusEnum.营销中心已审核).SumAsync(s => s.Num);
             dto.WeiChatAttention = await WeiChatquery.Where(w => w.UserType != UserTypeEnum.取消关注).CountAsync();
@@ -612,7 +611,7 @@ namespace HC.WeChat.ActivityForms
                 var log = new ActivityFormLog();
                 log.ActionTime = DateTime.Now;
                 log.ActivityFormId = form.Id;
-                log.Opinion =string.IsNullOrEmpty(input.Opinion)?input.Status.ToString():input.Opinion ;
+                log.Opinion = string.IsNullOrEmpty(input.Opinion) ? input.Status.ToString() : input.Opinion;
                 log.Status = input.Status;
                 log.StatusName = input.Status.ToString();
                 log.UserId = user.UserId;
@@ -698,7 +697,7 @@ namespace HC.WeChat.ActivityForms
             var queryBanquet = _activityBanquetRepository.GetAll();
 
             var query = from f in queryForm
-                        join d in queryDelivery on f.Id equals d.ActivityFormId 
+                        join d in queryDelivery on f.Id equals d.ActivityFormId
                         //from fd in queryF.DefaultIfEmpty()
                         join b in queryBanquet on f.Id equals b.ActivityFormId into queryB
                         from fb in queryB.DefaultIfEmpty()
@@ -716,7 +715,7 @@ namespace HC.WeChat.ActivityForms
                             IsSend = d.IsSend,
                             Id = d.Id,
                             SendTime = d.SendTime,
-                            ActivityFormId=d.ActivityFormId
+                            ActivityFormId = d.ActivityFormId
                         };
 
             //TODO:根据传入的参数添加过滤条件
@@ -731,22 +730,24 @@ namespace HC.WeChat.ActivityForms
                 .Skip(input.SkipCount).Take(input.MaxResultCount)
                 //.PageBy(input)
                 .ToList();
-                //.ToListAsync();
+            //.ToListAsync();
 
             //var activityformListDtos = ObjectMapper.Map<List <ActivityFormListDto>>(activityforms);
             var activityformListDtos = activityforms.MapTo<List<PostInfoDto>>();
 
-            return Task.FromResult( new PagedResultDto<PostInfoDto>(
+            return Task.FromResult(new PagedResultDto<PostInfoDto>(
                 activityformCount,
                 activityformListDtos
                 ));
         }
 
+
         public Task<APIResultDto> ExportPostInfoExcel(GetActivityFormsSentInput input)
         {
+            var exportData = GetPostInfoToExcelList(input);
             var result = new APIResultDto();
             result.Code = 0;
-            result.Data = SavePostInfoExcel("邮寄信息.xlsx");
+            result.Data = SavePostInfoExcel("邮寄信息.xlsx", exportData);
             return Task.FromResult(result);
         }
 
@@ -761,7 +762,25 @@ namespace HC.WeChat.ActivityForms
         }
 
 
-        private string SavePostInfoExcel(string fileName)
+        private void SetCell(ICell cell, IFont font, string value)
+        {
+            cell.CellStyle.SetFont(font);
+            cell.SetCellValue(value);
+        }
+
+        private void SetCell(ICell cell, IFont font, int value)
+        {
+            cell.CellStyle.SetFont(font);
+            cell.SetCellValue(value);
+        }
+
+        private void SetCell(ICell cell, IFont font, DateTime value)
+        {
+            cell.CellStyle.SetFont(font);
+            cell.SetCellValue(value);
+        }
+
+        private string SavePostInfoExcel(string fileName, List<PostInfoDtoToExcel> data)
         {
             var fullPath = GetSavePath() + fileName;
             using (var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
@@ -769,22 +788,108 @@ namespace HC.WeChat.ActivityForms
                 IWorkbook workbook = new XSSFWorkbook();
                 ISheet sheet = workbook.CreateSheet("邮寄信息");
                 var rowIndex = 0;
-                IRow row = sheet.CreateRow(rowIndex);
-                string[] titles = { "序号", "活动单号", "活动名称", "零售客户", "客户经理", "用烟规格", "申请数量", "申请理由", "状态", "申请时间", "区县", "消费者姓名", "邮寄地址", "联系方式", "消费者奖品是否邮寄", "推荐人姓名", "邮寄地址", "联系方式", "推荐人奖品是否邮寄" };
+                IRow titleRow = sheet.CreateRow(rowIndex);
+                string[] titles = { "序号", "区县", "活动单号", "活动名称", "零售客户", "客户经理", "用烟规格", "申请数量", "申请理由", "状态", "申请时间", "消费者姓名", "邮寄地址", "联系方式", "消费者奖品是否邮寄", "推荐人姓名", "邮寄地址", "联系方式", "推荐人奖品是否邮寄" };
                 var fontTitle = workbook.CreateFont();
                 fontTitle.IsBold = true;
                 for (int i = 0; i < titles.Length; i++)
                 {
-                    var cell = row.CreateCell(i);
+                    var cell = titleRow.CreateCell(i);
                     cell.CellStyle.SetFont(fontTitle);
                     cell.SetCellValue(titles[i]);
                 }
-                rowIndex++;
+               
                 var font = workbook.CreateFont();
+                foreach (var item in data)
+                {
+                    rowIndex++;
+                    IRow row = sheet.CreateRow(rowIndex);
+                    SetCell(row.CreateCell(0), font, rowIndex);
+                    SetCell(row.CreateCell(1), font, item.Area);
+                    SetCell(row.CreateCell(2), font, item.FormCode);
+                    SetCell(row.CreateCell(3), font, item.ActivityName);
+                    SetCell(row.CreateCell(4), font, item.RetailerName);
+                    SetCell(row.CreateCell(5), font, item.ManagerName);
+                    SetCell(row.CreateCell(6), font, item.GoodsSpecification);
+                    SetCell(row.CreateCell(7), font, item.Num);
+                    SetCell(row.CreateCell(8), font, item.Reason);
+                    SetCell(row.CreateCell(9), font, item.StatusName);
+                    SetCell(row.CreateCell(10), font, item.CreationTime);
+                    SetCell(row.CreateCell(11), font, item.UserName);
+                    SetCell(row.CreateCell(12), font, item.Address);
+                    SetCell(row.CreateCell(13), font, item.Phone);
+                    SetCell(row.CreateCell(14), font, item.IsSendName);
+                    SetCell(row.CreateCell(15), font, item.TUserName);
+                    SetCell(row.CreateCell(16), font, item.TAddress);
+                    SetCell(row.CreateCell(17), font, item.TPhone);
+                    SetCell(row.CreateCell(18), font, item.TIsSendName);
+                }
 
                 workbook.Write(fs);
             }
-            return "/files/downloadtemp/"+ fileName;
+            return "/files/downloadtemp/" + fileName;
+        }
+
+        private List<PostInfoDtoToExcel> GetPostInfoToExcelList(GetActivityFormsSentInput input)
+        {
+            var mid = UserManager.GetControlEmployeeId();
+            //表单
+            var queryForm = _activityformRepository.GetAll()
+                .WhereIf(!string.IsNullOrEmpty(input.FormCode), q => q.FormCode == input.FormCode)
+                .WhereIf(input.BeginDate.HasValue, q => q.CreationTime >= input.BeginDate)
+                .WhereIf(input.EndDate.HasValue, q => q.CreationTime < input.EndDateOne)
+                .Where(q => q.Status != FormStatusEnum.取消 && q.Status != FormStatusEnum.拒绝)
+                .WhereIf(mid.HasValue, q => q.ManagerId == mid) //数据权限过滤
+                .WhereIf(!string.IsNullOrEmpty(input.ProductSpecification), q => q.GoodsSpecification.Contains(input.ProductSpecification));
+            //消费者
+            var queryDelivery = _activitydeliveryinfoRepository.GetAll()
+                .Where(q => q.Type == DeliveryUserTypeEnum.消费者)
+                .WhereIf(!string.IsNullOrEmpty(input.Filter), d => d.UserName.Contains(input.Filter))
+                .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
+                .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
+            //推荐人
+            var queryTDelivery = _activitydeliveryinfoRepository.GetAll()
+               .Where(q => q.Type == DeliveryUserTypeEnum.推荐人)
+               .WhereIf(!string.IsNullOrEmpty(input.Filter), d => d.UserName.Contains(input.Filter))
+               .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
+               .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
+
+            //宴席
+            var queryBanquet = _activityBanquetRepository.GetAll();
+
+            var query = from f in queryForm
+                        join d in queryDelivery on f.Id equals d.ActivityFormId
+                        join t in queryTDelivery on f.Id equals t.ActivityFormId into queryt
+                        from ft in queryt.DefaultIfEmpty()
+                        join b in queryBanquet on f.Id equals b.ActivityFormId into queryb
+                        from fb in queryb.DefaultIfEmpty()
+                        select new PostInfoDtoToExcel()
+                        {
+                            Area = fb.Area,
+                            FormCode = f.FormCode,
+                            ActivityName = f.ActivityName,
+                            RetailerName = f.RetailerName,
+                            ManagerName = f.ManagerName,
+                            GoodsSpecification = f.GoodsSpecification,
+                            Num = f.Num,
+                            Reason = f.Reason,
+                            Status = f.Status,
+                            CreationTime = f.CreationTime,
+                            UserName = d.UserName,
+                            Address = d.Address,
+                            Phone = d.Phone,
+                            IsSend = d.IsSend,
+                            TUserName = ft.UserName,
+                            TAddress = ft.Address,
+                            TPhone = ft.Phone,
+                            TIsSend = ft.IsSend
+                        };
+
+            var dataList = query.OrderByDescending(q => q.Area)
+               .ThenBy(q => q.CreationTime)
+               .ToList();
+         
+            return dataList;
         }
     }
 }

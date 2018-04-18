@@ -24,7 +24,7 @@ namespace HC.WeChat.Activities
     /// Activity应用层服务的接口实现方法
     /// </summary>
     //[AbpAuthorize(ActivityAppPermissions.Activity)]
-    //[AbpAuthorize(AppPermissions.Pages)]
+    [AbpAuthorize(AppPermissions.Pages)]
     public class ActivityAppService : WeChatAppServiceBase, IActivityAppService
     {
         private readonly IRepository<Activity, Guid> _activityRepository;
