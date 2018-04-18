@@ -24,21 +24,18 @@ namespace HC.WeChat.ActivityDeliveryInfos
         /// <summary>
         /// 邮件消费者用户名
         /// </summary>
-        [Required]
         [StringLength(50)]
         public string UserName { get; set; }
 
         /// <summary>
         /// 邮件消费者电话
         /// </summary>
-        [Required]
         [StringLength(20)]
         public string Phone { get; set; }
 
         /// <summary>
         /// 邮件消费者地址
         /// </summary>
-        [Required]
         [StringLength(500)]
         public string Address { get; set; }
 
