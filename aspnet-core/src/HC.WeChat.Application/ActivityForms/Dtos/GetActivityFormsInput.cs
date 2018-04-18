@@ -114,23 +114,23 @@ namespace HC.WeChat.ActivityForms.Dtos
         /// <summary>
         /// 模糊搜索使用的关键字
         /// </summary>
-        public string Filter { get; set; }
+        public string Name { get; set; }
 
         public string FormCode { get; set; }
 
-        public DateTime? BeginDate { get; set; }
+        public DateTime? StartTime { get; set; }
 
-        public DateTime? EndDate { get; set; }
+        public DateTime? EndTime { get; set; }
 
         public DateTime? EndDateOne
         {
             get
             {
-                if (EndDate.HasValue)
+                if (EndTime.HasValue)
                 {
-                    return EndDate.Value.AddDays(1);
+                    return EndTime.Value.AddDays(1);
                 }
-                return EndDate;
+                return EndTime;
             }
         }
         /// <summary>
@@ -152,6 +152,10 @@ namespace HC.WeChat.ActivityForms.Dtos
         /// 是否邮寄
         /// </summary>
         public bool? IsSend { get; set; }
+        /// <summary>
+        /// 区、县
+        /// </summary>
+        public string AreaSe{ get; set; }
     }
 
 }

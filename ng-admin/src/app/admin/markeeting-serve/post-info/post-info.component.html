@@ -15,6 +15,19 @@
             <div nz-col [nzSpan]="6" class="mb-md">
                 <div nz-form-item class="d-flex">
                     <div nz-form-label>
+                        <label>区/县</label>
+                    </div>
+                    <div nz-form-control class="flex-1">
+                        <nz-select [nzPlaceHolder]="'请选择区/县'" name="areaSe" [(ngModel)]="search.areaSe" [nzShowSearch]="true" nzSize="large">
+                            <nz-option *ngFor="let i of areas" [nzLabel]="i.text" [nzValue]="i.value">
+                            </nz-option>
+                        </nz-select>
+                    </div>
+                </div>
+            </div>
+            <div nz-col [nzSpan]="6" class="mb-md">
+                <div nz-form-item class="d-flex">
+                    <div nz-form-label>
                         <label>开始时间</label>
                     </div>
                     <div nz-form-control class="flex-1">
@@ -39,7 +52,7 @@
                         <label>商品规格</label>
                     </div>
                     <div nz-form-control class="flex-1">
-                        <nz-input [(ngModel)]="search.specification" name="specification" [nzSize]="'large'" [nzPlaceHolder]="'请输入商品规格'" nzId="specification"></nz-input>
+                        <nz-input [(ngModel)]="search.productSpecification" name="productSpecification" [nzSize]="'large'" [nzPlaceHolder]="'请输入商品规格'" nzId="specification"></nz-input>
                     </div>
                 </div>
             </div>
@@ -123,6 +136,9 @@
                     <span>Id</span>
                 </th>
                 <th nz-th>
+                    <span>区/县</span>
+                </th>
+                <th nz-th>
                     <span>订单号</span>
                 </th>
                 <th nz-th>
@@ -135,10 +151,10 @@
                     <span>数量</span>
                 </th>
                 <th nz-th>
-                    <span>用户名</span>
+                    <span>用户类型</span>
                 </th>
                 <th nz-th>
-                    <span>用户类型</span>
+                    <span>用户名</span>
                 </th>
                 <th nz-th>
                     <span>联系方式</span>
@@ -150,7 +166,7 @@
                     <span>是否已邮寄</span>
                 </th>
                 <th nz-th>
-                    <span>邮寄时间</span>
+                    <span>标记时间</span>
                 </th>
             </tr>
         </thead>
@@ -161,12 +177,15 @@
                     <!-- [nzDisabled]="postinfo.disabled"  *ngIf="!postinfo.disabled" -->
                 </td>
                 <td style="display: none;" nz-td>{{postinfo.id}}</td>
-                <td nz-td>{{postinfo.formCode}}</td>
+                <td nz-td>{{postinfo.area}}</td>
+                <td nz-td>
+                    <a (click)="goDetail(postinfo)">{{postinfo.formCode}}</a>
+                </td>
                 <td nz-td>{{postinfo.applyTime | _date}}</td>
                 <td nz-td>{{postinfo.goodsSpecification }}</td>
                 <td nz-td>{{postinfo.num}}</td>
-                <td nz-td>{{postinfo.userName}}</td>
                 <td nz-td>{{postinfo.typeName}}</td>
+                <td nz-td>{{postinfo.userName}}</td>
                 <td nz-td>{{postinfo.phone}}</td>
                 <td nz-td>{{postinfo.address}}</td>
                 <td nz-td>{{postinfo.isSendName}}</td>

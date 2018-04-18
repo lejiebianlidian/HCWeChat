@@ -4,6 +4,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { ActivityFormServiceProxy, PagedResultDtoOfPostInfo, ActivityDeliveryInfoServiceProxy } from '@shared/service-proxies/marketing-service';
 import { PostInfo, Parameter } from '@shared/service-proxies/entity';
 import { NzModalService } from 'ng-zorro-antd';
+import { Router } from '@angular/router';
 
 @Component({
     moduleId: module.id,
@@ -13,7 +14,7 @@ import { NzModalService } from 'ng-zorro-antd';
 export class PostInfoComponent extends AppComponentBase implements OnInit {
 
     postInfos: PostInfo[] = [];
-    search: any = { startTime: null, endTime: null, userType: 0, isSend: 0 };
+    search: any = { startTime: null, endTime: null, userType: 0, isSend: 0, areaSe: '0' };
     allChecked = false;
     curRows: any[] = [];
     indeterminate = false;
@@ -28,9 +29,22 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
         { text: '是', value: true },
         { text: '否', value: false }
     ];
+    areas = [
+        { text: '全部', value: '0' },
+        { text: '南溪区', value: '南溪区' },
+        { text: '宜宾县', value: '宜宾县' },
+        { text: '江安县', value: '江安县' },
+        { text: '长宁县', value: '长宁县' },
+        { text: '高县', value: '高县' },
+        { text: '筠连县', value: '筠连县' },
+        { text: '珙县', value: '珙县' },
+        { text: '兴文县', value: '兴文县' },
+        { text: '屏山县', value: '屏山县' },
+    ];
     constructor(injector: Injector, private activityFormServie: ActivityFormServiceProxy,
         private activityFormDeliveryService: ActivityDeliveryInfoServiceProxy,
-        private modal: NzModalService) {
+        private modal: NzModalService,
+        private _router: Router) {
         super(injector);
     }
     ngOnInit(): void {
@@ -40,7 +54,7 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
     refreshData(reset = false, search?: boolean) {
         if (reset) {
             this.query.pageIndex = 1;
-            this.search = { startTime: null, endTime: null, userType: 0, isSend: 0 };
+            this.search = { startTime: null, endTime: null, userType: 0, isSend: 0, area: '0' };
         }
         if (search) {
             this.query.pageIndex = 1;
@@ -58,19 +72,20 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
     getParameter(): Parameter[] {
         var arry = [];
         arry.push(Parameter.fromJS({ key: 'FormCode', value: this.search.formCode }));
-        arry.push(Parameter.fromJS({ key: 'BeginDate', value: this.dateFormat(this.search.startTime) }));
-        arry.push(Parameter.fromJS({ key: 'EndDate', value: this.dateFormat(this.search.endTime) }));
-        arry.push(Parameter.fromJS({ key: 'ProductSpecification', value: this.search.specification }));
+        arry.push(Parameter.fromJS({ key: 'StartTime', value: this.dateFormat(this.search.startTime) }));
+        arry.push(Parameter.fromJS({ key: 'EndTime', value: this.dateFormat(this.search.endTime) }));
+        arry.push(Parameter.fromJS({ key: 'ProductSpecification', value: this.search.productSpecification }));
         arry.push(Parameter.fromJS({ key: 'UserType', value: this.search.userType == 0 ? null : this.search.userType }));
-        arry.push(Parameter.fromJS({ key: 'Filter', value: this.search.name }));
+        arry.push(Parameter.fromJS({ key: 'Name', value: this.search.name }));
         arry.push(Parameter.fromJS({ key: 'Phone', value: this.search.phone }));
         arry.push(Parameter.fromJS({ key: 'IsSend', value: this.search.isSend == 0 ? null : this.search.isSend }));
+        arry.push(Parameter.fromJS({ key: 'AreaSe', value: this.search.areaSe == '0' ? null : this.search.areaSe }));
         return arry;
     }
 
     dataChanges(res) {
-        console.log('res');
-        console.log(res);
+        // console.log('res');
+        // console.log(res);
         this.curRows = res;
         this.refreshCheckStatus()
     }
@@ -83,8 +98,7 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
         const allUnChecked = this.curRows.filter(value => !value.disabled).every(value => !value.checked);
         this.allChecked = allChecked;
         this.indeterminate = (!allChecked) && (!allUnChecked);
-        console.log('refreshCheckStatus:allChecked');
-        console.log(this.allChecked);
+
     }
     /**
      * 标记为已邮寄
@@ -106,8 +120,6 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
                 if (this.idList.length > 0) {
                     this.activityFormDeliveryService.updateIsSend(this.idList).subscribe(() => {
                         this.notify.info(this.l('标记成功！'));
-                        // this.allChecked = false;
-                        // this.refreshCheckStatus();
                         this.refreshData();
                     });
                 } else {
@@ -119,11 +131,6 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
             this.notify.warn('请选择需要标记的邮寄信息');
         }
 
-
-        // this.idList.push('8aa761de-9646-4fe2-4337-08d5a046601a');
-        // this.activityFormDeliveryService.updateIsSend(this.idList).subscribe(() => {
-        //     this.notify.info(this.l('标记成功！'));
-        // });
     }
 
     /**
@@ -146,5 +153,9 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
      */
     exportExcel() {
 
+    }
+
+    goDetail(postInfo: PostInfo) {
+        this._router.navigate(['admin/activity-form-detail', postInfo.activityFormId]);
     }
 }

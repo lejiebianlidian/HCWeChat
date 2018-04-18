@@ -8,7 +8,11 @@
                         <label for="activityArea">区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;县</label>
                     </div>
                     <div nz-form-control class="flex-1">
-                        <nz-input [nzSize]="'large'" name="activityArea" [(ngModel)]="parameters.activityArea" [nzPlaceHolder]="'区县'"></nz-input>
+                            <nz-select [nzPlaceHolder]="'请选择区/县'" name="activityArea" [(ngModel)]="parameters.activityArea" [nzShowSearch]="true" nzSize="large">
+                                <nz-option *ngFor="let i of areas" [nzLabel]="i.text" [nzValue]="i.value">
+                                </nz-option>
+                            </nz-select>
+                        <!-- <nz-input [nzSize]="'large'" name="activityArea" [(ngModel)]="parameters.activityArea" [nzPlaceHolder]="'区县'"></nz-input> -->
                     </div>
                 </div>
             </div>

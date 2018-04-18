@@ -670,8 +670,8 @@ namespace HC.WeChat.ActivityForms
             var mid = UserManager.GetControlEmployeeId();
             var queryForm = _activityformRepository.GetAll()
                 .WhereIf(!string.IsNullOrEmpty(input.FormCode), q => q.FormCode == input.FormCode)
-                .WhereIf(input.BeginDate.HasValue, q => q.CreationTime >= input.BeginDate)
-                .WhereIf(input.EndDate.HasValue, q => q.CreationTime < input.EndDateOne)
+                .WhereIf(input.StartTime.HasValue, q => q.CreationTime >= input.StartTime)
+                .WhereIf(input.EndTime.HasValue, q => q.CreationTime < input.EndDateOne)
                 .Where(q => q.Status != FormStatusEnum.取消 && q.Status != FormStatusEnum.拒绝)
                 .WhereIf(mid.HasValue, q => q.ManagerId == mid) //数据权限过滤
                 .WhereIf(!string.IsNullOrEmpty(input.ProductSpecification), q => q.GoodsSpecification.Contains(input.ProductSpecification));
@@ -679,14 +679,15 @@ namespace HC.WeChat.ActivityForms
             //.OrderByDescending(q=>q.CreationTime);
             var queryDelivery = _activitydeliveryinfoRepository.GetAll()
                 .WhereIf(input.UserType.HasValue, d => d.Type == input.UserType)
-                .WhereIf(!string.IsNullOrEmpty(input.Filter), d => d.UserName.Contains(input.Filter))
+                .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
                 .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
                 .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
 
             var queryBanquet = _activityBanquetRepository.GetAll();
+            //.WhereIf(!string.IsNullOrEmpty(input.AreaSe), b => b.Area == input.AreaSe);
 
             var query = from f in queryForm
-                        join d in queryDelivery on f.Id equals d.ActivityFormId 
+                        join d in queryDelivery on f.Id equals d.ActivityFormId
                         //from fd in queryF.DefaultIfEmpty()
                         join b in queryBanquet on f.Id equals b.ActivityFormId into queryB
                         from fb in queryB.DefaultIfEmpty()
@@ -708,12 +709,14 @@ namespace HC.WeChat.ActivityForms
                         };
 
             //TODO:根据传入的参数添加过滤条件
-            var activityformCount = query.Count();
+            var activityformCount = query.WhereIf(!string.IsNullOrEmpty(input.AreaSe), b => b.Area == input.AreaSe).Count();
             //if (activityformCount>0) {
             //    query = query.OrderByDescending(q => q.ApplyTime);
             //}
             var activityforms = query
-                .OrderByDescending(q => q.CreationTime)
+                .WhereIf(!string.IsNullOrEmpty(input.AreaSe), b => b.Area == input.AreaSe)
+                .OrderByDescending(q=>q.Area)
+                .ThenByDescending(q => q.CreationTime)
                 .ThenBy(q => q.FormCode)
                 .ThenBy(q => q.Type)
                 .Skip(input.SkipCount).Take(input.MaxResultCount)
@@ -735,8 +738,8 @@ namespace HC.WeChat.ActivityForms
             var mid = UserManager.GetControlEmployeeId();
             var queryForm = _activityformRepository.GetAll()
                 .WhereIf(!string.IsNullOrEmpty(input.FormCode), q => q.FormCode == input.FormCode)
-                .WhereIf(input.BeginDate.HasValue, q => q.CreationTime >= input.BeginDate)
-                .WhereIf(input.EndDate.HasValue, q => q.CreationTime < input.EndDateOne)
+                .WhereIf(input.StartTime.HasValue, q => q.CreationTime >= input.StartTime)
+                .WhereIf(input.EndTime.HasValue, q => q.CreationTime < input.EndDateOne)
                 .Where(q => q.Status != FormStatusEnum.取消 && q.Status != FormStatusEnum.拒绝)
                 .WhereIf(mid.HasValue, q => q.ManagerId == mid) //数据权限过滤
                 .WhereIf(!string.IsNullOrEmpty(input.ProductSpecification), q => q.GoodsSpecification.Contains(input.ProductSpecification));
@@ -744,7 +747,7 @@ namespace HC.WeChat.ActivityForms
             //.OrderByDescending(q=>q.CreationTime);
             var queryDelivery = _activitydeliveryinfoRepository.GetAll()
                 .WhereIf(input.UserType.HasValue, d => d.Type == input.UserType)
-                .WhereIf(!string.IsNullOrEmpty(input.Filter), d => d.UserName.Contains(input.Filter))
+                .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
                 .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
                 .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
 

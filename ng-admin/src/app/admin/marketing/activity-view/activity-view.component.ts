@@ -13,8 +13,19 @@ import { Router } from '@angular/router';
 export class ActivityViewComponent extends AppComponentBase implements OnInit {
     data: ActivityViewDto[] = [];
     loading = false;
-    parameters: any = { beginDate: null, endDate: null };
-
+    parameters: any = { beginDate: null, endDate: null, activityArea: '0' };
+    areas = [
+        { text: '全部', value: '0' },
+        { text: '南溪区', value: '南溪区' },
+        { text: '宜宾县', value: '宜宾县' },
+        { text: '江安县', value: '江安县' },
+        { text: '长宁县', value: '长宁县' },
+        { text: '高县', value: '高县' },
+        { text: '筠连县', value: '筠连县' },
+        { text: '珙县', value: '珙县' },
+        { text: '兴文县', value: '兴文县' },
+        { text: '屏山县', value: '屏山县' },
+    ]
 
     constructor(injector: Injector, public msg: NzMessageService, private _ActivityFormService: ActivityFormServiceProxy, private _router: Router) {
         super(injector);
@@ -39,10 +50,10 @@ export class ActivityViewComponent extends AppComponentBase implements OnInit {
     };
 
     getParameter(): Parameter[] {
-        let parray = [];   
+        let parray = [];
         parray.push(Parameter.fromJS({ key: 'BeginDate', value: this.dateFormat(this.parameters.beginDate) }));
         parray.push(Parameter.fromJS({ key: 'EndDate', value: this.dateFormat(this.parameters.endDate) }));
-        parray.push(Parameter.fromJS({ key: 'ActivityArea', value: this.parameters.activityArea }));
+        parray.push(Parameter.fromJS({ key: 'ActivityArea', value: this.parameters.activityArea == '0' ? null : this.parameters.activityArea }));
         parray.push(Parameter.fromJS({ key: 'ManagerName', value: this.parameters.managerName }));
         parray.push(Parameter.fromJS({ key: 'GoodsSpecification', value: this.parameters.goodsSpecification }));
         return parray;
