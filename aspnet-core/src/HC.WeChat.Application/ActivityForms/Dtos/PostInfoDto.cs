@@ -93,7 +93,11 @@ namespace HC.WeChat.ActivityForms.Dtos
         {
             get
             {
-                return Type.ToString();
+                if (Type.HasValue)
+                {
+                    return Type.ToString();
+                }
+                return string.Empty;
             }
         }
 
@@ -103,16 +107,36 @@ namespace HC.WeChat.ActivityForms.Dtos
 
         public DeliveryUserTypeEnum? Type { get; set; }
 
-        public bool IsSend { get; set; }
+        public bool? IsSend { get; set; }
  
-        public string IsSendName { get { return IsSend == true ? "是" : "否"; } }
+        public string IsSendName
+        {
+            get
+            {
+                if (IsSend.HasValue)
+                {
+                    return IsSend == true ? "是" : "否";
+                }
+                return string.Empty;
+            }
+        }
 
         public string TUserName { get; set; }
         public string TPhone { get; set; }
         public string TAddress { get; set; }
 
-        public bool TIsSend { get; set; }
-        public string TIsSendName { get { return TIsSend == true ? "是" : "否"; } }
+        public bool? TIsSend { get; set; }
+        public string TIsSendName
+        {
+            get
+            {
+                if (TIsSend.HasValue)
+                {
+                    return TIsSend == true ? "是" : "否";
+                }
+                return string.Empty;
+            }
+        }
      
         public string Reason { get; set; }
         public FormStatusEnum Status { get; set; }
