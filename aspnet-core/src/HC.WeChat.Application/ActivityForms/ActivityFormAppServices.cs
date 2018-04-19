@@ -749,11 +749,20 @@ namespace HC.WeChat.ActivityForms
         [UnitOfWork(isTransactional: false)]
         public Task<APIResultDto> ExportPostInfoExcel(GetActivityFormsSentInput input)
         {
-            var exportData = GetPostInfoToExcelList(input);
-            var result = new APIResultDto();
-            result.Code = 0;
-            result.Data = SavePostInfoExcel("邮寄信息.xlsx", exportData);
-            return Task.FromResult(result);
+            try
+            {
+                var exportData = GetPostInfoToExcelList(input);
+                var result = new APIResultDto();
+                result.Code = 0;
+                result.Data = SavePostInfoExcel("邮寄信息.xlsx", exportData);
+                return Task.FromResult(result);
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorFormat("ExportPostInfoExcel errormsg:{0} Exception:{1}", ex.Message, ex);
+                return Task.FromResult(new APIResultDto() { Code = 901, Msg = "网络忙... 请待会重试！" });
+            }
+           
         }
 
         private string GetSavePath()
@@ -849,54 +858,128 @@ namespace HC.WeChat.ActivityForms
             //消费者
             var queryDelivery = _activitydeliveryinfoRepository.GetAll()
                 .Where(q => q.Type == DeliveryUserTypeEnum.消费者)
-                .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
-                .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
-                .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
+                .WhereIf(!string.IsNullOrEmpty(input.Name) && input.UserType == DeliveryUserTypeEnum.消费者, d => d.UserName.Contains(input.Name))
+                .WhereIf(!string.IsNullOrEmpty(input.Phone) && input.UserType == DeliveryUserTypeEnum.消费者, d => d.Phone.Contains(input.Phone))
+                .WhereIf(input.IsSend.HasValue && input.UserType == DeliveryUserTypeEnum.消费者, d => d.IsSend == input.IsSend);
             //推荐人
             var queryTDelivery = _activitydeliveryinfoRepository.GetAll()
                .Where(q => q.Type == DeliveryUserTypeEnum.推荐人)
-               .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
-               .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
-               .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
-
+               .WhereIf(!string.IsNullOrEmpty(input.Name) && input.UserType == DeliveryUserTypeEnum.推荐人, d => d.UserName.Contains(input.Name))
+               .WhereIf(!string.IsNullOrEmpty(input.Phone) && input.UserType == DeliveryUserTypeEnum.推荐人, d => d.Phone.Contains(input.Phone))
+               .WhereIf(input.IsSend.HasValue && input.UserType == DeliveryUserTypeEnum.推荐人, d => d.IsSend == input.IsSend);
             //宴席
             var queryBanquet = _activityBanquetRepository.GetAll();
 
-            var query = from f in queryForm
-                        join d in queryDelivery on f.Id equals d.ActivityFormId
-                        join t in queryTDelivery on f.Id equals t.ActivityFormId into queryt
-                        from ft in queryt.DefaultIfEmpty()
-                        join b in queryBanquet on f.Id equals b.ActivityFormId into queryb
-                        from fb in queryb.DefaultIfEmpty()
-                        select new PostInfoDtoToExcel()
-                        {
-                            Area = fb.Area,
-                            FormCode = f.FormCode,
-                            ActivityName = f.ActivityName,
-                            RetailerName = f.RetailerName,
-                            ManagerName = f.ManagerName,
-                            GoodsSpecification = f.GoodsSpecification,
-                            Num = f.Num,
-                            Reason = f.Reason,
-                            Status = f.Status,
-                            CreationTime = f.CreationTime,
-                            UserName = d.UserName,
-                            Address = d.Address,
-                            Phone = d.Phone,
-                            IsSend = d.IsSend,
-                            TUserName = ft.UserName,
-                            TAddress = ft.Address,
-                            TPhone = ft.Phone,
-                            TIsSend = ft.IsSend
-                        };
+            if (!input.UserType.HasValue)
+            {
+                var query = from f in queryForm
+                            join d in queryDelivery on f.Id equals d.ActivityFormId
+                            join t in queryTDelivery on f.Id equals t.ActivityFormId into queryt
+                            from ft in queryt.DefaultIfEmpty()
+                            join b in queryBanquet on f.Id equals b.ActivityFormId into queryb
+                            from fb in queryb.DefaultIfEmpty()
+                            select new PostInfoDtoToExcel()
+                            {
+                                Area = fb.Area,
+                                //Area = (fb == null? "" : fb.Area),
+                                FormCode = f.FormCode,
+                                ActivityName = f.ActivityName,
+                                RetailerName = f.RetailerName,
+                                ManagerName = f.ManagerName,
+                                GoodsSpecification = f.GoodsSpecification,
+                                Num = f.Num,
+                                Reason = f.Reason,
+                                Status = f.Status,
+                                CreationTime = f.CreationTime,
+                                UserName = d.UserName,
+                                Address = d.Address,
+                                Phone = d.Phone,
+                                IsSend = d.IsSend,
+                                TUserName = ft.UserName,
+                                TAddress = ft.Address,
+                                TPhone = ft.Phone,
+                                TIsSend = ft.IsSend
+                                //TUserName = (ft == null? "" : ft.UserName),
+                                //TAddress = (ft == null ? "" : ft.Address),
+                                //TPhone = (ft == null ? "" : ft.Phone),
+                                //TIsSend = (ft == null ? false : ft.IsSend)
+                            };
 
-            var dataList = query
-               .WhereIf(!string.IsNullOrEmpty(input.AreaSe), b => b.Area == input.AreaSe)
-               .OrderByDescending(q => q.Area)
-               .ThenBy(q => q.CreationTime)
-               .ToList();
-         
-            return dataList;
+                var dataList = query
+                   .WhereIf(!string.IsNullOrEmpty(input.AreaSe), b => b.Area == input.AreaSe)
+                   .OrderByDescending(q => q.Area)
+                   .ThenBy(q => q.CreationTime)
+                   .ToList();
+                return dataList;
+            }
+
+            if (input.UserType == DeliveryUserTypeEnum.消费者)
+            {
+                var query = from f in queryForm
+                            join d in queryDelivery on f.Id equals d.ActivityFormId
+                            join b in queryBanquet on f.Id equals b.ActivityFormId into queryb
+                            from fb in queryb.DefaultIfEmpty()
+                            select new PostInfoDtoToExcel()
+                            {
+                                Area = fb.Area,
+                                //Area = (fb == null? "" : fb.Area),
+                                FormCode = f.FormCode,
+                                ActivityName = f.ActivityName,
+                                RetailerName = f.RetailerName,
+                                ManagerName = f.ManagerName,
+                                GoodsSpecification = f.GoodsSpecification,
+                                Num = f.Num,
+                                Reason = f.Reason,
+                                Status = f.Status,
+                                CreationTime = f.CreationTime,
+                                UserName = d.UserName,
+                                Address = d.Address,
+                                Phone = d.Phone,
+                                IsSend = d.IsSend
+                            };
+
+                var dataList = query
+                   .WhereIf(!string.IsNullOrEmpty(input.AreaSe), b => b.Area == input.AreaSe)
+                   .OrderByDescending(q => q.Area)
+                   .ThenBy(q => q.CreationTime)
+                   .ToList();
+                return dataList;
+            }
+
+            if (input.UserType == DeliveryUserTypeEnum.推荐人)
+            {
+                var query = from f in queryForm
+                            join t in queryTDelivery on f.Id equals t.ActivityFormId into queryt
+                            from ft in queryt.DefaultIfEmpty()
+                            join b in queryBanquet on f.Id equals b.ActivityFormId into queryb
+                            from fb in queryb.DefaultIfEmpty()
+                            select new PostInfoDtoToExcel()
+                            {
+                                Area = fb.Area,
+                                //Area = (fb == null? "" : fb.Area),
+                                FormCode = f.FormCode,
+                                ActivityName = f.ActivityName,
+                                RetailerName = f.RetailerName,
+                                ManagerName = f.ManagerName,
+                                GoodsSpecification = f.GoodsSpecification,
+                                Num = f.Num,
+                                Reason = f.Reason,
+                                Status = f.Status,
+                                CreationTime = f.CreationTime,
+                                TUserName = ft.UserName,
+                                TAddress = ft.Address,
+                                TPhone = ft.Phone,
+                                TIsSend = ft.IsSend
+                            };
+
+                var dataList = query
+                   .WhereIf(!string.IsNullOrEmpty(input.AreaSe), b => b.Area == input.AreaSe)
+                   .OrderByDescending(q => q.Area)
+                   .ThenBy(q => q.CreationTime)
+                   .ToList();
+                return dataList;
+            }
+            return new List<PostInfoDtoToExcel>();
         }
     }
 }
