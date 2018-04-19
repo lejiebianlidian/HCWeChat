@@ -863,19 +863,20 @@ namespace HC.WeChat.ActivityForms
             {
                 //消费者
                 var queryDelivery = _activitydeliveryinfoRepository.GetAll()
-                    .Where(q => q.Type == DeliveryUserTypeEnum.消费者)
-                    .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
-                    .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
-                    .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
+                    .Where(q => q.Type == DeliveryUserTypeEnum.消费者);
+                //.WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
+                //.WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
+                //.WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
                 //推荐人
                 var queryTDelivery = _activitydeliveryinfoRepository.GetAll()
-                   .Where(q => q.Type == DeliveryUserTypeEnum.推荐人)
-                   .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
-                   .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
-                   .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
+                   .Where(q => q.Type == DeliveryUserTypeEnum.推荐人);
+                   //.WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
+                   //.WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
+                   //.WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
 
                 var query = from f in queryForm
-                            join d in queryDelivery on f.Id equals d.ActivityFormId
+                            join d in queryDelivery on f.Id equals d.ActivityFormId into queryd
+                            from fd in queryd.DefaultIfEmpty()
                             join t in queryTDelivery on f.Id equals t.ActivityFormId into queryt
                             from ft in queryt.DefaultIfEmpty()
                             join b in queryBanquet on f.Id equals b.ActivityFormId into queryb
@@ -893,10 +894,10 @@ namespace HC.WeChat.ActivityForms
                                 Reason = f.Reason,
                                 Status = f.Status,
                                 CreationTime = f.CreationTime,
-                                UserName = d.UserName,
-                                Address = d.Address,
-                                Phone = d.Phone,
-                                IsSend = d.IsSend,
+                                UserName = fd.UserName,
+                                Address = fd.Address,
+                                Phone = fd.Phone,
+                                IsSend = fd.IsSend,
                                 TUserName = ft.UserName,
                                 TAddress = ft.Address,
                                 TPhone = ft.Phone,
@@ -909,6 +910,9 @@ namespace HC.WeChat.ActivityForms
 
                 var dataList = query
                    .WhereIf(!string.IsNullOrEmpty(input.AreaSe), b => b.Area == input.AreaSe)
+                   .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name) || d.TUserName.Contains(input.Name))
+                   .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone) || d.TPhone.Contains(input.Phone))
+                   .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend || d.TIsSend == input.IsSend)
                    .OrderByDescending(q => q.Area)
                    .ThenBy(q => q.CreationTime)
                    .ToList();
@@ -919,13 +923,11 @@ namespace HC.WeChat.ActivityForms
             {
                 //消费者
                 var queryDelivery = _activitydeliveryinfoRepository.GetAll()
-                    .Where(q => q.Type == DeliveryUserTypeEnum.消费者)
-                    .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
-                    .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
-                    .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
+                    .Where(q => q.Type == DeliveryUserTypeEnum.消费者);
 
                 var query = from f in queryForm
-                            join d in queryDelivery on f.Id equals d.ActivityFormId
+                            join d in queryDelivery on f.Id equals d.ActivityFormId into queryd
+                            from fd in queryd.DefaultIfEmpty()
                             join b in queryBanquet on f.Id equals b.ActivityFormId into queryb
                             from fb in queryb.DefaultIfEmpty()
                             select new PostInfoDtoToExcel()
@@ -941,14 +943,17 @@ namespace HC.WeChat.ActivityForms
                                 Reason = f.Reason,
                                 Status = f.Status,
                                 CreationTime = f.CreationTime,
-                                UserName = d.UserName,
-                                Address = d.Address,
-                                Phone = d.Phone,
-                                IsSend = d.IsSend
+                                UserName = fd.UserName,
+                                Address = fd.Address,
+                                Phone = fd.Phone,
+                                IsSend = fd.IsSend
                             };
 
                 var dataList = query
                    .WhereIf(!string.IsNullOrEmpty(input.AreaSe), b => b.Area == input.AreaSe)
+                   .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
+                   .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
+                   .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend)
                    .OrderByDescending(q => q.Area)
                    .ThenBy(q => q.CreationTime)
                    .ToList();
@@ -959,10 +964,8 @@ namespace HC.WeChat.ActivityForms
             {
                 //推荐人
                 var queryTDelivery = _activitydeliveryinfoRepository.GetAll()
-                   .Where(q => q.Type == DeliveryUserTypeEnum.推荐人)
-                   .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
-                   .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
-                   .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
+                   .Where(q => q.Type == DeliveryUserTypeEnum.推荐人);
+
                 var query = from f in queryForm
                             join t in queryTDelivery on f.Id equals t.ActivityFormId into queryt
                             from ft in queryt.DefaultIfEmpty()
@@ -989,6 +992,9 @@ namespace HC.WeChat.ActivityForms
 
                 var dataList = query
                    .WhereIf(!string.IsNullOrEmpty(input.AreaSe), b => b.Area == input.AreaSe)
+                   .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.TUserName.Contains(input.Name))
+                   .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.TPhone.Contains(input.Phone))
+                   .WhereIf(input.IsSend.HasValue, d => d.TIsSend == input.IsSend)
                    .OrderByDescending(q => q.Area)
                    .ThenBy(q => q.CreationTime)
                    .ToList();
