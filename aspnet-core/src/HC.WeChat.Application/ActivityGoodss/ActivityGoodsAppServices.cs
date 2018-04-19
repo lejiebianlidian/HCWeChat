@@ -241,6 +241,7 @@ namespace HC.WeChat.ActivityGoodses
             return entity.MapTo<ActivityGoodsEditDto>();
         }
 
+        [AbpAllowAnonymous]
         public async Task<List<ActivityGoodsDto>> GetActivityGoodsByActivityId(Guid activityId)
         {
             var goodsList = await _activitygoodsRepository.GetAll().Where(a => a.ActivityId == activityId).ToListAsync();

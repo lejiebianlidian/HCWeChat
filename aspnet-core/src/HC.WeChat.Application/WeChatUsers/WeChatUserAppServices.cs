@@ -198,6 +198,7 @@ namespace HC.WeChat.WeChatUsers
         /// <summary>
         /// 用户绑定
         /// </summary>
+        [AbpAllowAnonymous]
         public async Task<APIResultDto> BindWeChatUserAsync(UserBindDto input)
         {
             Logger.InfoFormat("UserBindDto:", Newtonsoft.Json.Linq.JObject.FromObject(input).ToString());
@@ -244,6 +245,7 @@ namespace HC.WeChat.WeChatUsers
             }
         }
 
+        [AbpAllowAnonymous]
         public async Task<WeChatUserListDto> GetWeChatUserAsync(string openId, int? tenantId)
         {
             var user = await _wechatuserManager.GetWeChatUserAsync(openId, tenantId);
