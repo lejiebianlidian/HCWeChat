@@ -855,23 +855,25 @@ namespace HC.WeChat.ActivityForms
                 .Where(q => q.Status != FormStatusEnum.取消 && q.Status != FormStatusEnum.拒绝)
                 .WhereIf(mid.HasValue, q => q.ManagerId == mid) //数据权限过滤
                 .WhereIf(!string.IsNullOrEmpty(input.ProductSpecification), q => q.GoodsSpecification.Contains(input.ProductSpecification));
-            //消费者
-            var queryDelivery = _activitydeliveryinfoRepository.GetAll()
-                .Where(q => q.Type == DeliveryUserTypeEnum.消费者)
-                .WhereIf(!string.IsNullOrEmpty(input.Name) && input.UserType == DeliveryUserTypeEnum.消费者, d => d.UserName.Contains(input.Name))
-                .WhereIf(!string.IsNullOrEmpty(input.Phone) && input.UserType == DeliveryUserTypeEnum.消费者, d => d.Phone.Contains(input.Phone))
-                .WhereIf(input.IsSend.HasValue && input.UserType == DeliveryUserTypeEnum.消费者, d => d.IsSend == input.IsSend);
-            //推荐人
-            var queryTDelivery = _activitydeliveryinfoRepository.GetAll()
-               .Where(q => q.Type == DeliveryUserTypeEnum.推荐人)
-               .WhereIf(!string.IsNullOrEmpty(input.Name) && input.UserType == DeliveryUserTypeEnum.推荐人, d => d.UserName.Contains(input.Name))
-               .WhereIf(!string.IsNullOrEmpty(input.Phone) && input.UserType == DeliveryUserTypeEnum.推荐人, d => d.Phone.Contains(input.Phone))
-               .WhereIf(input.IsSend.HasValue && input.UserType == DeliveryUserTypeEnum.推荐人, d => d.IsSend == input.IsSend);
+           
             //宴席
             var queryBanquet = _activityBanquetRepository.GetAll();
 
             if (!input.UserType.HasValue)
             {
+                //消费者
+                var queryDelivery = _activitydeliveryinfoRepository.GetAll()
+                    .Where(q => q.Type == DeliveryUserTypeEnum.消费者)
+                    .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
+                    .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
+                    .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
+                //推荐人
+                var queryTDelivery = _activitydeliveryinfoRepository.GetAll()
+                   .Where(q => q.Type == DeliveryUserTypeEnum.推荐人)
+                   .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
+                   .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
+                   .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
+
                 var query = from f in queryForm
                             join d in queryDelivery on f.Id equals d.ActivityFormId
                             join t in queryTDelivery on f.Id equals t.ActivityFormId into queryt
@@ -915,6 +917,13 @@ namespace HC.WeChat.ActivityForms
 
             if (input.UserType == DeliveryUserTypeEnum.消费者)
             {
+                //消费者
+                var queryDelivery = _activitydeliveryinfoRepository.GetAll()
+                    .Where(q => q.Type == DeliveryUserTypeEnum.消费者)
+                    .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
+                    .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
+                    .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
+
                 var query = from f in queryForm
                             join d in queryDelivery on f.Id equals d.ActivityFormId
                             join b in queryBanquet on f.Id equals b.ActivityFormId into queryb
@@ -948,6 +957,12 @@ namespace HC.WeChat.ActivityForms
 
             if (input.UserType == DeliveryUserTypeEnum.推荐人)
             {
+                //推荐人
+                var queryTDelivery = _activitydeliveryinfoRepository.GetAll()
+                   .Where(q => q.Type == DeliveryUserTypeEnum.推荐人)
+                   .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
+                   .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
+                   .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
                 var query = from f in queryForm
                             join t in queryTDelivery on f.Id equals t.ActivityFormId into queryt
                             from ft in queryt.DefaultIfEmpty()
