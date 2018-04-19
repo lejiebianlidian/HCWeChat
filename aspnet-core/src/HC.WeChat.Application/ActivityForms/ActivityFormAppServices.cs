@@ -33,6 +33,7 @@ using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 using NPOI.HSSF.Util;
 using Microsoft.Extensions.Configuration;
+using Abp.Domain.Uow;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -676,6 +677,7 @@ namespace HC.WeChat.ActivityForms
         /// </summary>
         /// <param name="input">查询条件</param>
         /// <returns></returns>
+        [UnitOfWork(isTransactional: false)]
         public Task<PagedResultDto<PostInfoDto>> GetPostInfo(GetActivityFormsSentInput input)
         {
             var mid = UserManager.GetControlEmployeeId();
@@ -744,7 +746,7 @@ namespace HC.WeChat.ActivityForms
                 ));
         }
 
-
+        [UnitOfWork(isTransactional: false)]
         public Task<APIResultDto> ExportPostInfoExcel(GetActivityFormsSentInput input)
         {
             var exportData = GetPostInfoToExcelList(input);
@@ -832,7 +834,7 @@ namespace HC.WeChat.ActivityForms
             }
             return "/files/downloadtemp/" + fileName;
         }
-
+        
         private List<PostInfoDtoToExcel> GetPostInfoToExcelList(GetActivityFormsSentInput input)
         {
             var mid = UserManager.GetControlEmployeeId();

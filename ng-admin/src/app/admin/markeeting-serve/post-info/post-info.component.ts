@@ -71,6 +71,8 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
                 // i.checked = false;
                 return i;
             });
+            this.curRows=result.items;
+            this.refreshCheckStatus()
             this.query.total = result.totalCount;
             this.loading = false;
         });
@@ -81,20 +83,20 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
         arry.push(Parameter.fromJS({ key: 'StartTime', value: this.dateFormat(this.search.startTime) }));
         arry.push(Parameter.fromJS({ key: 'EndTime', value: this.dateFormat(this.search.endTime) }));
         arry.push(Parameter.fromJS({ key: 'ProductSpecification', value: this.search.productSpecification }));
-        arry.push(Parameter.fromJS({ key: 'UserType', value: this.search.userType == 0 ? null : this.search.userType }));
+        arry.push(Parameter.fromJS({ key: 'UserType', value: this.search.userType === 0 ? null : this.search.userType }));
         arry.push(Parameter.fromJS({ key: 'Name', value: this.search.name }));
         arry.push(Parameter.fromJS({ key: 'Phone', value: this.search.phone }));
-        arry.push(Parameter.fromJS({ key: 'IsSend', value: this.search.isSend == 0 ? null : this.search.isSend }));
-        arry.push(Parameter.fromJS({ key: 'AreaSe', value: this.search.areaSe == '0' ? null : this.search.areaSe }));
+        arry.push(Parameter.fromJS({ key: 'IsSend', value: this.search.isSend === 0 ? null : this.search.isSend }));
+        arry.push(Parameter.fromJS({ key: 'AreaSe', value: this.search.areaSe === '0' ? null : this.search.areaSe }));
         return arry;
     }
 
-    dataChanges(res) {
-        // console.log('res');
-        // console.log(res);
-        this.curRows = res;
-        this.refreshCheckStatus()
-    }
+    // dataChanges(res) {
+    //     // console.log('res');
+    //     // console.log(res);
+    //     this.curRows = res;
+    //     this.refreshCheckStatus()
+    // }
 
     refreshCheckStatus() {
         // const allChecked = this.curRows.every(value => value.disabled || value.checked);
@@ -121,8 +123,8 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
         this.curRows.forEach(i => {
             if (i.checked) {
                 this.idList.push(i.id);
-                console.log('idList');
-                console.log(this.idList);
+                // console.log('idList');
+                // console.log(this.idList);
                 if (this.idList.length > 0) {
                     this.activityFormDeliveryService.updateIsSend(this.idList).subscribe(() => {
                         this.notify.info(this.l('标记成功！'));
@@ -159,13 +161,13 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
      */
     exportExcel() {
         this.exportLoading = true;
-        if (this.search.userType == 0) {
+        if (this.search.userType === 0) {
             this.search.userType = null;
         }
-        if (this.search.isSend == 0) {
+        if (this.search.isSend === 0) {
             this.search.isSend = null;
         }
-        if (this.search.areaSe == '0') {
+        if (this.search.areaSe === '0') {
             this.search.areaSe = null;
         }
         this.activityFormServie.exportPostInfoExcel(this.search).subscribe(result => {
