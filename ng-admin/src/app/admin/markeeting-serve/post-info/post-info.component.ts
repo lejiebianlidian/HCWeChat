@@ -155,16 +155,17 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
      */
     exportExcel() {
         this.exportLoading = true;
-        if (this.search.userType === 0) {
-            this.search.userType = null;
+        let input = JSON.parse(JSON.stringify(this.search));
+        if (input.userType === 0) {
+            input.userType = null;
         }
-        if (this.search.isSend === 0) {
-            this.search.isSend = null;
+        if (input.isSend === 0) {
+            input.isSend = null;
         }
-        if (this.search.areaSe === '0') {
-            this.search.areaSe = null;
+        if (input.areaSe === '0') {
+            input.areaSe = null;
         }
-        this.activityFormServie.exportPostInfoExcel(this.search).subscribe(result => {
+        this.activityFormServie.exportPostInfoExcel(input).subscribe(result => {
             if (result.code == 0) {
                 //var url = 'http://localhost:21021/files/测试客户经理.xlsx';
                 var url = AppConsts.remoteServiceBaseUrl + result.data;
