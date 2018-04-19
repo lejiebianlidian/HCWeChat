@@ -123,22 +123,16 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
         this.curRows.forEach(i => {
             if (i.checked) {
                 this.idList.push(i.id);
-                // console.log('idList');
-                // console.log(this.idList);
-                if (this.idList.length > 0) {
-                    this.activityFormDeliveryService.updateIsSend(this.idList).subscribe(() => {
-                        this.notify.info(this.l('标记成功！'));
-                        this.refreshData();
-                    });
-                } else {
-                    this.notify.warn('请选择需要标记的邮寄信息');
-                }
             }
         });
-        if (this.idList.length <= 0) {
+        if (this.idList.length > 0) {
+            this.activityFormDeliveryService.updateIsSend(this.idList).subscribe(() => {
+                this.notify.info(this.l('标记成功！'));
+                this.refreshData();
+            });
+        } else {
             this.notify.warn('请选择需要标记的邮寄信息');
         }
-
     }
 
     /**
