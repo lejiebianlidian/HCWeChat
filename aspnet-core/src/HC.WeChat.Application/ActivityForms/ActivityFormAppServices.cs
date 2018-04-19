@@ -746,7 +746,7 @@ namespace HC.WeChat.ActivityForms
                 ));
         }
 
-
+        [UnitOfWork(isTransactional: false)]
         public Task<APIResultDto> ExportPostInfoExcel(GetActivityFormsSentInput input)
         {
             var exportData = GetPostInfoToExcelList(input);
@@ -834,7 +834,7 @@ namespace HC.WeChat.ActivityForms
             }
             return "/files/downloadtemp/" + fileName;
         }
-
+        
         private List<PostInfoDtoToExcel> GetPostInfoToExcelList(GetActivityFormsSentInput input)
         {
             var mid = UserManager.GetControlEmployeeId();
