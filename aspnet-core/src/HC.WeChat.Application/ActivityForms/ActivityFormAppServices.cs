@@ -677,6 +677,7 @@ namespace HC.WeChat.ActivityForms
         /// </summary>
         /// <param name="input">查询条件</param>
         /// <returns></returns>
+        [UnitOfWork(isTransactional: false)]
         public Task<PagedResultDto<PostInfoDto>> GetPostInfo(GetActivityFormsSentInput input)
         {
             var mid = UserManager.GetControlEmployeeId();
