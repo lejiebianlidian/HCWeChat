@@ -62,7 +62,7 @@
         </div>
     </form>
     <nz-table #nzTable [nzAjaxData]="data" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading"
-        [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
+        [nzShowSizeChanger]="true" [nzShowTotal]="'true'" (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
         <thead nz-thead>
             <tr>
                 <th nz-th>

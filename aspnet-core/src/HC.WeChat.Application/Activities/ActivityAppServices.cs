@@ -258,6 +258,7 @@ namespace HC.WeChat.Activities
                 return true;
             }
         }
+        [AbpAllowAnonymous]
         public async Task<ActivityListDto> GetTenantWeChatActivityAsync(int? tenantId)
         {
             var activity = await _activityManager.GetTenantWeChatActivityAsync(tenantId);
