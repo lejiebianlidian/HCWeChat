@@ -10,7 +10,7 @@ using HC.WeChat.ActivityFormLogs;
 namespace HC.WeChat.ActivityForms.Dtos
 {
     [AutoMapFrom(typeof(ActivityForm))]
-    public class ActivityFormListDto : EntityDto<Guid>
+    public class ActivityFormListDto : FullAuditedEntityDto<Guid>
     {
         public string FormCode { get; set; }
         public Guid ActivityId { get; set; }
@@ -52,7 +52,7 @@ namespace HC.WeChat.ActivityForms.Dtos
             }
         }
 
-        public DateTime CreationTime { get; set; }
+        //public DateTime CreationTime { get; set; }
 
         public string ActivityName { get; set; }
 

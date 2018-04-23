@@ -1,7 +1,10 @@
 <pro-header></pro-header>
 <nz-card [nzBordered]="false">
-    <form nz-form (ngSubmit)="refreshData()" [nzLayout]="'inline'">
+    <form nz-form (ngSubmit)="refreshData(false,true)" [nzLayout]="'inline'">
         <div nz-row [nzGutter]="24">
+            <ng-template #deleteContent>
+                <h2>是否删除申请单{{formCode}}?</h2>
+            </ng-template>
             <div nz-col [nzSpan]="6" class="mb-md">
                 <div nz-form-item class="d-flex">
                     <div nz-form-label>
@@ -18,7 +21,8 @@
                         <label for="beginDate">开始日期</label>
                     </div>
                     <div nz-form-control class="flex-1">
-                        <nz-datepicker [nzSize]="'large'" name="beginDate" [nzPlaceHolder]="'请输入开始日期'" [(ngModel)]="parameters.beginDate" nzId="beginDate" class="d-block"></nz-datepicker>
+                        <nz-datepicker [nzSize]="'large'" name="beginDate" [nzPlaceHolder]="'请输入开始日期'" [(ngModel)]="parameters.beginDate" nzId="beginDate"
+                            class="d-block"></nz-datepicker>
                     </div>
                 </div>
             </div>
@@ -28,7 +32,8 @@
                         <label for="endDate">结束日期</label>
                     </div>
                     <div nz-form-control class="flex-1">
-                        <nz-datepicker [nzSize]="'large'" name="endDate" [nzPlaceHolder]="'请输入结束日期'" [(ngModel)]="parameters.endDate" nzId="endDate" class="d-block"></nz-datepicker>
+                        <nz-datepicker [nzSize]="'large'" name="endDate" [nzPlaceHolder]="'请输入结束日期'" [(ngModel)]="parameters.endDate" nzId="endDate"
+                            class="d-block"></nz-datepicker>
                     </div>
                 </div>
             </div>
@@ -47,7 +52,7 @@
             <div nz-col [nzSpan]="16" class="mb-md">
                 <div nz-form-item class="d-flex">
                     <div nz-form-label>
-                        <label for="filter">关  键  字</label>
+                        <label for="filter">关 键 字</label>
                     </div>
                     <div nz-form-control class="flex-1">
                         <nz-input [nzSize]="'large'" name="filter" nzId="filter" [(ngModel)]="parameters.filter" [nzPlaceHolder]="'活动名称、零售户、客户经理'"></nz-input>
@@ -57,12 +62,12 @@
 
             <div nz-col [nzSpan]="8" class="mb-md" [class.text-right]="'true'">
                 <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading" [nzSize]="'large'">查询</button>
-                <button nz-button type="reset" (click)="refreshData()" [nzSize]="'large'" class="mx-sm">重置</button>
+                <button nz-button type="reset" (click)="refreshData(true)" [nzSize]="'large'" class="mx-sm">重置</button>
             </div>
         </div>
     </form>
-    <nz-table #nzTable [nzAjaxData]="data" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading"
-        [nzShowSizeChanger]="true" [nzShowTotal]="'true'" (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
+    <nz-table #nzTable [nzAjaxData]="data" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize"
+        [nzLoading]="loading" [nzShowSizeChanger]="true" [nzShowTotal]="'true'" (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
         <thead nz-thead>
             <tr>
                 <th nz-th>
@@ -106,10 +111,14 @@
                 <td nz-td>{{activityForm.goodsSpecification}}</td>
                 <td nz-td>{{activityForm.num}}</td>
                 <td nz-td>{{activityForm.reason}}</td>
-                <td nz-td><nz-badge [nzStatus]="activityForm.statusType" [nzText]="activityForm.statusName"></nz-badge></td>
+                <td nz-td>
+                    <nz-badge [nzStatus]="activityForm.statusType" [nzText]="activityForm.statusName"></nz-badge>
+                </td>
                 <td nz-td>{{activityForm.creationTime | _date}}</td>
                 <td nz-td>
-                    <a (click)="goDetail(activityForm.id)" >查看详细</a>
+                    <a (click)="goDetail(activityForm.id)">查看详细</a>
+                    <span nz-table-divider></span>
+                    <a (click)="delete(activityForm,deleteContent)" style="color: red">删除</a>
                 </td>
             </tr>
         </tbody>

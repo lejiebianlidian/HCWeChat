@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { ActivityFormDto, Parameter } from '@shared/service-proxies/entity';
 import { ActivityFormServiceProxy, PagedResultDtoOfActivityForm } from '@shared/service-proxies/marketing-service/activity-form-service';
 
@@ -14,7 +14,7 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
     data: ActivityFormDto[] = [];
     loading = false;
     parameters: any = { beginDate: null, endDate: null };
-
+    formCode = '';
     statusList = [
         { text: '提交申请', value: 1, type: 'error' },
         { text: '初审通过', value: 2, type: 'processing' },
@@ -24,7 +24,8 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
         { text: '营销中心已审核', value: 6, type: 'success' }
     ];
 
-    constructor(injector: Injector, public msg: NzMessageService, private _ActivityFormService: ActivityFormServiceProxy, private _router: Router) {
+    constructor(injector: Injector, public msg: NzMessageService, private _ActivityFormService: ActivityFormServiceProxy, private _router: Router,
+        private modal: NzModalService) {
         super(injector);
     }
 
@@ -32,8 +33,12 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
         this.refreshData();
     }
 
-    refreshData(reset = false) {
+    refreshData(reset = false,search?: boolean) {
         if (reset) {
+            this.query.pageIndex = 1;
+            this.parameters={beginDate: null, endDate: null};
+        }
+        if (search) {
             this.query.pageIndex = 1;
         }
         this.loading = true;
@@ -58,5 +63,19 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
 
     goDetail(id: string) {
         this._router.navigate(['admin/activity-form-detail', id]);
+    }
+    delete(activityForm: ActivityFormDto, TplContent) {
+        this.formCode = activityForm.formCode;
+        this.modal.confirm({
+            content: TplContent,
+            cancelText: '否',
+            okText: '是',
+            onOk: () => {
+                this._ActivityFormService.delete(activityForm.id).subscribe(() => {
+                    this.notify.info(this.l('删除成功！'));
+                    this.refreshData();
+                });
+            }
+        });
     }
 }

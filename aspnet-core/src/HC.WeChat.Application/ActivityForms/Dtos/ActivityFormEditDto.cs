@@ -10,9 +10,9 @@ using HC.WeChat.Dto;
 
 namespace HC.WeChat.ActivityForms.Dtos
 {
-    public class ActivityFormEditDto
+    public class ActivityFormEditDto: FullAuditedEntityDto<Guid?>
     {
-        public Guid? Id { get; set; }
+        //public Guid? Id { get; set; }
 
         /// <summary>
         /// 申请单号（系统自动生成AF+算法规则）唯一
@@ -75,8 +75,8 @@ namespace HC.WeChat.ActivityForms.Dtos
         /// <summary>
         /// 创建时间
         /// </summary>
-        [Required]
-        public DateTime CreationTime { get; set; }
+        //[Required]
+        //public DateTime CreationTime { get; set; }
 
         public string ActivityName { get; set; }
 

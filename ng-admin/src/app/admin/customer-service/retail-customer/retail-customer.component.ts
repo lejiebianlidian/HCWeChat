@@ -26,6 +26,7 @@ export class RetailCustomerComponent extends AppComponentBase implements OnInit 
         { text: '乡村', value: 1 },
         { text: '城镇', value: 2 },
     ];
+    customer = '';
     retailCustomer: RetailCustomer[] = [];
     constructor(injector: Injector, private retailService: RetailCustomerServiceProxy, private router: Router,
         private modal: NzModalService, ) {
@@ -75,6 +76,7 @@ export class RetailCustomerComponent extends AppComponentBase implements OnInit 
      * 
      */
     delete(retail: RetailCustomer, TplContent) {
+        this.customer = retail.name;
         this.modal.confirm({
             content: TplContent,
             cancelText: '否',

@@ -16,7 +16,7 @@ namespace HC.WeChat.ActivityForms
     /// 活动申请单
     /// </summary>
     [Table("ActivityForms")]
-    public class ActivityForm : Entity<Guid>, IHasCreationTime
+    public class ActivityForm : FullAuditedEntity<Guid>, IHasCreationTime
     {
 
         /// <summary>
@@ -72,8 +72,8 @@ namespace HC.WeChat.ActivityForms
         /// <summary>
         /// 创建时间
         /// </summary>
-        [Required]
-        public DateTime CreationTime { get; set; }
+        //[Required]
+        //public DateTime CreationTime { get; set; }
 
         /// <summary>
         /// 活动宴席信息
