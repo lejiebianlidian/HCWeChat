@@ -1,8 +1,12 @@
 <pro-header [title]="formTitle">
+    <ng-template #deleteContent>
+        <h2>是否删除申请单{{formCode}}?</h2>
+    </ng-template>
     <ng-template #logo>
         <img src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
     </ng-template>
     <ng-template *ngIf="form" #action>
+        <button nz-button [nzType]="'danger'"  (click)="delete(deleteContent)" *ngIf="ismcenter" [nzSize]="'large'">删除</button>
         <button nz-button *ngIf="form.status == 1" [nzSize]="'large'" (click)="editForm()">修改商品信息</button>
         <button nz-button [nzSize]="'large'" (click)="cancel()" *ngIf="form.status == 1 || form.status == 2 || form.status == 3 || form.status == 4">取消</button>
         <button nz-button [nzSize]="'large'" (click)="reject()" *ngIf="form.status == 1 || form.status == 2">拒绝</button>
@@ -29,7 +33,7 @@
                 <ng-template #nzTabHeading>详情</ng-template>
                 <span>
                     <nz-card *ngIf="form" class="mb-lg">
-                        <nz-steps [nzCurrent]="form.currentStep" [nzSize]="'small'" >
+                        <nz-steps [nzCurrent]="form.currentStep" [nzSize]="'small'">
                             <nz-step *ngFor="let log of form.formLogList" [nzTitle]="log.statusName" [nzDescription]="showDesc">
                                 <ng-template #showDesc>
                                     <p>{{log.desc}}</p>

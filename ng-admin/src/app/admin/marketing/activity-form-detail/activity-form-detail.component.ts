@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ActivityFormDto, ActivityBanquetDto, ActivityDeliveryInfoDto, ActivityFormStatusDto } from '@shared/service-proxies/entity';
 import { ActivityFormServiceProxy } from '@shared/service-proxies/marketing-service/activity-form-service';
 import { ActivityBanquetServiceProxy, ActivityDeliveryInfoServiceProxy } from '@shared/service-proxies/marketing-service';
@@ -53,13 +53,17 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
     imgWidth: number = 750;
     photoUrls: string[];
 
+    //用于删除订单显示
+    formCode = '';
     constructor(injector: Injector,
         public msg: NzMessageService, private http: _HttpClient,
         public route: ActivatedRoute,
         private activityFormService: ActivityFormServiceProxy,
         private activityBanquetService: ActivityBanquetServiceProxy,
         private activityDeliveryService: ActivityDeliveryInfoServiceProxy,
-        private appSessionService: AppSessionService
+        private appSessionService: AppSessionService,
+        private modal:NzModalService,
+        private router: Router,
     ) {
         super(injector);
         this.formId = this.route.snapshot.params['id'];
@@ -67,7 +71,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
     }
 
     ngOnInit() {
-        if(this.appSessionService.roles.includes('MarketingCenter')){
+        if (this.appSessionService.roles.includes('MarketingCenter')) {
             this.ismcenter = true;
         }
 
@@ -77,7 +81,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
     handlePreview = (url: string) => {
         this.previewImage = url;
         this.previewVisible = true;
-      }
+    }
 
     getData() {
         //表单
@@ -169,7 +173,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         this.approvalModal.show(formStatus);
     }
     //营销中心审核
-    approvalEnd(){
+    approvalEnd() {
         let formStatus = new ActivityFormStatusDto();
         formStatus.status = 6;
         formStatus.opinion = "审核通过";
@@ -193,6 +197,21 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
             del.creationTime = new Date();
             this.editDeliveryModal.show(del);
         }
+    }
+    //删除
+    delete(TplContent) {
+        this.formCode = this.form.formCode;
+        this.modal.confirm({
+            content: TplContent,
+            cancelText: '否',
+            okText: '是',
+            onOk: () => {
+                this.activityFormService.delete(this.form.id).subscribe(() => {
+                    this.notify.info(this.l('删除成功！'));
+                    this.router.navigate(['admin/activity-form']);
+                });
+            }
+        });
     }
 
     editRDelivery() {
@@ -238,7 +257,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
         }
     }
 
-    editBanquet(){
+    editBanquet() {
         this.banquet.activityFormId = this.formId;
         let b = this.banquet.clone();
         if (b.id == null || b.id == undefined) {

@@ -64,18 +64,18 @@ export class ActivityFormComponent extends AppComponentBase implements OnInit {
     goDetail(id: string) {
         this._router.navigate(['admin/activity-form-detail', id]);
     }
-    delete(activityForm: ActivityFormDto, TplContent) {
-        this.formCode = activityForm.formCode;
-        this.modal.confirm({
-            content: TplContent,
-            cancelText: '否',
-            okText: '是',
-            onOk: () => {
-                this._ActivityFormService.delete(activityForm.id).subscribe(() => {
-                    this.notify.info(this.l('删除成功！'));
-                    this.refreshData();
-                });
-            }
-        });
-    }
+    // delete(activityForm: ActivityFormDto, TplContent) {
+    //     this.formCode = activityForm.formCode;
+    //     this.modal.confirm({
+    //         content: TplContent,
+    //         cancelText: '否',
+    //         okText: '是',
+    //         onOk: () => {
+    //             this._ActivityFormService.delete(activityForm.id).subscribe(() => {
+    //                 this.notify.info(this.l('删除成功！'));
+    //                 this.refreshData();
+    //             });
+    //         }
+    //     });
+    // }
 }
