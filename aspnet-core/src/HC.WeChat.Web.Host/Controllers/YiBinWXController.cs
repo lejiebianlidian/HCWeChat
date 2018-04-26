@@ -419,18 +419,30 @@ namespace HC.WeChat.Web.Host.Controllers
             {
                 case AuthorizationPageEnum.BindUser:
                     {
+                        if (!string.IsNullOrEmpty(UserOpenId))//如果userOpenId 不为空 直接跳转
+                        {
+                            return RedirectToAction("BindUser");
+                        }
                         var url = host + "/YiBinWX/BindUser";
                         ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
                     }
                     break;
                 case AuthorizationPageEnum.Question:
                     {
+                        if (!string.IsNullOrEmpty(UserOpenId))//如果userOpenId 不为空 直接跳转
+                        {
+                            return RedirectToAction("Question");
+                        }
                         var url = host + "/YiBinWX/Question";
                         ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
                     }
                     break;
                 case AuthorizationPageEnum.AdviseBack:
                     {
+                        if (!string.IsNullOrEmpty(UserOpenId))//如果userOpenId 不为空 直接跳转
+                        {
+                            return RedirectToAction("AdviseBack");
+                        }
                         var url = host + "/YiBinWX/AdviseBack";
                         ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
                     }
