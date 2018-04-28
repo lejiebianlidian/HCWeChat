@@ -39,7 +39,10 @@
                                     *.xlsx（货源公布.xlsx）
                                 </td>
                                 <td nz-td>
-                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=货源公布'}}" [nzName]="'files'">
+                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=货源公布'}}"
+                                    [nzBeforeUpload]="beforeExcelUpload"
+                                    (nzChange)="handleChange($event)"
+                                    [nzName]="'files'">
                                         <button nz-button>
                                             <i class="anticon anticon-upload"></i>
                                             <span>上传最新</span>
@@ -57,7 +60,9 @@
                                     *.xlsx（投放方式.xlsx）
                                 </td>
                                 <td nz-td>
-                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=投放方式'}}" [nzName]="'files'">
+                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=投放方式'}}" 
+                                    [nzBeforeUpload]="beforeExcelUpload"
+                                    [nzName]="'files'">
                                         <button nz-button>
                                             <i class="anticon anticon-upload"></i>
                                             <span>上传最新</span>
@@ -69,13 +74,15 @@
                                 <td nz-td>3</td>
                                 <td nz-td>进度查询-总量</td>
                                 <td nz-td>
-                                    <a href="{{host + '/upload/files/progress-total.jpg'}}">{{host + '/upload/files/progress-total.jpg'}}</a>
+                                    <a target="_blank" href="{{host + '/upload/files/progress-total.jpg'}}">{{host + '/upload/files/progress-total.jpg'}}</a>
                                 </td>
                                 <td nz-td>
                                     *.jpg（progress-total.jpg）
                                 </td>
                                 <td nz-td>
-                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=progress-total'}}" [nzName]="'files'">
+                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=progress-total'}}" 
+                                    [nzBeforeUpload]="beforeJpgUpload"
+                                    [nzName]="'files'">
                                         <button nz-button>
                                             <i class="anticon anticon-upload"></i>
                                             <span>上传最新</span>
@@ -87,13 +94,15 @@
                                 <td nz-td>4</td>
                                 <td nz-td>进度查询-毛利</td>
                                 <td nz-td>
-                                    <a href="{{host + '/upload/files/progress-profit.jpg'}}">{{host + '/upload/files/progress-profit.jpg'}}</a>
+                                    <a target="_blank" href="{{host + '/upload/files/progress-profit.jpg'}}">{{host + '/upload/files/progress-profit.jpg'}}</a>
                                 </td>
                                 <td nz-td>
                                     *.jpg（progress-profit.jpg）
                                 </td>
                                 <td nz-td>
-                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=progress-profit'}}" [nzName]="'files'">
+                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=progress-profit'}}" 
+                                    [nzBeforeUpload]="beforeJpgUpload"
+                                    [nzName]="'files'">
                                         <button nz-button>
                                             <i class="anticon anticon-upload"></i>
                                             <span>上传最新</span>
@@ -105,13 +114,15 @@
                                 <td nz-td>5</td>
                                 <td nz-td>进度查询-三类以上川烟</td>
                                 <td nz-td>
-                                    <a href="{{host + '/upload/files/progress-three.jpg'}}">{{host + '/upload/files/progress-three.jpg'}}</a>
+                                    <a target="_blank" href="{{host + '/upload/files/progress-three.jpg'}}">{{host + '/upload/files/progress-three.jpg'}}</a>
                                 </td>
                                 <td nz-td>
                                     *.jpg（progress-three.jpg）
                                 </td>
                                 <td nz-td>
-                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=progress-three'}}" [nzName]="'files'">
+                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=progress-three'}}" 
+                                    [nzBeforeUpload]="beforeJpgUpload"
+                                    [nzName]="'files'">
                                         <button nz-button>
                                             <i class="anticon anticon-upload"></i>
                                             <span>上传最新</span>
