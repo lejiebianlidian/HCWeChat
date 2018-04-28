@@ -97,8 +97,8 @@ export function getCurrentLanguage(): string {
     providers: [
         { provide: LOCALE_ID, useValue: 'zh-CN' },
         //{ provide: LOCALE_ID, useFactory: getCurrentLanguage }, //abp 集成
-        { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true},
-        { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true},
+        //{ provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true},
+        //{ provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true},
         { provide: ALAIN_I18N_TOKEN, useClass: I18NService, multi: false },
         ABP_HTTP_PROVIDER,//abp 集成
         { provide: API_BASE_URL, useFactory: getRemoteServiceBaseUrl },//abp 集成

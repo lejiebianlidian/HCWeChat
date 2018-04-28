@@ -44,6 +44,7 @@ import { EditBanquetComponent } from './marketing/edit-banquet/edit-banquet.comp
 import { ActivityViewComponent } from './marketing/activity-view/activity-view.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { PostInfoComponent } from './markeeting-serve/post-info/post-info.component';
+import { FileUploadComponent } from './marketing/file-upload/file-upload.component';
 
 @NgModule({
   imports: [
@@ -87,7 +88,8 @@ import { PostInfoComponent } from './markeeting-serve/post-info/post-info.compon
     AdviseComponent,
     EditBanquetComponent,
     ActivityViewComponent,
-    PostInfoComponent
+    PostInfoComponent,
+    FileUploadComponent
    ],
    providers: [ AppRouteGuard ]
 })

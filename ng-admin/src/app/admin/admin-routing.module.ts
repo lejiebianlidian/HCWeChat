@@ -22,6 +22,7 @@ import { UserAnswerComponent } from './marketing/user-answer/user-answer.compone
 import { AdviseComponent } from './consumer/advise/advise.component';
 import { ActivityViewComponent } from './marketing/activity-view/activity-view.component';
 import { PostInfoComponent } from './markeeting-serve/post-info/post-info.component';
+import { FileUploadComponent } from './marketing/file-upload/file-upload.component';
 
 const routes: Routes = [
   {
@@ -49,7 +50,7 @@ const routes: Routes = [
       { path: 'advise', component: AdviseComponent, data: { translate: 'advise', permission: 'Pages' }, canActivate: [AppRouteGuard] },
       { path: 'activity-query', component: ActivityViewComponent, data: { translate: 'activity-query', permission: 'Pages' }, canActivate: [AppRouteGuard] },
       { path: 'post-query', component: PostInfoComponent, data: { translate: 'post-query', permission: 'Pages' }, canActivate: [AppRouteGuard] },
-      
+      { path: 'file-upload', component: FileUploadComponent, data: { translate: 'file-upload', permission: 'Pages' }, canActivate: [AppRouteGuard] },
     ]
   }
 ];

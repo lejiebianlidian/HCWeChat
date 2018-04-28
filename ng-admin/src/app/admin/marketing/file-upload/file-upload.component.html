@@ -1,0 +1,128 @@
+<pro-header></pro-header>
+<div style="background: #ECECEC;padding:30px;">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-card>
+                <ng-template #title>
+                    营销信息资料上传
+                </ng-template>
+                <ng-template #body>
+                    <p>注：资料上传后将覆盖上传上传数据，微信下载既是最新</p>
+                    <nz-table #nzTable [nzIsPagination]="false" [nzAjaxData]="data" >
+                        <thead nz-thead>
+                            <tr>
+                                <th nz-th>
+                                    <span>序号</span>
+                                </th>
+                                <th nz-th>
+                                    <span>资料名称</span>
+                                </th>
+                                <th nz-th>
+                                    <span>下载地址</span>
+                                </th>
+                                <th nz-th>
+                                    <span>文件类型</span>
+                                </th>
+                                <th nz-th>
+                                    <span>上传</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody nz-tbody>
+                            <tr nz-tbody-tr>
+                                <td nz-td>1</td>
+                                <td nz-td>货源公布</td>
+                                <td nz-td>
+                                    <a href="{{host + '/upload/files/货源公布.xlsx'}}">{{host + '/upload/files/货源公布.xlsx'}}</a>
+                                </td>
+                                <td nz-td>
+                                    *.xlsx（货源公布.xlsx）
+                                </td>
+                                <td nz-td>
+                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=货源公布'}}" [nzName]="'files'">
+                                        <button nz-button>
+                                            <i class="anticon anticon-upload"></i>
+                                            <span>上传最新</span>
+                                        </button>
+                                    </nz-upload>
+                                </td>
+                            </tr>
+                            <tr nz-tbody-tr>
+                                <td nz-td>2</td>
+                                <td nz-td>投放方式</td>
+                                <td nz-td>
+                                    <a href="{{host + '/upload/files/投放方式.xlsx'}}">{{host + '/upload/files/投放方式.xlsx'}}</a>
+                                </td>
+                                <td nz-td>
+                                    *.xlsx（投放方式.xlsx）
+                                </td>
+                                <td nz-td>
+                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=投放方式'}}" [nzName]="'files'">
+                                        <button nz-button>
+                                            <i class="anticon anticon-upload"></i>
+                                            <span>上传最新</span>
+                                        </button>
+                                    </nz-upload>
+                                </td>
+                            </tr>
+                            <tr nz-tbody-tr>
+                                <td nz-td>3</td>
+                                <td nz-td>进度查询-总量</td>
+                                <td nz-td>
+                                    <a href="{{host + '/upload/files/progress-total.jpg'}}">{{host + '/upload/files/progress-total.jpg'}}</a>
+                                </td>
+                                <td nz-td>
+                                    *.jpg（progress-total.jpg）
+                                </td>
+                                <td nz-td>
+                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=progress-total'}}" [nzName]="'files'">
+                                        <button nz-button>
+                                            <i class="anticon anticon-upload"></i>
+                                            <span>上传最新</span>
+                                        </button>
+                                    </nz-upload>
+                                </td>
+                            </tr>
+                            <tr nz-tbody-tr>
+                                <td nz-td>4</td>
+                                <td nz-td>进度查询-毛利</td>
+                                <td nz-td>
+                                    <a href="{{host + '/upload/files/progress-profit.jpg'}}">{{host + '/upload/files/progress-profit.jpg'}}</a>
+                                </td>
+                                <td nz-td>
+                                    *.jpg（progress-profit.jpg）
+                                </td>
+                                <td nz-td>
+                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=progress-profit'}}" [nzName]="'files'">
+                                        <button nz-button>
+                                            <i class="anticon anticon-upload"></i>
+                                            <span>上传最新</span>
+                                        </button>
+                                    </nz-upload>
+                                </td>
+                            </tr>
+                            <tr nz-tbody-tr>
+                                <td nz-td>5</td>
+                                <td nz-td>进度查询-三类以上川烟</td>
+                                <td nz-td>
+                                    <a href="{{host + '/upload/files/progress-three.jpg'}}">{{host + '/upload/files/progress-three.jpg'}}</a>
+                                </td>
+                                <td nz-td>
+                                    *.jpg（progress-three.jpg）
+                                </td>
+                                <td nz-td>
+                                    <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=progress-three'}}" [nzName]="'files'">
+                                        <button nz-button>
+                                            <i class="anticon anticon-upload"></i>
+                                            <span>上传最新</span>
+                                        </button>
+                                    </nz-upload>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </ng-template>
+            </nz-card>
+        </div>
+    </div>
+</div>
