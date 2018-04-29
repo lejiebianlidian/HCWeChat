@@ -219,11 +219,11 @@ namespace Abp.WeChat.Senparc.MessageHandlers
             {
                 var syncResponseMessage = OnEvent_ClickRequest(requestMessage);//这里为了保持Demo的连贯性，结果先从同步方法获取，实际使用过程中可以全部直接定义异步方法
                 //常识获取Click事件的同步方法
-                if (syncResponseMessage is ResponseMessageText)
-                {
-                    var textResponseMessage = syncResponseMessage as ResponseMessageText;
-                    textResponseMessage.Content += "\r\n\r\n  -- 来自【异步MessageHandler】的回复";
-                }
+                //if (syncResponseMessage is ResponseMessageText)
+                //{
+                //    var textResponseMessage = syncResponseMessage as ResponseMessageText;
+                //    textResponseMessage.Content += "\r\n\r\n  -- 来自【异步MessageHandler】的回复";
+                //}
 
                 return syncResponseMessage;
             });

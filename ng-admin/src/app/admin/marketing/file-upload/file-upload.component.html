@@ -62,6 +62,7 @@
                                 <td nz-td>
                                     <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=投放方式'}}" 
                                     [nzBeforeUpload]="beforeExcelUpload"
+                                    (nzChange)="handleChange($event)"
                                     [nzName]="'files'">
                                         <button nz-button>
                                             <i class="anticon anticon-upload"></i>
@@ -82,6 +83,7 @@
                                 <td nz-td>
                                     <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=progress-total'}}" 
                                     [nzBeforeUpload]="beforeJpgUpload"
+                                    (nzChange)="handleChange($event)"
                                     [nzName]="'files'">
                                         <button nz-button>
                                             <i class="anticon anticon-upload"></i>
@@ -102,6 +104,7 @@
                                 <td nz-td>
                                     <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=progress-profit'}}" 
                                     [nzBeforeUpload]="beforeJpgUpload"
+                                    (nzChange)="handleChange($event)"
                                     [nzName]="'files'">
                                         <button nz-button>
                                             <i class="anticon anticon-upload"></i>
@@ -122,6 +125,7 @@
                                 <td nz-td>
                                     <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=progress-three'}}" 
                                     [nzBeforeUpload]="beforeJpgUpload"
+                                    (nzChange)="handleChange($event)"
                                     [nzName]="'files'">
                                         <button nz-button>
                                             <i class="anticon anticon-upload"></i>
