@@ -95,5 +95,18 @@ namespace HC.WeChat.MessageHandler
             //关注公众号
             _wechatUserManager.SubscribeAsync(requestMessage.FromUserName, wechatUser.nickname, wechatUser.headimgurl, _tenantId);
         }
+
+        public override IResponseMessageBase OnEvent_ClickRequest(RequestMessageEvent_Click requestMessage)
+        {
+            if (requestMessage.EventKey == "dev")
+            {
+                var resMsgText = new ResponseMessageText();
+                resMsgText.Content = "功能正在开发中，敬请等待...";
+                resMsgText.FromUserName = requestMessage.ToUserName;
+                resMsgText.ToUserName = requestMessage.FromUserName;
+                return resMsgText;
+            }
+            return base.OnEvent_ClickRequest(requestMessage);
+        }
     }
 }

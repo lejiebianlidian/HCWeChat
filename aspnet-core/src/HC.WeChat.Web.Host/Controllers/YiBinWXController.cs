@@ -412,9 +412,10 @@ namespace HC.WeChat.Web.Host.Controllers
             return View();
         }
 
-        public IActionResult Authorization(AuthorizationPageEnum page)
+        public IActionResult Authorization(AuthorizationPageEnum page, string type)
         {
             var host = _appConfiguration["App:ServerRootAddress"];
+            //UserOpenId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
             switch (page)
             {
                 case AuthorizationPageEnum.BindUser:
@@ -447,9 +448,63 @@ namespace HC.WeChat.Web.Host.Controllers
                         ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
                     }
                     break;
+                case AuthorizationPageEnum.FileDownload:
+                    {
+                        if (!string.IsNullOrEmpty(UserOpenId))//如果userOpenId 不为空 直接跳转
+                        {
+                            return RedirectToAction("FileDownload", new { state = type });
+                        }
+                        var url = host + "/YiBinWX/FileDownload";
+                        ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, type, Senparc.Weixin.MP.OAuthScope.snsapi_base);
+                    }
+                    break;
                 default:
                     break;
             }
+            return View();
+        }
+
+        public IActionResult FileDownload(string code, string state)
+        {
+            //UserOpenId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
+            //存储openId 避免重复提交
+            SetUserOpenId(code);
+            var tenantId = GetTenantId();
+            var user = _weChatUserAppService.GetWeChatUserAsync(UserOpenId, tenantId).Result;
+            var root = _appConfiguration["App:ServerRootAddress"];
+            if (state == "1")//货源公布 零售客户 和 营销人员
+            {
+                if (user.UserType != UserTypeEnum.客户经理 && user.UserType != UserTypeEnum.零售客户)
+                {
+                    return View("NoAuthority");
+                }
+
+                ViewBag.FileUrl = root + "/upload/files/货源公布.xlsx";
+            }
+            else if (state == "2")//投放方式 营销人员
+            {
+                if (user.UserType != UserTypeEnum.客户经理)
+                {
+                    return View("NoAuthority");
+                }
+
+                ViewBag.FileUrl = root + "/upload/files/投放方式.xlsx";
+            }
+            else if (state == "3")//进度查询 营销人员
+            {
+                if (user.UserType != UserTypeEnum.客户经理)
+                {
+                    return View("NoAuthority");
+                }
+                ViewBag.ImgUrl1 = root + "/upload/files/progress-total.jpg";
+                ViewBag.ImgUrl2 = root + "/upload/files/progress-profit.jpg";
+                ViewBag.ImgUrl3 = root + "/upload/files/progress-three.jpg";
+            }
+            else
+            {
+                return View("NoAuthority");
+            }
+            ViewBag.FileType = state;
             return View();
         }
     }
@@ -458,7 +513,8 @@ namespace HC.WeChat.Web.Host.Controllers
     {
         BindUser = 1,
         Question = 2,
-        AdviseBack = 3
+        AdviseBack = 3,
+        FileDownload = 4
     }
 
 

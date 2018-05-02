@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "没有权限";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>没有权限</title>
+    <link rel="stylesheet" href="static/css/base.css" />
+    <link rel="stylesheet" href="static/css/commons.css" />
+    <link rel="stylesheet" href="static/css/tobacco.css" />
+    <script type="text/javascript" language="javascript">
+        function closeWin() {
+            WeixinJSBridge.call('closeWindow');
+        }
+    </script>
+</head>
+<body class="bg_gary">
+    <!--页面整体-->
+    <div class="all_width">
+        <!--通用头部-->
+        <div class="header bg_green tc">
+            没有权限
+        </div>
+        <!--提示信息-->
+        <p class="tc advise_tips">
+            您还没有权限查看此信息，如果您还没有用户绑定请到个人中心进行用户绑定!
+        </p>
+        <input type="button" value="确认" id="btnOk" onclick="closeWin()" class="large_btn ok mt30 border_radius" />
+    </div>
+</body>
+</html>
+

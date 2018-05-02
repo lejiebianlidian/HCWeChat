@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewData["Title"] = "资料下载";
+    var filetype = int.Parse(ViewBag.FileType);
+}
+<!DOCTYPE html>
+<html>
+@if (filetype == 1)
+{
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+        <title>货源公布</title>
+        <link rel="stylesheet" href="static/css/base.css" />
+        <link rel="stylesheet" href="static/css/commons.css" />
+        <link rel="stylesheet" href="static/css/shop.css" />
+    </head>
+    <body class="bg_gary">
+        <div class="all_width">
+            <div class="all_width process_warp">
+                <h1 class="process_title">货源公布下载</h1>
+            </div>
+            <div class="all_width process_warp mt10" style="text-align:center;" >
+                <input type="button" class="middel_btn ok" value="点击下载" onclick="javascript:window.location.href='@ViewBag.FileUrl'" />
+            </div>
+        </div>
+
+    </body>
+}
+else if (filetype == 2)
+{
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+        <title>投放方式</title>
+        <link rel="stylesheet" href="static/css/base.css" />
+        <link rel="stylesheet" href="static/css/commons.css" />
+        <link rel="stylesheet" href="static/css/shop.css" />
+    </head>
+    <body class="bg_gary">
+        <div class="all_width">
+            <div class="all_width process_warp">
+                <h1 class="process_title">投放方式下载</h1>
+            </div>
+            <div class="all_width process_warp mt10" style="text-align:center;" >
+                <input type="button" class="middel_btn ok" value="点击下载" onclick="javascript:window.location.href='@ViewBag.FileUrl'" />
+            </div>
+        </div>
+    </body>
+}
+else
+{
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+        <title>进度查询</title>
+        <link rel="stylesheet" href="static/css/base.css" />
+        <link rel="stylesheet" href="static/css/commons.css" />
+        <link rel="stylesheet" href="static/css/shop.css" />
+    </head>
+    <body class="bg_gary">
+        <div class="all_width">
+            <div class="all_width process_warp">
+                <h1 class="process_title">进度查询-总量</h1>
+                <img src="@ViewBag.ImgUrl1" onclick="funcSetReadImgInfo(this)" class="img_width mt20" />
+            </div>
+            <div class="all_width process_warp">
+                <h1 class="process_title">进度查询-毛利</h1>
+                <img src="@ViewBag.ImgUrl2" onclick="funcSetReadImgInfo(this)" class="img_width mt20" />
+            </div>
+            <div class="all_width process_warp">
+                <h1 class="process_title">进度查询-三类以上川烟</h1>
+                <img src="@ViewBag.ImgUrl3" onclick="funcSetReadImgInfo(this)" class="img_width mt20" />
+            </div>
+        </div>
+        <script type="text/javascript" src="~/YiBinWX/static/js/jquery.min.js" ></script>
+        <script type="text/javascript" >
+            //设置预览图片
+            function funcSetReadImgInfo(obj) {
+                var imgs = ['@ViewBag.ImgUrl1','@ViewBag.ImgUrl2','@ViewBag.ImgUrl3'];
+                var nowImgurl = $(obj).attr('src');
+                //alert("预览了")
+                WeixinJSBridge.invoke("imagePreview", {
+                    "urls": imgs,
+                    "current": nowImgurl
+                });
+            }
+        </script>
+    </body>
+}
+</html>
