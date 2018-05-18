@@ -22,6 +22,7 @@
     <PackageReference Include="DotNetCore.NPOI" Version="1.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Abp.WeChat.Picture\Abp.WeChat.Picture.csproj" />
     <ProjectReference Include="..\Abp.WeChat.Senparc\Abp.WeChat.Senparc.csproj" />
     <ProjectReference Include="..\HC.WeChat.Core\HC.WeChat.Core.csproj" />
   </ItemGroup>

@@ -25,6 +25,7 @@ using HC.WeChat.ActivityFormLogs;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Senparc.Weixin.MP.AdvancedAPIs;
+using Abp.WeChat.Picture;
 
 namespace HC.WeChat.ActivityBanquets
 {
@@ -220,7 +221,7 @@ namespace HC.WeChat.ActivityBanquets
 
         private string GetUploadPath()
         {
-            var fileDire =  "/upload/BanquetPhotos/";
+            var fileDire = "/upload/BanquetPhotos/";
             if (!Directory.Exists(fileDire))
             {
                 Directory.CreateDirectory(fileDire);
@@ -248,9 +249,14 @@ namespace HC.WeChat.ActivityBanquets
                 {
                     var msg = await MediaApi.GetAsync(appId, id, fullUpLoadPath);
                     Logger.InfoFormat("serverId:{0} msg:{1}", id, msg);
-                    localImgs = localImgs + uploadPath + id + ".jpg,"; //保存相对路径
+                    if (!string.IsNullOrEmpty(msg))
+                    {
+                        var exposureTime = await PictureExifHelper.GetTakePicDate(msg);
+                        string fileExt = Path.GetExtension(msg);
+                        localImgs = localImgs + uploadPath + id + fileExt + ";" + exposureTime + ","; //保存相对路径
+                    }  
                 }
-               
+
             }
             if (localImgs.Length > 0)
             {
@@ -322,7 +328,7 @@ namespace HC.WeChat.ActivityBanquets
                 {
                     await _activitybanquetRepository.InsertAsync(banquest);
                 }
-                
+
                 //2、保存推荐人信息
                 delivery.Type = DeliveryUserTypeEnum.推荐人;
                 delivery.CreationTime = DateTime.Now;
@@ -375,7 +381,7 @@ namespace HC.WeChat.ActivityBanquets
                         bwdto.DeliveryRemark = delivery.DeliveryRemark;
                     }
                 }
-             
+
                 return bwdto;
             }
         }

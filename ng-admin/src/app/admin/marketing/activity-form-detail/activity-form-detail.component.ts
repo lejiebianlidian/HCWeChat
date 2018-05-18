@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ActivityFormDto, ActivityBanquetDto, ActivityDeliveryInfoDto, ActivityFormStatusDto } from '@shared/service-proxies/entity';
+import { ActivityFormDto, ActivityBanquetDto, ActivityDeliveryInfoDto, ActivityFormStatusDto, Photo } from '@shared/service-proxies/entity';
 import { ActivityFormServiceProxy } from '@shared/service-proxies/marketing-service/activity-form-service';
 import { ActivityBanquetServiceProxy, ActivityDeliveryInfoServiceProxy } from '@shared/service-proxies/marketing-service';
 import { ApprovalComponent } from '../approval/approval.component';
@@ -51,7 +51,7 @@ export class ActivityFormDetailComponent extends AppComponentBase implements OnI
     previewVisible = false;
 
     imgWidth: number = 750;
-    photoUrls: string[];
+    photoUrls: Photo[];
 
     //用于删除订单显示
     formCode = '';

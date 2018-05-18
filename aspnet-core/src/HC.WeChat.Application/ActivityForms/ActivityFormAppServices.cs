@@ -56,7 +56,6 @@ namespace HC.WeChat.ActivityForms
         private readonly IRepository<Retailer, Guid> _retailerRepository;
         private readonly IRepository<WeChatUser, Guid> _wechatuserRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly IConfigurationRoot _appConfiguration;
 
         /// <summary>
         /// 构造函数

@@ -67,11 +67,29 @@ export class ActivityBanquetDto implements IActivityBanquetDto {
         return result;
     }
 
-    getPhotoUrls(): string[]{
-        if (this.photoUrl == '' || this.photoUrl == null || this.photoUrl == undefined) {
-            return [];
+    getPhotoUrls(): Photo[]{
+        if (!this.photoUrl) {
+            return null;
         }
-        return this.photoUrl.split(',');
+        let strArry = this.photoUrl.split(',');
+        if(strArry.length > 0){
+            let pArry = [];
+            strArry.forEach((item) => {
+                let iarry = item.split(';');
+                if(iarry.length == 1){
+                    let p = new Photo();
+                    p.url = iarry[0];
+                    pArry.push(p);
+                } else if(iarry.length == 2) {
+                    let p = new Photo();
+                    p.url = iarry[0];
+                    p.exposureTime = iarry[1];
+                    pArry.push(p);
+                }
+            });
+            return pArry;
+        }
+        return null;
     }
 }
 export interface IActivityBanquetDto {
@@ -87,4 +105,9 @@ export interface IActivityBanquetDto {
     photoUrl: string;
     creationTime: Date;
     userName: string;
+}
+
+export class  Photo {
+    url: string;
+    exposureTime: string;
 }
