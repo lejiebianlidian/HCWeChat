@@ -3,13 +3,12 @@ using Abp.Application.Services.Dto;
 using HC.WeChat.Retailers.Dtos.LTMAutoMapper;
 using HC.WeChat.Retailers;
 using HC.WeChat.WechatEnums;
+using Abp.AutoMapper;
 
 namespace HC.WeChat.Retailers.Dtos
 {
     public class RetailerListDto : FullAuditedEntityDto<Guid>
     {
-        ////BCC/ BEGIN CUSTOM CODE SECTION
-        ////ECC/ END CUSTOM CODE SECTION
         public string Code { get; set; }
         public string Name { get; set; }
         public string BusinessAddress { get; set; }
@@ -60,6 +59,16 @@ namespace HC.WeChat.Retailers.Dtos
                 return MarketType.ToString();
             }
         }
+    }
 
+    [AutoMapFrom(typeof(Retailer))]
+    public class RetailerLevelDto
+    {
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string BusinessAddress { get; set; }
+        public string ArchivalLevel { get; set; }
+        public string Manager { get; set; }
+        public string LicenseKey { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using Abp.Application.Services.Dto;
 using HC.WeChat.Retailers.Dtos;
 using HC.WeChat.Retailers;
 using System;
+using HC.WeChat.Dto;
 
 namespace HC.WeChat.Retailers
 {
@@ -77,5 +78,10 @@ namespace HC.WeChat.Retailers
         /// <param name="code"></param>
         /// <returns></returns>
         bool CheckName(string code, Guid? id);
+
+        /// <summary>
+        /// 导出Excel
+        /// </summary>
+        Task<APIResultDto> ExportRetailerLevelExcel(GetRetailersInput input);
     }
 }

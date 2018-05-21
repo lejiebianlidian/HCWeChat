@@ -17,6 +17,13 @@ using System;
 using HC.WeChat.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Abp.IdentityFramework;
+using HC.WeChat.Dto;
+using Abp.Domain.Uow;
+using HC.WeChat.Helpers;
+using System.IO;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using Microsoft.AspNetCore.Hosting;
 
 namespace HC.WeChat.Retailers
 {
@@ -31,16 +38,19 @@ namespace HC.WeChat.Retailers
         ////ECC/ END CUSTOM CODE SECTION
         private readonly IRepository<Retailer, Guid> _retailerRepository;
         private readonly IRetailerManager _retailerManager;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         public RetailerAppService(IRepository<Retailer, Guid> retailerRepository
-      , IRetailerManager retailerManager
+        , IRetailerManager retailerManager
+        , IHostingEnvironment hostingEnvironment
         )
         {
             _retailerRepository = retailerRepository;
             _retailerManager = retailerManager;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         /// <summary>
@@ -55,13 +65,13 @@ namespace HC.WeChat.Retailers
                 .WhereIf(!string.IsNullOrEmpty(input.Name), r => r.Name.Contains(input.Name) || r.Code.Contains(input.Name))
                 .WhereIf(input.Scale.HasValue, r => r.Scale == input.Scale)
                 .WhereIf(input.Markets.HasValue, r => r.MarketType == input.Markets)
-                .WhereIf(mid.HasValue,r=>r.EmployeeId==mid);
+                .WhereIf(mid.HasValue, r => r.EmployeeId == mid);
 
             //TODO:根据传入的参数添加过滤条件
             var retailerCount = await query.CountAsync();
 
             var retailers = await query
-                .OrderByDescending(r=>r.CreationTime)
+                .OrderByDescending(r => r.CreationTime)
                 .PageBy(input)
                 .ToListAsync();
 
@@ -216,7 +226,7 @@ namespace HC.WeChat.Retailers
         /// <returns></returns>
         public async Task<RetailerListDto> GetRetailerByIdDtoAsync(EntityDto<Guid> input)
         {
-            var entity =await _retailerRepository.GetAll().Where(r => r.Id == input.Id).FirstOrDefaultAsync();
+            var entity = await _retailerRepository.GetAll().Where(r => r.Id == input.Id).FirstOrDefaultAsync();
             return entity.MapTo<RetailerListDto>();
         }
 
@@ -224,9 +234,9 @@ namespace HC.WeChat.Retailers
         /// 检查零售户编码是否可用
         /// </summary>
         /// <returns></returns>
-        public bool CheckName(string code,Guid?id)
+        public bool CheckName(string code, Guid? id)
         {
-            var count = _retailerRepository.GetAll().Where(r => r.Code==code).Count();
+            var count = _retailerRepository.GetAll().Where(r => r.Code == code).Count();
             var entity = _retailerRepository.GetAll().Where(e => e.Id == id).FirstOrDefault();
             if (entity != null)
             {
@@ -249,6 +259,86 @@ namespace HC.WeChat.Retailers
             }
         }
 
+        #region 导出档级模板
+
+        private async Task<List<RetailerLevelDto>> GetRetailerLevelListAsync(GetRetailersInput input)
+        {
+            var mid = UserManager.GetControlEmployeeId();
+            var query = _retailerRepository.GetAll()
+                  .Where(r => r.IsAction == true)
+                  .WhereIf(!string.IsNullOrEmpty(input.Name), r => r.Name.Contains(input.Name) || r.Code.Contains(input.Name))
+                  .WhereIf(input.Scale.HasValue, r => r.Scale == input.Scale)
+                  .WhereIf(input.Markets.HasValue, r => r.MarketType == input.Markets)
+                  .WhereIf(mid.HasValue, r => r.EmployeeId == mid)
+                  .Select(r => new RetailerLevelDto()
+                  {
+                      Code = r.Code,
+                      Name = r.Name,
+                      ArchivalLevel = r.ArchivalLevel,
+                      BusinessAddress = r.BusinessAddress,
+                      LicenseKey = r.LicenseKey,
+                      Manager = r.Manager
+                  });
+            return await query.ToListAsync();
+        }
+
+        private string SaveRetailerLevelExcel(string fileName, List<RetailerLevelDto> data)
+        {
+            var fullPath = ExcelHelper.GetSavePath(_hostingEnvironment.WebRootPath) + fileName;
+            using (var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
+            {
+                IWorkbook workbook = new XSSFWorkbook();
+                ISheet sheet = workbook.CreateSheet("邮寄信息");
+                var rowIndex = 0;
+                IRow titleRow = sheet.CreateRow(rowIndex);
+                string[] titles = { "序号", "客户编码", "姓名", "专卖证号", "客户经理", "档级" };
+                var fontTitle = workbook.CreateFont();
+                fontTitle.IsBold = true;
+                for (int i = 0; i < titles.Length; i++)
+                {
+                    var cell = titleRow.CreateCell(i);
+                    cell.CellStyle.SetFont(fontTitle);
+                    cell.SetCellValue(titles[i]);
+                }
+
+                var font = workbook.CreateFont();
+                foreach (var item in data)
+                {
+                    rowIndex++;
+                    IRow row = sheet.CreateRow(rowIndex);
+                    ExcelHelper.SetCell(row.CreateCell(0), font, rowIndex);
+                    ExcelHelper.SetCell(row.CreateCell(1), font, item.Code);
+                    ExcelHelper.SetCell(row.CreateCell(2), font, item.Name);
+                    //ExcelHelper.SetCell(row.CreateCell(3), font, item.BusinessAddress);
+                    ExcelHelper.SetCell(row.CreateCell(3), font, item.LicenseKey);
+                    ExcelHelper.SetCell(row.CreateCell(4), font, item.Manager);
+                    ExcelHelper.SetCell(row.CreateCell(5), font, item.ArchivalLevel);
+                }
+
+                workbook.Write(fs);
+            }
+            return "/files/downloadtemp/" + fileName;
+        }
+
+        #endregion
+
+        [UnitOfWork(isTransactional: false)]
+        public async Task<APIResultDto> ExportRetailerLevelExcel(GetRetailersInput input)
+        {
+            try
+            {
+                var exportData = await GetRetailerLevelListAsync(input);
+                var result = new APIResultDto();
+                result.Code = 0;
+                result.Data = SaveRetailerLevelExcel("零售客户档级.xlsx", exportData);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorFormat("ExportPostInfoExcel errormsg:{0} Exception:{1}", ex.Message, ex);
+                return new APIResultDto() { Code = 901, Msg = "网络忙... 请待会重试！" };
+            }
+        }
     }
 }
 

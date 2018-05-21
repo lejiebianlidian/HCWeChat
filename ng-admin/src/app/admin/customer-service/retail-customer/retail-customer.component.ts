@@ -4,6 +4,7 @@ import { RetailCustomerServiceProxy, PagedResultDtoOfRetailCustomer } from '@sha
 import { Parameter, RetailCustomer } from '@shared/service-proxies/entity';
 import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
+import { AppConsts } from '@shared/AppConsts';
 
 @Component({
     moduleId: module.id,
@@ -28,6 +29,9 @@ export class RetailCustomerComponent extends AppComponentBase implements OnInit 
     ];
     customer = '';
     retailCustomer: RetailCustomer[] = [];
+    exportLoading = false;
+    exportExcelUrl: string;
+
     constructor(injector: Injector, private retailService: RetailCustomerServiceProxy, private router: Router,
         private modal: NzModalService, ) {
         super(injector);
@@ -72,9 +76,7 @@ export class RetailCustomerComponent extends AppComponentBase implements OnInit 
     editRetail(retail: RetailCustomer) {
         this.router.navigate(['admin/retail-detail', retail.id])
     }
-    /**
-     * 
-     */
+
     delete(retail: RetailCustomer, TplContent) {
         this.customer = retail.name;
         this.modal.confirm({
@@ -91,5 +93,24 @@ export class RetailCustomerComponent extends AppComponentBase implements OnInit 
     }
     createRetail() {
         this.router.navigate(['admin/retail-detail']);
+    }
+
+    /**
+     * 导出档级
+     */
+    exportExcel() {
+        this.exportLoading = true;
+        this.retailService.exportRetailerLevelExcel({ name: this.search.name, scale: this.search.scale, markets: this.search.market }).subscribe(result => {
+            if (result.code == 0) {
+                //var url = 'http://localhost:21021/files/测试客户经理.xlsx';
+                var url = AppConsts.remoteServiceBaseUrl + result.data;
+                //alert(url)
+                document.getElementById('aRetailExcelUrl').setAttribute('href', url);
+                document.getElementById('btnRetailHref').click();
+            } else {
+                this.notify.error(result.msg);
+            }
+            this.exportLoading = false;
+        });
     }
 }

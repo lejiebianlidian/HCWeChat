@@ -34,6 +34,7 @@ using NPOI.SS.Util;
 using NPOI.HSSF.Util;
 using Microsoft.Extensions.Configuration;
 using Abp.Domain.Uow;
+using HC.WeChat.Helpers;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -764,38 +765,38 @@ namespace HC.WeChat.ActivityForms
            
         }
 
-        private string GetSavePath()
-        {
-            var fileDire = _hostingEnvironment.WebRootPath + @"\files\downloadtemp\";
-            if (!Directory.Exists(fileDire))
-            {
-                Directory.CreateDirectory(fileDire);
-            }
-            return fileDire;
-        }
+        //private string GetSavePath()
+        //{
+        //    var fileDire = _hostingEnvironment.WebRootPath + @"\files\downloadtemp\";
+        //    if (!Directory.Exists(fileDire))
+        //    {
+        //        Directory.CreateDirectory(fileDire);
+        //    }
+        //    return fileDire;
+        //}
 
 
-        private void SetCell(ICell cell, IFont font, string value)
-        {
-            cell.CellStyle.SetFont(font);
-            cell.SetCellValue(value);
-        }
+        //private void SetCell(ICell cell, IFont font, string value)
+        //{
+        //    cell.CellStyle.SetFont(font);
+        //    cell.SetCellValue(value);
+        //}
 
-        private void SetCell(ICell cell, IFont font, int value)
-        {
-            cell.CellStyle.SetFont(font);
-            cell.SetCellValue(value);
-        }
+        //private void SetCell(ICell cell, IFont font, int value)
+        //{
+        //    cell.CellStyle.SetFont(font);
+        //    cell.SetCellValue(value);
+        //}
 
-        private void SetCell(ICell cell, IFont font, DateTime value)
-        {
-            cell.CellStyle.SetFont(font);
-            cell.SetCellValue(value);
-        }
+        //private void SetCell(ICell cell, IFont font, DateTime value)
+        //{
+        //    cell.CellStyle.SetFont(font);
+        //    cell.SetCellValue(value);
+        //}
 
         private string SavePostInfoExcel(string fileName, List<PostInfoDtoToExcel> data)
         {
-            var fullPath = GetSavePath() + fileName;
+            var fullPath = ExcelHelper.GetSavePath(_hostingEnvironment.WebRootPath) + fileName;
             using (var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
             {
                 IWorkbook workbook = new XSSFWorkbook();
@@ -817,25 +818,25 @@ namespace HC.WeChat.ActivityForms
                 {
                     rowIndex++;
                     IRow row = sheet.CreateRow(rowIndex);
-                    SetCell(row.CreateCell(0), font, rowIndex);
-                    SetCell(row.CreateCell(1), font, item.Area);
-                    SetCell(row.CreateCell(2), font, item.FormCode);
-                    SetCell(row.CreateCell(3), font, item.ActivityName);
-                    SetCell(row.CreateCell(4), font, item.RetailerName);
-                    SetCell(row.CreateCell(5), font, item.ManagerName);
-                    SetCell(row.CreateCell(6), font, item.GoodsSpecification);
-                    SetCell(row.CreateCell(7), font, item.Num);
-                    SetCell(row.CreateCell(8), font, item.Reason);
-                    SetCell(row.CreateCell(9), font, item.StatusName);
-                    SetCell(row.CreateCell(10), font, item.CreationTime.ToString("yyyy-MM-dd"));
-                    SetCell(row.CreateCell(11), font, item.UserName);
-                    SetCell(row.CreateCell(12), font, item.Address);
-                    SetCell(row.CreateCell(13), font, item.Phone);
-                    SetCell(row.CreateCell(14), font, item.IsSendName);
-                    SetCell(row.CreateCell(15), font, item.TUserName);
-                    SetCell(row.CreateCell(16), font, item.TAddress);
-                    SetCell(row.CreateCell(17), font, item.TPhone);
-                    SetCell(row.CreateCell(18), font, item.TIsSendName);
+                    ExcelHelper.SetCell(row.CreateCell(0), font, rowIndex);
+                    ExcelHelper.SetCell(row.CreateCell(1), font, item.Area);
+                    ExcelHelper.SetCell(row.CreateCell(2), font, item.FormCode);
+                    ExcelHelper.SetCell(row.CreateCell(3), font, item.ActivityName);
+                    ExcelHelper.SetCell(row.CreateCell(4), font, item.RetailerName);
+                    ExcelHelper.SetCell(row.CreateCell(5), font, item.ManagerName);
+                    ExcelHelper.SetCell(row.CreateCell(6), font, item.GoodsSpecification);
+                    ExcelHelper.SetCell(row.CreateCell(7), font, item.Num);
+                    ExcelHelper.SetCell(row.CreateCell(8), font, item.Reason);
+                    ExcelHelper.SetCell(row.CreateCell(9), font, item.StatusName);
+                    ExcelHelper.SetCell(row.CreateCell(10), font, item.CreationTime.ToString("yyyy-MM-dd"));
+                    ExcelHelper.SetCell(row.CreateCell(11), font, item.UserName);
+                    ExcelHelper.SetCell(row.CreateCell(12), font, item.Address);
+                    ExcelHelper.SetCell(row.CreateCell(13), font, item.Phone);
+                    ExcelHelper.SetCell(row.CreateCell(14), font, item.IsSendName);
+                    ExcelHelper.SetCell(row.CreateCell(15), font, item.TUserName);
+                    ExcelHelper.SetCell(row.CreateCell(16), font, item.TAddress);
+                    ExcelHelper.SetCell(row.CreateCell(17), font, item.TPhone);
+                    ExcelHelper.SetCell(row.CreateCell(18), font, item.TIsSendName);
                 }
 
                 workbook.Write(fs);
