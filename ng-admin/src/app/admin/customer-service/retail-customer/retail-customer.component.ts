@@ -3,7 +3,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { RetailCustomerServiceProxy, PagedResultDtoOfRetailCustomer } from '@shared/service-proxies/customer-service';
 import { Parameter, RetailCustomer } from '@shared/service-proxies/entity';
 import { Router } from '@angular/router';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, UploadFile } from 'ng-zorro-antd';
 import { AppConsts } from '@shared/AppConsts';
 
 @Component({
@@ -31,6 +31,7 @@ export class RetailCustomerComponent extends AppComponentBase implements OnInit 
     retailCustomer: RetailCustomer[] = [];
     exportLoading = false;
     exportExcelUrl: string;
+    host: string = AppConsts.remoteServiceBaseUrl;
 
     constructor(injector: Injector, private retailService: RetailCustomerServiceProxy, private router: Router,
         private modal: NzModalService, ) {
@@ -112,5 +113,26 @@ export class RetailCustomerComponent extends AppComponentBase implements OnInit 
             }
             this.exportLoading = false;
         });
+    }
+
+    beforeExcelUpload = (file: UploadFile): boolean => {
+        //console.table(file);
+        if (!file.name.includes('.xlsx')) {
+            this.notify.error('上传文件必须是Excel文件(*.xlsx)');
+            //this.msgService.error('上传文件必须是Excel文件(*.xlsx)');
+            return false;
+        }
+        return true;
+    }
+
+    handleChange = (info: { file: UploadFile }): void => {
+        console.table(info);
+
+        if (info.file.status === 'error') {
+            this.notify.error('上传文件异常，请重试');
+        }
+        if (info.file.status === 'done') {
+            this.notify.success('后台处理文件');
+        }
     }
 }

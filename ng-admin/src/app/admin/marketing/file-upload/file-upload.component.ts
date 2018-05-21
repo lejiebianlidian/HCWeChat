@@ -39,14 +39,15 @@ export class FileUploadComponent extends AppComponentBase implements OnInit {
         return true;
       }
 
-      handleChange(info: { file: UploadFile }): void {
-          console.table(info);
+      handleChange = (info: { file: UploadFile }): void => {
+          //console.table(info);
           
         if (info.file.status === 'error') {
             this.notify.error('上传文件异常，请重试');
         }
         if (info.file.status === 'done') {
             this.notify.success('上传文件完成');
+
         }
     }
     
