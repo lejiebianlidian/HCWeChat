@@ -54,11 +54,14 @@
                 </button>
                 <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=RetailLevelUpload'}}" [nzBeforeUpload]="beforeExcelUpload"
                     (nzChange)="handleChange($event)" [nzName]="'files'">
-                    <button nz-button>
+                    <button nz-button [nzLoading]="uploadLoading" >
                         <i class="anticon anticon-upload"></i>
                         <span>导入档级</span>
                     </button>
                 </nz-upload>
+            </div>
+            <div nz-col [nzSpan]="18" class="mb-md">
+                注：导入档级请先下载档级模板，导入时客户编码和档级必填，其它项可不填
             </div>
         </div>
     </form>

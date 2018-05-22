@@ -288,7 +288,7 @@ namespace HC.WeChat.Retailers
             using (var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
             {
                 IWorkbook workbook = new XSSFWorkbook();
-                ISheet sheet = workbook.CreateSheet("邮寄信息");
+                ISheet sheet = workbook.CreateSheet("RetailLevel");
                 var rowIndex = 0;
                 IRow titleRow = sheet.CreateRow(rowIndex);
                 string[] titles = { "序号", "客户编码", "姓名", "专卖证号", "客户经理", "档级" };
@@ -320,8 +320,6 @@ namespace HC.WeChat.Retailers
             return "/files/downloadtemp/" + fileName;
         }
 
-        #endregion
-
         [UnitOfWork(isTransactional: false)]
         public async Task<APIResultDto> ExportRetailerLevelExcel(GetRetailersInput input)
         {
@@ -339,6 +337,84 @@ namespace HC.WeChat.Retailers
                 return new APIResultDto() { Code = 901, Msg = "网络忙... 请待会重试！" };
             }
         }
+
+        #endregion
+
+        #region 导入货源档级
+
+        /// <summary>
+        /// 更新到数据库
+        /// </summary>
+        private async Task UpdateRetailerLevelsAsync(List<RetailerLevelDto> retailerLevelList)
+        {
+            var rlcodes = retailerLevelList.Select(r => r.Code).ToArray();
+            var retailerList = await _retailerRepository.GetAll().Where(r => rlcodes.Contains(r.Code)).ToListAsync();
+            foreach (var item in retailerLevelList)
+            {
+                var retailer = retailerList.Where(r => r.Code == item.Code).FirstOrDefault();
+                if (retailer != null)
+                {
+                    retailer.ArchivalLevel = item.ArchivalLevel;
+                }
+            }
+            await CurrentUnitOfWork.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// 从上传的Excel读出数据
+        /// </summary>
+        private async Task<List<RetailerLevelDto>> GetRetailerLevelAsync()
+        {
+            string fileName = _hostingEnvironment.WebRootPath + "/upload/files/RetailLevelUpload.xlsx";
+            var resultList = new List<RetailerLevelDto>();
+            using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                IWorkbook workbook = new XSSFWorkbook(fs);
+                ISheet sheet = workbook.GetSheet("RetailLevel");
+                if (sheet == null) //如果没有找到指定的sheetName对应的sheet，则尝试获取第一个sheet
+                {
+                    sheet = workbook.GetSheetAt(0);
+                }
+
+                if (sheet != null)
+                {
+                    //最后一列的标号
+                    int rowCount = sheet.LastRowNum;
+                    for (int i = 1; i <= rowCount; ++i)//排除首行标题
+                    {
+                        IRow row = sheet.GetRow(i);
+                        if (row == null) continue; //没有数据的行默认是null　　　　　　　
+
+                        var retailerLevel = new RetailerLevelDto();
+                        if (row.GetCell(1) != null && row.GetCell(5) != null)
+                        {
+                            retailerLevel.Code = row.GetCell(1).ToString();
+                            retailerLevel.ArchivalLevel = row.GetCell(5).ToString();
+                            resultList.Add(retailerLevel);
+                        }
+                    }
+                }
+               
+                return await Task.FromResult(resultList);
+            }
+        }
+
+        /// <summary>
+        /// 导入档级
+        /// </summary>
+        public async Task<APIResultDto> ImportRetailerLevelExcelAsync()
+        {
+            //获取Excel数据
+            var excelList = await GetRetailerLevelAsync();
+
+            //循环批量更新
+            await UpdateRetailerLevelsAsync(excelList);
+
+            return new APIResultDto() { Code = 0, Msg = "导入数据成功" };
+        }
+
+        #endregion
+
     }
 }
 

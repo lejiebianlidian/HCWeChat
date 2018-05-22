@@ -32,6 +32,7 @@ export class RetailCustomerComponent extends AppComponentBase implements OnInit 
     exportLoading = false;
     exportExcelUrl: string;
     host: string = AppConsts.remoteServiceBaseUrl;
+    uploadLoading = false;
 
     constructor(injector: Injector, private retailService: RetailCustomerServiceProxy, private router: Router,
         private modal: NzModalService, ) {
@@ -116,23 +117,37 @@ export class RetailCustomerComponent extends AppComponentBase implements OnInit 
     }
 
     beforeExcelUpload = (file: UploadFile): boolean => {
-        //console.table(file);
+        if (this.uploadLoading) {
+            this.notify.info('上次数据导入还未完成');
+            return false;
+        }
         if (!file.name.includes('.xlsx')) {
             this.notify.error('上传文件必须是Excel文件(*.xlsx)');
             //this.msgService.error('上传文件必须是Excel文件(*.xlsx)');
             return false;
         }
+        this.uploadLoading = true;
         return true;
     }
 
     handleChange = (info: { file: UploadFile }): void => {
-        console.table(info);
+        //console.table(info);
 
         if (info.file.status === 'error') {
             this.notify.error('上传文件异常，请重试');
+            this.uploadLoading = false;
         }
         if (info.file.status === 'done') {
-            this.notify.success('后台处理文件');
+            this.uploadLoading = true;
+            this.retailService.importRetailerLevelExcelAsync().subscribe((res) => {
+                if (res && res.code == 0) {
+                    this.notify.success('档级导入成功');
+                    this.refreshData(false, true);
+                } else {
+                    this.notify.error('档级导入失败');
+                }
+                this.uploadLoading = false;
+            });
         }
     }
 }

@@ -83,5 +83,10 @@ namespace HC.WeChat.Retailers
         /// 导出Excel
         /// </summary>
         Task<APIResultDto> ExportRetailerLevelExcel(GetRetailersInput input);
+
+        /// <summary>
+        /// 导入零售客户档级
+        /// </summary>
+        Task<APIResultDto> ImportRetailerLevelExcelAsync();
     }
 }
