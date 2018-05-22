@@ -60,6 +60,14 @@ namespace HC.WeChat.ActivityForms.Dtos
         /// </summary>
         public DateTime? SendTime { get; set; }
         public bool IsSend { get; set; }
+        /// <summary>
+        /// 快递单号
+        /// </summary>
+        public string ExpressNo { get; set; }
+        /// <summary>
+        /// 快递公司
+        /// </summary>
+        public string ExpressCompany { get; set; }
     }
 
     public class PostInfoDtoToExcel 

@@ -35,6 +35,7 @@ using NPOI.HSSF.Util;
 using Microsoft.Extensions.Configuration;
 using Abp.Domain.Uow;
 using HC.WeChat.Helpers;
+using System.Globalization;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -718,7 +719,8 @@ namespace HC.WeChat.ActivityForms
                             IsSend = d.IsSend,
                             Id = d.Id,
                             SendTime = d.SendTime,
-                            ActivityFormId = d.ActivityFormId
+                            ActivityFormId = d.ActivityFormId,
+                            ExpressNo = d.ExpressNo
                         };
 
             //TODO:根据传入的参数添加过滤条件
@@ -746,6 +748,8 @@ namespace HC.WeChat.ActivityForms
                 ));
         }
 
+        #region 导出邮寄信息
+
         [UnitOfWork(isTransactional: false)]
         public Task<APIResultDto> ExportPostInfoExcel(GetActivityFormsSentInput input)
         {
@@ -764,35 +768,6 @@ namespace HC.WeChat.ActivityForms
             }
            
         }
-
-        //private string GetSavePath()
-        //{
-        //    var fileDire = _hostingEnvironment.WebRootPath + @"\files\downloadtemp\";
-        //    if (!Directory.Exists(fileDire))
-        //    {
-        //        Directory.CreateDirectory(fileDire);
-        //    }
-        //    return fileDire;
-        //}
-
-
-        //private void SetCell(ICell cell, IFont font, string value)
-        //{
-        //    cell.CellStyle.SetFont(font);
-        //    cell.SetCellValue(value);
-        //}
-
-        //private void SetCell(ICell cell, IFont font, int value)
-        //{
-        //    cell.CellStyle.SetFont(font);
-        //    cell.SetCellValue(value);
-        //}
-
-        //private void SetCell(ICell cell, IFont font, DateTime value)
-        //{
-        //    cell.CellStyle.SetFont(font);
-        //    cell.SetCellValue(value);
-        //}
 
         private string SavePostInfoExcel(string fileName, List<PostInfoDtoToExcel> data)
         {
@@ -1002,6 +977,196 @@ namespace HC.WeChat.ActivityForms
             }
             return new List<PostInfoDtoToExcel>();
         }
+
+        #endregion
+
+        #region 下载快递单信息
+
+        private async Task<List<PostInfoDto>> GetExpressListAsync(GetActivityFormsSentInput input)
+        {
+            var mid = UserManager.GetControlEmployeeId();
+            var queryForm = _activityformRepository.GetAll()
+                .WhereIf(!string.IsNullOrEmpty(input.FormCode), q => q.FormCode == input.FormCode)
+                .WhereIf(input.StartTime.HasValue, q => q.CreationTime >= input.StartTime)
+                .WhereIf(input.EndTime.HasValue, q => q.CreationTime < input.EndDateOne)
+                .Where(q => q.Status != FormStatusEnum.取消 && q.Status != FormStatusEnum.拒绝)
+                .WhereIf(mid.HasValue, q => q.ManagerId == mid) //数据权限过滤
+                .WhereIf(!string.IsNullOrEmpty(input.ProductSpecification), q => q.GoodsSpecification.Contains(input.ProductSpecification));
+
+            var queryDelivery = _activitydeliveryinfoRepository.GetAll()
+                .WhereIf(input.UserType.HasValue, d => d.Type == input.UserType)
+                .WhereIf(!string.IsNullOrEmpty(input.Name), d => d.UserName.Contains(input.Name))
+                .WhereIf(!string.IsNullOrEmpty(input.Phone), d => d.Phone.Contains(input.Phone))
+                .WhereIf(input.IsSend.HasValue, d => d.IsSend == input.IsSend);
+
+            var queryBanquet = _activityBanquetRepository.GetAll();
+
+            var query = from f in queryForm
+                        join d in queryDelivery on f.Id equals d.ActivityFormId
+                        join b in queryBanquet on f.Id equals b.ActivityFormId into queryB
+                        from fb in queryB.DefaultIfEmpty()
+                        select new PostInfoDto()
+                        {
+                            FormCode = f.FormCode,
+                            Area = fb.Area,
+                            GoodsSpecification = f.GoodsSpecification,
+                            Num = f.Num,
+                            UserName = d.UserName,
+                            Type = d.Type,
+                            Address = d.Address,
+                            Phone = d.Phone,
+                            SendTime = d.SendTime,
+                            ExpressNo = d.ExpressNo,
+                            ExpressCompany = d.ExpressCompany
+                        };
+
+            return await query.WhereIf(!string.IsNullOrEmpty(input.AreaSe), b => b.Area == input.AreaSe).ToListAsync();
+        }
+
+        private string SaveExpressToExcel(string fileName, List<PostInfoDto> data)
+        {
+            var fullPath = ExcelHelper.GetSavePath(_hostingEnvironment.WebRootPath) + fileName;
+            using (var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
+            {
+                IWorkbook workbook = new XSSFWorkbook();
+                ISheet sheet = workbook.CreateSheet("ExpressInfo");
+                var rowIndex = 0;
+                IRow titleRow = sheet.CreateRow(rowIndex);
+                string[] titles = { "序号", "区县", "活动单号", "用烟规格", "申请数量", "用户类型", "用户姓名", "邮寄地址", "联系方式", "快递公司", "快递单号", "邮寄日期" };
+                var fontTitle = workbook.CreateFont();
+                fontTitle.IsBold = true;
+                for (int i = 0; i < titles.Length; i++)
+                {
+                    var cell = titleRow.CreateCell(i);
+                    cell.CellStyle.SetFont(fontTitle);
+                    cell.SetCellValue(titles[i]);
+                }
+
+                var font = workbook.CreateFont();
+                foreach (var item in data)
+                {
+                    rowIndex++;
+                    IRow row = sheet.CreateRow(rowIndex);
+                    ExcelHelper.SetCell(row.CreateCell(0), font, rowIndex);
+                    ExcelHelper.SetCell(row.CreateCell(1), font, item.Area);
+                    ExcelHelper.SetCell(row.CreateCell(2), font, item.FormCode);
+                    ExcelHelper.SetCell(row.CreateCell(3), font, item.GoodsSpecification);
+                    ExcelHelper.SetCell(row.CreateCell(4), font, item.Num);
+                    ExcelHelper.SetCell(row.CreateCell(5), font, item.Type.ToString());
+                    ExcelHelper.SetCell(row.CreateCell(6), font, item.UserName);
+                    ExcelHelper.SetCell(row.CreateCell(7), font, item.Address);
+                    ExcelHelper.SetCell(row.CreateCell(8), font, item.Phone);
+                    ExcelHelper.SetCell(row.CreateCell(9), font, item.ExpressCompany);
+                    ExcelHelper.SetCell(row.CreateCell(10), font, item.ExpressNo);
+                    ExcelHelper.SetCell(row.CreateCell(11), font, item.SendTime.HasValue? item.SendTime.Value.ToString("yyyy-MM-dd") : "");
+                }
+
+                workbook.Write(fs);
+            }
+            return "/files/downloadtemp/" + fileName;
+        }
+
+        public async Task<APIResultDto> ExportExpressExcelAsync(GetActivityFormsSentInput input)
+        {
+            try
+            {
+                var exportData = await GetExpressListAsync(input);
+                var result = new APIResultDto();
+                result.Code = 0;
+                result.Data = SaveExpressToExcel("邮寄快递信息.xlsx", exportData);
+                return await Task.FromResult(result);
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorFormat("ExportPostInfoExcel errormsg:{0} Exception:{1}", ex.Message, ex);
+                return await Task.FromResult(new APIResultDto() { Code = 901, Msg = "网络忙... 请待会重试！" });
+            }
+        }
+
+        #endregion
+
+        #region 上传快递单信息
+
+        /// <summary>
+        /// 更新到数据库
+        /// </summary>
+        private async Task UpdateExpressesAsync(List<PostInfoDto> expressList)
+        {
+            var codes = expressList.Select(r => r.FormCode).ToArray();
+            //取出FormId和FormCode关联性
+            var forms = await _activityformRepository.GetAll().Where(r => codes.Contains(r.FormCode)).Select(f => new { f.Id, f.FormCode }).ToListAsync();
+            var formIds = forms.Select(f => f.Id).ToArray();
+            var eList = await _activitydeliveryinfoRepository.GetAll().Where(d => formIds.Contains(d.ActivityFormId)).ToListAsync();
+            foreach (var item in expressList)
+            {
+                var express = eList.Where(r => forms.Any(f => f.FormCode == item.FormCode && f.Id == r.ActivityFormId) && item.Type == r.Type).FirstOrDefault();
+                if (express != null)
+                {
+                    express.ExpressCompany = item.ExpressCompany;
+                    express.ExpressNo = item.ExpressNo;
+                    express.SendTime = item.SendTime;
+                    express.IsSend = true;
+                }
+            }
+            await CurrentUnitOfWork.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// 从上传的Excel读出数据
+        /// </summary>
+        private async Task<List<PostInfoDto>> GetExpressesAsync()
+        {
+            string fileName = _hostingEnvironment.WebRootPath + "/upload/files/ExpressNoUpload.xlsx";
+            var resultList = new List<PostInfoDto>();
+            using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                IWorkbook workbook = new XSSFWorkbook(fs);
+                ISheet sheet = workbook.GetSheet("ExpressInfo");
+                if (sheet == null) //如果没有找到指定的sheetName对应的sheet，则尝试获取第一个sheet
+                {
+                    sheet = workbook.GetSheetAt(0);
+                }
+
+                if (sheet != null)
+                {
+                    //最后一列的标号
+                    int rowCount = sheet.LastRowNum;
+                    for (int i = 1; i <= rowCount; ++i)//排除首行标题
+                    {
+                        IRow row = sheet.GetRow(i);
+                        if (row == null) continue; //没有数据的行默认是null　　　　　　　
+
+                        var postInfo = new PostInfoDto();
+                        if (row.GetCell(2) != null && row.GetCell(5) != null && row.GetCell(9) != null && row.GetCell(10) != null && row.GetCell(11) != null)
+                        {
+                            postInfo.FormCode = row.GetCell(2).ToString();
+                            postInfo.Type = row.GetCell(5).ToString() == "消费者"? DeliveryUserTypeEnum.消费者 : DeliveryUserTypeEnum.推荐人;
+                            postInfo.ExpressCompany = row.GetCell(9).ToString();
+                            postInfo.ExpressNo = row.GetCell(10).ToString();
+                            postInfo.SendTime = row.GetCell(11).DateCellValue;
+                            
+                            resultList.Add(postInfo);
+                        }
+                    }
+                }
+
+                return await Task.FromResult(resultList);
+            }
+        }
+
+
+        public async Task<APIResultDto> ImportExpressExcelAsync(GetActivityFormsSentInput input)
+        {
+            //获取Excel数据
+            var excelList = await GetExpressesAsync();
+
+            //循环批量更新
+            await UpdateExpressesAsync(excelList);
+
+            return new APIResultDto() { Code = 0, Msg = "导入数据成功" };
+        }
+
+        #endregion
     }
 }
 

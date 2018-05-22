@@ -115,20 +115,36 @@
                 <a style="display: none;" id="aExcelUrl" href="#">
                     <button type="button" id="btnHref">隐藏下载</button>
                 </a>
-                <button nz-button type="button" (click)="markIsSend()" [nzType]="'primary'" [nzSize]="'large'" class="mx-sm">标记为已邮寄</button>
-                <button nz-button type="button" (click)="exportExcel()" [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="exportLoading" class="mx-sm">导出Excel</button>
+                <!-- <button nz-button type="button" (click)="markIsSend()" [nzType]="'primary'" [nzSize]="'large'" class="mx-sm">标记为已邮寄</button> -->
+                <button nz-button type="button" (click)="exportExcel()" [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="exportLoading"
+                    class="mx-sm">导出Excel</button>
+            </div>
+            <div nz-col [nzSpan]="6" class="mb-md">
+                <a style="display: none;" id="aExpressNoExcelUrl" href="#">
+                    <button type="button" id="btnExpressNoHref">隐藏下载</button>
+                </a>
+                <button nz-button type="button" [nzSize]="size" (click)="expressNoExcel()" [nzLoading]="exportENLoading" class="mr-sm">
+                    <i class="anticon anticon-download"></i>
+                    <span>下载快递信息</span>
+                </button>
+                <nz-upload nzAction="{{host + '/WeChatFile/MarketingInfoPosts?fileName=ExpressNoUpload'}}" [nzBeforeUpload]="beforeExcelUpload"
+                    (nzChange)="handleChange($event)" [nzName]="'files'">
+                    <button nz-button [nzLoading]="uploadLoading">
+                        <i class="anticon anticon-upload"></i>
+                        <span>导入快递单信息</span>
+                    </button>
+                </nz-upload>
             </div>
         </div>
     </form>
     <!-- (nzCurrentPageDataChange)="dataChanges($event)" -->
     <nz-table #nzTable [nzAjaxData]="postInfos" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize"
-        [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()" [nzShowTotal]="'true'"
-        (nzPageSizeChange)="refreshData()">
+        [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()" [nzShowTotal]="'true'" (nzPageSizeChange)="refreshData()">
         <thead nz-thead>
             <tr>
-                <th nz-th [nzCheckbox]="true">
+                <!-- <th nz-th [nzCheckbox]="true">
                     <label nz-checkbox [(ngModel)]="allChecked" [nzIndeterminate]="indeterminate" (ngModelChange)="checkAll($event)"></label>
-                </th>
+                </th> -->
                 <th style="display: none;" nz-th>
                     <span>Id</span>
                 </th>
@@ -160,19 +176,21 @@
                     <span>邮寄地址</span>
                 </th>
                 <th nz-th>
+                    <span>快递单号</span>
+                </th>
+                <th nz-th>
                     <span>是否已邮寄</span>
                 </th>
                 <th nz-th>
-                    <span>标记时间</span>
+                    <span>发货时间</span>
                 </th>
             </tr>
         </thead>
         <tbody nz-tbody>
             <tr nz-tbody-tr *ngFor="let postinfo of nzTable.data">
-                <td nz-td [nzCheckbox]="true">
+                <!-- <td nz-td [nzCheckbox]="true">
                     <label nz-checkbox *ngIf="!postinfo.disabled" [(ngModel)]="postinfo.checked" (ngModelChange)="refreshCheckStatus($event)"></label>
-                    <!-- [nzDisabled]="postinfo.disabled"  *ngIf="!postinfo.disabled" -->
-                </td>
+                </td> -->
                 <td style="display: none;" nz-td>{{postinfo.id}}</td>
                 <td nz-td>{{postinfo.area}}</td>
                 <td nz-td>
@@ -185,6 +203,7 @@
                 <td nz-td>{{postinfo.userName}}</td>
                 <td nz-td>{{postinfo.phone}}</td>
                 <td nz-td>{{postinfo.address}}</td>
+                <td nz-td>{{postinfo.expressNo}}</td>
                 <td nz-td>{{postinfo.isSendName}}</td>
                 <td nz-td>{{postinfo.sendTime| _date}}</td>
             </tr>

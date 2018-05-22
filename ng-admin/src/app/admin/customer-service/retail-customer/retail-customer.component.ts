@@ -141,10 +141,10 @@ export class RetailCustomerComponent extends AppComponentBase implements OnInit 
             this.uploadLoading = true;
             this.retailService.importRetailerLevelExcelAsync().subscribe((res) => {
                 if (res && res.code == 0) {
-                    this.notify.success('档级导入成功');
+                    this.notify.success('导入成功');
                     this.refreshData(false, true);
                 } else {
-                    this.notify.error('档级导入失败');
+                    this.notify.error('导入失败');
                 }
                 this.uploadLoading = false;
             });

@@ -3,7 +3,7 @@ import { extend } from 'webdriver-js-extender';
 import { AppComponentBase } from '@shared/app-component-base';
 import { ActivityFormServiceProxy, PagedResultDtoOfPostInfo, ActivityDeliveryInfoServiceProxy } from '@shared/service-proxies/marketing-service';
 import { PostInfo, Parameter } from '@shared/service-proxies/entity';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, UploadFile } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
 import { AppConsts } from '@shared/AppConsts';
 
@@ -45,6 +45,11 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
         { text: '兴文县', value: '兴文县' },
         { text: '屏山县', value: '屏山县' },
     ];
+
+    exportENLoading: boolean = false;
+    uploadLoading: boolean = false;
+    host: string = AppConsts.remoteServiceBaseUrl;
+
     constructor(injector: Injector, private activityFormServie: ActivityFormServiceProxy,
         private activityFormDeliveryService: ActivityDeliveryInfoServiceProxy,
         private modal: NzModalService,
@@ -71,7 +76,7 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
                 // i.checked = false;
                 return i;
             });
-            this.curRows=result.items;
+            this.curRows = result.items;
             this.refreshCheckStatus()
             this.query.total = result.totalCount;
             this.loading = false;
@@ -181,5 +186,64 @@ export class PostInfoComponent extends AppComponentBase implements OnInit {
 
     goDetail(postInfo: PostInfo) {
         this._router.navigate(['admin/activity-form-detail', postInfo.activityFormId]);
+    }
+
+    expressNoExcel() {
+        this.exportENLoading = true;
+        let input = JSON.parse(JSON.stringify(this.search));
+        if (input.userType === 0) {
+            input.userType = null;
+        }
+        if (input.isSend === 0) {
+            input.isSend = null;
+        }
+        if (input.areaSe === '0') {
+            input.areaSe = null;
+        }
+        this.activityFormServie.exportExpressExcelAsync(input).subscribe(result => {
+            if (result.code == 0) {
+                var url = AppConsts.remoteServiceBaseUrl + result.data;
+                document.getElementById('aExpressNoExcelUrl').setAttribute('href', url);
+                document.getElementById('btnExpressNoHref').click();
+            } else {
+                this.notify.error(result.msg);
+            }
+            this.exportENLoading = false;
+        });
+    }
+
+    beforeExcelUpload = (file: UploadFile): boolean => {
+        if (this.uploadLoading) {
+            this.notify.info('上次数据导入还未完成');
+            return false;
+        }
+        if (!file.name.includes('.xlsx')) {
+            this.notify.error('上传文件必须是Excel文件(*.xlsx)');
+            //this.msgService.error('上传文件必须是Excel文件(*.xlsx)');
+            return false;
+        }
+        this.uploadLoading = true;
+        return true;
+    }
+
+    handleChange = (info: { file: UploadFile }): void => {
+        //console.table(info);
+
+        if (info.file.status === 'error') {
+            this.notify.error('上传文件异常，请重试');
+            this.uploadLoading = false;
+        }
+        if (info.file.status === 'done') {
+            this.uploadLoading = true;
+            this.activityFormServie.importExpressExcelAsync().subscribe((res) => {
+                if (res && res.code == 0) {
+                    this.notify.success('导入成功');
+                    this.refreshData(false, true);
+                } else {
+                    this.notify.error('导入失败');
+                }
+                this.uploadLoading = false;
+            });
+        }
     }
 }
