@@ -1,4 +1,4 @@
-﻿@model  HC.WeChat.WeChatUsers.Dtos.WeChatUserListDto
+﻿@model HC.WeChat.WeChatUsers.Dtos.WeChatUserListDto
 @{
     ViewData["Title"] = "宜宾烟草";
 }
@@ -11,44 +11,111 @@
     <link rel="stylesheet" href="static/css/base.css" />
     <link rel="stylesheet" href="static/css/commons.css" />
     <link rel="stylesheet" href="static/css/personal.css" />
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
 </head>
 <body class="bg_gary">
     <!--页面整体-->
-    <div class="all_width">
-        <div class="header bg_green tc">
-            个人中心
+    <div class="weui-cells" style="margin-top:0px;">
+        <div class="weui-cell" style=" padding: 0px 0px;">
+            <!--个人中心头部-->
+            <div class="personal_head" style="width:100%;">
+                <!--头像-->
+                <img src="@Model.HeadImgUrl" class="personal_header" />
+                <p class="personal_id"><span>@Model.NickName</span></p>
+            </div>
         </div>
-        <!--个人中心头部-->
-        <div class="personal_head">
-            <!--头像-->
-            <img src="@Model.HeadImgUrl" class="personal_header" />
-            <p class="personal_id"><span>@Model.NickName</span></p>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>用户姓名</p>
+            </div>
+            <div class="weui-cell__ft">@Model.UserName</div>
         </div>
-        <!--个人信息功能链接-->
-        <ul class="personal_link all_width">
-            <li style=" margin-bottom:0px; padding-bottom:0px;">
-                <div style="color:darkgray">个人信息</div>
-                <hr style="color:darkgray; margin-bottom:0px;" />
-            </li>
-        </ul>
-
-        <ul class="personal_link all_width">
-            <li>
-                <label class="fl main_green">
-                    用户姓名
-                </label>
-                <label class="fl  ml20">@Model.UserName</label>
-            </li>
-            <li>
-                <label class="fl main_green">
-                    用户类型
-                </label>
-                <label class="fl  ml20">@Model.UserType.ToString()</label>
-            </li>
-
-        </ul>
-        @*<hr style="color:#148363;" />*@
-        <ul class="personal_link all_width">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>用户类型</p>
+            </div>
+            <div class="weui-cell__ft">@Model.UserType.ToString()</div>
+        </div>
+        @if (Model.UserType == HC.WeChat.WechatEnums.UserTypeEnum.零售客户)
+        {
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>我的档级</p>
+                </div>
+                <div class="weui-cell__ft">@ViewBag.UserLevel</div>
+            </div>
+        }
+    </div>
+    <div class="weui-cells__title">营销活动</div>
+    <div class="weui-cells">
+        <a class="weui-cell weui-cell_access" href="@Url.Action("ActivityFromApply","YiBinWX",new { check = false, openId = Model.OpenId })">
+            <div class="weui-cell__bd">
+                <p>消费引领</p>
+            </div>
+            <div class="weui-cell__ft">
+                @(ViewBag.FormCount)单
+            </div>
+        </a>
+        @if (Model.UserType == HC.WeChat.WechatEnums.UserTypeEnum.公司员工)
+        {
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__bd">
+                    <span style="vertical-align: middle">待审核</span>
+                    <span class="weui-badge" style="margin-left: 5px;">5</span>
+                </div>
+                <div class="weui-cell__ft">
+                    无
+                </div>
+            </a>
+        }
+    </div>
+    <div class="weui-cells">
+        @if (Model.UserType == HC.WeChat.WechatEnums.UserTypeEnum.零售客户)
+        {
+            <a class="weui-cell weui-cell_access" href="javascript:alert('此功能正在开发中....');">
+                <div class="weui-cell__bd">
+                    <p>折皱卷烟置换</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+        }
+        @if (Model.UserType == HC.WeChat.WechatEnums.UserTypeEnum.公司员工)
+        {
+            <a class="weui-cell weui-cell_access" href="@Url.Action("Authorization","YiBinWX",new { page = 4, type = 2 })">
+                <div class="weui-cell__bd">
+                    <p>投放方式</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="@Url.Action("Authorization","YiBinWX",new { page = 4, type = 3 })">
+                <div class="weui-cell__bd">
+                    <p>进度查询</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+        }
+        <a class="weui-cell weui-cell_access" href="https://m.kuaidi100.com/">
+            <div class="weui-cell__bd">
+                <p>快递查询</p>
+            </div>
+            <div class="weui-cell__ft">
+            </div>
+        </a>
+        <a class="weui-cell weui-cell_access" href="@Url.Action("Authorization","YiBinWX",new { page = 3 })">
+            <div class="weui-cell__bd">
+                <p>意见反馈</p>
+            </div>
+            <div class="weui-cell__ft">
+            </div>
+        </a>
+    </div>
+    <div class="weui-footer weui-footer_fixed-bottom">
+        <p class="weui-footer__text">酒都金叶 | 宜宾烟草</p>
+    </div>
+    @*<ul class="personal_link all_width">
             <li style=" margin-bottom:0px; padding-bottom:0px;">
                 <div style="color:darkgray">活动申请单</div>
                 <hr style="color:darkgray; margin-bottom:0px;" />
@@ -59,9 +126,7 @@
                 <label class="fl main_green">
                     未完成
                 </label>
-
                 <label class="fl ml20">@ViewBag.OutstandingCount 单</label>
-                @*<a class="fr" style="color:yellowgreen" href="~/YiBinWX/ActivityFromApply?check=false">查询</a>*@
                 <a class="fr" style="color:yellowgreen" href="@Url.Action("ActivityFromApply","YiBinWX",new { check = false , openId = Model.OpenId })">查看</a>
             </li>
             <li>
@@ -69,16 +134,9 @@
                     已完成
                 </label>
                 <label class="fl ml20">@ViewBag.CompletedCount 单</label>
-                @*<a class="fr" style="color:yellowgreen" href="~/YiBinWX/ActivityFromApply?check=true">查询</a>*@
                 <a class="fr" style="color:yellowgreen" href="@Url.Action("ActivityFromApply","YiBinWX",new { check = true,openId = Model.OpenId })">查看</a>
             </li>
-        </ul>
-        @*<div class="advise_warp">
-                <a class=" fl  ml20 large_btn ok mt30 border_radius " href="@Url.Action("ActivityFromApply","YiBinWX",new {check=false,openId=@ViewBag.OpenId })">未完结办事用烟查询</a>
-                <a class="fl  ml20 large_btn ok mt30 border_radius " href="@Url.Action("ActivityFromApply","YiBinWX",new {check=true,openId=@ViewBag.OpenId })">已完结办事用烟查询</a>
-            </div>*@
-    </div>
-
+        </ul>*@
 </body>
 </html>
 

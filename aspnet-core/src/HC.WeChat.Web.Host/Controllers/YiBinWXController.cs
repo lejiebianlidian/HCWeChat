@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Abp.Authorization;
 using HC.WeChat.Activities;
 using HC.WeChat.ActivityGoodses;
 using HC.WeChat.Authorization.WeChatOAuth;
 using HC.WeChat.Configuration;
 using HC.WeChat.Controllers;
-using HC.WeChat.MessageHandler;
 using HC.WeChat.Models.WeChat;
 using HC.WeChat.WechatAppConfigs;
 using HC.WeChat.WechatEnums;
@@ -21,11 +18,8 @@ using Abp.Domain.Repositories;
 using Abp.AutoMapper;
 using HC.WeChat.WeChatUsers.Dtos;
 using HC.WeChat.ActivityForms;
-using HC.WeChat.ActivityForms.Dtos;
 using HC.WeChat.ActivityBanquets;
 using HC.WeChat.ActivityDeliveryInfos;
-using Abp.Application.Services.Dto;
-using HC.WeChat.ActivityDeliveryInfos.Dtos;
 using Senparc.Weixin.MP.Helpers;
 using Microsoft.AspNetCore.Http;
 using HC.WeChat.ActivityFormLogs;
@@ -129,6 +123,7 @@ namespace HC.WeChat.Web.Host.Controllers
         {
             //Logger.InfoFormat("code:{0} state:{1}", code, state);
             //var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
+            UserOpenId = "o5Cto1SDboPrAwY9UyCTktFVpKBc";
 
             //存储openId 避免重复提交
             SetUserOpenId(code);
@@ -146,8 +141,10 @@ namespace HC.WeChat.Web.Host.Controllers
             if (user.UserType == UserTypeEnum.零售客户 || user.UserType == UserTypeEnum.公司员工)
             {
                 var formCount = _activityFormAppService.GetActivityFormCountByUserAsync(user).Result;
-                ViewBag.OutstandingCount = formCount.OutstandingCount;
-                ViewBag.CompletedCount = formCount.CompletedCount;
+                //ViewBag.OutstandingCount = formCount.OutstandingCount;
+                //ViewBag.CompletedCount = formCount.CompletedCount;
+                ViewBag.FormCount = formCount.TotalCount;
+                ViewBag.UserLevel = formCount.UserLevel;
                 user.HeadImgUrl = user.HeadImgUrl ?? "static/img/index/timg-4.jpeg";
                 return View("UserIndex", user);
             }
@@ -277,8 +274,8 @@ namespace HC.WeChat.Web.Host.Controllers
         public IActionResult ActivityForm(string code, string state)
         {
             //state = "BD889174-D22A-4F2E-8C8F-08D599CF4F79";
-            state = "BD752041-8734-4CDC-CA88-08D599656A10";
-            UserOpenId = "o5Cto1SDboPrAwY9UyCTktFVpKBc";
+            //state = "BD752041-8734-4CDC-CA88-08D599656A10";
+            //UserOpenId = "o5Cto1SDboPrAwY9UyCTktFVpKBc";
             var activityId = Guid.Parse(state);
             //var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
             //存储openId 避免重复提交
@@ -313,16 +310,7 @@ namespace HC.WeChat.Web.Host.Controllers
         {
             var tenantId = GetTenantId();
             //openId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
-            var user = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
-            var result = _activityFormAppService.GetActivityFormList(check, user).Result;
-            if (check)
-            {
-                ViewBag.activityTitle = "已完成活动申请单列表";
-            }
-            else
-            {
-                ViewBag.activityTitle = "未完成活动申请单列表";
-            }
+            var result = _activityFormAppService.GetActivityFormList(check, openId, tenantId).Result;
             result.OpenId = openId;
             return View(result);
         }

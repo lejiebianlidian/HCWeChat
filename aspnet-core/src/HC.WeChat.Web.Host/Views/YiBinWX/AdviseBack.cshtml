@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="static/css/base.css" />
     <link rel="stylesheet" href="static/css/commons.css" />
     <link rel="stylesheet" href="static/css/tobacco.css" />
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
 </head>
 <body class="bg_gary">
     <div id="background" class="background" style="display: none; "></div>
@@ -63,9 +64,12 @@
         </div>
         <!--用户操作按钮-->
         <div class="width_90 mt30 mb20">
-            <input type="button" class="middel_btn fl cancel" value="取消发布" onclick="javascript:WeixinJSBridge.call('closeWindow');" />
-            <input type="button" class="middel_btn fr ok" value="确认发布" id="btnSave" onclick="Save()" />
+            <input type="button" class="middel_btn fl cancel" value="取消提交" onclick="javascript:WeixinJSBridge.call('closeWindow');" />
+            <input type="button" class="middel_btn fr ok" value="确认提交" id="btnSave" onclick="Save()" />
         </div>
+    </div>
+    <div class="weui-footer weui-footer_fixed-bottom">
+        <p class="weui-footer__text">酒都金叶 | 宜宾烟草</p>
     </div>
     <script type="text/javascript" src="static/js/jquery.min.js"></script>
     <script type="text/javascript">

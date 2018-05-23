@@ -522,27 +522,44 @@ namespace HC.WeChat.ActivityForms
         /// </summary>
         /// <returns></returns>
         [AbpAllowAnonymous]
-        public async Task<ActivityFormForWechat> GetActivityFormList(bool check, WeChatUserListDto user)
+        public async Task<ActivityFormForWechat> GetActivityFormList(bool check, string openId, int? tenantId)
         {
+            var user = _wechatuserManager.GetWeChatUserAsync(openId, tenantId).Result;
             using (CurrentUnitOfWork.SetTenantId(user.TenantId))
             {
                 var query = _activityformRepository.GetAll()
+                .Where(a => a.Status != FormStatusEnum.取消 && a.Status != FormStatusEnum.拒绝)
                 .WhereIf(user.UserType == UserTypeEnum.公司员工, a => a.ManagerId == user.UserId)
-                .WhereIf(user.UserType == UserTypeEnum.零售客户, a => a.CreationId == user.UserId)
-                .WhereIf(check, a => a.Status == FormStatusEnum.营销中心已审核)
-                .WhereIf(!check, a => a.Status == FormStatusEnum.初审通过 || a.Status == FormStatusEnum.提交申请 || a.Status == FormStatusEnum.资料回传已审核)
-                .OrderByDescending(a => a.CreationTime);
+                .WhereIf(user.UserType == UserTypeEnum.零售客户, a => a.CreationId == user.UserId);
+                //.WhereIf(check, a => a.Status == FormStatusEnum.营销中心已审核)
+                //.WhereIf(!check, a => a.Status == FormStatusEnum.初审通过 || a.Status == FormStatusEnum.提交申请 || a.Status == FormStatusEnum.资料回传已审核)
+                //.OrderByDescending(a => a.CreationTime);
                 ActivityFormForWechat result = new ActivityFormForWechat();
-                if (check)
-                {
-                    result.ActivityFormListDtos = query.Take(30).MapTo<List<ActivityFormListDto>>();
-                }
-                else
-                {
-                    result.ActivityFormListDtos = query.MapTo<List<ActivityFormListDto>>();
-                }
+                //已邮寄 取最近50条
+                var sendOutList = from f in query
+                                  join d in _activitydeliveryinfoRepository.GetAll().Where(a => a.Type == DeliveryUserTypeEnum.消费者) on f.Id equals d.ActivityFormId into dtemp
+                                  from df in dtemp.DefaultIfEmpty()
+                                  where f.FormCode.Contains("YAL") || df.IsSend == true//是历史单据 或 已邮寄
+                                  select f;
+                result.ActivityFormSendOutList = (await sendOutList.OrderByDescending(s => s.CreationTime).Take(50).ToListAsync()).MapTo<List<ActivityFormListDto>>();
+
+                //未邮寄取全部
+                var noSendList = from f in query.Where(q => !q.FormCode.Contains("YAL"))//先排除历史单据
+                                  join d in _activitydeliveryinfoRepository.GetAll().Where(a => a.Type == DeliveryUserTypeEnum.消费者) on f.Id equals d.ActivityFormId into dtemp
+                                  from df in dtemp.DefaultIfEmpty()
+                                  where df.IsSend == false//不存在邮寄信息 或 未邮寄
+                                  select f;
+                result.ActivityFormNoSendList = (await noSendList.OrderByDescending(s => s.CreationTime).ToListAsync()).MapTo<List<ActivityFormListDto>>();
+                //if (check)
+                //{
+                //    result.ActivityFormListDtos = query.Take(30).MapTo<List<ActivityFormListDto>>();
+                //}
+                //else
+                //{
+                //    result.ActivityFormListDtos = query.MapTo<List<ActivityFormListDto>>();
+                //}
                 result.Count = await query.CountAsync();
-                return result.MapTo<ActivityFormForWechat>();
+                return result;
             }
         }
 
@@ -618,6 +635,11 @@ namespace HC.WeChat.ActivityForms
                                                             || a.Status == FormStatusEnum.初审通过
                                                             || a.Status == FormStatusEnum.资料回传已审核).CountAsync();
                             countDto.CompletedCount = await _activityformRepository.GetAll().Where(a => a.CreationId == user.UserId && a.Status == FormStatusEnum.营销中心已审核).CountAsync();
+                            var reuser = await _retailerRepository.GetAsync(user.UserId.Value);
+                            if (reuser != null)
+                            {
+                                countDto.UserLevel = reuser.ArchivalLevel;
+                            }
                         }
                         break;
                     case UserTypeEnum.公司员工:

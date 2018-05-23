@@ -11,94 +11,106 @@
     <title>宜宾烟草</title>
     <link href="~/YiBinWX/static/css/base.css" rel="stylesheet" />
     <link href="~/YiBinWX/static/css/commons.css" rel="stylesheet" />
-    <link href="~/YiBinWX/static/css/layer.css" rel="stylesheet" />
-    <link href="~/YiBinWX/static/css/tobacco.css" rel="stylesheet" />
-    <link href="~/YiBinWX/static/css/swiper.3.1.2.min.css" rel="stylesheet" />
-    <style>
-        .swiper-wrapper {
-            padding: 10px;
-        }
-
-        .swiper-slide {
-            background: #cacaca none repeat scroll 0 0;
-            border-radius: 8px;
-            color: #fff;
-            font-family: "幼圆";
-            font-size: 15px;
-            font-weight: bold;
-            text-align: center;
-            /*padding: 1px 4px;*/
-        }
-
-        .slide-active {
-            background: #3cb0e4;
-        }
-    </style>
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
 </head>
-<body style="background:#cce8ec;">
-    <!--页面整体-->
-    <div class="all_width">
-        <div class="header bg_green tc">
-            @ViewBag.activityTitle
+<body class="bg_gary">
+    <div class="weui-tab">
+        <div class="weui-navbar">
+            <div class="weui-navbar__item weui-bar__item_on" onclick="navbarClick(this, 1)">
+                未邮寄
+            </div>
+            <div class="weui-navbar__item" onclick="navbarClick(this, 2)">
+                已邮寄
+            </div>
         </div>
-        <!--列表-->
-        <ul class="all_width tobacco_list mt10">
-           @foreach (var item in Model.ActivityFormListDtos)
-            {
-            <li style="width:90%;padding:15px 0px 15px 0px" onclick="javascript:window.location.href='@Url.Action("ActivityFromApplyDetail", "YiBinWX", new { id = item.Id, openId = Model.OpenId })'">
-                <div class="fl ml20 tobacco_detail">
-                    <span style="width:200px;" class="tobacco_name">@item.FormCode</span>
-                    <!--参数-->
-                    <ul style="width:320px;" class="tobacco_param" >
-                        <li style="width:160px;">
-                            规格：<span>@item.GoodsSpecification</span>
-                        </li>
-                        <li style="width:130px;">
-                            数量：<span>@item.Num</span>条
-                        </li>
-                        <li style="width:160px;">
-                            状态：<span>@item.StatusName</span>
-                        </li>
-                        <li style="width:130px;">
-                            申请日期：<span>@item.CreationTime.ToString("yyyy-MM-dd")</span>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            }
-        </ul>
-       
+        <div class="weui-tab__panel preview">
+            <div class="page__bd" id="noSendPage">
+                @foreach (var item in Model.ActivityFormNoSendList)
+                {
+                    <div class="weui-form-preview">
+                        <div class="weui-form-preview__hd">
+                            <div class="weui-form-preview__item">
+                                <label class="weui-form-preview__label">@item.GoodsSpecification</label>
+                                <em class="weui-form-preview__value">@(item.Num)条</em>
+                            </div>
+                        </div>
+                        <div class="weui-form-preview__bd">
+                            <p>
+                                <label class="weui-form-preview__label">单号</label>
+                                <span class="weui-form-preview__value">@item.FormCode</span>
+                            </p>
+                            <p>
+                                <label class="weui-form-preview__label">@item.StatusName</label>
+                                <span class="weui-form-preview__value">@item.CreationTime.ToString("yyyy-MM-dd HH:mm")</span>
+                            </p>
+                        </div>
+                        <div class="weui-form-preview__ft">
+                            <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">查看详细</a>
+                        </div>
+                    </div>
+                    <br />
+                }
+                @if (Model.ActivityFormNoSendList.Count() == 0)
+                {
+                    <div class="weui-loadmore weui-loadmore_line">
+                        <span class="weui-loadmore__tips">暂无数据</span>
+                    </div>
+
+                }
+            </div>
+            <div class="page__bd" id="sendOutPage" style="display:none">
+                <div class="weui-cells__title">已邮寄显示最近50条数据</div>
+                @foreach (var item in Model.ActivityFormSendOutList)
+                {
+                    <div class="weui-form-preview">
+                        <div class="weui-form-preview__hd">
+                            <div class="weui-form-preview__item">
+                                <label class="weui-form-preview__label">@item.GoodsSpecification</label>
+                                <em class="weui-form-preview__value">@(item.Num)条</em>
+                            </div>
+                        </div>
+                        <div class="weui-form-preview__bd">
+                            <p>
+                                <label class="weui-form-preview__label">单号</label>
+                                <span class="weui-form-preview__value">@item.FormCode</span>
+                            </p>
+                            <p>
+                                <label class="weui-form-preview__label">@item.StatusName</label>
+                                <span class="weui-form-preview__value">@item.CreationTime.ToString("yyyy-MM-dd HH:mm")</span>
+                            </p>
+                        </div>
+                        <div class="weui-form-preview__ft">
+                            <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">查看详细</a>
+                        </div>
+                    </div>
+                    <br />
+                }
+                @if (Model.ActivityFormSendOutList.Count() == 0)
+                {
+                    <div class="weui-loadmore weui-loadmore_line">
+                        <span class="weui-loadmore__tips">暂无数据</span>
+                    </div>
+
+                }
+            </div>
+        </div>
     </div>
-    <!--搜索框-->
-    @*<div class="search_layer none">
-        <input type="text" class="fl layer_entry" />
-        <img class="fr search_icon" src="static/img/brand/search_icon.png" />
-    </div>*@
-    <script src="~/YiBinWX/static/js/jquery.min.js"></script>
-    <script src="~/YiBinWX/static/js/swiper.3.1.2.min.js"></script>
-    <script src="~/YiBinWX/static/js/layer.js"></script>
-
-    <script>
-        var swiper = new Swiper('.swiper-container', {
-            pagination: '.swiper-pagination',
-            slidesPerView: 7,
-            paginationClickable: true,
-            spaceBetween: 12,
-        });
-        $(".swiper-wrapper>div").click(function () {
-            $(this).addClass("slide-active").siblings().removeClass("slide-active");
-        });
-        $(".search_result").click(function () {
-            layer.open({
-                type: 1,
-                area: ["100%", ""],
-                title: "",
-                shade: 0.8,
-                shadeClose: true,
-                content: $('.search_layer')
-            });
-        });
-
+    <div class="weui-footer weui-footer_fixed-bottom">
+        <p class="weui-footer__text">酒都金叶 | 宜宾烟草</p>
+    </div>
+    <script type="text/javascript" src="static/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        function navbarClick(obj, num) {
+            $(".weui-navbar__item").removeClass("weui-bar__item_on");
+            $(obj).addClass("weui-bar__item_on");
+            if (num == 1) {
+                $("#noSendPage").show();
+                $("#sendOutPage").hide();
+            } else {
+                $("#noSendPage").hide();
+                $("#sendOutPage").show();
+            }
+        }
     </script>
 </body>
 </html>

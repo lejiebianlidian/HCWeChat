@@ -157,5 +157,21 @@ namespace HC.WeChat.ActivityForms.Dtos
         /// 已完成
         /// </summary>
         public int CompletedCount { get; set; }
+
+        /// <summary>
+        /// 总单数
+        /// </summary>
+        public int TotalCount
+        {
+            get
+            {
+                return OutstandingCount + CompletedCount;
+            }
+        }
+
+        /// <summary>
+        /// 用户档级
+        /// </summary>
+        public string UserLevel { get; set; }
     }
 }

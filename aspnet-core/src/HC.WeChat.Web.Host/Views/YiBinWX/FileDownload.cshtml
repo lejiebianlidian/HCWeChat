@@ -7,25 +7,28 @@
 <html>
 @if (filetype == 1)
 {
-    <head>
-        <meta charset="UTF-8">
-        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
-        <title>货源公布</title>
-        <link rel="stylesheet" href="static/css/base.css" />
-        <link rel="stylesheet" href="static/css/commons.css" />
-        <link rel="stylesheet" href="static/css/shop.css" />
-    </head>
-    <body class="bg_gary">
-        <div class="all_width">
-            <div class="all_width process_warp">
-                <h1 class="process_title">货源公布下载</h1>
-            </div>
-            <div class="all_width process_warp mt10" style="text-align:center;" >
-                <input type="button" class="middel_btn ok" value="点击下载" onclick="javascript:window.location.href='@ViewBag.FileUrl'" />
-            </div>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>货源公布</title>
+    <link rel="stylesheet" href="static/css/base.css" />
+    <link rel="stylesheet" href="static/css/commons.css" />
+    <link rel="stylesheet" href="static/css/shop.css" />
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
+</head>
+<body class="bg_gary">
+    <div class="all_width">
+        <div class="all_width process_warp">
+            <h1 class="process_title">货源公布下载</h1>
         </div>
-
-    </body>
+        <div class="all_width process_warp mt10" style="text-align:center;">
+            <input type="button" class="middel_btn ok" value="点击下载" onclick="javascript:window.location.href='@ViewBag.FileUrl'" />
+        </div>
+    </div>
+    <div class="weui-footer weui-footer_fixed-bottom">
+        <p class="weui-footer__text">酒都金叶 | 宜宾烟草</p>
+    </div>
+</body>
 }
 else if (filetype == 2)
 {
@@ -36,15 +39,19 @@ else if (filetype == 2)
         <link rel="stylesheet" href="static/css/base.css" />
         <link rel="stylesheet" href="static/css/commons.css" />
         <link rel="stylesheet" href="static/css/shop.css" />
+        <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
     </head>
     <body class="bg_gary">
         <div class="all_width">
             <div class="all_width process_warp">
                 <h1 class="process_title">投放方式下载</h1>
             </div>
-            <div class="all_width process_warp mt10" style="text-align:center;" >
+            <div class="all_width process_warp mt10" style="text-align:center;">
                 <input type="button" class="middel_btn ok" value="点击下载" onclick="javascript:window.location.href='@ViewBag.FileUrl'" />
             </div>
+        </div>
+        <div class="weui-footer weui-footer_fixed-bottom">
+            <p class="weui-footer__text">酒都金叶 | 宜宾烟草</p>
         </div>
     </body>
 }
@@ -57,6 +64,7 @@ else
         <link rel="stylesheet" href="static/css/base.css" />
         <link rel="stylesheet" href="static/css/commons.css" />
         <link rel="stylesheet" href="static/css/shop.css" />
+        <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
     </head>
     <body class="bg_gary">
         <div class="all_width">
@@ -73,8 +81,11 @@ else
                 <img src="@ViewBag.ImgUrl3" onclick="funcSetReadImgInfo(this)" class="img_width mt20" />
             </div>
         </div>
-        <script type="text/javascript" src="~/YiBinWX/static/js/jquery.min.js" ></script>
-        <script type="text/javascript" >
+        <div class="weui-footer weui-footer_fixed-bottom">
+            <p class="weui-footer__text">酒都金叶 | 宜宾烟草</p>
+        </div>
+        <script type="text/javascript" src="~/YiBinWX/static/js/jquery.min.js"></script>
+        <script type="text/javascript">
             //设置预览图片
             function funcSetReadImgInfo(obj) {
                 var imgs = ['@ViewBag.ImgUrl1','@ViewBag.ImgUrl2','@ViewBag.ImgUrl3'];

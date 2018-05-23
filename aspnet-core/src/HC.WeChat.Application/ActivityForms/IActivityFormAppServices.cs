@@ -79,7 +79,7 @@ namespace HC.WeChat.ActivityForms
         /// </summary>
         /// <param name="check"></param>
         /// <returns></returns>
-        Task<ActivityFormForWechat> GetActivityFormList(bool check, WeChatUserListDto user);
+        Task<ActivityFormForWechat> GetActivityFormList(bool check, string openId, int? tenantId);
 
         /// <summary>
         /// 获取单条活动申请单数据
