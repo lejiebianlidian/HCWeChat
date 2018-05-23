@@ -7,6 +7,7 @@ using Abp.AutoMapper;
 using HC.WeChat.ActivityDeliveryInfos;
 using Abp.Application.Services.Dto;
 using HC.WeChat.Dto;
+using HC.WeChat.ActivityBanquets.Dtos;
 
 namespace HC.WeChat.ActivityForms.Dtos
 {
@@ -161,5 +162,15 @@ namespace HC.WeChat.ActivityForms.Dtos
         public string OpenId { get; set; }
 
         public int? TenantId { get; set; }
+    }
+
+    /// <summary>
+    /// v1.2 简化流程 2018-5-23
+    /// </summary>
+    public class ActivityFormAllInputDto
+    {
+        public ActivityFormInputDto ActivityForm { get; set; }
+
+        public ActivityBanquetWeChatDto ActivityBanquet { get; set; }
     }
 }

@@ -24,7 +24,7 @@ export class EmployeesComponent extends AppComponentBase implements OnInit {
         { text: '禁用', value: false, type: 'default' },
     ];
     positions = [
-        { text: '客户经理', value: 2 },
+        { text: '公司员工', value: 2 },
         { text: '营销人员', value: 3 },
     ];
     employees: Employee[] = [];

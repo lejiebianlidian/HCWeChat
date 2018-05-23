@@ -15,7 +15,7 @@ export class WechatUserComponent extends AppComponentBase implements OnInit {
     loading = false;
     weChatUsers: WechatUser[] = [];
     positions = [
-        { text: '客户经理', value: 2 },
+        { text: '公司员工', value: 2 },
         { text: '营销人员', value: 3 },
         { text: '零售客户', value: 1 },
         { text: '消费者', value: 4 },

@@ -57,7 +57,7 @@ namespace HC.WeChat.WechatEnums
     public enum UserTypeEnum
     {
         零售客户 = 1,
-        客户经理 = 2,
+        公司员工 = 2,
         营销人员 = 3,
         消费者 = 4,
         取消关注 = 5,

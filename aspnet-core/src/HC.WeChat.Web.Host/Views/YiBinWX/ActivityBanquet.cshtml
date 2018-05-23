@@ -27,7 +27,7 @@
         <div class="pr advise_area">
             <!--透明背景-->
             <div class="opacity_bg all_width">
-                <!--选其它需要输入商品规格-->
+                <!--选择区县-->
                 <div class="advise_warp pt5 pb5">
                     <span class="entry_key">选择区县</span>
                     <select id="ddlArea" class="ml10 entry_value" value="@Model.BanquetWeChat.Area" placeholder="请输入选择区县">
@@ -42,9 +42,8 @@
                         <option value="兴文县">兴文县</option>
                         <option value="屏山县">屏山县</option>
                     </select>
-                    @*<input type="text" maxlength="500" id="txtArea" class="fl ml10 entry_value" value="@Model.BanquetWeChat.Area" placeholder="请输入区县" />*@
                 </div>
-                <!--申请数量-->
+                <!--宴席时间-->
                 <div class="advise_warp pt5 pb5">
                     <span class="entry_key">宴席时间</span>
                     <input type="date" id="txtBanquetTime" maxlength="20" value="@Model.BanquetWeChat.ShowBanquetTime" placeholder="请输入宴席时间" />
@@ -64,7 +63,7 @@
                 </div>
                 <div class="advise_warp pt5 pb5">
                     <span class="entry_key fl">推荐人姓名</span>
-                    <input type="text" maxlength="50" id="txtUserNaem" class="fl ml10 entry_value" value="@Model.BanquetWeChat.UserName" placeholder="请输入收货姓名" />
+                    <input type="text" maxlength="50" id="txtUserNaem" class="fl ml10 entry_value" value="@Model.BanquetWeChat.UserName" placeholder="请输入推荐人姓名" />
                 </div>
                 <!--联系电话-->
                 <div class="advise_warp pt3 pb3">
@@ -95,7 +94,7 @@
                     <img id="add" src="~/YiBinWX/static/img/advise/add.png">
                 </div>
                 <!--上传图片限制提示-->
-                <span id="spanTips" class="upload_tips">最多可上传8张图片，长按图片可删除，点击图片可预览</span>
+                <span id="spanTips" class="upload_tips">最多上传8张图片，长按图片删除，点击图片预览</span>
                 <input type="hidden" id="hidOpenId" value="@ViewBag.OpenId" />
                 <input type="hidden" id="hidTenantId" value="@ViewBag.TenantId" />
                 <input type="hidden" id="hidActivityFormId" value="@ViewBag.ActivityFormId" />
@@ -372,27 +371,7 @@
         });
 
 
-        function funcLongPress() {
-            //$("img[name='photo']")
-            //$("img[name='photo']").each(function () {
-            //    $(this).on({
-            //        touchstart: function (e) {
-            //            timeOutEvent = setTimeout(imgLongPress, 800, $(this));
-            //            e.preventDefault();
-            //        },
-            //        touchmove: function () {
-            //            clearTimeout(timeOutEvent);
-            //            timeOutEvent = 0;
-            //        },
-            //        touchend: function () {
-            //            clearTimeout(timeOutEvent);
-            //            if (timeOutEvent != 0) {
-            //                alert("你这是点击，不是长按");
-            //            }
-            //            return false;
-            //        }
-            //    });
-            //});
+        function funcLongPress() { 
             $("img[name='photo']").each(function () {
                 $(this).longPress();
             });

@@ -123,5 +123,10 @@ namespace HC.WeChat.ActivityForms
         /// 导出Excel
         /// </summary>
         Task<APIResultDto> ImportExpressExcelAsync(GetActivityFormsSentInput input);
+
+        /// <summary>
+        /// 简化提交流程 2018-5-23
+        /// </summary>
+        Task<APIResultDto> SubmitActivityFormAllAsync(ActivityFormAllInputDto input);
     }
 }

@@ -279,7 +279,7 @@ namespace HC.WeChat.ActivityBanquets
                 return new APIResultDto() { Code = 701, Msg = "当前用户无效" };
             }
 
-            if (user.UserType != UserTypeEnum.零售客户 && user.UserType != UserTypeEnum.客户经理)
+            if (user.UserType != UserTypeEnum.零售客户 && user.UserType != UserTypeEnum.公司员工)
             {
                 return new APIResultDto() { Code = 702, Msg = "当前用户类型不支持" };
             }
@@ -351,11 +351,11 @@ namespace HC.WeChat.ActivityBanquets
 
             if (user.UserType == UserTypeEnum.零售客户)
             {
-                return new APIResultDto() { Code = 0, Msg = "资料提交成功，待客户经理审核" };
+                return new APIResultDto() { Code = 0, Msg = "提交成功，待客户经理审核" };
             }
             else
             {
-                return new APIResultDto() { Code = 0, Msg = "资料提交成功，待营销中心审核" };
+                return new APIResultDto() { Code = 0, Msg = "提交成功，待营销中心审核" };
             }
 
         }

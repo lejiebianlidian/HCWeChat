@@ -30,7 +30,7 @@ export class EmployeeModalComponent implements OnInit {
     ];
     positions = [
         { text: '零售客户', value: 1 },
-        { text: '客户经理', value: 2 },
+        { text: '公司员工', value: 2 },
         { text: '营销人员', value: 3 },
         { text: '消费者', value: 4 },
         { text: '取消关注', value: 5 },

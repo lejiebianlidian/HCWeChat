@@ -42,7 +42,7 @@ namespace HC.WeChat.Advises.Dtos
 
 
         /// <summary>
-        /// 举报内容
+        /// 反馈内容
         /// </summary>
         [StringLength(500)]
         public string Content { get; set; }

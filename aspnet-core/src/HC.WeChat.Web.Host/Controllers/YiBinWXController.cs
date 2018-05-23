@@ -143,7 +143,7 @@ namespace HC.WeChat.Web.Host.Controllers
             //var wuser = _weChatOAuthAppService.GetUserInfoAsync(oauth.access_token, oauth.openid).Result;
             user.NickName = user.NickName;
             //user.HeadImgUrl = wuser.headimgurl;
-            if (user.UserType == UserTypeEnum.零售客户 || user.UserType == UserTypeEnum.客户经理)
+            if (user.UserType == UserTypeEnum.零售客户 || user.UserType == UserTypeEnum.公司员工)
             {
                 var formCount = _activityFormAppService.GetActivityFormCountByUserAsync(user).Result;
                 ViewBag.OutstandingCount = formCount.OutstandingCount;
@@ -277,6 +277,8 @@ namespace HC.WeChat.Web.Host.Controllers
         public IActionResult ActivityForm(string code, string state)
         {
             //state = "BD889174-D22A-4F2E-8C8F-08D599CF4F79";
+            state = "BD752041-8734-4CDC-CA88-08D599656A10";
+            UserOpenId = "o5Cto1SDboPrAwY9UyCTktFVpKBc";
             var activityId = Guid.Parse(state);
             //var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
             //存储openId 避免重复提交
@@ -297,7 +299,11 @@ namespace HC.WeChat.Web.Host.Controllers
             ViewBag.TenantId = tenantId;
             ViewBag.ActivityId = activityId;
             ViewBag.JumpUrl = Url.Action("Activity");
-            return View();
+            //简化流程追加信息 2018-5-23
+            var jsApiConfig = JSSDKHelper.GetJsSdkUiPackageAsync(WechatAppConfig.AppId, WechatAppConfig.AppSecret, url).Result;
+            ActivityBanquetModel model = new ActivityBanquetModel();
+            model.JsSdkApiConfig = jsApiConfig;
+            return View(model);
         }
 
         /// 活动申请单
@@ -335,18 +341,6 @@ namespace HC.WeChat.Web.Host.Controllers
             var user = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
             var banquent = _activityBanquetAppService.GetActivityBanquetByFormIdWechatAsync(entity.Id).Result;
             var formLog = _activityFormLogAppService.GetActivityFormLogByFormIdAsync(entity.Id).Result;
-            //var deliveryList = _activityDeliveryInfoAppService.GetActivityDeliveryInfoByFormIdAsync(entity.Id).Result;
-            //ActivityDeliveryInfoListDto delivery = new ActivityDeliveryInfoListDto();
-            //if (deliveryList!= null)
-            //{
-            //    foreach (var item in deliveryList)
-            //    {
-            //        if (item.Type == DeliveryUserTypeEnum.推荐人)
-            //        {
-            //            delivery = item;
-            //        }
-            //    }
-            //}
             if (formLog == null)
             {
                 ViewBag.CompleteTime = null;
@@ -474,7 +468,7 @@ namespace HC.WeChat.Web.Host.Controllers
             var root = _appConfiguration["App:ServerRootAddress"];
             if (state == "1")//货源公布 零售客户 和 营销人员
             {
-                if (user.UserType != UserTypeEnum.客户经理 && user.UserType != UserTypeEnum.零售客户)
+                if (user.UserType != UserTypeEnum.公司员工 && user.UserType != UserTypeEnum.零售客户)
                 {
                     return View("NoAuthority");
                 }
@@ -483,7 +477,7 @@ namespace HC.WeChat.Web.Host.Controllers
             }
             else if (state == "2")//投放方式 营销人员
             {
-                if (user.UserType != UserTypeEnum.客户经理)
+                if (user.UserType != UserTypeEnum.公司员工)
                 {
                     return View("NoAuthority");
                 }
@@ -492,7 +486,7 @@ namespace HC.WeChat.Web.Host.Controllers
             }
             else if (state == "3")//进度查询 营销人员
             {
-                if (user.UserType != UserTypeEnum.客户经理)
+                if (user.UserType != UserTypeEnum.公司员工)
                 {
                     return View("NoAuthority");
                 }

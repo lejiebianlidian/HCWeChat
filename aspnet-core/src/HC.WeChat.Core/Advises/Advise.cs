@@ -42,7 +42,7 @@ namespace HC.WeChat.Advises
         public virtual string Phone { get; set; }
 
         /// <summary>
-        /// 举报内容
+        /// 反馈内容
         /// </summary>
         [StringLength(500)]
         public virtual string Content { get; set; }

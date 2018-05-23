@@ -20,7 +20,7 @@ export class CreateEmployeeComponent extends AppComponentBase implements OnInit 
     employeec: Employee = new Employee();
     formc: FormGroup;
     positions = [
-        { text: '客户经理', value: 2 },
+        { text: '公司员工', value: 2 },
         { text: '营销人员', value: 3 },
     ]
     isCodeCValid: boolean=false;

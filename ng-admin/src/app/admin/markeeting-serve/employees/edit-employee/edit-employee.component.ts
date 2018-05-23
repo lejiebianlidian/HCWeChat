@@ -18,7 +18,7 @@ export class EditEmployeeComponent extends AppComponentBase implements OnInit {
     iseConfirmLoading = false;
     forme: FormGroup;
     positions = [
-        { text: '客户经理', value: 2 },
+        { text: '公司员工', value: 2 },
         { text: '营销人员', value: 3 },
     ];
     isCodeEValid: boolean = false;

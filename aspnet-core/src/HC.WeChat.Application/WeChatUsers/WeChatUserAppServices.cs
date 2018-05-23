@@ -219,10 +219,10 @@ namespace HC.WeChat.WeChatUsers
                     }
                     entity.UserId = retaliler.Id;
                 }
-                else if (input.UserType == UserTypeEnum.客户经理)
+                else if (input.UserType == UserTypeEnum.公司员工)
                 {
                     //验证客户经理
-                    var employee = _employeeRepository.GetAll().Where(e => e.IsAction && e.Name == input.UserName && e.Code == input.Code && e.Position == UserTypeEnum.客户经理).FirstOrDefault();
+                    var employee = _employeeRepository.GetAll().Where(e => e.IsAction && e.Name == input.UserName && e.Code == input.Code && e.Position == UserTypeEnum.公司员工).FirstOrDefault();
                     if (employee == null)
                     {
                         return new APIResultDto() { Code = 902, Msg = "客户经理验证未通过" };
