@@ -342,7 +342,7 @@ namespace HC.WeChat.ActivityForms
                     var retailer = await _retailerAppService.GetRetailerByIdAsync(new EntityDto<Guid> { Id = user.UserId.Value });
                     form.ManagerName = retailer.Manager;
                     form.ManagerId = retailer.EmployeeId;
-                    form.Status = FormStatusEnum.提交申请;
+                    form.Status = (form.Status == FormStatusEnum.初审通过? form.Status : FormStatusEnum.提交申请);
                 }
                 else if (user.UserType == UserTypeEnum.公司员工)
                 {
@@ -520,7 +520,6 @@ namespace HC.WeChat.ActivityForms
         /// <summary>
         /// 获取活动申请单列表以及单数
         /// </summary>
-        /// <returns></returns>
         [AbpAllowAnonymous]
         public async Task<ActivityFormForWechat> GetActivityFormList(bool check, string openId, int? tenantId)
         {
@@ -529,7 +528,7 @@ namespace HC.WeChat.ActivityForms
             {
                 var query = _activityformRepository.GetAll()
                 .Where(a => a.Status != FormStatusEnum.取消 && a.Status != FormStatusEnum.拒绝)
-                .WhereIf(user.UserType == UserTypeEnum.公司员工, a => a.ManagerId == user.UserId)
+                .WhereIf(user.UserType == UserTypeEnum.公司员工, a => a.CreationId == user.UserId)
                 .WhereIf(user.UserType == UserTypeEnum.零售客户, a => a.CreationId == user.UserId);
                 //.WhereIf(check, a => a.Status == FormStatusEnum.营销中心已审核)
                 //.WhereIf(!check, a => a.Status == FormStatusEnum.初审通过 || a.Status == FormStatusEnum.提交申请 || a.Status == FormStatusEnum.资料回传已审核)
@@ -564,10 +563,27 @@ namespace HC.WeChat.ActivityForms
         }
 
         /// <summary>
+        /// 待审核活动申请列表 v1.2 2018-5-25
+        /// </summary>
+        [AbpAllowAnonymous]
+        public async Task<List<ActivityFormListDto>> GetActivityFormPendingList(string openId, int? tenantId)
+        {
+            var user = _wechatuserManager.GetWeChatUserAsync(openId, tenantId).Result;
+            using (CurrentUnitOfWork.SetTenantId(user.TenantId))
+            {
+                var resultList = await _activityformRepository.GetAll()
+                .Where(a => a.ManagerId == user.UserId)
+                .Where(a => a.Status == FormStatusEnum.提交申请 || a.Status == FormStatusEnum.初审通过)
+                .ToListAsync();
+               
+                return resultList.MapTo<List<ActivityFormListDto>>();
+            }
+        }
+
+        /// <summary>
         /// 获取单条活动申请单数据
         /// </summary>
         /// <param name="id">活动申请单id</param>
-        /// <returns></returns>
         [AbpAllowAnonymous]
         public ActivityFormListDto GetSingleFormDto(Guid id)
         {
@@ -645,11 +661,14 @@ namespace HC.WeChat.ActivityForms
                     case UserTypeEnum.公司员工:
                         {
                             countDto.OutstandingCount = await _activityformRepository.GetAll()
-                                                            .Where(a => a.ManagerId == user.UserId)
+                                                            .Where(a => a.CreationId == user.UserId)
                                                             .Where(a => a.Status == FormStatusEnum.提交申请
                                                             || a.Status == FormStatusEnum.初审通过
                                                             || a.Status == FormStatusEnum.资料回传已审核).CountAsync();
-                            countDto.CompletedCount = await _activityformRepository.GetAll().Where(a => a.ManagerId == user.UserId && a.Status == FormStatusEnum.营销中心已审核).CountAsync();
+                            countDto.CompletedCount = await _activityformRepository.GetAll().Where(a => a.CreationId == user.UserId && a.Status == FormStatusEnum.营销中心已审核).CountAsync();
+                            countDto.PendingCount = await _activityformRepository.GetAll()
+                                .Where(a => a.ManagerId == user.UserId)
+                                .Where(a => a.Status == FormStatusEnum.提交申请 || a.Status == FormStatusEnum.初审通过).CountAsync();//客户经理待审核
                         }
                         break;
                     default:
@@ -1160,6 +1179,7 @@ namespace HC.WeChat.ActivityForms
         [AbpAllowAnonymous]
         public async Task<APIResultDto> SubmitActivityFormAllAsync(ActivityFormAllInputDto input)
         {
+            input.ActivityForm.Status = FormStatusEnum.初审通过;//简化流程设置
             var result = await SubmitActivityFormAsync(input.ActivityForm);
             if (result.Code == 0)
             {

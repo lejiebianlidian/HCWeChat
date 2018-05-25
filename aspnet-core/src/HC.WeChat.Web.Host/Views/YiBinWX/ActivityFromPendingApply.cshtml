@@ -1,0 +1,61 @@
+﻿@model HC.WeChat.Models.WeChat.ActivityFromModel
+@{
+    ViewData["Title"] = "待审核表单";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>待审核</title>
+    <link href="~/YiBinWX/static/css/commons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
+</head>
+<body class="bg_gary">
+    <div class="page__bd">
+        <div class="weui-cells__title">待审核活动列表</div>
+        @foreach (var item in Model.ActivityFormList)
+        {
+            <div class="weui-form-preview">
+                <div class="weui-form-preview__hd">
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">@item.GoodsSpecification</label>
+                        <em class="weui-form-preview__value">@(item.Num)条</em>
+                    </div>
+                </div>
+                <div class="weui-form-preview__bd">
+                    <p>
+                        <label class="weui-form-preview__label">单号</label>
+                        <span class="weui-form-preview__value">@item.FormCode</span>
+                    </p>
+                    <p>
+                        <label class="weui-form-preview__label">零售客户</label>
+                        <span class="weui-form-preview__value">@item.RetailerName</span>
+                    </p>
+                    <p>
+                        <label class="weui-form-preview__label">@item.StatusName</label>
+                        <span class="weui-form-preview__value">@item.CreationTime.ToString("yyyy-MM-dd HH:mm")</span>
+                    </p>
+                </div>
+                <div class="weui-form-preview__ft">
+                    <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="@Url.Action("ActivityFromDetail","YiBinWX", new { id = item.Id, openId = Model.OpenId, isApproval = true })">查看详细</a>
+                    <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">审核通过</a>
+                </div>
+            </div>
+            <br />
+        }
+        @if (Model.ActivityFormList.Count() == 0)
+        {
+            <div class="weui-loadmore weui-loadmore_line">
+                <span class="weui-loadmore__tips">暂无数据</span>
+            </div>
+
+        }
+    </div>
+    <div class="weui-footer weui-footer_fixed-bottom">
+        <p class="weui-footer__text">酒都金叶 | 宜宾烟草</p>
+    </div>
+</body>
+</html>
+

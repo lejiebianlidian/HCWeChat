@@ -9,7 +9,6 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
     <title>宜宾烟草</title>
-    <link href="~/YiBinWX/static/css/base.css" rel="stylesheet" />
     <link href="~/YiBinWX/static/css/commons.css" rel="stylesheet" />
     <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
 </head>
@@ -45,7 +44,7 @@
                             </p>
                         </div>
                         <div class="weui-form-preview__ft">
-                            <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">查看详细</a>
+                            <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="@Url.Action("ActivityFromDetail","YiBinWX", new { id = item.Id, openId = Model.OpenId })">查看详细</a>
                         </div>
                     </div>
                     <br />
@@ -80,7 +79,7 @@
                             </p>
                         </div>
                         <div class="weui-form-preview__ft">
-                            <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">查看详细</a>
+                            <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="@Url.Action("ActivityFromDetail","YiBinWX", new { id = item.Id, openId = Model.OpenId })" >查看详细</a>
                         </div>
                     </div>
                     <br />

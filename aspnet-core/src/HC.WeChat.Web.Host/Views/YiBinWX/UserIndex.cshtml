@@ -1,13 +1,14 @@
 ﻿@model HC.WeChat.WeChatUsers.Dtos.WeChatUserListDto
 @{
-    ViewData["Title"] = "宜宾烟草";
+    ViewData["Title"] = "个人中心";
+    int pcount = int.Parse(ViewBag.PendingCount.ToString());
 }
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
-    <title>宜宾烟草</title>
+    <title>个人中心</title>
     <link rel="stylesheet" href="static/css/base.css" />
     <link rel="stylesheet" href="static/css/commons.css" />
     <link rel="stylesheet" href="static/css/personal.css" />
@@ -58,15 +59,28 @@
         </a>
         @if (Model.UserType == HC.WeChat.WechatEnums.UserTypeEnum.公司员工)
         {
-            <a class="weui-cell weui-cell_access" href="javascript:;">
-                <div class="weui-cell__bd">
-                    <span style="vertical-align: middle">待审核</span>
-                    <span class="weui-badge" style="margin-left: 5px;">5</span>
+            @if (pcount > 0)
+            {
+                <a class="weui-cell weui-cell_access" href="@Url.Action("ActivityFromPendingApply","YiBinWX",new { openId = Model.OpenId })">
+                    <div class="weui-cell__bd">
+                        <span style="vertical-align: middle">待审核</span>
+                        <span class="weui-badge" style="margin-left: 5px;">@pcount</span>
+                    </div>
+                    <div class="weui-cell__ft">
+                    </div>
+                </a>
+            }
+            else
+            {
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <span style="vertical-align: middle">待审核</span>
+                    </div>
+                    <div class="weui-cell__ft">
+                        无
+                    </div>
                 </div>
-                <div class="weui-cell__ft">
-                    无
-                </div>
-            </a>
+            }
         }
     </div>
     <div class="weui-cells">

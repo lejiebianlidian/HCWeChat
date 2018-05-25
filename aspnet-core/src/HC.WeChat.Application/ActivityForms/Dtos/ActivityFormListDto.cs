@@ -170,6 +170,11 @@ namespace HC.WeChat.ActivityForms.Dtos
         }
 
         /// <summary>
+        /// 等待审核的数
+        /// </summary>
+        public int PendingCount { get; set; }
+
+        /// <summary>
         /// 用户档级
         /// </summary>
         public string UserLevel { get; set; }

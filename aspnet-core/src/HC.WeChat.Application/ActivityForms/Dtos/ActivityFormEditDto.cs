@@ -133,6 +133,8 @@ namespace HC.WeChat.ActivityForms.Dtos
         [Required]
         public int Num { get; set; }
 
+        public FormStatusEnum Status { get; set; }
+
 
         /// <summary>
         /// 申请理由

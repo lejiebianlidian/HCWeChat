@@ -1,0 +1,255 @@
+﻿@model HC.WeChat.Models.WeChat.ActivityFromDetailModel
+@{
+    ViewData["Title"] = "活动明细";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+    <title>活动明细</title>
+    <link href="~/YiBinWX/static/css/commons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
+    <style type="text/css">
+        .bg_gary .weui-cells .weui-cell {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body class="bg_gary">
+    <div class="weui-cells__title">活动信息</div>
+    <div class="weui-cells">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>申请单号</p>
+            </div>
+            <div class="weui-cell__ft">@Model.ActivityForm.FormCode</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>审批状态</p>
+            </div>
+            <div class="weui-cell__ft">@Model.ActivityForm.StatusName</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>活动名称</p>
+            </div>
+            <div class="weui-cell__ft">@Model.ActivityForm.ActivityName</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>零售客户</p>
+            </div>
+            <div class="weui-cell__ft">@Model.ActivityForm.RetailerName</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>客户经理</p>
+            </div>
+            <div class="weui-cell__ft">@Model.ActivityForm.ManagerName</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>商品规格</p>
+            </div>
+            <div class="weui-cell__ft">@Model.ActivityForm.GoodsSpecification</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>申请数量</p>
+            </div>
+            <div class="weui-cell__ft">@(Model.ActivityForm.Num)条</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>申请人</p>
+            </div>
+            <div class="weui-cell__ft">@Model.ActivityForm.CreationUser</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>申请时间</p>
+            </div>
+            <div class="weui-cell__ft">@Model.ActivityForm.CreationTime.ToString("yyyy-MM-dd HH:mm")</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>申请理由</p>
+            </div>
+            <div class="weui-cell__ft">@Model.ActivityForm.Reason</div>
+        </div>
+    </div>
+    @if (Model.Banquet != null)
+    {
+        <div class="weui-cells__title">宴席信息</div>
+        <div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>区县</p>
+                </div>
+                <div class="weui-cell__ft">@Model.Banquet.Area</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>宴席时间</p>
+                </div>
+                <div class="weui-cell__ft">@Model.Banquet.BanquetTime.ToString("yyyy-MM-dd HH:mm")</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>宴席地点</p>
+                </div>
+                <div class="weui-cell__ft">@Model.Banquet.Position</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>现场人数</p>
+                </div>
+                <div class="weui-cell__ft">@(Model.Banquet.Num)人</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>现场简述</p>
+                </div>
+                <div class="weui-cell__ft">@Model.Banquet.Desc</div>
+            </div>
+            @if (Model.PhotoUrls != null && Model.PhotoUrls.Length > 0)
+            {
+                <div class="weui-cell">
+                    <div class="weui-uploader">
+                        <div class="weui-uploader__hd">
+                            <p class="weui-uploader__title">现场图片</p>
+                            <div class="weui-uploader__info">点击图片查看大图</div>
+                        </div>
+                        <div class="weui-uploader__bd">
+                            <ul class="weui-uploader__files" id="uploaderFiles">
+                                @foreach (var item in Model.PhotoUrls)
+                                {
+                                    <li class="weui-uploader__file" style="background-image:url(@item)" onclick="funcSetReadImgInfo(this)" imgSrc="@item"></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    }
+    @if (Model.UserDelivery != null)
+    {
+        <div class="weui-cells__title">收货人信息</div>
+        <div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>收货姓名</p>
+                </div>
+                <div class="weui-cell__ft">@Model.UserDelivery.UserName</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>联系电话</p>
+                </div>
+                <div class="weui-cell__ft">@Model.UserDelivery.Phone</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>收货地址</p>
+                </div>
+                <div class="weui-cell__ft">@Model.UserDelivery.Address</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>收货备注</p>
+                </div>
+                <div class="weui-cell__ft">@Model.UserDelivery.Remark</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>邮寄快递公司</p>
+                </div>
+                <div class="weui-cell__ft">@Model.UserDelivery.ExpressCompany</div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="https://m.kuaidi100.com/">
+                <div class="weui-cell__bd">
+                    <p>邮寄快递单号</p>
+                </div>
+                <div class="weui-cell__ft">@Model.UserDelivery.ExpressNo</div>
+            </a>
+        </div>
+    }
+    @if (Model.RefereeDelivery != null)
+    {
+        <div class="weui-cells__title">推荐人信息</div>
+        <div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>推荐人姓名</p>
+                </div>
+                <div class="weui-cell__ft">@Model.RefereeDelivery.UserName</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>推荐人电话</p>
+                </div>
+                <div class="weui-cell__ft">@Model.RefereeDelivery.Phone</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>推荐人地址</p>
+                </div>
+                <div class="weui-cell__ft">@Model.RefereeDelivery.Address</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>推荐人备注</p>
+                </div>
+                <div class="weui-cell__ft">@Model.RefereeDelivery.Address</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>邮寄快递公司</p>
+                </div>
+                <div class="weui-cell__ft">@Model.RefereeDelivery.ExpressCompany</div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="https://m.kuaidi100.com/">
+                <div class="weui-cell__bd">
+                    <p>邮寄快递单号</p>
+                </div>
+                <div class="weui-cell__ft">@Model.RefereeDelivery.ExpressNo</div>
+            </a>
+        </div>
+    }
+    @if (Model.IsApproval)
+    {
+        <div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd" style=" text-align:center;">
+                    <button class="weui-btn weui-btn_primary">审核通过</button>
+                </div>
+            </div>
+        </div>
+    }
+    <br />
+    <div class="weui-footer">
+        <p class="weui-footer__text">酒都金叶 | 宜宾烟草</p>
+    </div>
+    <script type="text/javascript" src="~/YiBinWX/static/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        //设置预览图片
+        function funcSetReadImgInfo(obj) {
+            var imgs = [];
+            var imgObj = $("li[class='weui-uploader__file']");//这里改成相应的对象
+            for (var i = 0; i < imgObj.length; i++) {
+                imgs.push(imgObj.eq(i).attr('imgSrc'));
+            }
+            var nowImgurl = $(obj).attr('imgSrc');
+            WeixinJSBridge.invoke("imagePreview", {
+                "urls": imgs,
+                "current": nowImgurl
+            });
+        }
+    </script>
+</body>
+</html>
+

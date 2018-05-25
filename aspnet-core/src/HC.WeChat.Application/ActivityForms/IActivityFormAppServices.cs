@@ -77,9 +77,12 @@ namespace HC.WeChat.ActivityForms
         /// <summary>
         /// 获取活动申请单列表以及单数
         /// </summary>
-        /// <param name="check"></param>
-        /// <returns></returns>
         Task<ActivityFormForWechat> GetActivityFormList(bool check, string openId, int? tenantId);
+
+        /// <summary>
+        /// 待审核活动申请
+        /// </summary>
+        Task<List<ActivityFormListDto>> GetActivityFormPendingList(string openId, int? tenantId);
 
         /// <summary>
         /// 获取单条活动申请单数据
@@ -91,10 +94,6 @@ namespace HC.WeChat.ActivityForms
         /// <summary>
         /// 针对微信端的取消，初审通过
         /// </summary>
-        /// <param name="input"></param>
-        /// <param name="user"></param>
-        /// <param name="tenantId"></param>
-        /// <returns></returns>
         Task<APIResultDto> ChangeActivityFormStatusWeChatAsync(ActivityFromStatusDtoss input);
 
         /// <summary>

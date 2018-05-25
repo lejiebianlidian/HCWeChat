@@ -23,6 +23,7 @@ using HC.WeChat.ActivityDeliveryInfos;
 using Senparc.Weixin.MP.Helpers;
 using Microsoft.AspNetCore.Http;
 using HC.WeChat.ActivityFormLogs;
+using Abp.Application.Services.Dto;
 
 namespace HC.WeChat.Web.Host.Controllers
 {
@@ -123,7 +124,8 @@ namespace HC.WeChat.Web.Host.Controllers
         {
             //Logger.InfoFormat("code:{0} state:{1}", code, state);
             //var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
-            UserOpenId = "o5Cto1SDboPrAwY9UyCTktFVpKBc";
+            UserOpenId = "o5Cto1SDboPrAwY9UyCTktFVpKBc";//客户经理
+            //UserOpenId = "o5Cto1d1Vv-s-ytAZyCkWBQRvsBo";//零售客户
 
             //存储openId 避免重复提交
             SetUserOpenId(code);
@@ -145,6 +147,7 @@ namespace HC.WeChat.Web.Host.Controllers
                 //ViewBag.CompletedCount = formCount.CompletedCount;
                 ViewBag.FormCount = formCount.TotalCount;
                 ViewBag.UserLevel = formCount.UserLevel;
+                ViewBag.PendingCount = formCount.PendingCount;
                 user.HeadImgUrl = user.HeadImgUrl ?? "static/img/index/timg-4.jpeg";
                 return View("UserIndex", user);
             }
@@ -276,6 +279,8 @@ namespace HC.WeChat.Web.Host.Controllers
             //state = "BD889174-D22A-4F2E-8C8F-08D599CF4F79";
             //state = "BD752041-8734-4CDC-CA88-08D599656A10";
             //UserOpenId = "o5Cto1SDboPrAwY9UyCTktFVpKBc";
+            //UserOpenId = "o5Cto1d1Vv-s-ytAZyCkWBQRvsBo";//零售客户
+
             var activityId = Guid.Parse(state);
             //var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
             //存储openId 避免重复提交
@@ -316,11 +321,20 @@ namespace HC.WeChat.Web.Host.Controllers
         }
 
         /// <summary>
+        /// 待审核活动申请
+        /// </summary>
+        public IActionResult ActivityFromPendingApply(string openId)
+        {
+            var tenantId = GetTenantId();
+            var result = new ActivityFromModel();
+            result.ActivityFormList = _activityFormAppService.GetActivityFormPendingList(openId, tenantId).Result;
+            result.OpenId = openId;
+            return View(result);
+        }
+
+        /// <summary>
         /// 活动申请单详细
         /// </summary>
-        /// <param name="entity">活动申请单实体</param>
-        /// <param name="openId">openId</param>
-        /// <returns></returns>
         public IActionResult ActivityFromApplyDetail(Guid id, string openId)
         {
             var entity = _activityFormAppService.GetSingleFormDto(id);
@@ -346,6 +360,26 @@ namespace HC.WeChat.Web.Host.Controllers
             var root = _appConfiguration["App:ServerRootAddress"];
             ViewBag.ServerRootAddress = root;
             return View(entity);
+        }
+
+        /// <summary>
+        /// v1.2 活动详情 流程简化修改 2018-5-25
+        /// </summary>
+        public IActionResult ActivityFromDetail(Guid id, string openId, bool isApproval = false)
+        {
+            ActivityFromDetailModel fromDetail = new ActivityFromDetailModel();
+            fromDetail.ActivityForm = _activityFormAppService.GetSingleFormDto(id);
+            var tenantId = GetTenantId();
+            fromDetail.WeChatUser = _weChatUserAppService.GetWeChatUserAsync(openId, tenantId).Result;
+            fromDetail.Banquet = _activityBanquetAppService.GetActivityBanquetByFormIdWechatAsync(id).Result;
+            var deliveryList = _activityDeliveryInfoAppService.GetActivityDeliveryInfoByFormIdAsync(new EntityDto<Guid>() { Id = id }).Result;
+            fromDetail.UserDelivery = deliveryList.Where(d => d.Type == DeliveryUserTypeEnum.消费者).FirstOrDefault();
+            fromDetail.RefereeDelivery = deliveryList.Where(d => d.Type == DeliveryUserTypeEnum.推荐人).FirstOrDefault();
+            fromDetail.IsApproval = isApproval;
+            var root = _appConfiguration["App:ServerRootAddress"];
+            ViewBag.ServerRootAddress = root;
+            fromDetail.SetPhotoUrl(root);
+            return View(fromDetail);
         }
 
         /// <summary>   
