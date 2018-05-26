@@ -10,5 +10,7 @@ namespace HC.WeChat.Models.WeChat
         public List<ActivityFormListDto> ActivityFormList { get; set; }
 
         public string OpenId { get; set; }
+
+        public int? TenantId { get; set; }
     }
 }

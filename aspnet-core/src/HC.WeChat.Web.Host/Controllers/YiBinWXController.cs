@@ -124,7 +124,7 @@ namespace HC.WeChat.Web.Host.Controllers
         {
             //Logger.InfoFormat("code:{0} state:{1}", code, state);
             //var oauth = _weChatOAuthAppService.GetAccessTokenAsync(code).Result;
-            UserOpenId = "o5Cto1SDboPrAwY9UyCTktFVpKBc";//客户经理
+            //UserOpenId = "o5Cto1SDboPrAwY9UyCTktFVpKBc";//客户经理
             //UserOpenId = "o5Cto1d1Vv-s-ytAZyCkWBQRvsBo";//零售客户
 
             //存储openId 避免重复提交
@@ -278,7 +278,7 @@ namespace HC.WeChat.Web.Host.Controllers
         {
             //state = "BD889174-D22A-4F2E-8C8F-08D599CF4F79";
             //state = "BD752041-8734-4CDC-CA88-08D599656A10";
-            //UserOpenId = "o5Cto1SDboPrAwY9UyCTktFVpKBc";
+            //UserOpenId = "o5Cto1SDboPrAwY9UyCTktFVpKBc";//客户经理
             //UserOpenId = "o5Cto1d1Vv-s-ytAZyCkWBQRvsBo";//零售客户
 
             var activityId = Guid.Parse(state);
@@ -329,6 +329,9 @@ namespace HC.WeChat.Web.Host.Controllers
             var result = new ActivityFromModel();
             result.ActivityFormList = _activityFormAppService.GetActivityFormPendingList(openId, tenantId).Result;
             result.OpenId = openId;
+            result.TenantId = tenantId;
+            var root = _appConfiguration["App:ServerRootAddress"];
+            ViewBag.ServerRootAddress = root;
             return View(result);
         }
 
@@ -475,6 +478,14 @@ namespace HC.WeChat.Web.Host.Controllers
                     }
                     break;
                 default:
+                    {
+                        if (!string.IsNullOrEmpty(UserOpenId))//如果userOpenId 不为空 直接跳转
+                        {
+                            return RedirectToAction("BindUser");
+                        }
+                        var url = host + "/YiBinWX/BindUser";
+                        ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
+                    }
                     break;
             }
             return View();

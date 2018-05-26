@@ -10,10 +10,16 @@
     <link rel="stylesheet" href="static/css/base.css" />
     <link rel="stylesheet" href="static/css/commons.css" />
     <link rel="stylesheet" href="static/css/tobacco.css" />
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
 </head>
 <body class="bg_gary">
-    <div id="background" class="background" style="display: none; "></div>
-    <div id="progressBar" class="progressBar" style="display: none; ">正在提交中，请稍等...</div>
+    <div id="loadingToast" style="display:none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-loading weui-icon_toast"></i>
+            <p class="weui-toast__content">数据提交中</p>
+        </div>
+    </div>
     <!--页面整体-->
     <div class="all_width">
         <!--通用头部-->
@@ -318,7 +324,7 @@
             para.openId = $("#hidOpenId").val();
             $("#btnSave").attr("disabled", true);
             $("#btnSave").attr("disabled", "disabled");
-            var ajaxbg = $("#background, #progressBar");
+            var ajaxbg = $("#loadingToast");
             ajaxbg.show();
             $.ajax({
                 url: reqUrl,

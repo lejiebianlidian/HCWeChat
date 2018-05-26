@@ -119,11 +119,11 @@
                 <button nz-button type="button" (click)="exportExcel()" [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="exportLoading"
                     class="mx-sm">导出Excel</button>
             </div>
-            <div nz-col [nzSpan]="6" class="mb-md">
+            <div nz-col [nzSpan]="8" class="mb-md">
                 <a style="display: none;" id="aExpressNoExcelUrl" href="#">
                     <button type="button" id="btnExpressNoHref">隐藏下载</button>
                 </a>
-                <button nz-button type="button" [nzSize]="size" (click)="expressNoExcel()" [nzLoading]="exportENLoading" class="mr-sm">
+                <button nz-button type="button" (click)="expressNoExcel()" [nzLoading]="exportENLoading" class="mr-sm">
                     <i class="anticon anticon-download"></i>
                     <span>下载快递信息</span>
                 </button>
@@ -134,6 +134,9 @@
                         <span>导入快递单信息</span>
                     </button>
                 </nz-upload>
+            </div>
+            <div nz-col [nzSpan]="16" class="mb-md">
+                注：导入快递单信息前先下载模板，快递公司、单号、邮寄日期为必填，不填将自动跳过
             </div>
         </div>
     </form>
@@ -182,7 +185,7 @@
                     <span>是否已邮寄</span>
                 </th>
                 <th nz-th>
-                    <span>发货时间</span>
+                    <span>邮件日期</span>
                 </th>
             </tr>
         </thead>
@@ -205,7 +208,7 @@
                 <td nz-td>{{postinfo.address}}</td>
                 <td nz-td>{{postinfo.expressNo}}</td>
                 <td nz-td>{{postinfo.isSendName}}</td>
-                <td nz-td>{{postinfo.sendTime| _date}}</td>
+                <td nz-td>{{postinfo.sendTime | _date}}</td>
             </tr>
         </tbody>
     </nz-table>

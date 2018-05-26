@@ -130,7 +130,7 @@ namespace HC.WeChat.ActivityDeliveryInfos
         /// <returns></returns>
         public async Task CreateOrUpdateActivityDeliveryInfo(CreateOrUpdateActivityDeliveryInfoInput input)
         {
-
+            input.ActivityDeliveryInfo.IsSend = true;
             if (input.ActivityDeliveryInfo.Id.HasValue)
             {
                 await UpdateActivityDeliveryInfoAsync(input.ActivityDeliveryInfo);
@@ -198,7 +198,8 @@ namespace HC.WeChat.ActivityDeliveryInfos
         /// <returns></returns>
         public async Task UpdateIsSend(List<Guid> idList)
         {
-            foreach (var item in idList) {
+            foreach (var item in idList)
+            {
                 var entity = await _activitydeliveryinfoRepository.GetAsync(item);
                 entity.IsSend = true;
                 entity.SendTime = DateTime.Now;

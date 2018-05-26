@@ -17,6 +17,13 @@
     </style>
 </head>
 <body class="bg_gary">
+    <div id="loadingToast" style="display:none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-loading weui-icon_toast"></i>
+            <p class="weui-toast__content">数据提交中</p>
+        </div>
+    </div>
     <div class="weui-cells__title">活动信息</div>
     <div class="weui-cells">
         <div class="weui-cell">
@@ -162,7 +169,7 @@
                 <div class="weui-cell__bd">
                     <p>收货备注</p>
                 </div>
-                <div class="weui-cell__ft">@Model.UserDelivery.Remark</div>
+                <div class="weui-cell__ft">@Model.UserDelivery.DeliveryRemark</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__bd">
@@ -204,7 +211,7 @@
                 <div class="weui-cell__bd">
                     <p>推荐人备注</p>
                 </div>
-                <div class="weui-cell__ft">@Model.RefereeDelivery.Address</div>
+                <div class="weui-cell__ft">@Model.RefereeDelivery.DeliveryRemark</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__bd">
@@ -220,12 +227,12 @@
             </a>
         </div>
     }
-    @if (Model.IsApproval)
+    @if (Model.IsApproval && (Model.ActivityForm.Status == HC.WeChat.WechatEnums.FormStatusEnum.初审通过 || Model.ActivityForm.Status == HC.WeChat.WechatEnums.FormStatusEnum.提交申请))
     {
         <div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd" style=" text-align:center;">
-                    <button class="weui-btn weui-btn_primary">审核通过</button>
+                    <button class="weui-btn weui-btn_primary" onclick="StatusCheck()">审核通过</button>
                 </div>
             </div>
         </div>
@@ -248,6 +255,45 @@
                 "urls": imgs,
                 "current": nowImgurl
             });
+        }
+
+        //审核通过
+        function StatusCheck() {
+            if (confirm('确定要审核通过吗？')) {
+                var para = {};
+                para.Opinion = '资料回传审核通过';
+                para.Status = 4;
+                para.Id = '@Model.ActivityForm.Id';
+                para.OpenId = '@Model.WeChatUser.OpenId';
+                para.TenantId = '@Model.WeChatUser.TenantId';
+                var reqUrl = "@ViewBag.ServerRootAddress" + "/api/services/app/ActivityForm/ChangeActivityFormStatusWeChatAsync";
+                $("#loadingToast").show();
+                $.ajax({
+                    url: reqUrl,
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(para),
+                    success: function (data) {
+                        $("#loadingToast").hide();
+                        if (data.success) {
+                            if (data.result.code == 0) {
+                                alert(data.result.msg);
+                                location.reload();
+                                parent.location.reload();
+                            } else {
+                                alert(data.result.msg);
+                            }
+                        } else {
+                            alert("保存异常！");
+                        }
+                    },
+                    error: function () {
+                        $("#loadingToast").hide();
+                        alert("提交失败，稍后请重试！");
+                    }
+                });
+            }
         }
     </script>
 </body>

@@ -13,6 +13,13 @@
     <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
 </head>
 <body class="bg_gary">
+    <div id="loadingToast" style="display:none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-loading weui-icon_toast"></i>
+            <p class="weui-toast__content">数据提交中</p>
+        </div>
+    </div>
     <div class="page__bd">
         <div class="weui-cells__title">待审核活动列表</div>
         @foreach (var item in Model.ActivityFormList)
@@ -40,7 +47,7 @@
                 </div>
                 <div class="weui-form-preview__ft">
                     <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="@Url.Action("ActivityFromDetail","YiBinWX", new { id = item.Id, openId = Model.OpenId, isApproval = true })">查看详细</a>
-                    <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">审核通过</a>
+                    <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:" onclick="StatusCheck('@item.Id')">审核通过</a>
                 </div>
             </div>
             <br />
@@ -53,9 +60,51 @@
 
         }
     </div>
-    <div class="weui-footer weui-footer_fixed-bottom">
+    <br />
+    <div class="weui-footer">
         <p class="weui-footer__text">酒都金叶 | 宜宾烟草</p>
     </div>
+    <script type="text/javascript" src="~/YiBinWX/static/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        //审核通过
+        function StatusCheck(id) {
+            if (confirm('确定要审核通过吗？')) {
+                var para = {};
+                para.Opinion = '资料回传审核通过';
+                para.Status = 4;
+                para.Id = id;
+                para.OpenId = '@Model.OpenId';
+                para.TenantId = '@Model.TenantId';
+                var reqUrl = "@ViewBag.ServerRootAddress" + "/api/services/app/ActivityForm/ChangeActivityFormStatusWeChatAsync";
+                $("#loadingToast").show();
+                $.ajax({
+                    url: reqUrl,
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(para),
+                    success: function (data) {
+                        $("#loadingToast").hide();
+                        if (data.success) {
+                            if (data.result.code == 0) {
+                                alert(data.result.msg);
+                                location.reload();
+                                parent.location.reload();
+                            } else {
+                                alert(data.result.msg);
+                            }
+                        } else {
+                            alert("保存异常！");
+                        }
+                    },
+                    error: function () {
+                        $("#loadingToast").hide();
+                        alert("提交失败，稍后请重试！");
+                    }
+                });
+            }
+        }
+    </script>
 </body>
 </html>
 

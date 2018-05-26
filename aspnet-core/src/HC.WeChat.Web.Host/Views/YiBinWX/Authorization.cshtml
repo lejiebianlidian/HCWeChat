@@ -7,7 +7,8 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
-    <title>宜宾烟草</title>
+    <title>登录</title>
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css" />
     <style type="text/css">
         .progressBar {
             width: 100%;
@@ -26,18 +27,21 @@
             background: white; /*while*/
             z-index: 2000;
             background-color: #ecf4f4;
-            padding-top:200px;
+            padding-top: 200px;
         }
+
         .bg_gary {
             background-color: #ecf4f4;
         }
     </style>
 </head>
 <body class="bg_gary">
-    <div id="background" class="background"></div>
-    <div id="progressBar" class="progressBar">
-        <img src="~/YiBinWX/static/img/await.gif" /><br />
-        页面正在加载，请稍等...
+    <div id="loadingToast">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-loading weui-icon_toast"></i>
+            <p class="weui-toast__content">授权登录中...</p>
+        </div>
     </div>
     <a style="display:none" href="@ViewBag.PageUrl">
         <input type="button" id="btnGoPageUrl" />
