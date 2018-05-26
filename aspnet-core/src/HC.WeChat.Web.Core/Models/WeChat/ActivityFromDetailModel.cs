@@ -42,7 +42,7 @@ namespace HC.WeChat.Models.WeChat
                 PhotoUrls = Banquet.PhotoUrl.Split(',');
                 for (int i = 0; i < PhotoUrls.Length; i++)
                 {
-                    PhotoUrls[i] = host + PhotoUrls[i];
+                    PhotoUrls[i] = host + PhotoUrls[i].Substring(0, PhotoUrls[i].IndexOf(';'));
                 }
             }
         }

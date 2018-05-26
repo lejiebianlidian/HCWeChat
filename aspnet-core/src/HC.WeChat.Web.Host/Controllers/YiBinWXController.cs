@@ -302,7 +302,7 @@ namespace HC.WeChat.Web.Host.Controllers
             ViewBag.ActivityId = activityId;
             ViewBag.JumpUrl = Url.Action("Activity");
             //简化流程追加信息 2018-5-23
-            var jsApiConfig = JSSDKHelper.GetJsSdkUiPackageAsync(WechatAppConfig.AppId, WechatAppConfig.AppSecret, url).Result;
+            var jsApiConfig = JSSDKHelper.GetJsSdkUiPackageAsync(WechatAppConfig.AppId, WechatAppConfig.AppSecret, Request.GetAbsoluteUri()).Result;
             ActivityBanquetModel model = new ActivityBanquetModel();
             model.JsSdkApiConfig = jsApiConfig;
             return View(model);
@@ -533,6 +533,12 @@ namespace HC.WeChat.Web.Host.Controllers
             }
             ViewBag.FileType = state;
             return View();
+        }
+
+        public IActionResult Login(string openId)
+        {
+            UserOpenId = openId;
+            return RedirectToAction("BindUser");
         }
     }
 
