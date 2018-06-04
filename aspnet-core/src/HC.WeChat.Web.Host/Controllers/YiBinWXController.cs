@@ -248,8 +248,17 @@ namespace HC.WeChat.Web.Host.Controllers
             {
                 return View("NoActivity");
             }
-            var url = _appConfiguration["App:ServerRootAddress"] + "/YiBinWX/ActivityForm";
-            ViewBag.FormUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, activity.Id.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
+
+            if (string.IsNullOrEmpty(UserOpenId))
+            {
+                var url = _appConfiguration["App:ServerRootAddress"] + "/YiBinWX/ActivityForm";
+                ViewBag.FormUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, activity.Id.ToString(), Senparc.Weixin.MP.OAuthScope.snsapi_base);
+            }
+            else
+            {
+                ViewBag.FormUrl = Url.Action("ActivityForm", new { state = activity.Id.ToString() });
+            }
+           
             //ViewBag.FormUrl = url + "?state=" + activity.Id;
             ViewBag.FlowUrl = Url.Action("ActivityFlow");
             return View();
