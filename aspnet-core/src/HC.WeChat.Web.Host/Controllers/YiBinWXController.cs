@@ -434,6 +434,7 @@ namespace HC.WeChat.Web.Host.Controllers
         public IActionResult Authorization(AuthorizationPageEnum page, string type)
         {
             var host = _appConfiguration["App:ServerRootAddress"];
+            var url = string.Empty;
             //UserOpenId = "C9E6F8A3-6A08-418A-A258-0ABCBEC17573";
             switch (page)
             {
@@ -443,8 +444,8 @@ namespace HC.WeChat.Web.Host.Controllers
                         {
                             return RedirectToAction("BindUser");
                         }
-                        var url = host + "/YiBinWX/BindUser";
-                        ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
+                        url = host + "/YiBinWX/BindUser";
+                        //ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
                     }
                     break;
                 case AuthorizationPageEnum.Question:
@@ -453,8 +454,8 @@ namespace HC.WeChat.Web.Host.Controllers
                         {
                             return RedirectToAction("Question");
                         }
-                        var url = host + "/YiBinWX/Question";
-                        ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
+                        url = host + "/YiBinWX/Question";
+                        //ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
                     }
                     break;
                 case AuthorizationPageEnum.AdviseBack:
@@ -463,8 +464,8 @@ namespace HC.WeChat.Web.Host.Controllers
                         {
                             return RedirectToAction("AdviseBack");
                         }
-                        var url = host + "/YiBinWX/AdviseBack";
-                        ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
+                        url = host + "/YiBinWX/AdviseBack";
+                        //ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
                     }
                     break;
                 case AuthorizationPageEnum.FileDownload:
@@ -473,8 +474,8 @@ namespace HC.WeChat.Web.Host.Controllers
                         {
                             return RedirectToAction("FileDownload", new { state = type });
                         }
-                        var url = host + "/YiBinWX/FileDownload";
-                        ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, type, Senparc.Weixin.MP.OAuthScope.snsapi_base);
+                        url = host + "/YiBinWX/FileDownload";
+                        //ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, type, Senparc.Weixin.MP.OAuthScope.snsapi_base);
                     }
                     break;
                 default:
@@ -483,12 +484,14 @@ namespace HC.WeChat.Web.Host.Controllers
                         {
                             return RedirectToAction("BindUser");
                         }
-                        var url = host + "/YiBinWX/BindUser";
-                        ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
+                        url = host + "/YiBinWX/BindUser";
+                        //ViewBag.PageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
                     }
                     break;
             }
-            return View();
+            //return View();
+            var pageUrl = _weChatOAuthAppService.GetAuthorizeUrl(url, "123", Senparc.Weixin.MP.OAuthScope.snsapi_base);
+            return Redirect(pageUrl);
         }
 
         public IActionResult FileDownload(string code, string state)
