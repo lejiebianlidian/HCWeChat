@@ -19,6 +19,7 @@ using HC.WeChat.WechatEnums;
 using HC.WeChat.Retailers;
 using HC.WeChat.Employees;
 using System.Linq;
+using Abp.Auditing;
 
 namespace HC.WeChat.WeChatUsers
 {
@@ -198,6 +199,7 @@ namespace HC.WeChat.WeChatUsers
         /// <summary>
         /// 用户绑定
         /// </summary>
+        [Audited]
         [AbpAllowAnonymous]
         public async Task<APIResultDto> BindWeChatUserAsync(UserBindDto input)
         {

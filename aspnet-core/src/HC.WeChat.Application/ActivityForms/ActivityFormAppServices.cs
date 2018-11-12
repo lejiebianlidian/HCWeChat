@@ -36,6 +36,7 @@ using Microsoft.Extensions.Configuration;
 using Abp.Domain.Uow;
 using HC.WeChat.Helpers;
 using System.Globalization;
+using Abp.Auditing;
 
 namespace HC.WeChat.ActivityForms
 {
@@ -301,6 +302,7 @@ namespace HC.WeChat.ActivityForms
             await _activityformRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        [Audited]
         [AbpAllowAnonymous]
         public async Task<APIResultDto> SubmitActivityFormAsync(ActivityFormInputDto input)
         {
@@ -386,6 +388,7 @@ namespace HC.WeChat.ActivityForms
             return code;
         }
 
+        [Audited]
         [AbpAllowAnonymous]
         public async Task<APIResultDto> ChangeActivityFormStatusAsync(ActivityFormStatusDto input)
         {
@@ -594,9 +597,7 @@ namespace HC.WeChat.ActivityForms
         /// <summary>
         /// 针对微信端的取消，初审通过
         /// </summary>
-        /// <param name="input"></param>
-        /// <param name="tenantId"></param>
-        /// <returns></returns>
+        [Audited]
         [AbpAllowAnonymous]
         public async Task<APIResultDto> ChangeActivityFormStatusWeChatAsync(ActivityFromStatusDtoss input)
         {
@@ -1176,6 +1177,7 @@ namespace HC.WeChat.ActivityForms
 
         #region v1.2 简化流程 2018-5-23
 
+        [Audited]
         [AbpAllowAnonymous]
         public async Task<APIResultDto> SubmitActivityFormAllAsync(ActivityFormAllInputDto input)
         {

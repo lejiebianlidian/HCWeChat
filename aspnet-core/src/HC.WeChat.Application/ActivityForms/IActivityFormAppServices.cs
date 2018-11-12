@@ -127,5 +127,7 @@ namespace HC.WeChat.ActivityForms
         /// 简化提交流程 2018-5-23
         /// </summary>
         Task<APIResultDto> SubmitActivityFormAllAsync(ActivityFormAllInputDto input);
+
+       
     }
 }

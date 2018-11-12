@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Abp.Auditing;
 using Abp.Authorization;
 using HC.WeChat.Configuration;
 using HC.WeChat.Controllers;
@@ -143,6 +144,8 @@ namespace HC.WeChat.Web.Host.Controllers
             }
             return Json(new APIResultDto() { Code = 701, Msg = "上传数据不能为空" });
         }
+
+        [Audited]
         [AbpAllowAnonymous]
         [RequestFormSizeLimit(valueCountLimit: 2147483647)]
         [HttpPost]

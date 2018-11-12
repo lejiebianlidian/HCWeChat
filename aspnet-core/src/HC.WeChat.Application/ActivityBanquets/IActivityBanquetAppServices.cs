@@ -67,9 +67,9 @@ namespace HC.WeChat.ActivityBanquets
         /// <summary>
         /// 根据活动申请id获取宴席信息
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         Task<ActivityBanquetListDto> GetActivityBanquetByFormIdWechatAsync(Guid id);
+
+        Task<APIResultDto> SavePhotoImageTest(string path, string name, string ext);
 
     }
 }

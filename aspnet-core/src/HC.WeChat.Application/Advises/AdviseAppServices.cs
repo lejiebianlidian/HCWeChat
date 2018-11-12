@@ -16,6 +16,7 @@ using System;
 using HC.WeChat.Dto;
 using HC.WeChat.Authorization;
 using System.Linq;
+using Abp.Auditing;
 
 namespace HC.WeChat.Advises
 {
@@ -186,6 +187,7 @@ namespace HC.WeChat.Advises
             await _adviseRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        [Audited]
         [AbpAllowAnonymous]
         public async Task<APIResultDto> SubmitAdviseAsync(AdviseDto input)
         {

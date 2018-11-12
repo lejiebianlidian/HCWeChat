@@ -26,6 +26,11 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Senparc.Weixin.MP.AdvancedAPIs;
 using Abp.WeChat.Picture;
+using Abp.Auditing;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Processing.Transforms;
 
 namespace HC.WeChat.ActivityBanquets
 {
@@ -229,6 +234,37 @@ namespace HC.WeChat.ActivityBanquets
             return fileDire + DateTime.Today.ToString("yyyyMM") + "/" + DateTime.Today.ToString("dd") + "/";
         }
 
+
+
+        /// <summary>
+        /// 图片压缩
+        /// </summary>
+        private void UploadImageCompress(string path, string fileName, string ext)
+        {
+            var savePath = path + fileName + "_compress" + ext;
+            var orgPaht = path + fileName + ext;
+
+            //2压缩后保存 跨度为360px
+            using (var stream = new FileStream(orgPaht, FileMode.OpenOrCreate))
+            using (Image<Rgba32> image = SixLabors.ImageSharp.Image.Load(stream))
+            {
+                //如果宽度度大于360 就需要压缩
+                if (image.Width > 360)
+                {
+                    var height = (int)((360 / image.Width) * image.Height);
+                    image.Mutate(x => x.Resize(360, height));
+                }
+                image.Save(savePath);
+            }
+        }
+
+        [AbpAllowAnonymous]
+        public Task<APIResultDto> SavePhotoImageTest(string path, string name, string ext)
+        {
+            UploadImageCompress(path, name, ext);
+            return Task.FromResult(new APIResultDto() { Code = 0, Msg = "ok" });
+        }
+
         private async Task<string> DownloadWechatImgs(string imgs, string appId)
         {
             if (string.IsNullOrEmpty(imgs))
@@ -248,12 +284,15 @@ namespace HC.WeChat.ActivityBanquets
                 else
                 {
                     var msg = await MediaApi.GetAsync(appId, id, fullUpLoadPath);
-                    Logger.InfoFormat("serverId:{0} msg:{1}", id, msg);
+
+                    //Logger.InfoFormat("serverId:{0} msg:{1}", id, msg);
                     if (!string.IsNullOrEmpty(msg))
                     {
                         var exposureTime = await PictureExifHelper.GetTakePicDate(msg);
                         string fileExt = Path.GetExtension(msg);
-                        localImgs = localImgs + uploadPath + id + fileExt + ";" + exposureTime + ","; //保存相对路径
+                        //压缩图片
+                        UploadImageCompress(fullUpLoadPath, id, fileExt);
+                        localImgs = localImgs + uploadPath + id + "_compress" + fileExt + ";" + exposureTime + ","; //保存相对路径
                     }  
                 }
 
@@ -265,6 +304,7 @@ namespace HC.WeChat.ActivityBanquets
             return localImgs;
         }
 
+        [Audited]
         [AbpAllowAnonymous]
         public async Task<APIResultDto> SubmitActivityBanquetWeChatAsync(ActivityBanquetWeChatDto input)
         {
@@ -392,6 +432,8 @@ namespace HC.WeChat.ActivityBanquets
 
             return entity.MapTo<ActivityBanquetListDto>();
         }
+
+    
     }
 }
 
